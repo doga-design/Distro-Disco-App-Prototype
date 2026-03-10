@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distro Disco Homepage</title>
+<link rel="icon" type="image/svg+xml" href="img/icons/favicon.svg">
+<style>
+  /* Local fonts */
+  @font-face {
+    font-family: 'Gaya';
+    src: url('fonts/GayaTrial/GayaTrial-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Gaya';
+    src: url('fonts/GayaTrial/GayaTrial-Italic.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist';
+    src: url('fonts/Geist/static/Geist-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist';
+    src: url('fonts/Geist/static/Geist-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist';
+    src: url('fonts/Geist/static/Geist-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist';
+    src: url('fonts/Geist/static/Geist-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --bg-color: #F8F7F4;
+    --navy: #23214A;
+    --orange: #EF6242;
+    --white: #FFFFFF;
+    --text-main: #23214A;
+    --text-muted: #6B6A7C;
+    --border-color: #E6E4DD;
+    --card-bg: #FFFFFF;
+    --input-bg: #F4F3EE;
+    --shadow-soft: 0px 8px 24px rgba(35, 33, 74, 0.05);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    
+    /* Icon sizes */
+    --icon-size-top-nav: 28px;
+    --icon-size-nav: 38px;
+    --icon-size-nav-center: 48px;
+    --icon-size-stat: 48px;
+    --icon-size-section-title: 20px;
+    --icon-size-card: 48px;
+    --icon-size-meta: 16px;
+    --icon-size-item: 28px;
+    --icon-size-forum-topic: 48px;
+    --icon-size-forum-meta: 16px;
+    --icon-size-sm: 16px;
+    --nav-center-circle-size: 68px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0;
+    color: var(--text-main);
+  }
+
+  /* ── iPhone Frame ── */
+  .phone-frame {
+    position: relative;
+    background: linear-gradient(160deg, #2a2a32 0%, #18181f 60%, #111116 100%);
+    border-radius: 54px;
+    padding: 12px;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.9),
+      inset 0 0 0 1px rgba(255,255,255,0.13),
+      0 40px 90px rgba(0,0,0,0.7),
+      0 8px 20px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+
+  /* Side hardware buttons */
+  .phone-btn {
+    position: absolute;
+    background: linear-gradient(180deg, #2e2e38 0%, #1e1e26 100%);
+    border-radius: 3px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), -1px 0 2px rgba(0,0,0,0.5);
+  }
+  /* Volume up */
+  .phone-btn-vol-up   { left: -3px; top: 132px; width: 3px; height: 32px; }
+  /* Volume down */
+  .phone-btn-vol-down { left: -3px; top: 174px; width: 3px; height: 32px; }
+  /* Power/side button */
+  .phone-btn-power    { right: -3px; top: 152px; width: 3px; height: 52px;
+                        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 1px 0 2px rgba(0,0,0,0.5); }
+
+  /* Dynamic Island */
+  .dynamic-island {
+    width: 120px;
+    height: 34px;
+    background: #0a0a0c;
+    border-radius: 20px;
+    margin: 12px auto 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .app-container {
+    width: 390px;
+    height: 844px;
+    background-color: var(--bg-color);
+    position: relative;
+    overflow: hidden;
+    border-radius: 42px;
+  }
+
+  /* Typography */
+  h1, h2 {
+    font-family: 'Gaya', 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  h3, h4 {
+    font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  h1 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  h2 { font-size: 18px; font-weight: 700; color: var(--navy); }
+  h3 { font-size: 16px; font-weight: 600; color: var(--navy); }
+  h4 { font-size: 14px; font-weight: 600; color: var(--navy); }
+  p { font-size: 13px; line-height: 1.5; color: var(--text-muted); }
+  a { color: var(--navy); text-decoration: underline; font-size: 13px; font-weight: 600; }
+  
+  /* Utilities */
+  .flex { display: flex; }
+  .flex-col { display: flex; flex-direction: column; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .justify-center { justify-content: center; }
+  .gap-4 { gap: 4px; }
+  .gap-8 { gap: 8px; }
+  .gap-12 { gap: 12px; }
+  .gap-16 { gap: 16px; }
+  .text-navy { color: var(--navy); }
+  .text-orange { color: var(--orange); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    border: none;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  .btn:active { transform: scale(0.98); }
+  
+  .btn-primary { background-color: var(--navy); color: var(--white); }
+  .btn-secondary { background-color: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
+  .btn-outline { background-color: transparent; border: 1px solid var(--navy); color: var(--navy); }
+  .btn-small { padding: 8px 12px; font-size: 12px; border-radius: var(--radius-sm); }
+  .btn-light { background-color: var(--input-bg); color: var(--navy); border: none; }
+
+  /* Button active (pressed) states - simple reversed colours */
+  .btn-primary:active {
+    background-color: var(--orange);
+    color: var(--white);
+  }
+  .btn-secondary:active,
+  .btn-outline:active {
+    background-color: var(--navy);
+    color: var(--white);
+  }
+  .btn-light:active {
+    background-color: var(--navy);
+    color: var(--white);
+  }
+
+  /* Top Navbar */
+  .top-nav {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-color);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  .logo-img {
+    height: 28px;
+    width: auto;
+    display: block;
+  }
+  .nav-icons { display: flex; gap: 10px; align-items: center; }
+  .icon-btn {
+    background: none; border: none; color: var(--navy);
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .top-nav-icon {
+    width: var(--icon-size-top-nav);
+    height: var(--icon-size-top-nav);
+    object-fit: contain;
+    display: block;
+  }
+  .notification-dot {
+    position: absolute; top: -2px; right: -2px;
+    width: 8px; height: 8px; background-color: var(--orange);
+    border-radius: 50%; border: 2px solid var(--bg-color);
+  }
+
+  /* Hero Section */
+  .hero { padding: 0 20px; margin-bottom: 32px; }
+  .hero-card {
+    background: linear-gradient(145deg, #FFF8D6 0%, #FAF6E3 100%);
+    border-radius: var(--radius-xl);
+    padding: 24px 20px;
+  }
+  .impact-stats {
+    display: flex; justify-content: space-between;
+    margin: 24px 0; position: relative;
+  }
+  .stat-item { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0px; }
+  .stat-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--navy); }
+  .stat-icon img { width: var(--icon-size-stat); height: var(--icon-size-stat); object-fit: contain; margin-bottom: 15px; }
+  .stat-label { font-size: 12px; font-weight: 600; line-height: 1.3; }
+  .stat-sub { font-size: 12px; color: var(--text-muted); }
+  .divider { width: 1px; background-color: rgba(35, 33, 74, 0.1); margin: 0 8px; }
+  
+  .hero-copy { margin-bottom: 16px; font-size: 13px; color: var(--navy); }
+  .hero-buttons { display: flex; flex-direction: column; gap: 12px; }
+
+  /* Sections Common */
+  .section { padding: 0 20px; margin-bottom: 32px; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .section-title { display: flex; align-items: center; gap: 8px; font-size: 20px; color: var(--navy); }
+  .section-title img { width: var(--icon-size-section-title); height: var(--icon-size-section-title); object-fit: contain; }
+  
+  /* Tabs */
+  .tabs-container {
+    display: flex; gap: 4px; overflow-x: auto; padding-bottom: 16px;
+    scrollbar-width: none; /* Firefox */
+  }
+  .tabs-container::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 7px 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600;
+    white-space: nowrap; border: 1px solid var(--border-color);
+    background: var(--input-bg); color: var(--text-muted); transition: all 0.2s;
+  }
+  .tab.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+  /* Cards */
+  .card {
+    background: var(--card-bg); border-radius: var(--radius-lg);
+    padding: 16px; box-shadow: var(--shadow-soft); margin-bottom: 16px;
+  }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .card-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; color: var(--navy); padding:0;}
+  .card-icon img { width: var(--icon-size-card); height: var(--icon-size-card); object-fit: contain; }
+  
+  .event-meta { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; }
+  .meta-row { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--navy); }
+  .meta-row img { width: var(--icon-size-meta); height: var(--icon-size-meta); object-fit: contain; }
+
+  /* Hot Ticket Items */
+  .badge-title {
+    background: var(--navy); color: var(--white); font-size: 12px;
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .item-card {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card-bg); padding: 12px 16px; border-radius: var(--radius-md);
+    margin-bottom: 8px; box-shadow: var(--shadow-soft);
+  }
+  .item-left { display: flex; align-items: center; gap: 12px; }
+  .item-right { display: flex; align-items: center; gap: 12px; }
+  .item-badge { background: var(--navy); color: white; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 12px; }
+  .item-icon { width: var(--icon-size-item); height: var(--icon-size-item); object-fit: contain; }
+
+  /* Forum */
+  .forum-meta-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; margin-bottom: 16px; }
+  .forum-stat { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .forum-topic-icon { width: var(--icon-size-forum-topic); height: var(--icon-size-forum-topic); object-fit: contain; }
+  .forum-meta-icon { width: var(--icon-size-forum-meta); height: var(--icon-size-forum-meta); object-fit: contain; }
+  
+  .comment-input-row { display: flex; align-items: center; gap: 8px; }
+  .comment-input {
+    flex: 1; background: var(--input-bg); border: none; padding: 12px 16px;
+    border-radius: var(--radius-xl); font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; outline: none;
+  }
+  .comment-btn {
+    width: 40px; height: 40px; border-radius: 50%; background: var(--input-bg);
+    border: none; display: flex; align-items: center; justify-content: center; color: var(--navy);
+  }
+
+  /* Scrollable screen content */
+  .screen-content {
+    height: calc(844px - 104px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 10px;
+  }
+  .screen-content::-webkit-scrollbar { display: none; }
+
+  /* Hide native cursor on desktop so only touch cursor shows */
+  @media (pointer: fine) {
+    body,
+    button,
+    a,
+    input,
+    textarea,
+    select,
+    .nav-item,
+    .tab,
+    .icon-btn,
+    .comment-btn,
+    .donate-icon-btn {
+      cursor: none !important;
+    }
+  }
+
+  /* Custom touch-style cursor (desktop only) */
+  .touch-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    margin-top: -11px;
+    margin-left: -11px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.198);
+    backdrop-filter: blur(4px) saturate(140%);
+    -webkit-backdrop-filter: blur(6px) saturate(140%);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 2px 8px rgba(10, 10, 10, 0.54);
+    pointer-events: none;
+    z-index: 9999;
+    transition:
+      width 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+      height 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+      margin 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+      background 0.18s ease,
+      box-shadow 0.18s ease,
+      border-color 0.18s ease;
+  }
+  .touch-cursor--hover {
+    width: 48px;
+    height: 48px;
+    margin-top: -22px;
+    margin-left: -22px;
+    background: rgba(255, 47, 0, 0.379);
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
+    border: 1.5px solid rgba(255, 47, 0, 0.727);
+    box-shadow: 0 4px 20px rgba(239, 98, 66, 0.28);
+  }
+  .touch-cursor--down {
+    width: 36px;
+    height: 36px;
+    margin-top: -18px;
+    margin-left: -18px;
+    background: rgba(239, 98, 66, 0.55);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    border: 1px solid rgba(239, 98, 66, 0.6);
+    box-shadow: 0 2px 10px rgba(239, 98, 66, 0.35);
+  }
+
+  /* Navbar gradient scrim */
+  .nav-scrim {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(to top, rgba(35, 33, 74, 0.88) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 99;
+  }
+
+  /* Bottom Navigation */
+  .bottom-nav {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: calc(100% - 32px);
+    max-width: 356px;
+    height: 90px;
+    z-index: 100;
+  }
+  .nav-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    user-select: none;
+    display: block;
+  }
+  /* frosted glass layer — masked to the exact navbar SVG shape */
+  .bottom-nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    mask-image: url('img/navbar-mask.svg');
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    -webkit-mask-image: url('img/navbar-mask.svg');
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    z-index: 0;
+  }
+  .nav-bg-img { z-index: 1; }
+  .nav-content { z-index: 2; }
+  .nav-content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #515355;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .nav-item.active { color: var(--navy); }
+
+  .nav-icon {
+    width: var(--icon-size-nav);
+    height: var(--icon-size-nav);
+    object-fit: contain;
+    display: block;
+  }
+  /* bottom nav icon states (non-center items) */
+  .bottom-nav .nav-item:not(.center-item) .nav-icon {
+    border-radius: 999px;
+    background: transparent;
+    filter: grayscale(1) opacity(0.6);
+    transition: background 0.25s ease, filter 0.25s ease;
+  }
+  .bottom-nav .nav-item:not(.center-item).active .nav-icon {
+    filter: none;
+    background: rgba(35, 33, 74, 0.08);
+  }
+  /* center icon muted when not active (same as others) */
+  .bottom-nav .nav-item.center-item:not(.active) .donate-svg {
+    filter: grayscale(1) opacity(0.6);
+    transition: filter 0.25s ease;
+  }
+  .bottom-nav .nav-item.center-item.active .donate-svg {
+    filter: none;
+  }
+  .nav-icon-center {
+    width: var(--icon-size-nav-center);
+    height: var(--icon-size-nav-center);
+  }
+
+  /* Center Donate button */
+  .nav-item.center-item {
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-center-circle {
+    width: var(--nav-center-circle-size);
+    height: var(--nav-center-circle-size);
+    min-width: var(--nav-center-circle-size);
+    min-height: var(--nav-center-circle-size);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 8px;
+    border-radius: 50%;
+    background: transparent;
+    transform: scale(1);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.25s ease;
+  }
+  .nav-item.center-item.active .nav-center-circle {
+    transform: scale(1.1);
+  }
+  .nav-center-circle img {
+    flex-shrink: 0;
+  }
+  .nav-center-circle .nav-center-label {
+    font-size: 10px;
+    line-height: 1;
+  }
+  .nav-item.center-item.active .nav-center-circle {
+    background: #00000011;
+  }
+  .nav-item.center-item.active .nav-center-circle .nav-center-label {
+    color: var(--navy);
+  }
+
+  /* Donate icon button reset */
+  .donate-icon-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+  .donate-icon-btn .donate-svg {
+    transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .donate-icon-btn:active .donate-svg { transform: scale(0.92); }
+
+  /* Particle transform origins */
+  #p1 { transform-origin: 35.8px 3.97px; }
+  #p2 { transform-origin: 39.6px 7.69px; }
+  #p3 { transform-origin: 8.73px 39.85px; }
+  #p4 { transform-origin: 4.16px 38.01px; }
+  #p5 { transform-origin: 3.37px 34.22px; }
+
+  /* Fired state — particles shoot out (ease-in-out: slow → fast → slow) */
+  .donate-icon-btn.fired #p1 { animation: shoot1 0.7s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #p2 { animation: shoot2 0.7s 0.03s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #p3 { animation: shoot3 0.7s 0.06s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #p4 { animation: shoot4 0.7s 0.02s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #p5 { animation: shoot5 0.7s 0.05s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #globe-body { animation: globePulse 0.6s cubic-bezier(0.42,0,0.58,1) forwards; }
+
+  @keyframes shoot1 {
+    0%   { transform: translate(0,0);       opacity: 1; }
+    45%  { transform: translate(5px,-5px);  opacity: 0; }
+    46%  { transform: translate(0,0);       opacity: 0; }
+    100% { transform: translate(0,0);       opacity: 1; }
+  }
+  @keyframes shoot2 {
+    0%   { transform: translate(0,0);       opacity: 1; }
+    45%  { transform: translate(7px,-3px);  opacity: 0; }
+    46%  { transform: translate(0,0);       opacity: 0; }
+    100% { transform: translate(0,0);       opacity: 1; }
+  }
+  @keyframes shoot3 {
+    0%   { transform: translate(0,0);       opacity: 1; }
+    45%  { transform: translate(-5px,5px);  opacity: 0; }
+    46%  { transform: translate(0,0);       opacity: 0; }
+    100% { transform: translate(0,0);       opacity: 1; }
+  }
+  @keyframes shoot4 {
+    0%   { transform: translate(0,0);       opacity: 1; }
+    45%  { transform: translate(-7px,3px);  opacity: 0; }
+    46%  { transform: translate(0,0);       opacity: 0; }
+    100% { transform: translate(0,0);       opacity: 1; }
+  }
+  @keyframes shoot5 {
+    0%   { transform: translate(0,0);       opacity: 1; }
+    45%  { transform: translate(-6px,1px);  opacity: 0; }
+    46%  { transform: translate(0,0);       opacity: 0; }
+    100% { transform: translate(0,0);       opacity: 1; }
+  }
+  @keyframes globePulse {
+    0%   { transform: scale(1);    transform-origin: 22px 22px; }
+    40%  { transform: scale(1.08); transform-origin: 22px 22px; }
+    100% { transform: scale(1);    transform-origin: 22px 22px; }
+  }
+
+  /* SVG Defaults — excludes the donate icon which has its own fills/strokes */
+  svg:not(.donate-svg) { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-sm { width: var(--icon-size-sm); height: var(--icon-size-sm); }
+
+  /* Donate inline SVG — preserve its own colours and sizing */
+  .donate-svg {
+    width: var(--icon-size-nav-center);
+    height: var(--icon-size-nav-center);
+    display: block;
+    overflow: visible;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="touch-cursor" id="touch-cursor"></div>
+
+<div class="phone-frame">
+  <div class="phone-btn phone-btn-vol-up"></div>
+  <div class="phone-btn phone-btn-vol-down"></div>
+  <div class="phone-btn phone-btn-power"></div>
+
+<div class="app-container">
+  <div class="dynamic-island"></div>
+  
+  <div class="screen-content">
+  <header class="top-nav">
+    <div class="logo">
+      <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+    </div>
+    <div class="nav-icons">
+      <button class="icon-btn">
+        <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+        <div class="notification-dot"></div>
+      </button>
+      <button class="icon-btn">
+        <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon" alt="Settings">
+      </button>
+      <button class="icon-btn">
+        <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon" alt="Profile">
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-card">
+      <h1>Welcome back, Potato23</h1>
+      <p style="color: var(--navy);">Here's your impact so far</p>
+      
+      <div class="impact-stats">
+        <div class="stat-item">
+          <div class="stat-icon">
+            <img src="img/icons/icon-heart.svg" alt="Monthly donor">
+          </div>
+          <div class="stat-label">Monthly Donor</div>
+          <div class="stat-sub">6 months</div>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <img src="img/icons/icon-hand.svg" alt="Active volunteer">
+          </div>
+          <div class="stat-label">Active Volunteer</div>
+          <div class="stat-sub">8 events</div>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <img src="img/icons/icon-rewards.svg" alt="Helpful chatter">
+          </div>
+          <div class="stat-label">Helpful Chatter</div>
+          <div class="stat-sub">14 thumbs up</div>
+        </div>
+      </div>
+
+      <p class="hero-copy">See how else you can make a change in your community.</p>
+      
+      <div class="hero-buttons">
+        <button class="btn btn-primary">View Urgent Items Needed</button>
+        <button class="btn btn-secondary">View Events Calendar</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section events">
+    <div class="section-header">
+      <h2 class="section-title">
+        <img src="img/icons/icon-stars.svg" alt="">
+        Upcoming Events
+      </h2>
+      <a href="#">View Calendar</a>
+    </div>
+
+    <div class="tabs-container">
+      <div class="tab active">All</div>
+      <div class="tab">Distros</div>
+      <div class="tab">Drives</div>
+      <div class="tab">Fundraisers</div>
+    </div>
+
+      <div class="card event-card">
+      <div class="card-top">
+        <div class="card-icon">
+          <img src="img/icons/icon-bus.svg" alt="Event icon">
+        </div>
+        <button class="icon-btn"><svg viewBox="0 0 24 24" class="icon-sm"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg></button>
+      </div>
+      
+      <h3>February Distro #3</h3>
+      
+      <div class="event-meta">
+        <div class="meta-row">
+          <img src="img/icons/icon-clock.svg" alt="Time">
+          Saturday, February 25 from 3-5pm
+        </div>
+        <div class="meta-row">
+          <img src="img/icons/icon-location.svg" alt="Location">
+          Crab Park, 101 E Waterfront Road
+        </div>
+      </div>
+      
+      <p style="margin-bottom: 16px;">View details to see how you can help Distro Disco for this event!</p>
+      
+      <button class="btn btn-outline">View details</button>
+    </div>
+  </section>
+
+  <section class="section hot-items">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="badge-title">15</span>
+        Hot Ticket Items
+      </h2>
+      <a href="#">See All</a>
+    </div>
+
+    <div class="item-card">
+      <div class="item-left">
+        <img src="img/icons/icon-tent.svg" class="item-icon" alt="Tent">
+        <h4>2-person Tent</h4>
+      </div>
+      <div class="item-right">
+        <button class="btn btn-light btn-small">I have this item</button>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-left">
+        <img src="img/icons/icon-socks.svg" class="item-icon" alt="Socks">
+        <h4>Pair of socks</h4>
+        <span class="item-badge">10</span>
+      </div>
+      <div class="item-right">
+        <button class="btn btn-light btn-small">I have this item</button>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-left">
+        <img src="img/icons/icon-batteries.svg" class="item-icon" alt="Batteries">
+        <h4>AA Batteries</h4>
+        <span class="item-badge">6</span>
+      </div>
+      <div class="item-right">
+        <button class="btn btn-light btn-small">I have this item</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section forum">
+    <div class="section-header">
+      <h2 class="section-title">Community Forum</h2>
+      <a href="#">See Forum</a>
+    </div>
+
+    <div class="tabs-container">
+      <div class="tab active">Most Helpful</div>
+      <div class="tab">Most Recent</div>
+      <div class="tab">Most Discussed</div>
+    </div>
+
+    <div class="card">
+      <div style="margin-bottom: 12px; color: var(--text-muted);">
+        <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
+      </div>
+      <h3 style="margin-bottom: 8px;">What's volunteering like at DD?</h3>
+      <p>I've been wanting to do more intentional volunteering, and not sure where to start. Would love to hear your experien...</p>
+      
+      <div class="forum-meta-row">
+        <div class="forum-stat">
+          <img src="img/icons/icon-clock.svg" class="forum-meta-icon" alt="Time">
+          2 days ago
+        </div>
+        <div class="forum-stat">
+          <img src="img/icons/icon-heart.svg" class="forum-meta-icon" alt="Likes">
+          24 Likes
+        </div>
+        <div class="forum-stat">
+          <img src="img/icons/icon-rewards.svg" class="forum-meta-icon" alt="Comments">
+          17 Comments
+        </div>
+      </div>
+
+      <div class="comment-input-row">
+        <input type="text" class="comment-input" placeholder="Reply">
+        <button class="comment-btn">
+          <svg viewBox="0 0 24 24" class="icon-sm"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 0;">
+      <div style="margin-bottom: 12px; color: var(--text-muted);">
+        <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
+      </div>
+      <h3 style="margin-bottom: 8px;">Online deals for supplies!!</h3>
+      <p>If you have financial capacity this month, I found some discount codes to get some much needed supplies at Canadi...</p>
+      
+      <div class="forum-meta-row">
+        <div class="forum-stat">
+          <img src="img/icons/icon-clock.svg" class="forum-meta-icon" alt="Time">
+          3 days ago
+        </div>
+        <div class="forum-stat">
+          <img src="img/icons/icon-heart.svg" class="forum-meta-icon" alt="Likes">
+          11 Likes
+        </div>
+        <div class="forum-stat">
+          <img src="img/icons/icon-rewards.svg" class="forum-meta-icon" alt="Comments">
+          6 Comments
+        </div>
+      </div>
+
+      <div class="comment-input-row">
+        <input type="text" class="comment-input" placeholder="Reply">
+        <button class="comment-btn">
+          <svg viewBox="0 0 24 24" class="icon-sm"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+  </div><!-- /.screen-content -->
+
+  <div class="nav-scrim"></div>
+  <nav class="bottom-nav">
+    <img src="img/navbar-back.svg" class="nav-bg-img" alt="">
+    <div class="nav-content">
+
+      <div class="nav-item">
+        <img src="img/icons/navbar-home.svg" class="nav-icon" alt="Home">
+        <span>Home</span>
+      </div>
+
+      <div class="nav-item">
+        <img src="img/icons/navbar-bottom-calendar.svg" class="nav-icon" alt="Events">
+        <span>Events</span>
+      </div>
+
+      <div class="nav-item center-item active">
+        <div class="nav-center-circle">
+          <button class="donate-icon-btn" id="donate-btn" aria-label="Donate">
+            <svg class="donate-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g id="globe-body">
+                <path d="M24.4398 37.2135C32.1946 37.2135 38.4811 30.927 38.4811 23.1722C38.4811 15.4174 32.1946 9.13086 24.4398 9.13086C16.685 9.13086 10.3984 15.4174 10.3984 23.1722C10.3984 30.927 16.685 37.2135 24.4398 37.2135Z" fill="#FF7534"/>
+                <path d="M22.0059 39.1221C31.4508 39.1221 39.1074 31.4654 39.1074 22.0205C39.1074 12.5756 31.4508 4.91895 22.0059 4.91895C12.5609 4.91895 4.9043 12.5756 4.9043 22.0205C4.9043 31.4654 12.5609 39.1221 22.0059 39.1221Z" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10"/>
+                <path d="M39.0541 21.0581C35.913 25.1599 29.4591 27.9726 22.0075 27.9726C14.5559 27.9726 8.10195 25.1599 4.96094 21.0581" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10"/>
+                <path d="M6.13281 16.0688C9.55398 19.441 15.3866 21.6599 22.0055 21.6599C28.6244 21.6599 34.457 19.4402 37.8781 16.0688" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10"/>
+                <path d="M17.4798 31.4647C17.4798 31.4647 13.0867 23.8722 17.4798 12.7476" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                <path d="M29.2737 30.9004C29.2737 30.9004 33.1134 23.8724 28.5449 12.4883" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                <path d="M23.0371 13.0625C23.0371 13.0625 24.8573 22.0206 23.0371 32.0959" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              </g>
+              <path id="p1" d="M36.7401 2.51367L34.9414 5.43125" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              <path id="p2" d="M41.5353 7.104L37.6191 8.28736" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              <path id="p3" d="M8.09375 41.0845L9.36563 38.6104" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              <path id="p4" d="M2.32812 39.4881L5.98648 36.5293" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              <path id="p5" d="M2.32812 34.4724L4.40352 33.9653" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <span class="nav-center-label">Donate</span>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <img src="img/icons/navbar-bottom-items.svg" class="nav-icon" alt="Volunteer">
+        <span>Volunteer</span>
+      </div>
+
+      <div class="nav-item">
+        <img src="img/icons/navbar-bottom-forum.svg" class="nav-icon" alt="Forums">
+        <span>Forums</span>
+      </div>
+
+    </div>
+  </nav>
+
+</div><!-- /.app-container -->
+</div><!-- /.phone-frame -->
+
+<script>
+  // Tab Interaction Logic
+  function setupTabs(containerSelector) {
+    const containers = document.querySelectorAll(containerSelector);
+    containers.forEach(container => {
+      const tabs = container.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+        });
+      });
+    });
+  }
+
+  // Setup main content tabs
+  setupTabs('.tabs-container');
+
+  // Bottom Nav Interaction Logic
+  const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+  navItems.forEach(item => {
+    item.addEventListener('click', function() {
+      navItems.forEach(nav => nav.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Donate icon micro-interaction
+  const donateBtn = document.getElementById('donate-btn');
+  donateBtn.addEventListener('click', () => {
+    donateBtn.classList.remove('fired');
+    void donateBtn.offsetWidth; // force reflow so animation re-triggers
+    donateBtn.classList.add('fired');
+  });
+  donateBtn.addEventListener('animationend', (e) => {
+    if (e.target.id === 'p5') donateBtn.classList.remove('fired');
+  });
+
+  // Touch-style cursor (desktop)
+  const touchCursor = document.getElementById('touch-cursor');
+  if (touchCursor && window.matchMedia('(pointer: fine)').matches) {
+    let cursorX = window.innerWidth / 2;
+    let cursorY = window.innerHeight / 2;
+
+    const moveCursor = (event) => {
+      cursorX = event.clientX;
+      cursorY = event.clientY;
+      touchCursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+    };
+
+    window.addEventListener('mousemove', moveCursor);
+    window.addEventListener('mousedown', () => {
+      touchCursor.classList.add('touch-cursor--down');
+    });
+    window.addEventListener('mouseup', () => {
+      touchCursor.classList.remove('touch-cursor--down');
+    });
+
+    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, label';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(interactiveSelector)) {
+        touchCursor.classList.add('touch-cursor--hover');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(interactiveSelector)) {
+        touchCursor.classList.remove('touch-cursor--hover');
+      }
+    });
+  } else if (touchCursor) {
+    // On touch devices, keep native touch cursor
+    touchCursor.style.display = 'none';
+    document.body.style.cursor = 'auto';
+  }
+</script>
+
+</body>
+</html>
