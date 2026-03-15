@@ -313,6 +313,8 @@
   .icon-btn {
     background: none; border: none; color: var(--navy);
     display: flex; align-items: center; justify-content: center; position: relative;
+    min-width: 44px; min-height: 44px;
+    touch-action: manipulation;
   }
   .top-nav-icon {
     width: var(--icon-size-top-nav);
@@ -333,10 +335,18 @@
   .page-profile .top-nav-profile .top-nav-icon-active { display: block !important; }
   .page-settings .top-nav-settings .top-nav-icon-default { display: none !important; }
   .page-settings .top-nav-settings .top-nav-icon-active { display: block !important; }
-  .alert-badge {
-    position: absolute; top: -4px; right: -4px;
-    width: 20px; height: 20px;
-    object-fit: contain;
+  .icon-btn .item-badge {
+    position: absolute;
+    top: 3px;
+    right: -2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 11px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 9px;
+    box-sizing: border-box;
   }
 
   /* Hero Section */
@@ -530,20 +540,24 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 4px 20px 18px;
+    padding: 18px 20px 20px;
   }
 
   .page-volunteer .vol-back-btn {
     width: 36px; height: 36px;
     border-radius: 50%;
-    background: var(--white);
+    background: transparent;
     border: 1px solid var(--border-color);
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
     flex-shrink: 0;
     cursor: pointer;
+    transition: transform 0.1s, background 0.1s;
   }
-  
+  .page-volunteer .vol-back-btn:active,
+  .page-volunteer .vol-back-btn.touch-active {
+    transform: scale(0.92);
+    background: var(--input-bg);
+  }
   .page-volunteer .vol-back-btn svg {
     width: 16px; height: 16px;
     stroke: var(--navy); stroke-width: 2; fill: none;
@@ -774,33 +788,52 @@
   }
   .page-volunteer .vol-toggle-opt.active { color: white; }
 
-  /* Same toggle component on donate page (One-time / Monthly) */
+  /* Donate mode toggle — exact same design as vol-commit-toggle (One Time / Repeating) */
   .page-donate-money .vol-commit-toggle {
-    background: var(--input-bg); border-radius: 50px; padding: 4px;
-    display: grid; grid-template-columns: 1fr 1fr;
-    position: relative; isolation: isolate;
+    background: var(--input-bg);
+    border-radius: 50px;
+    padding: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    isolation: isolate;
     margin-bottom: 14px;
   }
   .page-donate-money .vol-commit-toggle::before {
     content: '';
-    position: absolute; top: 4px; bottom: 4px; left: 4px;
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
     width: calc(50% - 4px);
-    background: var(--navy); border-radius: 50px;
-    box-shadow: 0 4px 14px rgba(35,33,74,0.25);
+    background: var(--navy);
+    border-radius: 50px;
+    box-shadow: 0 4px 14px rgba(35, 33, 74, 0.25);
     transform: translateX(0);
     transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 0;
   }
-  .page-donate-money .vol-commit-toggle.right::before { transform: translateX(100%); }
+  .page-donate-money .vol-commit-toggle.right::before {
+    transform: translateX(100%);
+  }
   .page-donate-money .vol-toggle-opt {
-    position: relative; z-index: 1; text-align: center;
-    padding: 10px 0; border-radius: 50px;
-    font-size: 14px; font-weight: 600; color: var(--text-muted);
-    cursor: pointer; border: none; background: transparent;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border: none;
+    background: transparent;
     font-family: 'Geist', system-ui, sans-serif;
     transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .page-donate-money .vol-toggle-opt.active { color: white; }
+  .page-donate-money .vol-toggle-opt.active {
+    color: white;
+  }
 
   /* About You */
   .page-volunteer .vol-about-section { padding: 24px 20px 0; }
@@ -977,24 +1010,23 @@
   .page-compose::-webkit-scrollbar { display: none; }
 
   .page-forum .forum-page-header {
-    padding: 4px 20px 16px;
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 18px 20px 20px;
   }
   .page-forum .forum-back {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: var(--white);
+    background: transparent;
     border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
     flex-shrink: 0;
     cursor: pointer;
-    transition: transform 0.1s;
+    transition: transform 0.1s, background 0.1s;
   }
   .page-forum .forum-back:active,
   .page-forum .forum-back.touch-active {
@@ -1015,9 +1047,7 @@
     font-family: 'Gaya', 'Geist', serif;
     font-size: 22px;
     font-weight: 400;
-    font-style: italic;
     color: var(--navy);
-    letter-spacing: -0.5px;
     line-height: 1.2;
     margin-bottom: 2px;
   }
@@ -1040,14 +1070,7 @@
     padding: 14px 16px 16px;
     transform: rotate(1.4deg);
     box-shadow: 3px 4px 14px rgba(35,33,74,0.13), 0 1px 3px rgba(35,33,74,0.08);
-    cursor: pointer;
     position: relative;
-    transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 200ms;
-  }
-  .page-forum .forum-sticky:active,
-  .page-forum .forum-sticky.touch-active {
-    transform: rotate(1.4deg) scale(0.97);
-    box-shadow: 1px 2px 6px rgba(35,33,74,0.1);
   }
   .page-forum .forum-sticky::before {
     content: '';
@@ -1072,7 +1095,9 @@
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 20px;
     overflow-x: auto;
+    overflow-y: hidden;
     scrollbar-width: none;
+    touch-action: pan-x;
   }
   .page-forum .forum-filter-row::-webkit-scrollbar { display: none; }
   .page-forum .forum-filter-btn {
@@ -1117,9 +1142,16 @@
     padding: 20px 20px 18px;
     margin-bottom: 0;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-    cursor: pointer;
+    cursor: none;
     transition: box-shadow 180ms, transform 180ms;
     position: relative;
+  }
+  .page-forum .bpost.bpost-slide-in {
+    animation: bpostSlideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes bpostSlideIn {
+    from { opacity: 0; transform: translateY(-14px) rotate(-0.2deg); }
+    to { opacity: 1; transform: translateY(0) rotate(-0.2deg); }
   }
   .page-forum .bpost-own {
     background: var(--card-bg);
@@ -1287,24 +1319,23 @@
 
   /* Compose page */
   .page-compose .compose-header {
-    padding: 4px 20px 0;
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 18px 20px 20px;
   }
   .page-compose .compose-back {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: var(--white);
+    background: transparent;
     border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
     flex-shrink: 0;
     cursor: pointer;
-    transition: transform 0.1s;
+    transition: transform 0.1s, background 0.1s;
   }
   .page-compose .compose-back:active,
   .page-compose .compose-back.touch-active {
@@ -1387,7 +1418,9 @@
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 20px;
     overflow-x: auto;
+    overflow-y: hidden;
     scrollbar-width: none;
+    touch-action: pan-x;
   }
   .page-compose .compose-cat-row::-webkit-scrollbar { display: none; }
   .page-compose .compose-cat-btn {
@@ -1479,26 +1512,25 @@
     -webkit-overflow-scrolling: touch;
     padding-bottom: 100px;
   }
-  .page-forum-detail .forum-detail-inner { padding: 14px 20px 24px; }
+  .page-forum-detail .forum-detail-inner { padding: 0 20px 24px; }
   .page-forum-detail .forum-detail-header {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 20px;
+    padding: 18px 20px 20px 0;
   }
   .page-forum-detail .forum-detail-back {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: var(--white);
+    background: transparent;
     border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
     flex-shrink: 0;
     cursor: pointer;
-    transition: transform 0.1s;
+    transition: transform 0.1s, background 0.1s;
   }
   .page-forum-detail .forum-detail-back:active,
   .page-forum-detail .forum-detail-back.touch-active {
@@ -1515,8 +1547,7 @@
     stroke-linejoin: round;
   }
   .page-forum-detail .forum-detail-title {
-    font-family: 'Geist', system-ui, sans-serif;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--navy);
     letter-spacing: -0.3px;
@@ -1526,6 +1557,34 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .page-forum-detail .forum-detail-delete {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: color 0.15s;
+  }
+  .page-forum-detail .forum-detail-delete:hover,
+  .page-forum-detail .forum-detail-delete:active,
+  .page-forum-detail .forum-detail-delete.touch-active {
+    color: var(--navy);
+  }
+  .page-forum-detail .forum-detail-delete svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .forum-detail-post {
     margin-bottom: 0;
@@ -1690,37 +1749,34 @@
   .forum-comment-actions button,
   .forum-comment-actions span { background: none; border: none; padding: 0; cursor: pointer; color: inherit; }
 
-  /* ── Donate Money / Donate Items Pages ── */
-  .page-donate-money,
-  .page-donate-items {
+  /* ── Donate Money Page ── */
+  .page-donate-money {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none;
-    padding-bottom: 48px;
+    padding-bottom: 50px;
   }
-  .page-donate-money::-webkit-scrollbar,
-  .page-donate-items::-webkit-scrollbar { display: none; }
+  .page-donate-money::-webkit-scrollbar { display: none; }
 
   .donate-page-header {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 6px 20px 16px;
+    padding: 18px 20px 20px;
   }
   .donate-back-btn {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: var(--white);
+    background: transparent;
     border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
     flex-shrink: 0;
     cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.1s;
+    transition: transform 0.1s, background 0.1s;
   }
   .donate-back-btn svg {
     width: 16px;
@@ -1734,7 +1790,6 @@
   .donate-back-btn:active,
   .donate-back-btn.touch-active {
     transform: scale(0.92);
-    box-shadow: none;
     background: var(--input-bg);
   }
   .donate-page-title {
@@ -1749,8 +1804,7 @@
     margin: 0 20px;
     margin-bottom: 12px;
   }
-  .donate-money-content,
-  .donate-items-content {
+  .donate-money-content {
     padding: 0 20px 24px;
   }
 
@@ -1795,24 +1849,10 @@
     gap: 10px;
     margin-bottom: 12px;
   }
-  .donate-preset-btn {
-    border: 1px solid var(--border-color);
-    background: var(--white);
-    border-radius: var(--radius-md);
-    padding: 14px 10px;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--navy);
-    cursor: pointer;
-    transition: border-color 140ms, background 140ms, transform 100ms;
-  }
   .donate-preset-btn.active {
-    border-color: var(--orange);
-    background: #FFF3EE;
-  }
-  .donate-preset-btn:active,
-  .donate-preset-btn.touch-active {
-    transform: scale(0.97);
+    background-color: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
   }
 
   .donate-custom-wrap {
@@ -1840,6 +1880,93 @@
     box-shadow: 0 0 0 2px rgba(35,33,74,0.06);
   }
 
+  .donate-impact-bar-block {
+    margin: 16px 0 18px;
+    padding: 16px 14px;
+    background: rgba(35, 33, 74, 0.04);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+  }
+  .donate-impact-bar-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.2px;
+    margin-bottom: 4px;
+  }
+  .donate-impact-bar-goal {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .donate-impact-bar-goal strong {
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .donate-impact-bar-wrap {
+    position: relative;
+    margin-bottom: 38px;
+  }
+  .donate-impact-bar-track {
+    height: 26px;
+    border-radius: 999px;
+    background: #E2E0D8;
+    overflow: visible;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .donate-impact-bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 66%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #1a1840 0%, var(--navy) 40%, #3a3770 100%);
+    z-index: 1;
+  }
+  .donate-impact-bar-pip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 66%;
+    height: 100%;
+    border-radius: 999px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--orange) 0px,
+      var(--orange) 5px,
+      rgba(255,255,255,0.25) 5px,
+      rgba(255,255,255,0.25) 9px
+    );
+    z-index: 0;
+    transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .donate-impact-bar-track-end {
+    position: absolute;
+    top: 34px;
+    right: 0;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.2px;
+  }
+  .donate-impact-bar-label {
+    position: absolute;
+    top: 34px;
+    left: 66%;
+    transform: translateX(-50%);
+    background: var(--orange);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 50px;
+    white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(239,98,66,0.4);
+    transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   .donate-subdivider {
     display: flex;
     align-items: center;
@@ -1857,61 +1984,6 @@
     background: var(--border-color);
   }
 
-  .donate-item-scroll {
-    overflow-x: auto;
-    overflow-y: visible;
-    scrollbar-width: none;
-    margin: 0 -4px 12px;
-    padding: 4px;
-  }
-  .donate-item-scroll::-webkit-scrollbar { display: none; }
-  .donate-item-track {
-    display: flex;
-    gap: 10px;
-    width: max-content;
-  }
-  .donate-money-item-card {
-    width: 108px;
-    flex-shrink: 0;
-    border: 1px solid var(--border-color);
-    background: var(--white);
-    border-radius: 14px;
-    padding: 10px 8px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(35,33,74,0.06);
-    transition: transform 120ms, box-shadow 120ms;
-  }
-  .donate-money-item-card:nth-child(1) { transform: rotate(-2deg); }
-  .donate-money-item-card:nth-child(2) { transform: rotate(1.5deg); }
-  .donate-money-item-card:nth-child(3) { transform: rotate(-1deg); }
-  .donate-money-item-card:nth-child(4) { transform: rotate(2deg); }
-  .donate-money-item-card:nth-child(5) { transform: rotate(-1.5deg); }
-  .donate-money-item-card:active,
-  .donate-money-item-card.touch-active {
-    transform: scale(0.97) rotate(0deg);
-    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
-  }
-  .donate-item-price {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--navy);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .donate-item-icon {
-    width: 26px;
-    height: 26px;
-    object-fit: contain;
-    margin-bottom: 5px;
-  }
-  .donate-item-name {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-weight: 600;
-    line-height: 1.25;
-  }
-
   .donate-impact-line {
     font-size: 12px;
     color: var(--navy);
@@ -1921,28 +1993,18 @@
   }
   .donate-money-cta {
     width: 100%;
-    margin-bottom: 14px;
-  }
-  .donate-money-cta.success {
-    background: var(--orange);
+    padding: 14px;
+    background-color: var(--orange);
     color: var(--white);
-    border-color: var(--orange);
-  }
-  .donate-cta-success {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .donate-cta-success svg {
-    width: 16px;
-    height: 16px;
-    stroke: currentColor;
-    stroke-width: 2.4;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    border: 1px solid orangered;
   }
 
+  .donate-money-cta:active,
+  .donate-money-cta.touch-active {
+    background-color: var(--navy);
+    color: var(--white);
+    border: 1px solid var(--navy);
+  }
   .donate-section-break {
     height: 1px;
     background: var(--border-color);
@@ -1950,13 +2012,14 @@
   }
   .donate-handoff-row {
     width: 100%;
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
+    border: 1px solid var(--navy);
+    background: transparent;
     border-radius: var(--radius-md);
-    padding: 13px 14px;
+    padding: 14px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 8px;
     font-size: 13px;
     font-weight: 600;
     color: var(--navy);
@@ -1967,72 +2030,107 @@
     height: 18px;
     opacity: 0.7;
   }
+  .page-donate-money .donate-handoff-row {
+    margin-bottom: 25px;
+  }
 
-  .donate-items-intro {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 16px;
-    box-shadow: var(--shadow-soft);
-    margin-bottom: 12px;
+  /* Donation activity feed */
+  .donate-feed {
+    margin-top: 28px;
+    padding-top: 20px;
   }
-  .donate-items-intro-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 6px;
-  }
-  .donate-items-intro-copy {
-    font-size: 13px;
-    line-height: 1.5;
+  .donate-feed-eyebrow {
+    font-size: 10px;
+    font-weight: 400;
     color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 18px;
   }
-  .donate-items-list {
+  .donate-feed-timeline {
+    position: relative;
+    padding-left: 55px;
+  }
+  .donate-feed-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    border-left: 1px dashed var(--border-color);
+  }
+  .donate-feed-entry {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 14px;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    min-height: 40px;
   }
-  .donate-item-type {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 12px 14px;
+  .donate-feed-entry:last-child {
+    margin-bottom: 0;
+  }
+  .donate-feed-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #1a1840 0%, var(--navy) 50%, #3a3770 100%);
     display: flex;
     align-items: center;
-    gap: 10px;
-    box-shadow: var(--shadow-soft);
+    justify-content: center;
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--white);
+    margin-left: -52px;
+    margin-right: 0;
+    position: relative;
+    z-index: 1;
   }
-  .donate-item-type img {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    flex-shrink: 0;
+  .donate-feed-body {
+    flex: 1;
+    min-width: 0;
   }
-  .donate-item-type-title {
-    font-size: 13px;
-    font-weight: 700;
+  .donate-feed-line {
+    font-size: 15px;
+    line-height: 1.35;
     color: var(--navy);
-    margin-bottom: 1px;
   }
-  .donate-item-type-sub {
-    font-size: 11px;
+  .donate-feed-donor {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .donate-feed-mid {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 400;
     color: var(--text-muted);
   }
-  .donate-items-cta {
-    width: 100%;
+  .donate-feed-anchor {
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--navy);
+  }
+  .donate-feed-time {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 4px;
   }
 
   /* ── Profile Page ── */
-  .page-profile { height: 100%; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: 48px; }
+  .page-profile { position: relative; height: 100%; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: 48px; }
   .page-profile::-webkit-scrollbar { display: none; }
 
   /* page header */
   .page-profile .prof-header {
     display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; padding: 4px 20px 20px;
+    gap: 12px; padding: 18px 20px 20px;
   }
-  .page-profile .prof-header-left { display: flex; align-items: center; gap: 12px; }
+  .page-profile .prof-header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
   .page-profile .prof-header-badge {
     font-size: 11px; font-weight: 600; color: var(--text-muted);
     background: var(--input-bg); border: 1px solid var(--border-color);
@@ -2040,15 +2138,15 @@
     white-space: nowrap; flex-shrink: 0;
   }
   .page-profile .prof-back {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: transparent; border: none;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: transparent; border: 1px solid var(--border-color);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; cursor: pointer;
-    transition: transform 0.1s, opacity 0.1s;
+    transition: transform 0.1s, background 0.1s;
   }
   .page-profile .prof-back:active,
-  .page-profile .prof-back.touch-active { transform: scale(0.92); opacity: 0.8; }
-  .page-profile .prof-back svg { width: 24px; height: 24px; stroke: var(--navy); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .page-profile .prof-back.touch-active { transform: scale(0.92); background: var(--input-bg); }
+  .page-profile .prof-back svg { width: 16px; height: 16px; stroke: var(--navy); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .page-profile .prof-title { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
 
   /* hero card */
@@ -2101,6 +2199,102 @@
   .page-profile .prof-edit:active,
   .page-profile .prof-edit.touch-active { background: var(--navy); color: white; border-color: var(--navy); }
   .page-profile .prof-edit img { width: 20px; height: 20px; object-fit: contain; }
+
+  /* avatar picker bottom sheet */
+  .avatar-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 8000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+  }
+  .avatar-sheet-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .avatar-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border-radius: 20px 20px 0 0;
+    z-index: 8001;
+    padding-bottom: 28px;
+    transform: translateY(100%);
+    transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .avatar-sheet.is-open {
+    transform: translateY(0);
+  }
+  .avatar-sheet.is-closing {
+    transform: translateY(100%);
+    transition: transform 300ms ease-in;
+  }
+  .avatar-sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 2px;
+    margin: 12px auto 12px;
+  }
+  .avatar-sheet-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 0 20px;
+    margin-bottom: 4px;
+  }
+  .avatar-sheet-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: none;
+    padding: 16px 20px;
+  }
+  .avatar-sheet-scroll::-webkit-scrollbar { display: none; }
+  .avatar-option {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+    outline: 2.5px solid transparent;
+    outline-offset: 3px;
+    transition: outline-color 80ms;
+  }
+  .avatar-option.is-selected {
+    outline-color: var(--orange);
+  }
+  .avatar-sheet-save {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 4px 20px 0;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    border: none;
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: rgba(0,0,0,0.4) 0px 2px 4px, rgba(0,0,0,0.3) 0px 7px 13px -3px, rgba(0,0,0,0.2) 0px -3px 0px inset;
+    transition: opacity 0.15s;
+  }
+  .avatar-sheet-save:disabled {
+    background: var(--input-bg);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
 
   /* section eyebrow */
   .page-profile .prof-eyebrow {
@@ -2205,8 +2399,9 @@
     position: relative; overflow: hidden;
   }
   .page-profile .prof-trophy-track-wrap {
-    overflow-x: auto; overflow-y: visible; scrollbar-width: none;
+    overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
     padding: 0 20px; position: relative; z-index: 1;
+    touch-action: pan-x;
   }
   .page-profile .prof-trophy-track-wrap::-webkit-scrollbar { display: none; }
   .page-profile .prof-trophy-track { display: flex; gap: 14px; width: max-content; }
@@ -2219,6 +2414,36 @@
   .page-profile .prof-trophy-card:active,
   .page-profile .prof-trophy-card.touch-active {
     transform: scale(0.93);
+  }
+  .prof-trophy-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(35, 33, 74, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .prof-trophy-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .prof-trophy-overlay-img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    transform: scale(0.9);
+    transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .prof-trophy-overlay.is-open .prof-trophy-overlay-img {
+    transform: scale(1);
   }
   .page-profile .prof-trophy-icon {
     width: 64px; height: 64px; object-fit: contain;
@@ -2265,29 +2490,6 @@
     border-radius: 50px; padding: 2px 8px; font-size: 10px; font-weight: 600; color: var(--text-muted);
   }
 
-  /* community presence */
-  .page-profile .prof-forum-section { padding: 0 20px 24px; }
-  .page-profile .prof-forum-stats { display: flex; gap: 10px; margin-bottom: 14px; }
-  .page-profile .prof-forum-stat-card {
-    flex: 1; background: var(--card-bg); border: 1px solid var(--border-color);
-    border-radius: var(--radius-md); padding: 14px 10px;
-    box-shadow: var(--shadow-soft); text-align: center;
-  }
-  .page-profile .prof-forum-stat-num { font-size: 22px; font-weight: 400; color: var(--navy); letter-spacing: -0.3px; margin-bottom: 3px; }
-  .page-profile .prof-forum-stat-lbl { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
-  .page-profile .prof-forum-post {
-    background: var(--card-bg); border-radius: var(--radius-lg); padding: 14px 16px;
-    box-shadow: var(--shadow-soft); margin-bottom: 10px; cursor: pointer;
-    transition: background 120ms;
-  }
-  .page-profile .prof-forum-post:active,
-  .page-profile .prof-forum-post.touch-active { background: var(--input-bg); }
-  .page-profile .prof-forum-post:last-child { margin-bottom: 0; }
-  .page-profile .prof-forum-post-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 8px; line-height: 1.3; }
-  .page-profile .prof-forum-post-meta { display: flex; gap: 12px; }
-  .page-profile .prof-forum-post-stat { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--text-muted); }
-  .page-profile .prof-forum-post-stat img { width: 18px; height: 18px; object-fit: contain; }
-
   /* settings link row */
   .page-profile .prof-settings-link {
     margin: 0 20px 24px; background: var(--card-bg);
@@ -2312,15 +2514,14 @@
   }
   .page-settings .settings-back-btn {
     width: 36px; height: 36px; border-radius: 50%;
-    background: var(--white); border: 1px solid var(--border-color);
+    background: transparent; border: 1px solid var(--border-color);
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
     flex-shrink: 0; cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.1s;
+    transition: transform 0.1s, background 0.1s;
   }
   .page-settings .settings-back-btn:active,
   .page-settings .settings-back-btn.touch-active {
-    transform: scale(0.92); box-shadow: none; background: var(--input-bg);
+    transform: scale(0.92); background: var(--input-bg);
   }
   .page-settings .settings-back-btn svg {
     width: 16px; height: 16px; stroke: var(--navy); stroke-width: 2; fill: none;
@@ -2350,7 +2551,7 @@
   .page-settings .settings-row:last-child { border-bottom: none; }
   .page-settings .settings-row:active,
   .page-settings .settings-row.touch-active { background: var(--input-bg); }
-  .page-settings .settings-row.no-tap { cursor: default; }
+  .page-settings .settings-row.no-tap { cursor: none; }
   .page-settings .settings-row.no-tap:active,
   .page-settings .settings-row.no-tap.touch-active { background: transparent; }
   .page-settings .settings-row-icon {
@@ -2404,6 +2605,169 @@
   .page-settings .settings-footer { padding: 8px 20px 16px; text-align: center; }
   .page-settings .settings-version { font-size: 12px; color: #C0BDBA; font-weight: 500; }
 
+  /* ── Activities Page ── */
+  .page-activities {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding-bottom: 120px;
+  }
+  .page-activities::-webkit-scrollbar { display: none; }
+  .page-activities .activities-page-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px 20px;
+  }
+  .page-activities .activities-back-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.1s;
+  }
+  .page-activities .activities-back-btn:active,
+  .page-activities .activities-back-btn.touch-active {
+    transform: scale(0.92);
+    background: var(--input-bg);
+  }
+  .page-activities .activities-back-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--navy);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .page-activities .activities-page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+    font-family: 'Geist', system-ui, sans-serif;
+  }
+  .page-activities .activities-filter-row {
+    padding: 0 20px;
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .page-activities .activities-filter-row::-webkit-scrollbar { display: none; }
+  .page-activities .activities-filter-btn {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 14px 16px 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    transition: color 200ms;
+    flex-shrink: 0;
+    font-family: 'Geist', system-ui, sans-serif;
+  }
+  .page-activities .activities-filter-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--navy);
+    transform: scaleX(0);
+    transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+  }
+  .page-activities .activities-filter-btn.active {
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .page-activities .activities-filter-btn.active::after { transform: scaleX(1); }
+  .page-activities .activities-list {
+    padding: 0 20px;
+  }
+  .page-activities .activities-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .page-activities .activities-item:last-child { border-bottom: none; }
+  .page-activities .activities-item-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .page-activities .activities-item-dot-spacer {
+    background: transparent;
+  }
+  .page-activities .activities-item-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .page-activities .activities-item-type {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .page-activities .activities-item[data-type="reply"] .activities-item-type { color: var(--navy); }
+  .page-activities .activities-item[data-type="announcement"] .activities-item-type { color: var(--navy); }
+  .page-activities .activities-item[data-type="reminder"] .activities-item-type { color: #6B6A7C; }
+  .page-activities .activities-item[data-type="like"] .activities-item-type { color: #6B6A7C; }
+  .page-activities .activities-item[data-type="reply"] .activities-item-dot { background: var(--navy); }
+  .page-activities .activities-item[data-type="announcement"] .activities-item-dot { background: var(--navy); }
+  .page-activities .activities-item[data-type="reminder"] .activities-item-dot { background: #6B6A7C; }
+  .page-activities .activities-item[data-type="like"] .activities-item-dot { background: #6B6A7C; }
+  .page-activities .activities-item-title {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.35;
+  }
+  .page-activities .activities-item-title strong { font-weight: 700; }
+  .page-activities .activities-item-read .activities-item-title {
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .page-activities .activities-item-meta {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .page-activities .activities-item-time {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .page-activities[data-filter="recent"] .activities-item[data-read="true"] {
+    display: none;
+  }
+
   /* Scrollable screen content */
   .screen-content {
     height: 100%;
@@ -2422,6 +2786,9 @@
     -webkit-overflow-scrolling: touch;
     padding-top: 10px;
     padding-bottom: 120px;
+  }
+  .page.page-volunteer {
+    padding-bottom: 140px;
   }
   .page::-webkit-scrollbar { display: none; }
   .page.active { display: block; }
@@ -3060,7 +3427,7 @@
       opacity 0.18s ease,
       filter 0.18s ease;
   }
-  .corner-logo-wrap:has(.corner-logo:hover) .corner-logo {
+  .corner-logo-wrap:hover .corner-logo {
     transform: translate3d(0, -2px, 0) scale(1.06);
     opacity: 1;
     filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.45));
@@ -3117,17 +3484,22 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 4px 20px 18px;
+    padding: 18px 20px 20px;
   }
   .page-events .vol-back-btn {
     width: 36px; height: 36px;
     border-radius: 50%;
-    background: var(--white);
+    background: transparent;
     border: 1px solid var(--border-color);
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
     flex-shrink: 0;
     cursor: pointer;
+    transition: transform 0.1s, background 0.1s;
+  }
+  .page-events .vol-back-btn:active,
+  .page-events .vol-back-btn.touch-active {
+    transform: scale(0.92);
+    background: var(--input-bg);
   }
   .page-events .vol-back-btn svg {
     width: 16px; height: 16px;
@@ -3150,14 +3522,14 @@
     padding: 16px 20px 120px;
   }
 
-  /* Segment toggle — sliding pill like volunteer one-time/repeating */
+  /* Segment toggle — exact same design as vol-commit-toggle (One Time / Repeating) */
   .seg-wrap { margin-bottom: 16px; }
   .segment {
-    background: #dedad2;
+    background: var(--input-bg);
     border-radius: 50px;
+    padding: 4px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 4px;
     position: relative;
     isolation: isolate;
   }
@@ -3182,14 +3554,15 @@
     position: relative;
     z-index: 1;
     text-align: center;
-    padding: 9px 0;
+    padding: 10px 0;
     border-radius: 50px;
     font-size: 14px;
-    font-weight: 700;
-    color: #888;
+    font-weight: 600;
+    color: var(--text-muted);
     background: transparent;
     border: none;
     cursor: pointer;
+    font-family: 'Geist', system-ui, sans-serif;
     transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .seg-btn.active {
@@ -3236,7 +3609,7 @@
   .pill-fundraiser { background: #3b4bdb; }
   .pill-drive      { background: var(--orange); }
   .pill-distro     { background: var(--navy); }
-  .pill-no         { background: transparent; border: 1.5px solid #bbb; }
+  .pill-no         { background: #bbb; border: 1.5px solid #bbb; }
   .pill-today      { background: transparent; border: 1.5px solid #888; }
 
   /* Month header */
@@ -3257,7 +3630,7 @@
   .add-btn {
     width: 34px;
     height: 34px;
-    background: #d4f542;
+    background: #F5FFAB;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -3265,7 +3638,8 @@
     font-size: 22px;
     color: #1a1a1a;
     font-weight: 300;
-    line-height: 1;
+    line-height: 34px;
+    text-align: center;
   }
 
   /* Calendar grid */
@@ -3283,15 +3657,15 @@
     padding: 4px 0 6px;
   }
   .day-cell {
-    aspect-ratio: 1;
+    aspect-ratio: 0.8;
     border-radius: 10px;
     background: #f2f2f2;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     position: relative;
     overflow: hidden;
+    padding: 4px 0 0 5px;
   }
   .day-cell.empty { background: transparent; }
   .day-num {
@@ -3302,32 +3676,21 @@
     position: relative;
     z-index: 2;
   }
+  .day-cell.muted .day-num { color: var(--text-muted); opacity: 0.5; }
   .day-cell.today { border: 2px solid var(--navy); background: white; }
-  .day-cell.fundraiser { background: #3b4bdb; }
+  .day-cell.fundraiser {
+    background: url('img/icons/calendar-cell-fundraiser.svg') center/cover no-repeat;
+  }
   .day-cell.fundraiser .day-num { color: white; }
-  .day-cell.drive      { background: var(--orange); }
+  .day-cell.drive {
+    background: url('img/icons/calendar-cell-drive.svg') center/cover no-repeat;
+  }
   .day-cell.drive .day-num { color: white; }
-  .day-cell.distro     { background: var(--navy); }
+  .day-cell.distro {
+    background: url('img/icons/calendar-cell-distro.svg') center/cover no-repeat;
+  }
   .day-cell.distro .day-num { color: white; }
   .day-cell.faded { opacity: 0.55; }
-  .day-cell.has-icon .day-num {
-    position: absolute;
-    top: 5px;
-    left: 7px;
-    font-size: 11px;
-  }
-  .event-icon {
-    position: absolute;
-    bottom: 3px;
-    right: 3px;
-    width: 52%;
-    height: 52%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    line-height: 1;
-  }
   .month-gap { height: 24px; }
 
   /* ── Streak Onboarding Overlay ── */
@@ -3657,27 +4020,36 @@
   .event-detail-shell {
     position: relative;
     min-height: 100%;
-    padding: 14px 20px 120px;
+    padding: 18px 20px 120px;
   }
   .event-detail-back {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    border: 1px solid rgba(35, 33, 74, 0.08);
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 8px 20px rgba(35, 33, 74, 0.12);
+    border: 1px solid var(--border-color);
+    background: transparent;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: var(--navy);
-    margin: 6px 0 18px;
+    margin: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.1s;
+  }
+  .event-detail-back:active,
+  .event-detail-back.touch-active {
+    transform: scale(0.92);
+    background: var(--input-bg);
   }
   .event-detail-back svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     stroke: currentColor;
     stroke-width: 2;
     fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .event-detail-stage {
     position: relative;
@@ -3790,6 +4162,7 @@
     border-radius: var(--radius-lg);
     overflow: hidden;
     margin-bottom: 16px;
+    touch-action: none;
   }
   .event-detail-map-wrap.hidden {
     display: none;
@@ -3986,9 +4359,9 @@
       <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
     </div>
     <div class="nav-icons">
-      <button class="icon-btn">
+      <button class="icon-btn top-nav-activities">
         <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-        <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        <span class="item-badge">3</span>
       </button>
       <button class="icon-btn top-nav-settings">
         <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -4255,7 +4628,7 @@
       <div class="item-left">
         <img src="img/icons/icon-tent.svg" class="item-icon" alt="Tent">
         <h4>2-person Tent</h4>
-        <span class="item-badge">15</span>
+        <span class="item-badge">1</span>
       </div>
       <div class="item-right">
         <button class="btn btn-light btn-small">I have this item</button>
@@ -4302,7 +4675,7 @@
         <div style="margin-bottom: 12px; color: var(--text-muted);">
           <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
         </div>
-        <h3 style="margin-bottom: 8px;">This Saturday's set-up crew, who's in?</h3>
+        <h3 style="margin-bottom: 8px;">This Saturday's set-up crew, let's talk about it!</h3>
         <p>Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the...</p>
         
         <div class="forum-meta-row">
@@ -4398,9 +4771,9 @@
       <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
     </div>
     <div class="nav-icons">
-      <button class="icon-btn">
+      <button class="icon-btn top-nav-activities">
         <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-        <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        <span class="item-badge">3</span>
       </button>
       <button class="icon-btn top-nav-settings">
         <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -4459,13 +4832,13 @@
         <div class="day-header">F</div>
         <div class="day-header">S</div>
 
-        <div class="day-cell fundraiser has-icon faded"><span class="day-num">01</span><div class="event-icon">♥</div></div>
-        <div class="day-cell"><span class="day-num">02</span></div>
-        <div class="day-cell"><span class="day-num">03</span></div>
-        <div class="day-cell"><span class="day-num">04</span></div>
+        <div class="day-cell muted fundraiser faded"><span class="day-num">01</span></div>
+        <div class="day-cell muted"><span class="day-num">02</span></div>
+        <div class="day-cell muted"><span class="day-num">03</span></div>
+        <div class="day-cell muted"><span class="day-num">04</span></div>
         <div class="day-cell today"><span class="day-num">05</span></div>
         <div class="day-cell"><span class="day-num">06</span></div>
-        <div class="day-cell drive has-icon"><span class="day-num">07</span><div class="event-icon">🚛</div></div>
+        <div class="day-cell drive"><span class="day-num">07</span></div>
 
         <div class="day-cell"><span class="day-num">08</span></div>
         <div class="day-cell"><span class="day-num">09</span></div>
@@ -4473,15 +4846,15 @@
         <div class="day-cell"><span class="day-num">11</span></div>
         <div class="day-cell"><span class="day-num">12</span></div>
         <div class="day-cell"><span class="day-num">13</span></div>
-        <div class="day-cell distro has-icon"><span class="day-num">14</span><div class="event-icon">🌐</div></div>
+        <div class="day-cell distro"><span class="day-num">14</span></div>
 
         <div class="day-cell"><span class="day-num">15</span></div>
         <div class="day-cell"><span class="day-num">16</span></div>
         <div class="day-cell"><span class="day-num">17</span></div>
-        <div class="day-cell fundraiser has-icon"><span class="day-num">18</span><div class="event-icon">♥</div></div>
+        <div class="day-cell fundraiser"><span class="day-num">18</span></div>
         <div class="day-cell"><span class="day-num">19</span></div>
         <div class="day-cell"><span class="day-num">20</span></div>
-        <div class="day-cell distro has-icon"><span class="day-num">21</span><div class="event-icon">🌐</div></div>
+        <div class="day-cell distro"><span class="day-num">21</span></div>
 
         <div class="day-cell"><span class="day-num">22</span></div>
         <div class="day-cell"><span class="day-num">23</span></div>
@@ -4489,7 +4862,7 @@
         <div class="day-cell"><span class="day-num">25</span></div>
         <div class="day-cell"><span class="day-num">26</span></div>
         <div class="day-cell"><span class="day-num">27</span></div>
-        <div class="day-cell distro has-icon"><span class="day-num">28</span><div class="event-icon">🌐</div></div>
+        <div class="day-cell distro"><span class="day-num">28</span></div>
 
         <div class="day-cell"><span class="day-num">29</span></div>
         <div class="day-cell"><span class="day-num">30</span></div>
@@ -4520,16 +4893,16 @@
         <div class="day-cell"><span class="day-num">01</span></div>
         <div class="day-cell"><span class="day-num">02</span></div>
         <div class="day-cell"><span class="day-num">03</span></div>
-        <div class="day-cell drive has-icon"><span class="day-num">04</span><div class="event-icon">🚛</div></div>
+        <div class="day-cell drive"><span class="day-num">04</span></div>
         <div class="day-cell empty"></div>
 
         <div class="day-cell"><span class="day-num">05</span></div>
         <div class="day-cell"><span class="day-num">06</span></div>
-        <div class="day-cell fundraiser has-icon"><span class="day-num">07</span><div class="event-icon">♥</div></div>
+        <div class="day-cell fundraiser"><span class="day-num">07</span></div>
         <div class="day-cell"><span class="day-num">08</span></div>
         <div class="day-cell"><span class="day-num">09</span></div>
         <div class="day-cell"><span class="day-num">10</span></div>
-        <div class="day-cell distro has-icon"><span class="day-num">11</span><div class="event-icon">🌐</div></div>
+        <div class="day-cell distro"><span class="day-num">11</span></div>
 
         <div class="day-cell"><span class="day-num">12</span></div>
         <div class="day-cell"><span class="day-num">13</span></div>
@@ -4537,17 +4910,17 @@
         <div class="day-cell"><span class="day-num">15</span></div>
         <div class="day-cell"><span class="day-num">16</span></div>
         <div class="day-cell"><span class="day-num">17</span></div>
-        <div class="day-cell distro has-icon"><span class="day-num">18</span><div class="event-icon">🌐</div></div>
+        <div class="day-cell distro"><span class="day-num">18</span></div>
 
         <div class="day-cell"><span class="day-num">19</span></div>
         <div class="day-cell"><span class="day-num">20</span></div>
         <div class="day-cell"><span class="day-num">21</span></div>
         <div class="day-cell"><span class="day-num">22</span></div>
-        <div class="day-cell fundraiser has-icon"><span class="day-num">23</span><div class="event-icon">♥</div></div>
+        <div class="day-cell fundraiser"><span class="day-num">23</span></div>
         <div class="day-cell"><span class="day-num">24</span></div>
-        <div class="day-cell distro has-icon"><span class="day-num">25</span><div class="event-icon">🌐</div></div>
+        <div class="day-cell distro"><span class="day-num">25</span></div>
 
-        <div class="day-cell fundraiser has-icon"><span class="day-num">26</span><div class="event-icon">♥</div></div>
+        <div class="day-cell fundraiser"><span class="day-num">26</span></div>
         <div class="day-cell"><span class="day-num">27</span></div>
         <div class="day-cell"><span class="day-num">28</span></div>
         <div class="day-cell"><span class="day-num">29</span></div>
@@ -4567,9 +4940,9 @@
       <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
     </div>
     <div class="nav-icons">
-      <button class="icon-btn">
+      <button class="icon-btn top-nav-activities">
         <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-        <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        <span class="item-badge">3</span>
       </button>
       <button class="icon-btn top-nav-settings">
         <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -4635,6 +5008,7 @@
 
         <div class="event-detail-cta">
           <button id="event-detail-cta" class="btn btn-primary">Volunteer for this drive</button>
+          <button type="button" class="btn btn-outline" id="event-detail-back-btn" style="margin-top: 12px;">Go back</button>
         </div>
       </article>
     </div>
@@ -4648,9 +5022,9 @@
       <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
     </div>
     <div class="nav-icons">
-      <button class="icon-btn">
+      <button class="icon-btn top-nav-activities">
         <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-        <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        <span class="item-badge">3</span>
       </button>
       <button class="icon-btn top-nav-settings">
         <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -4673,8 +5047,8 @@
 
     <div class="donate-money-content">
       <div class="vol-commit-toggle" id="donate-mode-toggle" role="tablist" aria-label="Donation mode">
-        <button class="vol-toggle-opt active" data-mode="one-time" role="tab" aria-selected="true">One-time</button>
-        <button class="vol-toggle-opt" data-mode="monthly" role="tab" aria-selected="false">Monthly</button>
+        <button class="vol-toggle-opt active" data-mode="one-time" role="tab" aria-selected="true">Donate Money</button>
+        <button class="vol-toggle-opt" data-mode="monthly" role="tab" aria-selected="false">Donate Items</button>
       </div>
 
       <div class="donate-amount-card">
@@ -4685,10 +5059,10 @@
         </div>
 
         <div class="donate-preset-grid">
-          <button class="donate-preset-btn" data-amount="5">$5</button>
-          <button class="donate-preset-btn active" data-amount="15">$15</button>
-          <button class="donate-preset-btn" data-amount="30">$30</button>
-          <button class="donate-preset-btn" data-amount="50">$50</button>
+          <button type="button" class="btn btn-outline donate-preset-btn" data-amount="5">$5</button>
+          <button type="button" class="btn btn-outline donate-preset-btn active" data-amount="15">$15</button>
+          <button type="button" class="btn btn-outline donate-preset-btn" data-amount="30">$30</button>
+          <button type="button" class="btn btn-outline donate-preset-btn" data-amount="50">$50</button>
         </div>
 
         <div class="donate-custom-wrap">
@@ -4696,122 +5070,92 @@
           <input id="donate-custom-input" class="donate-custom-input" type="number" min="1" step="1" inputmode="numeric" placeholder="Enter amount">
         </div>
 
-        <div class="donate-subdivider">or give a specific amount for</div>
-
-        <div class="donate-item-scroll">
-          <div class="donate-item-track">
-            <button class="donate-money-item-card" data-item="Socks" data-amount="5">
-              <div class="donate-item-price">$5</div>
-              <img class="donate-item-icon" src="img/icons/icon-socks.svg" alt="">
-              <div class="donate-item-name">Warm socks</div>
-            </button>
-            <button class="donate-money-item-card" data-item="Hygiene Kit" data-amount="15">
-              <div class="donate-item-price">$15</div>
-              <img class="donate-item-icon" src="img/icons/icon-hand.svg" alt="">
-              <div class="donate-item-name">Hygiene kit</div>
-            </button>
-            <button class="donate-money-item-card" data-item="Food Box" data-amount="30">
-              <div class="donate-item-price">$30</div>
-              <img class="donate-item-icon" src="img/icons/icon-bus.svg" alt="">
-              <div class="donate-item-name">Food box</div>
-            </button>
-            <button class="donate-money-item-card" data-item="Tent Support" data-amount="50">
-              <div class="donate-item-price">$50</div>
-              <img class="donate-item-icon" src="img/icons/icon-tent.svg" alt="">
-              <div class="donate-item-name">Tent support</div>
-            </button>
-            <button class="donate-money-item-card" data-item="Power Bank" data-amount="20">
-              <div class="donate-item-price">$20</div>
-              <img class="donate-item-icon" src="img/icons/icon-batteries.svg" alt="">
-              <div class="donate-item-name">Power bank</div>
-            </button>
+        <!-- donate impact bar + copy hidden
+        <div class="donate-impact-bar-block">
+          <div class="donate-impact-bar-title">Toward our monthly goal</div>
+          <div class="donate-impact-bar-goal">Goal: <strong id="donate-impact-goal-amount">$500</strong> · Your donation adds this much</div>
+          <div class="donate-impact-bar-wrap">
+            <div class="donate-impact-bar-track">
+              <div class="donate-impact-bar-fill"></div>
+              <div class="donate-impact-bar-pip" id="donate-impact-bar-pip"></div>
+            </div>
+            <div class="donate-impact-bar-label" id="donate-impact-bar-label">+3%</div>
+            <div class="donate-impact-bar-track-end" id="donate-impact-track-end">$500</div>
           </div>
         </div>
 
         <p class="donate-impact-line" id="donate-impact-line">This amount helps us deliver practical support where it is needed most.</p>
+        -->
       </div>
 
       <button id="donate-money-cta" class="btn btn-primary donate-money-cta">Donate $15</button>
 
-      <div class="donate-section-break"></div>
-
-      <button id="donate-to-items-btn" class="donate-handoff-row">
-        <span>Donate physical items instead?</span>
-        <img src="img/icons/arrow-right.svg" alt="">
+      <button id="donate-to-items-btn" class="btn btn-outline donate-handoff-row" style="margin-top: 12px;">
+        <span>Become A Donor - $30/month</span>
       </button>
+
+      <section class="donate-feed" aria-label="Recent donations">
+        <div class="donate-feed-eyebrow">Recent donations</div>
+        <div class="donate-feed-timeline">
+          <div class="donate-feed-entry">
+            <div class="donate-feed-avatar" aria-hidden="true">P</div>
+            <div class="donate-feed-body">
+              <div class="donate-feed-line">
+                <span class="donate-feed-donor">Potato23</span>
+                <span class="donate-feed-mid"> funded </span>
+                <span class="donate-feed-anchor">$15</span>
+              </div>
+              <div class="donate-feed-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="donate-feed-entry">
+            <div class="donate-feed-avatar" aria-hidden="true">?</div>
+            <div class="donate-feed-body">
+              <div class="donate-feed-line">
+                <span class="donate-feed-donor">Someone</span>
+                <span class="donate-feed-mid"> donated </span>
+                <span class="donate-feed-anchor">a hygiene kit</span>
+              </div>
+              <div class="donate-feed-time">5 hours ago</div>
+            </div>
+          </div>
+          <div class="donate-feed-entry">
+            <div class="donate-feed-avatar" aria-hidden="true">M</div>
+            <div class="donate-feed-body">
+              <div class="donate-feed-line">
+                <span class="donate-feed-donor">Maya</span>
+                <span class="donate-feed-mid"> funded </span>
+                <span class="donate-feed-anchor">$30</span>
+              </div>
+              <div class="donate-feed-time">Yesterday</div>
+            </div>
+          </div>
+          <div class="donate-feed-entry">
+            <div class="donate-feed-avatar" aria-hidden="true">?</div>
+            <div class="donate-feed-body">
+              <div class="donate-feed-line">
+                <span class="donate-feed-donor">Someone</span>
+                <span class="donate-feed-mid"> funded </span>
+                <span class="donate-feed-anchor">$5</span>
+              </div>
+              <div class="donate-feed-time">2 days ago</div>
+            </div>
+          </div>
+          <div class="donate-feed-entry">
+            <div class="donate-feed-avatar" aria-hidden="true">J</div>
+            <div class="donate-feed-body">
+              <div class="donate-feed-line">
+                <span class="donate-feed-donor">Jay</span>
+                <span class="donate-feed-mid"> donated </span>
+                <span class="donate-feed-anchor">warm socks</span>
+              </div>
+              <div class="donate-feed-time">3 days ago</div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div><!-- /.page.page-donate-money -->
-
-  <!-- ── Donate Items Page ── -->
-  <div class="page page-donate-items">
-  <header class="top-nav">
-    <div class="logo">
-      <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
-    </div>
-    <div class="nav-icons">
-      <button class="icon-btn">
-        <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-        <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
-      </button>
-      <button class="icon-btn top-nav-settings">
-        <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
-        <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
-      </button>
-      <button class="icon-btn top-nav-profile">
-        <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
-        <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
-      </button>
-    </div>
-  </header>
-
-    <div class="donate-page-header">
-      <button class="donate-back-btn" id="donate-items-back-btn" aria-label="Back to donate money">
-        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-      </button>
-      <h1 class="donate-page-title">Donate Items</h1>
-    </div>
-    <div class="donate-divider"></div>
-
-    <div class="donate-items-content">
-      <div class="donate-items-intro">
-        <div class="donate-items-intro-title">Give what you can, directly</div>
-        <p class="donate-items-intro-copy">Coordinate a physical donation drop-off with our team. We'll share accepted-condition notes and the next handoff window.</p>
-      </div>
-
-      <div class="donate-items-list">
-        <div class="donate-item-type">
-          <img src="img/icons/icon-socks.svg" alt="">
-          <div>
-            <div class="donate-item-type-title">Clothing essentials</div>
-            <div class="donate-item-type-sub">Socks, thermal layers, gloves</div>
-          </div>
-        </div>
-        <div class="donate-item-type">
-          <img src="img/icons/icon-hand.svg" alt="">
-          <div>
-            <div class="donate-item-type-title">Hygiene supplies</div>
-            <div class="donate-item-type-sub">Toothbrushes, wipes, menstrual products</div>
-          </div>
-        </div>
-        <div class="donate-item-type">
-          <img src="img/icons/icon-batteries.svg" alt="">
-          <div>
-            <div class="donate-item-type-title">Daily-use gear</div>
-            <div class="donate-item-type-sub">Batteries, power banks, flashlights</div>
-          </div>
-        </div>
-        <div class="donate-item-type">
-          <img src="img/icons/icon-tent.svg" alt="">
-          <div>
-            <div class="donate-item-type-title">Outdoor support</div>
-            <div class="donate-item-type-sub">Tarps, tents, weather protection</div>
-          </div>
-        </div>
-      </div>
-
-      <button id="donate-items-cta" class="btn btn-primary donate-items-cta">I have something to donate</button>
-    </div>
-  </div><!-- /.page.page-donate-items -->
 
   <!-- ── Volunteer Page ── -->
   <div class="page page-volunteer">
@@ -4820,9 +5164,9 @@
       <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
     </div>
     <div class="nav-icons">
-      <button class="icon-btn">
+      <button class="icon-btn top-nav-activities">
         <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-        <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        <span class="item-badge">3</span>
       </button>
       <button class="icon-btn top-nav-settings">
         <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -5095,9 +5439,9 @@
         <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
       </div>
       <div class="nav-icons">
-        <button class="icon-btn">
+        <button class="icon-btn top-nav-activities">
           <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+          <span class="item-badge">3</span>
         </button>
         <button class="icon-btn top-nav-settings">
           <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -5232,6 +5576,77 @@
     </div>
   </div><!-- /.page.page-settings -->
 
+  <!-- ── Activities Page ── -->
+  <div class="page page-activities" data-filter="recent">
+    <header class="top-nav">
+      <div class="logo">
+        <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+      </div>
+      <div class="nav-icons">
+        <button class="icon-btn top-nav-activities">
+          <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+          <span class="item-badge">3</span>
+        </button>
+        <button class="icon-btn top-nav-settings">
+          <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+          <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+        <button class="icon-btn top-nav-profile">
+          <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+          <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+      </div>
+    </header>
+
+    <div class="activities-page-header">
+      <button class="activities-back-btn" id="activities-back-btn" aria-label="Back">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <span class="activities-page-title">Activities</span>
+    </div>
+
+    <div class="activities-filter-row" id="activities-filter-row">
+      <button type="button" class="activities-filter-btn active" data-filter="recent">Recent</button>
+      <button type="button" class="activities-filter-btn" data-filter="all">All Activities</button>
+    </div>
+
+    <div class="activities-list" id="activities-list">
+      <div class="activities-item activities-item-unread" data-read="false" data-type="reply">
+        <span class="activities-item-dot"></span>
+        <div class="activities-item-body">
+          <span class="activities-item-type" aria-hidden="true">Post activity</span>
+          <span class="activities-item-title"><strong>GracelleM</strong> replied to your post</span>
+        </div>
+        <span class="activities-item-time">2h ago</span>
+      </div>
+      <div class="activities-item activities-item-unread" data-read="false" data-type="announcement">
+        <span class="activities-item-dot"></span>
+        <div class="activities-item-body">
+          <span class="activities-item-type" aria-hidden="true">Announcement</span>
+          <span class="activities-item-title">March distro is live!</span>
+          <span class="activities-item-meta">Ji Woo Lim</span>
+        </div>
+        <span class="activities-item-time">1d ago</span>
+      </div>
+      <div class="activities-item activities-item-read" data-read="true" data-type="reminder">
+        <span class="activities-item-dot activities-item-dot-spacer"></span>
+        <div class="activities-item-body">
+          <span class="activities-item-type" aria-hidden="true">Reminder</span>
+          <span class="activities-item-title">Volunteer shift tomorrow 9am</span>
+        </div>
+        <span class="activities-item-time">2d ago</span>
+      </div>
+      <div class="activities-item activities-item-read" data-read="true" data-type="like">
+        <span class="activities-item-dot activities-item-dot-spacer"></span>
+        <div class="activities-item-body">
+          <span class="activities-item-type" aria-hidden="true">Post activity</span>
+          <span class="activities-item-title"><strong>JiWoo_DD</strong> liked your comment</span>
+        </div>
+        <span class="activities-item-time">3d ago</span>
+      </div>
+    </div>
+  </div><!-- /.page.page-activities -->
+
   <!-- ── Profile Page ── -->
   <div class="page page-profile">
     <header class="top-nav">
@@ -5239,9 +5654,9 @@
         <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
       </div>
       <div class="nav-icons">
-        <button class="icon-btn">
+        <button class="icon-btn top-nav-activities">
           <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+          <span class="item-badge">3</span>
         </button>
         <button class="icon-btn top-nav-settings">
           <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -5268,8 +5683,8 @@
     <!-- hero card -->
     <div class="prof-hero">
       <div class="prof-identity">
-        <div class="prof-avatar-wrap">
-          <div class="prof-avatar">P</div>
+        <div class="prof-avatar-wrap" id="prof-avatar-wrap" role="button" aria-label="Change avatar" tabindex="0">
+          <div class="prof-avatar" id="prof-avatar-display">P</div>
           <div class="prof-ring"></div>
         </div>
         <div class="prof-name-block">
@@ -5290,7 +5705,7 @@
       </div>
       <div class="prof-impact-copy">
         Your total <strong>4 donations</strong> moved the needle.<br>
-        We're now <strong>12%</strong> closer to our next goal.
+        We're now <strong>12%</strong> closer to our monthly goal.
       </div>
       <div class="prof-impact-bar-wrap">
         <div class="prof-impact-bar-track">
@@ -5314,9 +5729,9 @@
           <div class="prof-donation-icon"><img src="img/icons/icon-socks.svg" alt=""></div>
           <div class="prof-donation-body">
             <div class="prof-donation-title">Socks</div>
-            <div class="prof-donation-details">6 pairs · New, assorted sizes</div>
+            <div class="prof-donation-details">6 pairs</div>
           </div>
-          <div class="prof-donation-meta">Added Mar 5</div>
+          <div class="prof-donation-meta">Slide to complete</div>
         </div>
       </div>
     </div>
@@ -5326,7 +5741,7 @@
     <!-- trophy wall -->
     <div class="prof-trophy-section">
       <div class="prof-trophy-header">
-        <div class="prof-eyebrow">Trophies earned</div>
+        <div class="prof-eyebrow">Trophies Earned</div>
       </div>
       <div class="prof-trophy-wall">
         <div class="prof-trophy-track-wrap">
@@ -5417,41 +5832,6 @@
       </div>
     </div>
 
-    <div class="prof-divider"></div>
-
-    <!-- community presence -->
-    <div class="prof-forum-section">
-      <div class="prof-eyebrow">Community presence</div>
-      <div class="prof-forum-stats">
-        <div class="prof-forum-stat-card">
-          <div class="prof-forum-stat-num">47</div>
-          <div class="prof-forum-stat-lbl">Posts</div>
-        </div>
-        <div class="prof-forum-stat-card">
-          <div class="prof-forum-stat-num">128</div>
-          <div class="prof-forum-stat-lbl">Thumbs up</div>
-        </div>
-        <div class="prof-forum-stat-card">
-          <div class="prof-forum-stat-num">6</div>
-          <div class="prof-forum-stat-lbl">Topics</div>
-        </div>
-      </div>
-      <div class="prof-forum-post">
-        <div class="prof-forum-post-title">Anyone else bringing extra gloves for Saturday's set-up?</div>
-        <div class="prof-forum-post-meta">
-          <span class="prof-forum-post-stat"><img src="img/icons/icon-heart.svg" alt=""> 4 helpful</span>
-          <span class="prof-forum-post-stat"><img src="img/icons/icon-clock.svg" alt=""> 2 days ago</span>
-        </div>
-      </div>
-      <div class="prof-forum-post">
-        <div class="prof-forum-post-title">Reminder: Central Library distro starts at 9am sharp</div>
-        <div class="prof-forum-post-meta">
-          <span class="prof-forum-post-stat"><img src="img/icons/icon-heart.svg" alt=""> 1 helpful</span>
-          <span class="prof-forum-post-stat"><img src="img/icons/icon-clock.svg" alt=""> 5 hours ago</span>
-        </div>
-      </div>
-    </div>
-
     <!-- settings link -->
     <div class="prof-settings-link" id="prof-settings-link">
       <div class="prof-settings-link-icon">
@@ -5470,9 +5850,9 @@
         <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
       </div>
       <div class="nav-icons">
-        <button class="icon-btn">
+        <button class="icon-btn top-nav-activities">
           <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+          <span class="item-badge">3</span>
         </button>
         <button class="icon-btn top-nav-settings">
           <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -5491,7 +5871,7 @@
       </button>
       <div class="forum-header-text">
         <div class="forum-page-title">Community board</div>
-        <div class="forum-page-sub">47 posts this month</div>
+        <div class="forum-page-sub" id="forum-post-count">5 posts this month</div>
       </div>
     </div>
     <div class="forum-page-divider"></div>
@@ -5545,7 +5925,7 @@
           <span class="bpost-time">1 day ago</span>
           <span class="bpost-cat general">General</span>
         </div>
-        <div class="bpost-title">This Saturday's set-up crew — who's in?</div>
+        <div class="bpost-title">This Saturday's set-up crew, let's talk about it!</div>
         <div class="bpost-body">Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the group chat.</div>
         <div class="bpost-rule"></div>
         <div class="bpost-stats">
@@ -5642,9 +6022,9 @@
         <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
       </div>
       <div class="nav-icons">
-        <button class="icon-btn">
+        <button class="icon-btn top-nav-activities">
           <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+          <span class="item-badge">3</span>
         </button>
         <button class="icon-btn top-nav-settings">
           <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -5704,9 +6084,9 @@
         <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
       </div>
       <div class="nav-icons">
-        <button class="icon-btn">
+        <button class="icon-btn top-nav-activities">
           <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
-          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+          <span class="item-badge">3</span>
         </button>
         <button class="icon-btn top-nav-settings">
           <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
@@ -5725,6 +6105,9 @@
           <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         </button>
         <h1 class="forum-detail-title" id="forum-detail-title">Discussion</h1>
+        <button type="button" class="forum-detail-delete" id="forum-detail-delete" aria-label="Delete post" style="display: none;">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+        </button>
       </div>
 
       <article class="forum-detail-post" id="forum-detail-post">
@@ -5855,6 +6238,19 @@
     </div>
   </nav>
 
+  <div class="prof-trophy-overlay" id="prof-trophy-overlay">
+    <img class="prof-trophy-overlay-img" id="prof-trophy-overlay-img" alt="">
+  </div>
+
+  <!-- Avatar picker bottom sheet -->
+  <div class="avatar-sheet-backdrop" id="avatar-sheet-backdrop"></div>
+  <div class="avatar-sheet" id="avatar-sheet" aria-modal="true" role="dialog" aria-label="Choose avatar">
+    <div class="avatar-sheet-handle"></div>
+    <div class="avatar-sheet-label">Choose your avatar</div>
+    <div class="avatar-sheet-scroll" id="avatar-sheet-scroll"></div>
+    <button class="avatar-sheet-save" id="avatar-sheet-save" disabled>Save avatar</button>
+  </div>
+
 </div><!-- /.app-container -->
 </div><!-- /.phone-frame -->
 
@@ -5908,7 +6304,7 @@
   });
 
   // ── Page Router + Event Detail Flow ──
-  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', 'donate-items': 'page-donate-items', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail' };
+  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail', activities: 'page-activities' };
   const navItems = document.querySelectorAll('.bottom-nav .nav-item:not(.center-item)');
   const settingsButtons = document.querySelectorAll('.top-nav-settings');
   const settingsBackBtn = document.getElementById('settings-back-btn');
@@ -5923,16 +6319,20 @@
   const detailCta = document.getElementById('event-detail-cta');
   const detailBack = document.getElementById('event-detail-back');
   const donateMoneyBackBtn = document.getElementById('donate-money-back-btn');
-  const donateItemsBackBtn = document.getElementById('donate-items-back-btn');
   const donateToItemsBtn = document.getElementById('donate-to-items-btn');
   const donateModeToggle = document.getElementById('donate-mode-toggle');
   const donateModeButtons = donateModeToggle ? donateModeToggle.querySelectorAll('.vol-toggle-opt') : [];
   const donatePresetButtons = document.querySelectorAll('.donate-preset-btn');
-  const donateItemButtons = document.querySelectorAll('.donate-money-item-card');
   const donateCustomInput = document.getElementById('donate-custom-input');
   const donateAmountValue = document.getElementById('donate-amount-value');
   const donateImpactLine = document.getElementById('donate-impact-line');
+  const donateImpactBarPip = document.getElementById('donate-impact-bar-pip');
+  const donateImpactBarLabel = document.getElementById('donate-impact-bar-label');
+  const donateImpactGoalAmount = document.getElementById('donate-impact-goal-amount');
+  const donateImpactTrackEnd = document.getElementById('donate-impact-track-end');
   const donateMoneyCta = document.getElementById('donate-money-cta');
+  const DONATE_MONTHLY_GOAL = 500;
+  const DONATE_IMPACT_BASE_PERCENT = 66;
   const detailMapWrap = document.getElementById('event-detail-map-wrap');
   const detailMap = document.getElementById('event-detail-map');
   if (detailMap && detailMapWrap) {
@@ -5943,6 +6343,7 @@
   let activePageName = 'home';
   let settingsReturnPage = 'home';
   let profileReturnPage = 'home';
+  let activitiesReturnPage = 'home';
   let donateReturnPage = 'home';
   var profileConfettiTimerId = null;
   var profileConfettiCanvas = null;
@@ -6110,6 +6511,8 @@
 
     // Reset impact bar animation when leaving profile so it replays on next open
     if (name !== 'profile') {
+      var trophyOverlay = document.getElementById('prof-trophy-overlay');
+      if (trophyOverlay) trophyOverlay.classList.remove('is-open');
       clearTimeout(profileConfettiTimerId);
       profileConfettiTimerId = null;
       profileConfettiAbort = true;
@@ -6140,14 +6543,17 @@
       }
     }
 
-    if (name === 'events') setActiveNav('events');
-    else if (name === 'volunteer') setActiveNav('volunteer');
-    else if (name === 'home') setActiveNav('home');
-    else if (name === 'forums' || name === 'compose' || name === 'forum-detail') setActiveNav('forums');
-
+    // Bottom nav: only one item active at a time
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
     const centerNavItem = document.querySelector('.bottom-nav .nav-item.center-item');
-    if (centerNavItem) {
-      centerNavItem.classList.toggle('active', name === 'donate-money' || name === 'donate-items');
+    if (name === 'donate-money' && centerNavItem) {
+      centerNavItem.classList.add('active');
+    } else {
+      if (name === 'events') setActiveNav('events');
+      else if (name === 'volunteer') setActiveNav('volunteer');
+      else if (name === 'home') setActiveNav('home');
+      else if (name === 'forums' || name === 'compose' || name === 'forum-detail') setActiveNav('forums');
+      else if (name === 'activities') setActiveNav('activities');
     }
   }
 
@@ -6159,6 +6565,11 @@
   function openProfilePage() {
     if (activePageName !== 'profile') profileReturnPage = activePageName;
     showPage('profile');
+  }
+
+  function openActivitiesPage() {
+    if (activePageName !== 'activities') activitiesReturnPage = activePageName;
+    showPage('activities');
   }
 
   const eventDetails = {
@@ -6334,8 +6745,23 @@
     });
 
     if (donateImpactLine) donateImpactLine.textContent = donateImpactCopy(donateState.amount);
+    const rawImpactPercent = (donateState.amount / DONATE_MONTHLY_GOAL) * 100;
+    const impactPercent = Math.max(0, Math.min(100, rawImpactPercent));
+    const orangeWidthPercent = Math.max(
+      DONATE_IMPACT_BASE_PERCENT,
+      Math.min(100, DONATE_IMPACT_BASE_PERCENT + impactPercent)
+    );
+    const impactPctLabel = Number.isInteger(impactPercent) ? impactPercent.toString() : impactPercent.toFixed(1);
+    if (donateImpactBarPip) donateImpactBarPip.style.width = `${orangeWidthPercent}%`;
+    if (donateImpactBarLabel) {
+      donateImpactBarLabel.style.left = `${orangeWidthPercent}%`;
+      donateImpactBarLabel.textContent = `+${impactPctLabel}%`;
+    }
+    const goalFormatted = '$' + DONATE_MONTHLY_GOAL;
+    if (donateImpactGoalAmount) donateImpactGoalAmount.textContent = goalFormatted;
+    if (donateImpactTrackEnd) donateImpactTrackEnd.textContent = goalFormatted;
 
-    if (donateMoneyCta && !donateMoneyCta.classList.contains('success')) {
+    if (donateMoneyCta) {
       donateMoneyCta.textContent = donateState.mode === 'monthly'
         ? `Donate $${formatDonateAmount(donateState.amount)} / month`
         : `Donate $${formatDonateAmount(donateState.amount)}`;
@@ -6350,9 +6776,6 @@
     if (source === 'preset') {
       donateState.selectedPreset = donateState.amount;
       if (donateCustomInput) donateCustomInput.value = '';
-    } else if (source === 'item') {
-      donateState.selectedPreset = [5, 15, 30, 50].includes(donateState.amount) ? donateState.amount : null;
-      if (donateCustomInput) donateCustomInput.value = '';
     } else if (source === 'custom') {
       donateState.selectedPreset = null;
     }
@@ -6361,7 +6784,7 @@
   }
 
   function openDonateMoneyPage() {
-    if (activePageName !== 'donate-money' && activePageName !== 'donate-items') {
+    if (activePageName !== 'donate-money') {
       donateReturnPage = activePageName || 'home';
     }
     showPage('donate-money');
@@ -6386,10 +6809,6 @@
     btn.addEventListener('click', () => setDonateAmount(btn.dataset.amount, 'preset'));
   });
 
-  donateItemButtons.forEach(card => {
-    card.addEventListener('click', () => setDonateAmount(card.dataset.amount, 'item'));
-  });
-
   if (donateCustomInput) {
     donateCustomInput.addEventListener('input', () => {
       const raw = donateCustomInput.value.trim();
@@ -6399,27 +6818,15 @@
   }
 
   if (donateMoneyCta) {
-    donateMoneyCta.addEventListener('click', () => {
-      if (donateMoneyCta.classList.contains('success')) return;
-      donateMoneyCta.classList.add('success');
-      donateMoneyCta.innerHTML = '<span class="donate-cta-success"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Thank you</span></span>';
-      setTimeout(() => {
-        donateMoneyCta.classList.remove('success');
-        updateDonateUI();
-      }, 2000);
-    });
+    donateMoneyCta.addEventListener('click', () => { /* placeholder */ });
   }
 
   if (donateToItemsBtn) {
-    donateToItemsBtn.addEventListener('click', () => showPage('donate-items'));
+    donateToItemsBtn.addEventListener('click', () => { /* placeholder – no action */ });
   }
   if (donateMoneyBackBtn) {
     donateMoneyBackBtn.addEventListener('click', () => showPage(donateReturnPage || 'home'));
   }
-  if (donateItemsBackBtn) {
-    donateItemsBackBtn.addEventListener('click', () => showPage('donate-money'));
-  }
-
   updateDonateUI();
 
   navItems.forEach(item => {
@@ -6475,9 +6882,161 @@
     settingsBackBtn.addEventListener('click', () => showPage(settingsReturnPage || 'home'));
   }
 
+  // ── Avatar picker ──
+  (function initAvatarPicker() {
+    var AVATARS = [
+      { bg: '#F2D5D5', src: 'img/avatars/avatar-cool-disco.png' },
+      { bg: '#C9DECE', src: 'img/avatars/avatar-cowboy.png' },
+      { bg: '#F0E6CB', src: 'img/avatars/avatar-flowers.png' },
+      { bg: '#C3D3E6', src: 'img/avatars/avatar-ribbon.png' },
+      { bg: '#F9D6C4', src: 'img/avatars/avatar-toque.png' },
+    ];
+    var CURRENT_AVATAR_IDX = 0;
+
+    var backdrop = document.getElementById('avatar-sheet-backdrop');
+    var sheet = document.getElementById('avatar-sheet');
+    var scroll = document.getElementById('avatar-sheet-scroll');
+    var saveBtn = document.getElementById('avatar-sheet-save');
+    var avatarDisplay = document.getElementById('prof-avatar-display');
+    var avatarWrap = document.getElementById('prof-avatar-wrap');
+
+    var selectedIdx = CURRENT_AVATAR_IDX;
+
+    // Build avatar options
+    if (scroll) {
+      AVATARS.forEach(function(av, i) {
+        var el = document.createElement('div');
+        el.className = 'avatar-option' + (i === CURRENT_AVATAR_IDX ? ' is-selected' : '');
+        el.style.background = av.bg;
+        el.dataset.idx = i;
+        var img = document.createElement('img');
+        img.src = av.src;
+        img.alt = '';
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;';
+        el.appendChild(img);
+        el.addEventListener('click', function() {
+          selectedIdx = i;
+          scroll.querySelectorAll('.avatar-option').forEach(function(o) { o.classList.remove('is-selected'); });
+          el.classList.add('is-selected');
+          if (saveBtn) saveBtn.disabled = false;
+        });
+        scroll.appendChild(el);
+      });
+    }
+    // Apply default avatar to profile on start
+    if (avatarDisplay && AVATARS[CURRENT_AVATAR_IDX]) {
+      var def = AVATARS[CURRENT_AVATAR_IDX];
+      avatarDisplay.style.background = def.bg;
+      avatarDisplay.textContent = '';
+      var img = document.createElement('img');
+      img.src = def.src;
+      img.alt = '';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;';
+      avatarDisplay.appendChild(img);
+    }
+
+    function openSheet() {
+      if (!backdrop || !sheet) return;
+      // Hard stop confetti when avatar popup opens
+      clearTimeout(profileConfettiTimerId);
+      profileConfettiTimerId = null;
+      profileConfettiAbort = true;
+      if (profileConfettiCanvas && profileConfettiCanvas.parentNode) {
+        profileConfettiCanvas.parentNode.removeChild(profileConfettiCanvas);
+        profileConfettiCanvas = null;
+      }
+      selectedIdx = CURRENT_AVATAR_IDX;
+      if (saveBtn) saveBtn.disabled = true;
+      if (scroll) {
+        scroll.querySelectorAll('.avatar-option').forEach(function(o, i) {
+          o.classList.toggle('is-selected', i === CURRENT_AVATAR_IDX && CURRENT_AVATAR_IDX >= 0);
+        });
+      }
+      backdrop.classList.add('is-open');
+      sheet.classList.remove('is-closing');
+      requestAnimationFrame(function() { sheet.classList.add('is-open'); });
+    }
+
+    function closeSheet(onDone) {
+      if (!backdrop || !sheet) return;
+      sheet.classList.add('is-closing');
+      sheet.classList.remove('is-open');
+      backdrop.classList.remove('is-open');
+      setTimeout(function() {
+        sheet.classList.remove('is-closing');
+        if (onDone) onDone();
+      }, 320);
+    }
+
+    if (avatarWrap) {
+      avatarWrap.addEventListener('click', openSheet);
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener('click', function() { closeSheet(); });
+    }
+
+    if (saveBtn) {
+      saveBtn.addEventListener('click', function() {
+        var chosen = AVATARS[selectedIdx];
+        CURRENT_AVATAR_IDX = selectedIdx;
+        closeSheet(function() {
+          if (avatarDisplay) {
+            avatarDisplay.style.transition = 'opacity 250ms ease';
+            avatarDisplay.style.opacity = '0';
+            setTimeout(function() {
+              avatarDisplay.style.background = chosen.bg;
+              avatarDisplay.textContent = '';
+              var existing = avatarDisplay.querySelector('img');
+              if (existing) existing.remove();
+              var img = document.createElement('img');
+              img.src = chosen.src;
+              img.alt = '';
+              img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;';
+              avatarDisplay.appendChild(img);
+              avatarDisplay.style.opacity = '1';
+            }, 120);
+          }
+        });
+      });
+    }
+  })();
+
+  const activitiesBackBtn = document.getElementById('activities-back-btn');
+  if (activitiesBackBtn) {
+    activitiesBackBtn.addEventListener('click', () => showPage(activitiesReturnPage || 'home'));
+  }
+
+  const activitiesFilterRow = document.getElementById('activities-filter-row');
+  const activitiesList = document.getElementById('activities-list');
+  if (activitiesFilterRow && activitiesList) {
+    activitiesFilterRow.querySelectorAll('.activities-filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        activitiesFilterRow.querySelectorAll('.activities-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        var filter = btn.getAttribute('data-filter') || 'recent';
+        activitiesList.closest('.page-activities').setAttribute('data-filter', filter);
+      });
+    });
+  }
+
   document.querySelectorAll('.top-nav-profile').forEach(btn => {
     btn.addEventListener('click', openProfilePage);
   });
+  document.querySelectorAll('.top-nav-activities').forEach(btn => {
+    btn.addEventListener('click', openActivitiesPage);
+  });
+
+  /* Mobile: open Settings/Profile on touchend so navigation works when synthesized click doesn't fire */
+  document.addEventListener('touchend', function navIconTouchend(e) {
+    var el = e.target && e.target.closest && e.target.closest('.top-nav-settings, .top-nav-profile, .top-nav-activities');
+    if (!el) return;
+    e.preventDefault();
+    if (el.classList.contains('top-nav-settings')) openSettingsPage();
+    else if (el.classList.contains('top-nav-profile')) openProfilePage();
+    else if (el.classList.contains('top-nav-activities')) openActivitiesPage();
+  }, { passive: false, capture: true });
+
   const profBackBtn = document.getElementById('prof-back-btn');
   if (profBackBtn) {
     profBackBtn.addEventListener('click', () => showPage(profileReturnPage || 'home'));
@@ -6487,12 +7046,38 @@
     profSettingsLink.addEventListener('click', openSettingsPage);
   }
 
+  (function() {
+    var overlay = document.getElementById('prof-trophy-overlay');
+    var overlayImg = document.getElementById('prof-trophy-overlay-img');
+    if (!overlay || !overlayImg) return;
+    document.querySelectorAll('.prof-trophy-card').forEach(function(card) {
+      card.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var img = this.querySelector('.prof-trophy-icon');
+        if (img && img.src) {
+          if (overlay.classList.contains('is-open')) {
+            overlay.classList.remove('is-open');
+          } else {
+            overlayImg.src = img.src;
+            overlayImg.alt = img.alt || '';
+            overlay.classList.add('is-open');
+          }
+        }
+      });
+    });
+    overlay.addEventListener('click', function() { overlay.classList.remove('is-open'); });
+  })();
+
   document.querySelectorAll('.event-card .btn[data-event-id]').forEach(btn => {
     btn.addEventListener('click', () => openEventDetail(btn.dataset.eventId));
   });
 
   if (detailBack) {
     detailBack.addEventListener('click', () => showPage('home'));
+  }
+  const detailBackBtn = document.getElementById('event-detail-back-btn');
+  if (detailBackBtn) {
+    detailBackBtn.addEventListener('click', () => showPage('home'));
   }
 
   const eventsBackBtn = document.getElementById('events-back-btn');
@@ -6502,7 +7087,7 @@
 
   // ── Forum & Compose Pages ──
   const forumPostDetails = {
-    'post-1': { title: "This Saturday's set-up crew — who's in?", body: "Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the group chat.", author: 'Potato23', time: '1 day ago', category: 'General' },
+    'post-1': { title: "This Saturday's set-up crew, let's talk about it!", body: "Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the group chat.", author: 'Potato23', time: '1 day ago', category: 'General' },
     'post-2': { title: "What's volunteering actually like at DD?", body: "I've been wanting to do more intentional volunteering and not sure where to start. Would love to hear from people who joined for the first time — what made you come back?", author: 'GracelleM', time: '2 days ago', category: 'Question' },
     'post-3': { title: 'Online deals for supplies this week', body: 'Found some discount codes for Canadian Tire. Tents, thermal socks, gloves all on sale. Sharing here if you have financial capacity this month.', author: 'CaitlinV', time: '3 days ago', category: 'General' },
     'post-4': { title: 'Do I need to bring my own bags for the distro?', body: 'First time attending next Saturday. Is there a list of what to bring or does everything get provided on the day?', author: 'DogaCM', time: '5 days ago', category: 'Question' },
@@ -6529,6 +7114,11 @@
     const postTitleEl = document.getElementById('forum-detail-post-title');
     const bodyEl = document.getElementById('forum-detail-post-body');
     const container = document.getElementById('forum-detail-comments');
+    const deleteBtn = document.getElementById('forum-detail-delete');
+    if (deleteBtn) {
+      deleteBtn.dataset.postId = postId;
+      deleteBtn.style.display = details.author === 'Potato23' ? '' : 'none';
+    }
     if (titleEl) titleEl.textContent = details.title.length > 40 ? details.title.slice(0, 40) + '…' : details.title;
     if (authorEl) authorEl.textContent = details.author;
     if (timeEl) timeEl.textContent = details.time;
@@ -6578,6 +7168,15 @@
     const composeSubmitBtn = document.getElementById('compose-submit');
     const composeTitleInput = document.getElementById('compose-title');
     const composeBodyInput = document.getElementById('compose-body');
+
+    function updateForumPostCount() {
+      var el = document.getElementById('forum-post-count');
+      if (!el || !forumBoard) return;
+      var n = forumBoard.querySelectorAll('.bpost').length;
+      el.textContent = n === 1 ? '1 post this month' : n + ' posts this month';
+    }
+    updateForumPostCount();
+
     if (filterRow && forumBoard) {
       filterRow.querySelectorAll('.forum-filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -6630,6 +7229,19 @@
     var forumDetailBack = document.getElementById('forum-detail-back');
     if (forumDetailBack) forumDetailBack.addEventListener('click', function() { showPage('forums'); });
 
+    var forumDetailDelete = document.getElementById('forum-detail-delete');
+    if (forumDetailDelete) {
+      forumDetailDelete.addEventListener('click', function() {
+        var postId = forumDetailDelete.dataset.postId;
+        if (!postId) return;
+        if (typeof forumPostDetails !== 'undefined') delete forumPostDetails[postId];
+        var card = forumBoard && forumBoard.querySelector('.bpost[data-post-id="' + postId + '"]');
+        if (card) card.remove();
+        updateForumPostCount();
+        showPage('forums');
+      });
+    }
+
     var forumBackBtn = document.getElementById('forum-back');
     if (forumBackBtn) forumBackBtn.addEventListener('click', function() { showPage('home'); });
 
@@ -6677,10 +7289,20 @@
         postEl.innerHTML = '<div class="bpost-tack"></div><div class="bpost-byline"><span class="bpost-author bpost-author-own">Potato23</span><div class="bpost-sep"></div><span class="bpost-time">Just now</span><span class="bpost-cat ' + catClass + '">' + catLabel + '</span></div><div class="bpost-title">' + esc(title) + '</div><div class="bpost-body">' + esc(body) + '</div><div class="bpost-rule"></div><div class="bpost-stats"><div class="bpost-stat"><div class="stat-box"></div> 0 likes</div><div class="bpost-stat"><div class="stat-box"></div> 0 replies</div><span class="bpost-reply-hint">Reply</span></div><div class="bpost-reply-area"><div class="bpost-reply-inner"><input class="bpost-reply-input" type="text" placeholder="Write a reply..."><button class="bpost-reply-send"><div class="send-icon-ph"></div></button></div></div>';
         forumBoard.insertBefore(postEl, forumBoard.firstChild);
         if (typeof forumPostDetails !== 'undefined') forumPostDetails['post-new'] = { title: title, body: body, author: 'Potato23', time: 'Just now', category: catLabel };
+        updateForumPostCount();
         if (composeTitleInput) composeTitleInput.value = '';
         if (composeBodyInput) composeBodyInput.value = '';
         composeSubmitBtn.disabled = true;
         showPage('forums');
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            postEl.classList.add('bpost-slide-in');
+            postEl.addEventListener('animationend', function onEnd() {
+              postEl.classList.remove('bpost-slide-in');
+              postEl.removeEventListener('animationend', onEnd);
+            });
+          });
+        });
       });
     }
 
@@ -6882,6 +7504,15 @@
     const forumTabContainer = forumSection.querySelector('.forum-tabs');
     const forumTabs = forumSection.querySelectorAll('.forum-tabs .tab');
     const forumCards = forumSection.querySelector('.forum-cards');
+    if (forumCards) {
+      forumCards.addEventListener('click', function(e) {
+        const card = e.target.closest('.forum-card');
+        if (!card) return;
+        if (e.target.closest('.comment-input-row')) return;
+        e.preventDefault();
+        showPage('forums');
+      });
+    }
     if (forumTabContainer && forumCards) {
       forumTabs.forEach(tab => {
         tab.setAttribute('role', 'button');
@@ -7010,9 +7641,9 @@
       touchCursor.classList.remove('touch-cursor--down');
     });
 
-    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, label, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .settings-back-btn, .settings-row, .settings-toggle, .settings-appearance-opt, .prof-back, .prof-edit, .prof-trophy-card, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back';
+    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, label, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .settings-back-btn, .settings-row, .settings-toggle, .settings-appearance-opt, .prof-back, .prof-edit, .prof-trophy-card, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back, .top-nav-activities, .activities-back-btn, .activities-filter-btn';
     document.addEventListener('mouseover', (e) => {
-      if (e.target.closest(interactiveSelector)) {
+      if (e.target.closest(interactiveSelector) && !e.target.closest('.bottom-nav')) {
         touchCursor.classList.add('touch-cursor--hover');
       }
     });
@@ -7034,7 +7665,7 @@
       '.settings-back-btn, .settings-row, .settings-toggle, .settings-appearance-opt, ' +
       '.prof-back, .prof-edit, .prof-trophy-card, .prof-forum-post, .prof-settings-link, ' +
       '.btn, .icon-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-back-btn, .vol-toggle-opt, .vol-cta-btn, .event-detail-back, .event-detail-share, ' +
-      '.forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back';
+      '.forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back, .top-nav-activities, .activities-back-btn, .activities-filter-btn';
     function clearTouchActive() {
       document.querySelectorAll('.touch-active').forEach(function(el) { el.classList.remove('touch-active'); });
     }
