@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Distro Disco Homepage</title>
+<title>Distro Disco | Prototype</title>
 <link rel="icon" type="image/svg+xml" href="img/icons/favicon.svg">
 <style>
   /* Local fonts */
@@ -80,6 +80,8 @@
     --icon-size-forum-meta: 16px;
     --icon-size-sm: 16px;
     --nav-center-circle-size: 68px;
+    --dur-bounce: 500ms;
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
     /* Event detail illustration layout (root editor) */
     --detail-illustration-top: -80px;
@@ -261,7 +263,8 @@
       rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
       rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   }
-  .btn:active {
+  .btn:active,
+  .btn.touch-active {
     transform: scale(0.98);
     box-shadow: none;
   }
@@ -273,16 +276,18 @@
   .btn-light { background-color: var(--input-bg); color: var(--navy); border: none; }
 
   /* Button active (pressed) states - simple reversed colours */
-  .btn-primary:active {
+  .btn-primary:active,
+  .btn-primary.touch-active {
     background-color: var(--orange);
     color: var(--white);
   }
-  .btn-secondary:active,
-  .btn-outline:active {
+  .btn-secondary:active, .btn-secondary.touch-active,
+  .btn-outline:active, .btn-outline.touch-active {
     background-color: var(--navy);
     color: var(--white);
   }
-  .btn-light:active {
+  .btn-light:active,
+  .btn-light.touch-active {
     background-color: var(--navy);
     color: var(--white);
   }
@@ -317,9 +322,17 @@
   }
   .top-nav-icon-active { display: none !important; }
   .top-nav-settings:active .top-nav-icon-default,
-  .top-nav-profile:active .top-nav-icon-default { display: none !important; }
+  .top-nav-settings.touch-active .top-nav-icon-default,
+  .top-nav-profile:active .top-nav-icon-default,
+  .top-nav-profile.touch-active .top-nav-icon-default { display: none !important; }
   .top-nav-settings:active .top-nav-icon-active,
-  .top-nav-profile:active .top-nav-icon-active { display: block !important; }
+  .top-nav-settings.touch-active .top-nav-icon-active,
+  .top-nav-profile:active .top-nav-icon-active,
+  .top-nav-profile.touch-active .top-nav-icon-active { display: block !important; }
+  .page-profile .top-nav-profile .top-nav-icon-default { display: none !important; }
+  .page-profile .top-nav-profile .top-nav-icon-active { display: block !important; }
+  .page-settings .top-nav-settings .top-nav-icon-default { display: none !important; }
+  .page-settings .top-nav-settings .top-nav-icon-active { display: block !important; }
   .alert-badge {
     position: absolute; top: -4px; right: -4px;
     width: 20px; height: 20px;
@@ -329,10 +342,10 @@
   /* Hero Section */
   .hero { padding: 0 20px; margin-bottom: 32px; }
   .hero-card {
-    background: linear-gradient(180deg, #FFF9D6 10%, #FFF9D6 1%, var(--bg-color) 100%);
+    background: linear-gradient(180deg, #FFF4C4 0%, #FFF8DC 35%, #FFFEF5 55%, var(--bg-color) 100%);
     border-radius: var(--radius-xl);
     padding: 24px 20px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
   }
 
   .impact-grid {
@@ -560,6 +573,7 @@
   }
   .page-volunteer .vol-timeline-month {
     font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px;
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
   }
   .page-volunteer .vol-timeline-view-link {
     font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: underline;
@@ -572,6 +586,10 @@
     );
     margin-bottom: calc(-32px - 21px - 1px);
     position: relative; z-index: 0; pointer-events: none;
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 90%, transparent 100%);
+    mask-size: 100% 100%;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 90%, transparent 100%);
+    -webkit-mask-size: 100% 100%;
   }
   .page-volunteer .vol-timeline-track-wrap {
     overflow-x: auto; overflow-y: visible;
@@ -600,7 +618,8 @@
   .page-volunteer .vol-tl-dot.active {
     width: 48px; height: 48px;
     background: var(--navy);
-    box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 5px rgba(35,33,74,0.22);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: 3px solid white;
   }
   
   .page-volunteer .vol-tl-dot.active::before,
@@ -608,7 +627,7 @@
     content: '';
     position: absolute; inset: 0; border-radius: 50%;
     background: transparent;
-    border: 2px solid rgba(35, 33, 74, 0.35);
+    border: 2px solid rgba(74, 33, 33, 0.35);
     animation: vol-tl-pulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
     pointer-events: none;
   }
@@ -755,6 +774,34 @@
   }
   .page-volunteer .vol-toggle-opt.active { color: white; }
 
+  /* Same toggle component on donate page (One-time / Monthly) */
+  .page-donate-money .vol-commit-toggle {
+    background: var(--input-bg); border-radius: 50px; padding: 4px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    position: relative; isolation: isolate;
+    margin-bottom: 14px;
+  }
+  .page-donate-money .vol-commit-toggle::before {
+    content: '';
+    position: absolute; top: 4px; bottom: 4px; left: 4px;
+    width: calc(50% - 4px);
+    background: var(--navy); border-radius: 50px;
+    box-shadow: 0 4px 14px rgba(35,33,74,0.25);
+    transform: translateX(0);
+    transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+  }
+  .page-donate-money .vol-commit-toggle.right::before { transform: translateX(100%); }
+  .page-donate-money .vol-toggle-opt {
+    position: relative; z-index: 1; text-align: center;
+    padding: 10px 0; border-radius: 50px;
+    font-size: 14px; font-weight: 600; color: var(--text-muted);
+    cursor: pointer; border: none; background: transparent;
+    font-family: 'Geist', system-ui, sans-serif;
+    transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .page-donate-money .vol-toggle-opt.active { color: white; }
+
   /* About You */
   .page-volunteer .vol-about-section { padding: 24px 20px 0; }
   .page-volunteer .vol-checkbox-row {
@@ -763,7 +810,7 @@
   }
   .page-volunteer .vol-checkbox-row:last-child { border-bottom: none; }
   .page-volunteer .vol-check-box {
-    width: 22px; height: 22px; border-radius: 6px;
+    width: 22px; height: 22px; border-radius: 50px;
     border: 2px solid var(--border-color);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; background: var(--white); cursor: pointer;
@@ -916,6 +963,1447 @@
     box-shadow: rgba(0,0,0,0.3) 0px 6px 18px -3px;
   }
 
+  /* ── Forum Feed & Compose Pages ── */
+  .page-forum,
+  .page-compose {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding-bottom: 160px;
+    position: relative;
+  }
+  .page-forum::-webkit-scrollbar,
+  .page-compose::-webkit-scrollbar { display: none; }
+
+  .page-forum .forum-page-header {
+    padding: 4px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .page-forum .forum-back {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .page-forum .forum-back:active,
+  .page-forum .forum-back.touch-active {
+    transform: scale(0.92);
+    background: var(--input-bg);
+  }
+  .page-forum .forum-back svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--navy);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .page-forum .forum-header-text { flex: 1; min-width: 0; }
+  .page-forum .forum-page-title {
+    font-family: 'Gaya', 'Geist', serif;
+    font-size: 22px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .page-forum .forum-page-sub { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+  .page-forum .forum-page-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0 20px 20px;
+  }
+
+  .page-forum .forum-sticky-wrap {
+    padding: 0 20px 28px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .page-forum .forum-sticky {
+    width: 220px;
+    background: #FFF4C4;
+    border-radius: 3px;
+    padding: 14px 16px 16px;
+    transform: rotate(1.4deg);
+    box-shadow: 3px 4px 14px rgba(35,33,74,0.13), 0 1px 3px rgba(35,33,74,0.08);
+    cursor: pointer;
+    position: relative;
+    transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 200ms;
+  }
+  .page-forum .forum-sticky:active,
+  .page-forum .forum-sticky.touch-active {
+    transform: rotate(1.4deg) scale(0.97);
+    box-shadow: 1px 2px 6px rgba(35,33,74,0.1);
+  }
+  .page-forum .forum-sticky::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 20px;
+    background: rgba(255, 244, 196, 0.75);
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(35,33,74,0.1);
+  }
+  .page-forum .sticky-eyebrow { font-size: 9px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.7px; opacity: 0.5; margin-bottom: 6px; }
+  .page-forum .sticky-title { font-family: 'Gaya', 'Geist', serif; font-size: 18px; font-weight: 400; font-style: italic; color: var(--navy); line-height: 1.4; margin-bottom: 8px; }
+  .page-forum .sticky-meta { font-size: 10px; font-weight: 600; color: var(--text-muted); }
+
+  .page-forum .forum-filter-row {
+    padding: 0 20px;
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .page-forum .forum-filter-row::-webkit-scrollbar { display: none; }
+  .page-forum .forum-filter-btn {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 14px 16px 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    transition: color 200ms;
+    flex-shrink: 0;
+  }
+  .page-forum .forum-filter-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 14px;
+    right: 14px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--navy);
+    transform: scaleX(0);
+    transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+  }
+  .page-forum .forum-filter-btn.active { color: var(--navy); font-weight: 700; }
+  .page-forum .forum-filter-btn.active::after { transform: scaleX(1); }
+
+  .page-forum .forum-board {
+    padding: 4px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .page-forum .bpost {
+    background: #F0EFEA;
+    border-radius: var(--radius-md);
+    padding: 20px 20px 18px;
+    margin-bottom: 0;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    cursor: pointer;
+    transition: box-shadow 180ms, transform 180ms;
+    position: relative;
+  }
+  .page-forum .bpost-own {
+    background: var(--card-bg);
+  }
+  .page-forum .bpost:active,
+  .page-forum .bpost.touch-active {
+    box-shadow: 0 2px 8px rgba(35,33,74,0.06);
+  }
+  .page-forum .bpost-tack {
+    position: absolute;
+    top: -10px;
+    left: 22px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--navy);
+    border: 2.5px solid white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.22);
+    z-index: 1;
+  }
+  .page-forum .bpost-byline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .page-forum .bpost-author {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+  .page-forum .bpost-author-own {
+    color: var(--orange);
+  }
+  .page-forum .bpost-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--border-color); flex-shrink: 0; }
+  .page-forum .bpost-time { font-size: 11px; font-weight: 500; color: var(--text-muted); }
+  .page-forum .bpost-cat {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+  .page-forum .bpost-title {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.35;
+    margin-bottom: 10px;
+    letter-spacing: -0.4px;
+  }
+  .page-forum .bpost-body {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .page-forum .bpost-rule { height: 1px; background: var(--border-color); margin-bottom: 14px; }
+  .page-forum .bpost-stats { display: flex; align-items: center; gap: 18px; }
+  .page-forum .bpost-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .page-forum .stat-box {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: var(--border-color);
+    flex-shrink: 0;
+  }
+  .page-forum .bpost-reply-hint {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    opacity: 0.6;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .page-forum .bpost-reply-area {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 380ms cubic-bezier(0.16, 1, 0.3, 1), opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), padding 380ms cubic-bezier(0.16, 1, 0.3, 1);
+    padding-top: 0;
+  }
+  .page-forum .bpost-reply-area.open {
+    max-height: 80px;
+    opacity: 1;
+    padding-top: 14px;
+  }
+  .page-forum .bpost-reply-inner { display: flex; align-items: center; gap: 10px; }
+  .page-forum .bpost-reply-input {
+    flex: 1;
+    background: var(--input-bg);
+    border: none;
+    padding: 10px 14px;
+    border-radius: 50px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text-main);
+    outline: none;
+  }
+  .page-forum .bpost-reply-input::placeholder { color: #b0aec0; }
+  .page-forum .bpost-reply-send {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--navy);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .page-forum .bpost-reply-send:active,
+  .page-forum .bpost-reply-send.touch-active { background: var(--orange); }
+  .page-forum .send-icon-ph { width: 12px; height: 12px; border-radius: 2px; background: rgba(255,255,255,0.7); }
+
+  .page-forum .forum-new-post-btn {
+    width: calc(100% - 40px);
+    margin: 0 20px 24px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--navy);
+    color: white;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(35,33,74,0.15);
+    transition: transform 0.1s, background 0.12s, box-shadow 0.1s;
+  }
+  .page-forum .forum-new-post-btn:active,
+  .page-forum .forum-new-post-btn.touch-active {
+    transform: scale(0.98);
+    background: var(--orange);
+    box-shadow: 0 1px 4px rgba(35,33,74,0.1);
+  }
+  .page-forum .forum-new-post-arrow {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  /* Compose page */
+  .page-compose .compose-header {
+    padding: 4px 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .page-compose .compose-back {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .page-compose .compose-back:active,
+  .page-compose .compose-back.touch-active {
+    transform: scale(0.92);
+    background: var(--input-bg);
+  }
+  .page-compose .compose-back svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--navy);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .page-compose .compose-header-title { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; flex: 1; }
+  .page-compose .compose-inner { padding: 20px 20px 0; }
+  .page-compose .compose-footer {
+    margin-top: 12px;
+    padding: 0 20px 140px;
+  }
+  .page-compose .compose-submit {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    background: var(--navy);
+    color: white;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(35,33,74,0.2);
+    transition: transform 0.1s, background 0.12s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .page-compose .compose-submit-arrow {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+  .page-compose .compose-submit:disabled {
+    cursor: not-allowed;
+    background: var(--input-bg);
+    color: #6B6A7C;
+    box-shadow: none;
+  }
+  .page-compose .compose-submit:disabled .compose-submit-arrow {
+    filter: brightness(0) invert(0.5);
+    opacity: 0.8;
+  }
+  .page-compose .compose-submit:not(:disabled):active,
+  .page-compose .compose-submit:not(:disabled).touch-active {
+    transform: scale(0.98);
+    background: var(--orange);
+  }
+  .page-compose .compose-author-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .page-compose .compose-av {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy) 0%, #3B3778 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Gaya', 'Geist', serif;
+    font-size: 14px;
+    color: white;
+    flex-shrink: 0;
+  }
+  .page-compose .compose-author-name { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .page-compose .compose-author-dest { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-top: 1px; }
+  .page-compose .compose-cat-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .page-compose .compose-cat-row::-webkit-scrollbar { display: none; }
+  .page-compose .compose-cat-btn {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 8px 12px 7px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    transition: color 200ms;
+    flex-shrink: 0;
+  }
+  .page-compose .compose-cat-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 12px;
+    right: 12px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--navy);
+    transform: scaleX(0);
+    transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+  }
+  .page-compose .compose-cat-btn.active { color: var(--navy); font-weight: 700; }
+  .page-compose .compose-cat-btn.active::after { transform: scaleX(1); }
+  .page-compose .compose-title-field {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 10px;
+    border: none;
+    background: transparent;
+    outline: none;
+    resize: none;
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.35;
+    letter-spacing: -0.3px;
+    overflow: hidden;
+  }
+  .page-compose .compose-title-field::placeholder { color: rgba(35,33,74,0.22); }
+  .page-compose .compose-divider { height: 1px; background: var(--border-color); margin: 12px 0; }
+  .page-compose .compose-body-field {
+    width: 100%;
+    padding: 0;
+    min-height: 140px;
+    border: none;
+    background: transparent;
+    outline: none;
+    resize: none;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13.5px;
+    color: var(--navy);
+    line-height: 1.75;
+  }
+  .page-compose .compose-body-field::placeholder { color: rgba(35,33,74,0.22); }
+  .page-compose .compose-attach-row { display: flex; gap: 8px; margin-top: 16px; }
+  .page-compose .compose-attach {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 11px;
+    border-radius: var(--radius-sm);
+    border: 1.5px dashed var(--border-color);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 180ms, color 180ms;
+  }
+  .page-compose .compose-attach:active,
+  .page-compose .compose-attach.touch-active { border-color: var(--navy); color: var(--navy); }
+  .page-compose .attach-ph { width: 12px; height: 12px; border-radius: 2px; background: currentColor; opacity: 0.35; flex-shrink: 0; }
+
+  /* ── Forum post detail (Reddit-style comments) ── */
+  .page-forum-detail {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 100px;
+  }
+  .page-forum-detail .forum-detail-inner { padding: 14px 20px 24px; }
+  .page-forum-detail .forum-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .page-forum-detail .forum-detail-back {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .page-forum-detail .forum-detail-back:active,
+  .page-forum-detail .forum-detail-back.touch-active {
+    transform: scale(0.92);
+    background: var(--input-bg);
+  }
+  .page-forum-detail .forum-detail-back svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--navy);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .page-forum-detail .forum-detail-title {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .forum-detail-post {
+    margin-bottom: 0;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    background: rgba(35, 33, 74, 0.04);
+  }
+  .forum-detail-post-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 24px 0;
+  }
+  .forum-detail-post-byline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .forum-detail-post-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy) 0%, #3B3778 100%);
+    flex-shrink: 0;
+  }
+  .forum-detail-post-author {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .forum-detail-post-dot { color: var(--text-muted); font-size: 13px; }
+  .forum-detail-post-time {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .forum-detail-post-title {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+    margin: 0 0 8px;
+    line-height: 1.3;
+  }
+  .forum-detail-post-body {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.55;
+  }
+  .forum-detail-comments-heading {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0 0 16px;
+  }
+  .forum-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .forum-thread-empty {
+    display: none;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 24px 16px;
+  }
+  .forum-thread-empty.is-visible {
+    display: block;
+  }
+  .forum-comment-node {
+    position: relative;
+  }
+  .forum-comment-node .forum-comment-content {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .forum-comment-line {
+    position: absolute;
+    left: 0;
+    top: 16px;
+    bottom: 0;
+    min-width: 20px;
+    padding-left: 16px;
+    cursor: pointer;
+    box-sizing: content-box;
+  }
+  .forum-comment-line::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(35,33,74,0.1);
+  }
+  .forum-comment-node.has-replies .forum-comment-line { bottom: -12px; }
+  .forum-comment-node.collapsed .forum-comment-replies {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 300ms ease, opacity 200ms ease;
+  }
+  .forum-comment-node.collapsed .forum-comment-line::before { display: none; }
+  .forum-comment-replies {
+    padding-left: 20px;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 300ms ease, opacity 200ms ease;
+  }
+  .forum-comment-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy) 0%, #3B3778 100%);
+    flex-shrink: 0;
+  }
+  .forum-comment-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .forum-comment-byline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+  }
+  .forum-comment-byline .username { font-weight: 600; color: var(--navy); }
+  .forum-comment-byline .dot { color: var(--text-muted); }
+  .forum-comment-byline .timestamp { font-weight: 500; color: var(--text-muted); }
+  .forum-comment-body {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.55;
+    margin-bottom: 6px;
+  }
+  .forum-comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .forum-comment-actions button,
+  .forum-comment-actions span { background: none; border: none; padding: 0; cursor: pointer; color: inherit; }
+
+  /* ── Donate Money / Donate Items Pages ── */
+  .page-donate-money,
+  .page-donate-items {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding-bottom: 48px;
+  }
+  .page-donate-money::-webkit-scrollbar,
+  .page-donate-items::-webkit-scrollbar { display: none; }
+
+  .donate-page-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 20px 16px;
+  }
+  .donate-back-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .donate-back-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--navy);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .donate-back-btn:active,
+  .donate-back-btn.touch-active {
+    transform: scale(0.92);
+    box-shadow: none;
+    background: var(--input-bg);
+  }
+  .donate-page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+  }
+  .donate-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0 20px;
+    margin-bottom: 12px;
+  }
+  .donate-money-content,
+  .donate-items-content {
+    padding: 0 20px 24px;
+  }
+
+  .donate-amount-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    padding: 20px 18px;
+    margin-bottom: 14px;
+  }
+  .donate-amount-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .donate-amount-display {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .donate-amount-currency {
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
+    font-size: 34px;
+    line-height: 1;
+  }
+  .donate-amount-value {
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
+    font-size: 56px;
+    line-height: 0.95;
+    letter-spacing: -1px;
+  }
+
+  .donate-preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .donate-preset-btn {
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 14px 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    cursor: pointer;
+    transition: border-color 140ms, background 140ms, transform 100ms;
+  }
+  .donate-preset-btn.active {
+    border-color: var(--orange);
+    background: #FFF3EE;
+  }
+  .donate-preset-btn:active,
+  .donate-preset-btn.touch-active {
+    transform: scale(0.97);
+  }
+
+  .donate-custom-wrap {
+    margin-bottom: 12px;
+  }
+  .donate-custom-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .donate-custom-input {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    font-size: 14px;
+    color: var(--navy);
+    outline: none;
+  }
+  .donate-custom-input:focus {
+    border-color: #B8B6C4;
+    box-shadow: 0 0 0 2px rgba(35,33,74,0.06);
+  }
+
+  .donate-subdivider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 12px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .donate-subdivider::before,
+  .donate-subdivider::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    background: var(--border-color);
+  }
+
+  .donate-item-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: none;
+    margin: 0 -4px 12px;
+    padding: 4px;
+  }
+  .donate-item-scroll::-webkit-scrollbar { display: none; }
+  .donate-item-track {
+    display: flex;
+    gap: 10px;
+    width: max-content;
+  }
+  .donate-money-item-card {
+    width: 108px;
+    flex-shrink: 0;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    border-radius: 14px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(35,33,74,0.06);
+    transition: transform 120ms, box-shadow 120ms;
+  }
+  .donate-money-item-card:nth-child(1) { transform: rotate(-2deg); }
+  .donate-money-item-card:nth-child(2) { transform: rotate(1.5deg); }
+  .donate-money-item-card:nth-child(3) { transform: rotate(-1deg); }
+  .donate-money-item-card:nth-child(4) { transform: rotate(2deg); }
+  .donate-money-item-card:nth-child(5) { transform: rotate(-1.5deg); }
+  .donate-money-item-card:active,
+  .donate-money-item-card.touch-active {
+    transform: scale(0.97) rotate(0deg);
+    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
+  }
+  .donate-item-price {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .donate-item-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    margin-bottom: 5px;
+  }
+  .donate-item-name {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .donate-impact-line {
+    font-size: 12px;
+    color: var(--navy);
+    opacity: 0.85;
+    margin: 2px 2px 14px;
+    line-height: 1.4;
+  }
+  .donate-money-cta {
+    width: 100%;
+    margin-bottom: 14px;
+  }
+  .donate-money-cta.success {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--orange);
+  }
+  .donate-cta-success {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .donate-cta-success svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .donate-section-break {
+    height: 1px;
+    background: var(--border-color);
+    margin: 6px 0 10px;
+  }
+  .donate-handoff-row {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: 13px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    cursor: pointer;
+  }
+  .donate-handoff-row img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+  }
+
+  .donate-items-intro {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 12px;
+  }
+  .donate-items-intro-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .donate-items-intro-copy {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+  .donate-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .donate-item-type {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow-soft);
+  }
+  .donate-item-type img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .donate-item-type-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 1px;
+  }
+  .donate-item-type-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .donate-items-cta {
+    width: 100%;
+  }
+
+  /* ── Profile Page ── */
+  .page-profile { height: 100%; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: 48px; }
+  .page-profile::-webkit-scrollbar { display: none; }
+
+  /* page header */
+  .page-profile .prof-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 4px 20px 20px;
+  }
+  .page-profile .prof-header-left { display: flex; align-items: center; gap: 12px; }
+  .page-profile .prof-header-badge {
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    background: var(--input-bg); border: 1px solid var(--border-color);
+    border-radius: 50px; padding: 5px 12px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .page-profile .prof-back {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: transparent; border: none;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; cursor: pointer;
+    transition: transform 0.1s, opacity 0.1s;
+  }
+  .page-profile .prof-back:active,
+  .page-profile .prof-back.touch-active { transform: scale(0.92); opacity: 0.8; }
+  .page-profile .prof-back svg { width: 24px; height: 24px; stroke: var(--navy); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .page-profile .prof-title { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
+
+  /* hero card */
+  .page-profile .prof-hero {
+    margin: 0 20px 24px;
+    background: linear-gradient(180deg, #FFF4C4 0%, #FFF8DC 35%, #FFFEF5 55%, var(--bg-color) 100%);
+    border-radius: var(--radius-xl); padding: 20px;
+    box-shadow: rgba(0,0,0,0.1) 0px 10px 15px -3px, rgba(0,0,0,0.05) 0px 4px 6px -2px;
+  }
+  .page-profile .prof-identity { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 12px; }
+  .page-profile .prof-avatar-wrap { position: relative; flex-shrink: 0; }
+  .page-profile .prof-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy) 0%, #3B3778 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Gaya', serif; font-size: 24px; color: white;
+    box-shadow: 0 6px 20px rgba(35,33,74,0.3);
+  }
+  .page-profile .prof-ring {
+    position: absolute; inset: -4px; border-radius: 50%;
+    border: 2.5px solid var(--orange);
+    animation: prof-ring-pulse 2.8s ease-in-out infinite;
+  }
+  @keyframes prof-ring-pulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+  .page-profile .prof-name-block { flex: 1; padding-bottom: 4px; }
+  .page-profile .prof-name { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; line-height: 1.1; margin-bottom: 3px; }
+  .page-profile .prof-handle { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .page-profile .prof-bio { font-style: italic; font-size: 13px; line-height: 1.55; color: var(--navy); opacity: 0.8; margin-bottom: 14px; }
+  .page-profile .prof-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .page-profile .prof-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 10px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color); background: var(--input-bg);
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+  }
+  .page-profile .prof-chip.streak { background: #FFF3EE; border-color: #FDD8CD; color: var(--orange); }
+  .page-profile .prof-chip img { width: 20px; height: 20px; object-fit: contain; }
+  .page-profile .prof-edit {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; padding: 11px; border-radius: var(--radius-md);
+    border: 1px solid var(--border-color); background: rgba(255,255,255,0.7);
+    font-family: 'Geist', system-ui, sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--navy); cursor: pointer; letter-spacing: -0.1px;
+    transition: background 120ms, border-color 120ms, color 120ms;
+    box-shadow: rgba(0,0,0,0.04) 0px 2px 4px;
+  }
+  .page-profile .prof-edit:active,
+  .page-profile .prof-edit.touch-active { background: var(--navy); color: white; border-color: var(--navy); }
+  .page-profile .prof-edit img { width: 20px; height: 20px; object-fit: contain; }
+
+  /* section eyebrow */
+  .page-profile .prof-eyebrow {
+    font-size: 10px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 12px;
+  }
+
+  /* impact bar */
+  .page-profile .prof-impact-card {
+    margin: 0 20px 24px; background: var(--card-bg);
+    border-radius: var(--radius-xl); padding: 20px;
+    border: 1px solid var(--border-color); box-shadow: var(--shadow-soft);
+  }
+  .page-profile .prof-impact-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .page-profile .prof-impact-heading img { width: 38px; height: 38px; object-fit: contain; }
+  .page-profile .prof-impact-title { font-size: 17px; font-weight: 700; color: var(--navy); }
+  .page-profile .prof-impact-copy { font-size: 13px; color: var(--navy); line-height: 1.55; margin-bottom: 20px; }
+  .page-profile .prof-impact-bar-wrap { position: relative; margin-bottom: 44px; }
+  .page-profile .prof-impact-bar-track {
+    height: 28px; border-radius: 999px;
+    background: #E2E0D8; overflow: visible; position: relative;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .page-profile .prof-impact-bar-fill {
+    position: absolute; left: 0; top: 0; height: 100%; width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #1a1840 0%, var(--navy) 40%, #3a3770 100%);
+    z-index: 1;
+    transition: width 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .page-profile .prof-impact-card.prof-impact-bars-ready .prof-impact-bar-fill {
+    width: 66%;
+  }
+  /* striped bar: same start as navy (left: 0), wider so it sticks out to the right behind navy */
+  .page-profile .prof-impact-bar-pip {
+    position: absolute; top: 0; left: 0;
+    width: 0; height: 100%;
+    border-radius: 999px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--orange) 0px,
+      var(--orange) 5px,
+      rgba(255,255,255,0.25) 5px,
+      rgba(255,255,255,0.25) 9px
+    );
+    box-shadow: 0 0 0 2px var(--card-bg), 0 2px 8px rgba(239,98,66,0.35);
+    z-index: 0;
+    transition: width 1600ms cubic-bezier(0.22, 1, 0.36, 1) 200ms;
+  }
+  .page-profile .prof-impact-card.prof-impact-bars-ready .prof-impact-bar-pip {
+    width: 72%;
+  }
+  .page-profile .prof-impact-bar-label {
+    position: absolute; top: 36px; left: 66%; transform: translateX(-30%);
+    background: var(--orange); color: white;
+    font-size: 12px; font-weight: 700; padding: 5px 14px;
+    border-radius: 50px; white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(239,98,66,0.4);
+    opacity: 0;
+    transition: opacity 350ms ease-out 1800ms;
+  }
+  .page-profile .prof-impact-card.prof-impact-bars-ready .prof-impact-bar-label {
+    opacity: 1;
+  }
+  .page-profile .prof-impact-actions { display: flex; flex-direction: column; gap: 10px; }
+  .page-profile .prof-impact-actions .btn {
+    width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .page-profile .prof-impact-actions .btn img { width: 22px; height: 22px; object-fit: contain; }
+  .page-profile .prof-impact-actions .btn.btn-secondary:active img,
+  .page-profile .prof-impact-actions .btn.btn-secondary.touch-active img { filter: brightness(0) invert(1); }
+
+  /* what you're donating */
+  .page-profile .prof-donations-section { padding: 0 20px 24px; }
+  .page-profile .prof-donations-card {
+    background: var(--card-bg); border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color); box-shadow: var(--shadow-soft);
+    overflow: hidden;
+  }
+  .page-profile .prof-donation-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; border-bottom: 1px solid var(--border-color);
+  }
+  .page-profile .prof-donation-item:last-child { border-bottom: none; }
+  .page-profile .prof-donation-icon {
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .page-profile .prof-donation-icon img { width: 32px; height: 32px; object-fit: contain; }
+  .page-profile .prof-donation-body { flex: 1; min-width: 0; }
+  .page-profile .prof-donation-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+  .page-profile .prof-donation-details { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+  .page-profile .prof-donation-meta { font-size: 11px; font-weight: 600; color: var(--text-muted); flex-shrink: 0; }
+
+  /* divider */
+  .page-profile .prof-divider { height: 1px; background: var(--border-color); margin: 0 20px 24px; }
+
+  /* trophy wall */
+  .page-profile .prof-trophy-section { margin-bottom: 24px; }
+  .page-profile .prof-trophy-header { padding: 0 20px; margin-bottom: 16px; }
+  .page-profile .prof-trophy-wall {
+    position: relative; overflow: hidden;
+  }
+  .page-profile .prof-trophy-track-wrap {
+    overflow-x: auto; overflow-y: visible; scrollbar-width: none;
+    padding: 0 20px; position: relative; z-index: 1;
+  }
+  .page-profile .prof-trophy-track-wrap::-webkit-scrollbar { display: none; }
+  .page-profile .prof-trophy-track { display: flex; gap: 14px; width: max-content; }
+  .page-profile .prof-trophy-card {
+    width: 110px; flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    position: relative; cursor: pointer;
+    transition: transform 200ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .page-profile .prof-trophy-card:active,
+  .page-profile .prof-trophy-card.touch-active {
+    transform: scale(0.93);
+  }
+  .page-profile .prof-trophy-icon {
+    width: 64px; height: 64px; object-fit: contain;
+    filter: drop-shadow(0 1px 3px rgba(35,33,74,0.12));
+  }
+  .page-profile .prof-trophy-name {
+    font-size: 12px; font-weight: 700; text-align: center; line-height: 1.2;
+    color: var(--navy); letter-spacing: 0.1px;
+  }
+
+  /* history timeline — oldest first; first item is anchor with yellow gradient */
+  .page-profile .prof-history-section { padding: 0 20px 24px; }
+  .page-profile .prof-history-list { position: relative; }
+  .page-profile .prof-history-list::before {
+    content: ''; position: absolute; left: 14px; top: 8px; bottom: 8px; width: 2px;
+    background: repeating-linear-gradient(to bottom, var(--border-color) 0px, var(--border-color) 4px, transparent 4px, transparent 9px);
+  }
+  .page-profile .prof-history-item { display: flex; gap: 12px; align-items: flex-start; padding: 0 0 16px; }
+  .page-profile .prof-history-item:last-child { padding-bottom: 0; }
+  .page-profile .prof-history-item-anchor {
+    margin-bottom: 20px; padding: 12px 0;
+  }
+  .page-profile .prof-history-item-anchor .prof-history-content { padding-top: 0; }
+  .page-profile .prof-history-anchor-summary {
+    font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 2px;
+    background: linear-gradient(to right, #FFF4C4 0%, var(--bg-color) 100%, var(--bg-color) 100%);
+    padding: 6px 0;
+  }
+  .page-profile .prof-history-anchor-summary-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+  .page-profile .prof-history-dot {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .page-profile .prof-history-dot img { width: 24px; height: 24px; object-fit: contain; }
+  .page-profile .prof-history-dot.distro,
+  .page-profile .prof-history-dot.drive,
+  .page-profile .prof-history-dot.fundraiser { background: transparent; }
+  .page-profile .prof-history-content { flex: 1; padding-top: 3px; }
+  .page-profile .prof-history-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+  .page-profile .prof-history-meta { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-bottom: 5px; }
+  .page-profile .prof-history-role {
+    display: inline-block; background: var(--input-bg); border: 1px solid var(--border-color);
+    border-radius: 50px; padding: 2px 8px; font-size: 10px; font-weight: 600; color: var(--text-muted);
+  }
+
+  /* community presence */
+  .page-profile .prof-forum-section { padding: 0 20px 24px; }
+  .page-profile .prof-forum-stats { display: flex; gap: 10px; margin-bottom: 14px; }
+  .page-profile .prof-forum-stat-card {
+    flex: 1; background: var(--card-bg); border: 1px solid var(--border-color);
+    border-radius: var(--radius-md); padding: 14px 10px;
+    box-shadow: var(--shadow-soft); text-align: center;
+  }
+  .page-profile .prof-forum-stat-num { font-size: 22px; font-weight: 400; color: var(--navy); letter-spacing: -0.3px; margin-bottom: 3px; }
+  .page-profile .prof-forum-stat-lbl { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+  .page-profile .prof-forum-post {
+    background: var(--card-bg); border-radius: var(--radius-lg); padding: 14px 16px;
+    box-shadow: var(--shadow-soft); margin-bottom: 10px; cursor: pointer;
+    transition: background 120ms;
+  }
+  .page-profile .prof-forum-post:active,
+  .page-profile .prof-forum-post.touch-active { background: var(--input-bg); }
+  .page-profile .prof-forum-post:last-child { margin-bottom: 0; }
+  .page-profile .prof-forum-post-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 8px; line-height: 1.3; }
+  .page-profile .prof-forum-post-meta { display: flex; gap: 12px; }
+  .page-profile .prof-forum-post-stat { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--text-muted); }
+  .page-profile .prof-forum-post-stat img { width: 18px; height: 18px; object-fit: contain; }
+
+  /* settings link row */
+  .page-profile .prof-settings-link {
+    margin: 0 20px 24px; background: var(--card-bg);
+    border-radius: var(--radius-lg); border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-soft);
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+    cursor: pointer; transition: background 120ms;
+  }
+  .page-profile .prof-settings-link:active,
+  .page-profile .prof-settings-link.touch-active { background: var(--input-bg); }
+  .page-profile .prof-settings-link-icon {
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .page-profile .prof-settings-link-icon img { width: 24px; height: 24px; object-fit: contain; }
+  .page-profile .prof-settings-link-text { flex: 1; font-size: 14px; font-weight: 500; color: var(--navy); }
+  .page-profile .prof-settings-link-chev svg { width: 14px; height: 14px; stroke: #C5C3BC; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ── Settings Page ── */
+  .page-settings .settings-page-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 18px 20px 20px;
+  }
+  .page-settings .settings-back-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--white); border: 1px solid var(--border-color);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
+    flex-shrink: 0; cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .page-settings .settings-back-btn:active,
+  .page-settings .settings-back-btn.touch-active {
+    transform: scale(0.92); box-shadow: none; background: var(--input-bg);
+  }
+  .page-settings .settings-back-btn svg {
+    width: 16px; height: 16px; stroke: var(--navy); stroke-width: 2; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .page-settings .settings-page-title { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
+
+  .page-settings .settings-section-label {
+    font-size: 10px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.6px;
+    padding: 0 20px; margin-bottom: 8px;
+  }
+  .page-settings .settings-group {
+    margin: 0 20px 20px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+  }
+  .page-settings .settings-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer; transition: background 120ms;
+    min-height: 52px;
+  }
+  .page-settings .settings-row:last-child { border-bottom: none; }
+  .page-settings .settings-row:active,
+  .page-settings .settings-row.touch-active { background: var(--input-bg); }
+  .page-settings .settings-row.no-tap { cursor: default; }
+  .page-settings .settings-row.no-tap:active,
+  .page-settings .settings-row.no-tap.touch-active { background: transparent; }
+  .page-settings .settings-row-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; background: var(--input-bg);
+  }
+  .page-settings .settings-row-icon svg { width: 16px; height: 16px; }
+  .page-settings .settings-row-icon.accent { background: rgba(35,33,74,0.08); color: var(--navy); }
+  .page-settings .settings-row-icon.orange { background: #FFF0EB; color: var(--orange); }
+  .page-settings .settings-row-icon.red { background: #FFEBEB; color: #DC2626; }
+  .page-settings .settings-row-text { flex: 1; }
+  .page-settings .settings-row-label { font-size: 14px; font-weight: 500; color: var(--navy); line-height: 1.2; }
+  .page-settings .settings-row-sublabel { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .page-settings .settings-row-label.destructive { color: #DC2626; }
+  .page-settings .settings-row-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .page-settings .settings-row-value { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  .page-settings .settings-chevron svg { width: 14px; height: 14px; stroke: #C5C3BC; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .page-settings .settings-toggle {
+    width: 40px; height: 24px; border-radius: 12px;
+    background: var(--border-color); position: relative;
+    flex-shrink: 0; transition: background 0.2s; cursor: pointer;
+  }
+  .page-settings .settings-toggle::after {
+    content: ''; width: 18px; height: 18px; border-radius: 50%;
+    background: white; position: absolute; top: 3px; left: 3px;
+    transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+  .page-settings .settings-toggle.on { background: var(--orange); }
+  .page-settings .settings-toggle.on::after { left: 19px; }
+
+  .page-settings .settings-appearance-opts { display: flex; gap: 6px; width: 100%; margin-top: 4px; }
+  .page-settings .settings-appearance-opt {
+    flex: 1; border-radius: var(--radius-sm);
+    border: 2px solid var(--border-color);
+    overflow: hidden; cursor: pointer;
+    transition: border-color 200ms;
+  }
+  .page-settings .settings-appearance-opt.active { border-color: var(--navy); }
+  .page-settings .settings-appearance-preview { height: 28px; }
+  .page-settings .settings-appearance-preview.light { background: #F8F7F4; }
+  .page-settings .settings-appearance-preview.dark { background: #1a1840; }
+  .page-settings .settings-appearance-preview.sys { background: linear-gradient(135deg,#F8F7F4 50%,#1a1840 50%); }
+  .page-settings .settings-appearance-name {
+    padding: 3px 0 4px; text-align: center;
+    font-size: 9px; font-weight: 700; color: var(--text-muted);
+    background: var(--input-bg); text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .page-settings .settings-appearance-opt.active .settings-appearance-name { color: var(--navy); background: rgba(35,33,74,0.06); }
+  .page-settings .settings-footer { padding: 8px 20px 16px; text-align: center; }
+  .page-settings .settings-version { font-size: 12px; color: #C0BDBA; font-weight: 500; }
+
   /* Scrollable screen content */
   .screen-content {
     height: 100%;
@@ -955,7 +2443,16 @@
     .vol-check-box,
     .vol-toggle-switch,
     .vol-contact-opt,
-    .vol-consent-check {
+    .vol-consent-check,
+    .settings-back-btn,
+    .settings-row,
+    .settings-toggle,
+    .settings-appearance-opt,
+    .prof-back,
+    .prof-edit,
+    .prof-trophy-card,
+    .prof-forum-post,
+    .prof-settings-link {
       cursor: none !important;
     }
   }
@@ -1007,6 +2504,13 @@
     border: 1px solid rgba(239, 98, 66, 0.6);
     box-shadow: 0 2px 10px rgba(239, 98, 66, 0.35);
   }
+
+  /* Mobile: ensure active/pressed state shows on touch (polyfill for :active) */
+  .touch-active { opacity: 0.92; }
+  .btn.touch-active, .btn-primary.touch-active, .btn-secondary.touch-active,
+  .btn-outline.touch-active, .btn-light.touch-active,
+  .donate-icon-btn.touch-active,
+  #dd-onboarding .cta-btn.touch-active { opacity: 1; }
 
   /* Navbar gradient scrim */
   .nav-scrim {
@@ -1079,6 +2583,7 @@
     font-size: 10px;
     font-weight: 600;
     font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    transition: color 0.25s ease;
   }
   .nav-item.active { color: var(--navy); }
 
@@ -1088,16 +2593,20 @@
     object-fit: contain;
     display: block;
   }
-  /* bottom nav icon states (non-center items) */
+  /* bottom nav icon states (non-center items) — smooth scale + bg like center */
   .bottom-nav .nav-item:not(.center-item) .nav-icon {
     border-radius: 999px;
     background: transparent;
     filter: grayscale(1) opacity(0.6);
-    transition: background 0.25s ease, filter 0.25s ease;
+    transform: scale(1);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.25s ease,
+                filter 0.25s ease;
   }
   .bottom-nav .nav-item:not(.center-item).active .nav-icon {
     filter: none;
-    background: #FFF9F1;;
+    background: #ffeed8;
+    transform: scale(1.1);
   }
   /* center icon muted when not active (same as others) */
   .bottom-nav .nav-item.center-item:not(.active) .donate-svg {
@@ -1146,10 +2655,200 @@
     line-height: 1;
   }
   .nav-item.center-item.active .nav-center-circle {
-    background: #FFF9F1;
+    background: #ffeed8;
   }
   .nav-item.center-item.active .nav-center-circle .nav-center-label {
     color: var(--navy);
+  }
+
+  /* Home icon — customize strokes & colors via CSS variables */
+  .bottom-nav .icon-home {
+    --home-stroke: #292966;
+    --home-stroke-width: 1.5;
+    --home-stroke-linecap: round;
+    --home-stroke-miter: 10;
+    --home-accent-fill: #FF7534;
+    --home-accent-stroke: none;
+    --home-accent-stroke-width: 0;
+    transform-origin: center bottom;
+    will-change: transform;
+  }
+  .bottom-nav .icon-home .home-accent,
+  .bottom-nav .icon-home .home-accent .home-accent-body {
+    fill: var(--home-accent-fill);
+    stroke: var(--home-accent-stroke, none);
+    stroke-width: var(--home-accent-stroke-width, 0);
+  }
+  .bottom-nav .icon-home .home-stroke {
+    stroke: var(--home-stroke);
+    stroke-width: var(--home-stroke-width);
+    stroke-linecap: var(--home-stroke-linecap);
+    stroke-miterlimit: var(--home-stroke-miter);
+  }
+  /* Per-part overrides (optional): .icon-home .home-stroke-roof { stroke: red; } etc. */
+
+  /* Home icon tap animation (elastic bounce + accent pulse) */
+  .bottom-nav .nav-item:first-child .icon-wrap {
+    --home-icon-size: 30px;
+    width: var(--home-icon-size);
+    height: var(--home-icon-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    margin-bottom: -4px;
+  }
+  .bottom-nav .nav-item:first-child .icon-home {
+    width: var(--home-icon-size);
+    height: var(--home-icon-size);
+  }
+  .bottom-nav .icon-home.active {
+    animation: home-bounce var(--dur-bounce) var(--ease-spring) forwards;
+  }
+  @keyframes home-bounce {
+    0%   { transform: scale(1)     translateY(0); }
+    40%  { transform: scale(1.18)  translateY(-3px); }
+    65%  { transform: scale(0.95)  translateY(1px); }
+    80%  { transform: scale(1.05)  translateY(-1px); }
+    100% { transform: scale(1.1)    translateY(0); }
+  }
+  .bottom-nav .icon-home.active .home-accent {
+    animation: home-accent-pulse 550ms var(--ease-spring) forwards;
+    transform-origin: 60% 55%;
+  }
+  @keyframes home-accent-pulse {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.22); }
+    60%  { transform: scale(0.92); }
+    80%  { transform: scale(1.06); }
+    100% { transform: scale(1); }
+  }
+
+  /* Calendar icon tap animation (squeeze + header wipe) */
+  .bottom-nav .icon-calendar {
+    transform-origin: center center;
+  }
+  .bottom-nav .icon-calendar.active {
+    animation: cal-squeeze var(--dur-bounce) var(--ease-spring) forwards;
+  }
+  @keyframes cal-squeeze {
+    0%   { transform: scaleY(1)    scaleX(1); }
+    30%  { transform: scaleY(0.88) scaleX(1.06); }
+    60%  { transform: scaleY(1.07) scaleX(0.97); }
+    80%  { transform: scaleY(0.97) scaleX(1.02); }
+    90%  { transform: scaleY(1.04) scaleX(1.04); }
+    95%  { transform: scaleY(1.04) scaleX(1.08); }
+    100% { transform: scaleY(1.1)  scaleX(1.1); }
+  }
+  .bottom-nav .icon-calendar.active .cal-header {
+    animation: cal-header-slide 480ms var(--ease-spring) forwards;
+    transform-origin: left center;
+  }
+  @keyframes cal-header-slide {
+    0%   { transform: scaleX(0.4) translateX(-8px); opacity: 0.5; }
+    60%  { transform: scaleX(1.05) translateX(1px);  opacity: 1; }
+    80%  { transform: scaleX(0.98) translateX(0);    opacity: 1; }
+    100% { transform: scaleX(1)   translateX(0);    opacity: 1; }
+  }
+  .bottom-nav .nav-item:nth-child(2) .icon-wrap {
+    width: var(--icon-size-nav);
+    height: var(--icon-size-nav);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Forum icon tap animation (bubbles + staggered dots) */
+  .bottom-nav .icon-forum {
+    transform-origin: center center;
+  }
+  .bottom-nav .icon-forum.active .forum-bubble-left {
+    animation: bubble-left 500ms var(--ease-spring) forwards;
+    transform-origin: 30% 55%;
+  }
+  @keyframes bubble-left {
+    0%   { transform: scale(0.6) translate(-4px, 2px); opacity: 0.4; }
+    55%  { transform: scale(1.1) translate(0, 0);       opacity: 1; }
+    75%  { transform: scale(0.95) translate(0, 0);      opacity: 1; }
+    100% { transform: scale(1)   translate(0, 0);      opacity: 1; }
+  }
+  .bottom-nav .icon-forum.active .forum-bubble-right {
+    animation: bubble-right 520ms var(--ease-spring) 80ms forwards;
+    transform-origin: 70% 40%;
+  }
+  @keyframes bubble-right {
+    0%   { transform: scale(1) translate(0, 0); opacity: 1; }
+    30%  { transform: scale(1.1) translate(2px, -1px); opacity: 1; }
+    60%  { transform: scale(0.96) translate(0, 0); opacity: 1; }
+    100% { transform: scale(1)   translate(0, 0); opacity: 1; }
+  }
+  .bottom-nav .icon-forum.active .forum-dot-1 { animation: dot-pop 350ms var(--ease-spring) 120ms forwards; transform-origin: center; }
+  .bottom-nav .icon-forum.active .forum-dot-2 { animation: dot-pop 350ms var(--ease-spring) 175ms forwards; transform-origin: center; }
+  .bottom-nav .icon-forum.active .forum-dot-3 { animation: dot-pop 350ms var(--ease-spring) 230ms forwards; transform-origin: center; }
+  .bottom-nav .icon-forum.active .forum-dot-4 { animation: dot-pop 350ms var(--ease-spring) 160ms forwards; transform-origin: center; }
+  .bottom-nav .icon-forum.active .forum-dot-5 { animation: dot-pop 350ms var(--ease-spring) 220ms forwards; transform-origin: center; }
+  @keyframes dot-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.6); }
+    70%  { transform: scale(0.85); }
+    100% { transform: scale(1); }
+  }
+  .bottom-nav .nav-item:nth-child(5) .icon-wrap {
+    width: var(--icon-size-nav);
+    height: var(--icon-size-nav);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Items (Volunteer) icon — bag toss + settle + ripple */
+  .bottom-nav .icon-items {
+    transform-origin: center center;
+  }
+  .bottom-nav .icon-items.active .items-bag-main {
+    animation: bag-toss 550ms var(--ease-spring) forwards;
+    transform-origin: 68% 45%;
+  }
+  @keyframes bag-toss {
+    0%   { transform: translateY(0)    rotate(0deg)   scale(1); }
+    30%  { transform: translateY(-5px) rotate(-6deg)  scale(1.08); }
+    55%  { transform: translateY(1px)  rotate(2deg)   scale(0.97); }
+    75%  { transform: translateY(-1px) rotate(-1deg)  scale(1.02); }
+    100% { transform: translateY(0)    rotate(0deg)   scale(1); }
+  }
+  .bottom-nav .icon-items.active .items-bag-secondary {
+    animation: bag-settle 500ms var(--ease-spring) 90ms forwards;
+    transform-origin: 35% 65%;
+  }
+  @keyframes bag-settle {
+    0%   { transform: translateY(0)    scale(1); }
+    35%  { transform: translateY(-3px) scale(1.05); }
+    60%  { transform: translateY(1px)  scale(0.97); }
+    80%  { transform: translateY(0)    scale(1.02); }
+    100% { transform: translateY(0)    scale(1); }
+  }
+  .bottom-nav .icon-items.active .items-accent {
+    animation: items-ripple 400ms var(--ease-out) 200ms forwards;
+  }
+  @keyframes items-ripple {
+    0%   { opacity: 1; transform: scale(1); }
+    40%  { opacity: 1; transform: scale(1.08); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .bottom-nav .nav-item:nth-child(4) .icon-wrap {
+    width: var(--icon-size-nav);
+    height: var(--icon-size-nav);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Grow & return bounce on icon-wrap for Events, Forums, Volunteer (same as Home/Donate) */
+  .bottom-nav .nav-item .icon-wrap:has(.icon-calendar.active),
+  .bottom-nav .nav-item .icon-wrap:has(.icon-forum.active),
+  .bottom-nav .nav-item .icon-wrap:has(.icon-items.active) {
+    animation: home-bounce var(--dur-bounce) var(--ease-spring) forwards;
+    transform-origin: center center;
   }
 
   /* Donate icon button reset */
@@ -1166,7 +2865,36 @@
   .donate-icon-btn .donate-svg {
     transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .donate-icon-btn:active .donate-svg { transform: scale(0.92); }
+  .donate-icon-btn:active .donate-svg,
+  .donate-icon-btn.touch-active .donate-svg { transform: scale(0.92); }
+
+  /* Donate bounce: grow & return like Home (home-bounce), plus accent pop and spark flick */
+  .donate-svg.active,
+  .donate-svg.icon-donate.active {
+    animation: home-bounce var(--dur-bounce) var(--ease-spring) forwards;
+    transform-origin: center center;
+  }
+  .donate-svg.active .globe-accent {
+    animation: globe-accent-pop 520ms var(--ease-spring) 60ms forwards;
+    transform-origin: 56% 54%;
+  }
+  .donate-svg.active .donate-spark-1 { animation: spark-flick 380ms var(--ease-out) 0ms forwards; transform-origin: 84% 10%; }
+  .donate-svg.active .donate-spark-2 { animation: spark-flick 380ms var(--ease-out) 60ms forwards; transform-origin: 95% 17%; }
+  .donate-svg.active .donate-spark-3 { animation: spark-flick 380ms var(--ease-out) 40ms forwards; transform-origin: 18% 94%; }
+  .donate-svg.active .donate-spark-4 { animation: spark-flick 380ms var(--ease-out) 100ms forwards; transform-origin: 6% 90%; }
+  .donate-svg.active .donate-spark-5 { animation: spark-flick 380ms var(--ease-out) 80ms forwards; transform-origin: 5% 77%; }
+  @keyframes globe-accent-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.14); }
+    65%  { transform: scale(0.93); }
+    100% { transform: scale(1); }
+  }
+  @keyframes spark-flick {
+    0%   { transform: scale(1) rotate(0deg); }
+    35%  { transform: scale(1.4) rotate(8deg); }
+    65%  { transform: scale(0.9) rotate(-3deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
 
   /* Particle transform origins */
   #p1 { transform-origin: 35.8px 3.97px; }
@@ -1219,8 +2947,8 @@
     100% { transform: scale(1);    transform-origin: 22px 22px; }
   }
 
-  /* SVG Defaults — excludes the donate icon which has its own fills/strokes */
-  svg:not(.donate-svg) { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  /* SVG Defaults — excludes donate and home nav icon (they have their own fills/strokes) */
+  svg:not(.donate-svg):not(.icon-home):not(.icon-calendar):not(.icon-forum):not(.icon-items) { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .icon-sm { width: var(--icon-size-sm); height: var(--icon-size-sm); }
   .share-icon { width: 32px; height: 32px; object-fit: contain; }
 
@@ -1251,6 +2979,7 @@
     padding: 16px 0 20px;
     margin-bottom: 12px;
     min-width: 300px;
+    max-width: 340px;
     opacity: 0;
     transform: scaleY(0);
     transform-origin: bottom center;
@@ -1384,31 +3113,86 @@
   }
 
   /* ── Events Page ── */
+  .page-events .vol-page-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 20px 18px;
+  }
+  .page-events .vol-back-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(35,33,74,0.08);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .page-events .vol-back-btn svg {
+    width: 16px; height: 16px;
+    stroke: var(--navy); stroke-width: 2; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .page-events .vol-page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+  }
+  .page-events .vol-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0 20px;
+  }
+
   .cal-scroll-wrap {
     padding: 16px 20px 120px;
   }
 
-  /* Segment toggle */
+  /* Segment toggle — sliding pill like volunteer one-time/repeating */
   .seg-wrap { margin-bottom: 16px; }
   .segment {
     background: #dedad2;
     border-radius: 50px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     padding: 4px;
-    gap: 2px;
+    position: relative;
+    isolation: isolate;
+  }
+  .segment::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    background: var(--navy);
+    border-radius: 50px;
+    box-shadow: 0 4px 14px rgba(35, 33, 74, 0.25);
+    transform: translateX(0);
+    transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+  }
+  .segment.right::before {
+    transform: translateX(100%);
   }
   .seg-btn {
-    flex: 1;
+    position: relative;
+    z-index: 1;
     text-align: center;
     padding: 9px 0;
     border-radius: 50px;
     font-size: 14px;
     font-weight: 700;
     color: #888;
-    transition: all 0.2s;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .seg-btn.active {
-    background: var(--navy);
     color: white;
   }
 
@@ -1815,7 +3599,8 @@
     pointer-events: none;
   }
   #dd-onboarding #modal.visible .cta-btn { opacity: 1; transform: translateY(0); }
-  #dd-onboarding .cta-btn:active {
+  #dd-onboarding .cta-btn:active,
+  #dd-onboarding .cta-btn.touch-active {
     scale: 0.98;
     box-shadow: none;
     background: var(--orange);
@@ -1998,6 +3783,59 @@
     background: rgba(35, 33, 74, 0.12);
     margin: 16px 0;
   }
+  .event-detail-map-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .event-detail-map-wrap.hidden {
+    display: none;
+  }
+  .event-detail-map-loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--input-bg);
+    z-index: 1;
+    border-radius: var(--radius-lg);
+  }
+  .event-detail-map-wrap.loaded .event-detail-map-loading {
+    display: none;
+  }
+  .event-detail-map-loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(35, 33, 74, 0.15);
+    border-top-color: var(--navy);
+    border-radius: 50%;
+    animation: event-detail-map-spin 0.7s linear infinite;
+  }
+  @keyframes event-detail-map-spin {
+    to { transform: rotate(360deg); }
+  }
+  .event-detail-map-loading-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .event-detail-map {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
   .event-detail-heading {
     font-size: 13px;
     font-weight: 700;
@@ -2173,7 +4011,7 @@
           <span class="stat-cell-label">Streaks</span>
           <img src="img/icons/fire.svg" class="stat-cell-icon" alt="Streaks">
           <span class="stat-cell-sub">7-day streak!</span>
-        </div>
+          </div>
         <div class="stat-cell">
           <span class="stat-cell-label">Active Attendee</span>
           <img src="img/icons/navbar-bottom-calendar.svg" class="stat-cell-icon" alt="Active Attendee">
@@ -2183,7 +4021,7 @@
           <span class="stat-cell-label">Committed Donor</span>
           <img src="img/icons/icon-hand.svg" class="stat-cell-icon" alt="Committed Donor">
           <span class="stat-cell-sub">8 months</span>
-        </div>
+          </div>
         <div class="stat-cell">
           <span class="stat-cell-label">Helpful Chatterbox</span>
           <img src="img/icons/icon-rewards.svg" class="stat-cell-icon" alt="Helpful Chatterbox">
@@ -2217,10 +4055,10 @@
       <div class="events-panel active" data-panel="all">
 
         <div class="card event-card" data-event-id="feb-distro-3">
-          <div class="card-top">
+      <div class="card-top">
             <div class="card-icon"><img src="img/icons/icon-bus.svg" alt="Distro"></div>
             <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
-          </div>
+        </div>
           <h3>February Distro #3</h3>
           <div class="event-meta">
             <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Sat, Feb 25 · 3–5pm</div>
@@ -2228,8 +4066,8 @@
           </div>
           <p style="margin-bottom: 16px;">Come help pack and hand out essential supplies to our unhoused neighbours.</p>
           <button class="btn btn-outline" data-event-id="feb-distro-3">View details</button>
-        </div>
-
+      </div>
+      
         <div class="card event-card" data-event-id="march-distro-1">
           <div class="card-top">
             <div class="card-icon"><img src="img/icons/icon-bus.svg" alt="Distro"></div>
@@ -2310,7 +4148,7 @@
             <div class="card-icon"><img src="img/icons/icon-bus.svg" alt="Distro"></div>
             <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
           </div>
-          <h3>February Distro #3</h3>
+      <h3>February Distro #3</h3>
           <div class="event-meta">
             <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Sat, Feb 25 · 3–5pm</div>
             <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Crab Park, 101 E Waterfront Rd</div>
@@ -2325,10 +4163,10 @@
             <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
           </div>
           <h3>March Distro #1</h3>
-          <div class="event-meta">
+      <div class="event-meta">
             <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Sat, Mar 4 · 2–4pm</div>
             <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Oppenheimer Park, E Cordova St</div>
-          </div>
+        </div>
           <p style="margin-bottom: 16px;">First distro of March — bring warm layers, socks, and snacks if you can.</p>
           <button class="btn btn-outline" data-event-id="march-distro-1">View details</button>
         </div>
@@ -2345,8 +4183,8 @@
           </div>
           <p style="margin-bottom: 16px;">Mid-month run — hygiene kits and food boxes are the focus this time.</p>
           <button class="btn btn-outline" data-event-id="march-distro-2">View details</button>
-        </div>
-
+      </div>
+      
       </div><!-- /distros -->
 
       <!-- DRIVES panel -->
@@ -2356,7 +4194,7 @@
           <div class="card-top">
             <div class="card-icon"><img src="img/icons/icon-heart.svg" alt="Drive"></div>
             <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
-          </div>
+    </div>
           <h3>Winter Clothing Drive</h3>
           <div class="event-meta">
             <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Mon–Fri, Feb 27 – Mar 10</div>
@@ -2417,6 +4255,7 @@
       <div class="item-left">
         <img src="img/icons/icon-tent.svg" class="item-icon" alt="Tent">
         <h4>2-person Tent</h4>
+        <span class="item-badge">15</span>
       </div>
       <div class="item-right">
         <button class="btn btn-light btn-small">I have this item</button>
@@ -2438,7 +4277,7 @@
       <div class="item-left">
         <img src="img/icons/icon-batteries.svg" class="item-icon" alt="Batteries">
         <h4>AA Batteries</h4>
-        <span class="item-badge">6</span>
+        <span class="item-badge">4</span>
       </div>
       <div class="item-right">
         <button class="btn btn-light btn-small">I have this item</button>
@@ -2463,7 +4302,7 @@
         <div style="margin-bottom: 12px; color: var(--text-muted);">
           <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
         </div>
-        <h3 style="margin-bottom: 8px;">This Saturday's set-up crew — who's in?</h3>
+        <h3 style="margin-bottom: 8px;">This Saturday's set-up crew, who's in?</h3>
         <p>Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the...</p>
         
         <div class="forum-meta-row">
@@ -2490,62 +4329,62 @@
       </div>
 
       <div class="card forum-card" data-sort-helpful="1" data-sort-recent="2" data-sort-discussed="2">
-        <div style="margin-bottom: 12px; color: var(--text-muted);">
-          <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
+      <div style="margin-bottom: 12px; color: var(--text-muted);">
+        <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
+      </div>
+      <h3 style="margin-bottom: 8px;">What's volunteering like at DD?</h3>
+      <p>I've been wanting to do more intentional volunteering, and not sure where to start. Would love to hear your experien...</p>
+      
+      <div class="forum-meta-row">
+        <div class="forum-stat">
+          <img src="img/icons/icon-clock.svg" class="forum-meta-icon" alt="Time">
+          2 days ago
         </div>
-        <h3 style="margin-bottom: 8px;">What's volunteering like at DD?</h3>
-        <p>I've been wanting to do more intentional volunteering, and not sure where to start. Would love to hear your experien...</p>
-        
-        <div class="forum-meta-row">
-          <div class="forum-stat">
-            <img src="img/icons/icon-clock.svg" class="forum-meta-icon" alt="Time">
-            2 days ago
-          </div>
-          <div class="forum-stat">
-            <img src="img/icons/icon-heart.svg" class="forum-meta-icon" alt="Likes">
-            24 Likes
-          </div>
-          <div class="forum-stat">
-            <img src="img/icons/icon-rewards.svg" class="forum-meta-icon" alt="Comments">
-            17 Comments
-          </div>
+        <div class="forum-stat">
+          <img src="img/icons/icon-heart.svg" class="forum-meta-icon" alt="Likes">
+          24 Likes
         </div>
-
-        <div class="comment-input-row">
-          <input type="text" class="comment-input" placeholder="Reply">
-          <button class="comment-btn">
-            <svg viewBox="0 0 24 24" class="icon-sm"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </button>
+        <div class="forum-stat">
+          <img src="img/icons/icon-rewards.svg" class="forum-meta-icon" alt="Comments">
+          17 Comments
         </div>
       </div>
 
-      <div class="card forum-card" data-sort-helpful="2" data-sort-recent="3" data-sort-discussed="1">
-        <div style="margin-bottom: 12px; color: var(--text-muted);">
-          <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
-        </div>
-        <h3 style="margin-bottom: 8px;">Online deals for supplies!!</h3>
-        <p>If you have financial capacity this month, I found some discount codes to get some much needed supplies at Canadi...</p>
-        
-        <div class="forum-meta-row">
-          <div class="forum-stat">
-            <img src="img/icons/icon-clock.svg" class="forum-meta-icon" alt="Time">
-            3 days ago
-          </div>
-          <div class="forum-stat">
-            <img src="img/icons/icon-heart.svg" class="forum-meta-icon" alt="Likes">
-            11 Likes
-          </div>
-          <div class="forum-stat">
-            <img src="img/icons/icon-rewards.svg" class="forum-meta-icon" alt="Comments">
-            6 Comments
-          </div>
-        </div>
+      <div class="comment-input-row">
+        <input type="text" class="comment-input" placeholder="Reply">
+        <button class="comment-btn">
+          <svg viewBox="0 0 24 24" class="icon-sm"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </div>
+    </div>
 
-        <div class="comment-input-row">
-          <input type="text" class="comment-input" placeholder="Reply">
-          <button class="comment-btn">
-            <svg viewBox="0 0 24 24" class="icon-sm"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </button>
+      <div class="card forum-card" data-sort-helpful="2" data-sort-recent="3" data-sort-discussed="1">
+      <div style="margin-bottom: 12px; color: var(--text-muted);">
+        <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
+      </div>
+      <h3 style="margin-bottom: 8px;">Online deals for supplies!!</h3>
+      <p>If you have financial capacity this month, I found some discount codes to get some much needed supplies at Canadi...</p>
+      
+      <div class="forum-meta-row">
+        <div class="forum-stat">
+          <img src="img/icons/icon-clock.svg" class="forum-meta-icon" alt="Time">
+          3 days ago
+        </div>
+        <div class="forum-stat">
+          <img src="img/icons/icon-heart.svg" class="forum-meta-icon" alt="Likes">
+          11 Likes
+        </div>
+        <div class="forum-stat">
+          <img src="img/icons/icon-rewards.svg" class="forum-meta-icon" alt="Comments">
+          6 Comments
+        </div>
+      </div>
+
+      <div class="comment-input-row">
+        <input type="text" class="comment-input" placeholder="Reply">
+        <button class="comment-btn">
+          <svg viewBox="0 0 24 24" class="icon-sm"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
         </div>
       </div>
     </div>
@@ -2573,6 +4412,14 @@
       </button>
     </div>
   </header>
+
+  <div class="vol-page-header">
+    <button class="vol-back-btn" id="events-back-btn" aria-label="Back">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <h1 class="vol-page-title">Events</h1>
+  </div>
+  <div class="vol-divider"></div>
 
   <div class="cal-scroll-wrap">
 
@@ -2771,6 +4618,14 @@
           </div>
         </div>
 
+        <div class="event-detail-map-wrap hidden" id="event-detail-map-wrap" aria-hidden="true">
+          <div class="event-detail-map-loading" id="event-detail-map-loading" aria-live="polite">
+            <span class="event-detail-map-loading-spinner"></span>
+            <span class="event-detail-map-loading-text">Map loading</span>
+          </div>
+          <iframe id="event-detail-map" class="event-detail-map" title="Event location map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="" allow="fullscreen"></iframe>
+        </div>
+
         <div class="event-detail-divider"></div>
 
         <h3 class="event-detail-heading">Help needed for this event:</h3>
@@ -2786,8 +4641,199 @@
   </div>
   </div><!-- /.page.page-event-detail -->
 
+  <!-- ── Donate Money Page ── -->
+  <div class="page page-donate-money">
+  <header class="top-nav">
+    <div class="logo">
+      <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+    </div>
+    <div class="nav-icons">
+      <button class="icon-btn">
+        <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+        <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+      </button>
+      <button class="icon-btn top-nav-settings">
+        <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+        <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+      </button>
+      <button class="icon-btn top-nav-profile">
+        <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+        <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+      </button>
+    </div>
+  </header>
+
+    <div class="donate-page-header">
+      <button class="donate-back-btn" id="donate-money-back-btn" aria-label="Back from donate">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <h1 class="donate-page-title">Donate</h1>
+    </div>
+    <div class="donate-divider"></div>
+
+    <div class="donate-money-content">
+      <div class="vol-commit-toggle" id="donate-mode-toggle" role="tablist" aria-label="Donation mode">
+        <button class="vol-toggle-opt active" data-mode="one-time" role="tab" aria-selected="true">One-time</button>
+        <button class="vol-toggle-opt" data-mode="monthly" role="tab" aria-selected="false">Monthly</button>
+      </div>
+
+      <div class="donate-amount-card">
+        <div class="donate-amount-eyebrow">Your amount</div>
+        <div class="donate-amount-display">
+          <span class="donate-amount-currency">$</span>
+          <span class="donate-amount-value" id="donate-amount-value">15</span>
+        </div>
+
+        <div class="donate-preset-grid">
+          <button class="donate-preset-btn" data-amount="5">$5</button>
+          <button class="donate-preset-btn active" data-amount="15">$15</button>
+          <button class="donate-preset-btn" data-amount="30">$30</button>
+          <button class="donate-preset-btn" data-amount="50">$50</button>
+        </div>
+
+        <div class="donate-custom-wrap">
+          <label class="donate-custom-label" for="donate-custom-input">Custom amount</label>
+          <input id="donate-custom-input" class="donate-custom-input" type="number" min="1" step="1" inputmode="numeric" placeholder="Enter amount">
+        </div>
+
+        <div class="donate-subdivider">or give a specific amount for</div>
+
+        <div class="donate-item-scroll">
+          <div class="donate-item-track">
+            <button class="donate-money-item-card" data-item="Socks" data-amount="5">
+              <div class="donate-item-price">$5</div>
+              <img class="donate-item-icon" src="img/icons/icon-socks.svg" alt="">
+              <div class="donate-item-name">Warm socks</div>
+            </button>
+            <button class="donate-money-item-card" data-item="Hygiene Kit" data-amount="15">
+              <div class="donate-item-price">$15</div>
+              <img class="donate-item-icon" src="img/icons/icon-hand.svg" alt="">
+              <div class="donate-item-name">Hygiene kit</div>
+            </button>
+            <button class="donate-money-item-card" data-item="Food Box" data-amount="30">
+              <div class="donate-item-price">$30</div>
+              <img class="donate-item-icon" src="img/icons/icon-bus.svg" alt="">
+              <div class="donate-item-name">Food box</div>
+            </button>
+            <button class="donate-money-item-card" data-item="Tent Support" data-amount="50">
+              <div class="donate-item-price">$50</div>
+              <img class="donate-item-icon" src="img/icons/icon-tent.svg" alt="">
+              <div class="donate-item-name">Tent support</div>
+            </button>
+            <button class="donate-money-item-card" data-item="Power Bank" data-amount="20">
+              <div class="donate-item-price">$20</div>
+              <img class="donate-item-icon" src="img/icons/icon-batteries.svg" alt="">
+              <div class="donate-item-name">Power bank</div>
+            </button>
+          </div>
+        </div>
+
+        <p class="donate-impact-line" id="donate-impact-line">This amount helps us deliver practical support where it is needed most.</p>
+      </div>
+
+      <button id="donate-money-cta" class="btn btn-primary donate-money-cta">Donate $15</button>
+
+      <div class="donate-section-break"></div>
+
+      <button id="donate-to-items-btn" class="donate-handoff-row">
+        <span>Donate physical items instead?</span>
+        <img src="img/icons/arrow-right.svg" alt="">
+      </button>
+    </div>
+  </div><!-- /.page.page-donate-money -->
+
+  <!-- ── Donate Items Page ── -->
+  <div class="page page-donate-items">
+  <header class="top-nav">
+    <div class="logo">
+      <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+    </div>
+    <div class="nav-icons">
+      <button class="icon-btn">
+        <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+        <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+      </button>
+      <button class="icon-btn top-nav-settings">
+        <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+        <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+      </button>
+      <button class="icon-btn top-nav-profile">
+        <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+        <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+      </button>
+    </div>
+  </header>
+
+    <div class="donate-page-header">
+      <button class="donate-back-btn" id="donate-items-back-btn" aria-label="Back to donate money">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <h1 class="donate-page-title">Donate Items</h1>
+    </div>
+    <div class="donate-divider"></div>
+
+    <div class="donate-items-content">
+      <div class="donate-items-intro">
+        <div class="donate-items-intro-title">Give what you can, directly</div>
+        <p class="donate-items-intro-copy">Coordinate a physical donation drop-off with our team. We'll share accepted-condition notes and the next handoff window.</p>
+      </div>
+
+      <div class="donate-items-list">
+        <div class="donate-item-type">
+          <img src="img/icons/icon-socks.svg" alt="">
+          <div>
+            <div class="donate-item-type-title">Clothing essentials</div>
+            <div class="donate-item-type-sub">Socks, thermal layers, gloves</div>
+          </div>
+        </div>
+        <div class="donate-item-type">
+          <img src="img/icons/icon-hand.svg" alt="">
+          <div>
+            <div class="donate-item-type-title">Hygiene supplies</div>
+            <div class="donate-item-type-sub">Toothbrushes, wipes, menstrual products</div>
+          </div>
+        </div>
+        <div class="donate-item-type">
+          <img src="img/icons/icon-batteries.svg" alt="">
+          <div>
+            <div class="donate-item-type-title">Daily-use gear</div>
+            <div class="donate-item-type-sub">Batteries, power banks, flashlights</div>
+          </div>
+        </div>
+        <div class="donate-item-type">
+          <img src="img/icons/icon-tent.svg" alt="">
+          <div>
+            <div class="donate-item-type-title">Outdoor support</div>
+            <div class="donate-item-type-sub">Tarps, tents, weather protection</div>
+          </div>
+        </div>
+      </div>
+
+      <button id="donate-items-cta" class="btn btn-primary donate-items-cta">I have something to donate</button>
+    </div>
+  </div><!-- /.page.page-donate-items -->
+
   <!-- ── Volunteer Page ── -->
   <div class="page page-volunteer">
+  <header class="top-nav">
+    <div class="logo">
+      <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+    </div>
+    <div class="nav-icons">
+      <button class="icon-btn">
+        <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+        <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+      </button>
+      <button class="icon-btn top-nav-settings">
+        <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+        <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+      </button>
+      <button class="icon-btn top-nav-profile">
+        <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+        <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+      </button>
+    </div>
+  </header>
 
     <div class="vol-page-header">
       <button class="vol-back-btn" id="vol-back-btn">
@@ -2800,7 +4846,7 @@
 
     <!-- Timeline -->
     <div class="vol-timeline-section">
-      <div class="vol-timeline-label">Current Volunteer Timeline/Schedule</div>
+      <div class="vol-timeline-label">Distro Timeline</div>
       <div class="vol-timeline-month-row">
         <span class="vol-timeline-month">March 2026</span>
         <a href="#" class="vol-timeline-view-link">View Events</a>
@@ -3042,6 +5088,663 @@
 
   </div><!-- /.page.page-volunteer -->
 
+  <!-- ── Settings Page ── -->
+  <div class="page page-settings">
+    <header class="top-nav">
+      <div class="logo">
+        <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+      </div>
+      <div class="nav-icons">
+        <button class="icon-btn">
+          <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        </button>
+        <button class="icon-btn top-nav-settings">
+          <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+          <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+        <button class="icon-btn top-nav-profile">
+          <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+          <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+      </div>
+    </header>
+
+    <div class="settings-page-header">
+      <button class="settings-back-btn" id="settings-back-btn">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      </button>
+      <span class="settings-page-title">Settings</span>
+    </div>
+
+    <div class="settings-section-label">Account</div>
+    <div class="settings-group">
+      <div class="settings-row">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Personal information</div><div class="settings-row-sublabel">Name, email, phone</div></div>
+        <div class="settings-row-right"><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Password &amp; security</div></div>
+        <div class="settings-row-right"><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Connected accounts</div></div>
+        <div class="settings-row-right"><span class="settings-row-value">Google</span><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
+      </div>
+    </div>
+
+    <div class="settings-section-label">Notifications</div>
+    <div class="settings-group">
+      <div class="settings-row no-tap">
+        <div class="settings-row-icon orange"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Event reminders</div><div class="settings-row-sublabel">24h before distros &amp; drives</div></div>
+        <div class="settings-row-right"><div class="settings-toggle on" data-toggle></div></div>
+      </div>
+      <div class="settings-row no-tap">
+        <div class="settings-row-icon orange"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Volunteer confirmations</div></div>
+        <div class="settings-row-right"><div class="settings-toggle on" data-toggle></div></div>
+      </div>
+      <div class="settings-row no-tap">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Forum replies</div></div>
+        <div class="settings-row-right"><div class="settings-toggle on" data-toggle></div></div>
+      </div>
+      <div class="settings-row no-tap">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Weekly digest</div><div class="settings-row-sublabel">Impact summary every Monday</div></div>
+        <div class="settings-row-right"><div class="settings-toggle" data-toggle></div></div>
+      </div>
+    </div>
+
+    <div class="settings-section-label">Privacy</div>
+    <div class="settings-group">
+      <div class="settings-row">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Profile visibility</div></div>
+        <div class="settings-row-right"><span class="settings-row-value">Members only</span><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
+      </div>
+      <div class="settings-row no-tap">
+        <div class="settings-row-icon orange"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Show streak on profile</div></div>
+        <div class="settings-row-right"><div class="settings-toggle on" data-toggle></div></div>
+      </div>
+      <div class="settings-row no-tap">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Show activity to community</div></div>
+        <div class="settings-row-right"><div class="settings-toggle" data-toggle></div></div>
+      </div>
+    </div>
+
+    <div class="settings-section-label">App preferences</div>
+    <div class="settings-group">
+      <div class="settings-row no-tap" style="flex-wrap:wrap; gap:12px; padding:14px 16px;">
+        <div class="settings-row-icon accent" style="flex-shrink:0;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></div>
+        <div class="settings-row-text" style="flex:1;"><div class="settings-row-label">Appearance</div></div>
+        <div class="settings-appearance-opts" id="appearance-opts">
+          <div class="settings-appearance-opt active" data-appearance="light"><div class="settings-appearance-preview light"></div><div class="settings-appearance-name">Light</div></div>
+          <div class="settings-appearance-opt" data-appearance="dark"><div class="settings-appearance-preview dark"></div><div class="settings-appearance-name">Dark</div></div>
+          <div class="settings-appearance-opt" data-appearance="system"><div class="settings-appearance-preview sys"></div><div class="settings-appearance-name">Auto</div></div>
+        </div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Language</div></div>
+        <div class="settings-row-right"><span class="settings-row-value">English</span><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
+      </div>
+    </div>
+
+    <div class="settings-section-label">Support</div>
+    <div class="settings-group">
+      <div class="settings-row">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Help &amp; FAQ</div></div>
+        <div class="settings-row-right"><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-icon orange"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Send feedback</div><div class="settings-row-sublabel">Help us improve the app</div></div>
+        <div class="settings-row-right"><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">About Distro Disco</div><div class="settings-row-sublabel">Mission, team, legal</div></div>
+        <div class="settings-row-right"><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-row">
+        <div class="settings-row-icon red"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Log out</div></div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-icon red"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label destructive">Delete account</div></div>
+      </div>
+    </div>
+
+    <div class="settings-footer">
+      <div class="settings-version">Distro Disco · v1.0.0</div>
+    </div>
+  </div><!-- /.page.page-settings -->
+
+  <!-- ── Profile Page ── -->
+  <div class="page page-profile">
+    <header class="top-nav">
+      <div class="logo">
+        <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+      </div>
+      <div class="nav-icons">
+        <button class="icon-btn">
+          <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        </button>
+        <button class="icon-btn top-nav-settings">
+          <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+          <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+        <button class="icon-btn top-nav-profile">
+          <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+          <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+      </div>
+    </header>
+
+    <!-- page header -->
+    <div class="prof-header">
+      <div class="prof-header-left">
+        <button class="prof-back" id="prof-back-btn" aria-label="Back">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </button>
+        <div class="prof-title">Profile</div>
+      </div>
+      <span class="prof-header-badge">Member since Jan 2025</span>
+    </div>
+
+    <!-- hero card -->
+    <div class="prof-hero">
+      <div class="prof-identity">
+        <div class="prof-avatar-wrap">
+          <div class="prof-avatar">P</div>
+          <div class="prof-ring"></div>
+        </div>
+        <div class="prof-name-block">
+          <div class="prof-name">Potato23</div>
+          <div class="prof-handle">@potato23 · Vancouver, BC</div>
+        </div>
+      </div>
+      <button class="prof-edit">
+      Edit profile
+      </button>
+    </div>
+
+    <!-- impact bar -->
+    <div class="prof-impact-card">
+      <div class="prof-impact-heading">
+        <img src="img/icons/icon-rewards.svg" alt="">
+        <div class="prof-impact-title">Your donation impact</div>
+      </div>
+      <div class="prof-impact-copy">
+        Your total <strong>4 donations</strong> moved the needle.<br>
+        We're now <strong>12%</strong> closer to our next goal.
+      </div>
+      <div class="prof-impact-bar-wrap">
+        <div class="prof-impact-bar-track">
+          <div class="prof-impact-bar-fill"></div>
+          <div class="prof-impact-bar-pip"></div>
+        </div>
+        <div class="prof-impact-bar-label">You +12%</div>
+      </div>
+      <div class="prof-impact-actions">
+        <button class="btn btn-secondary">
+          Keep contributing
+        <img src="img/icons/arrow-right.svg" alt=""> </button>
+      </div>
+    </div>
+
+    <!-- what you're donating right now -->
+    <div class="prof-donations-section">
+      <div class="prof-eyebrow">What you're donating right now</div>
+      <div class="prof-donations-card">
+        <div class="prof-donation-item">
+          <div class="prof-donation-icon"><img src="img/icons/icon-socks.svg" alt=""></div>
+          <div class="prof-donation-body">
+            <div class="prof-donation-title">Socks</div>
+            <div class="prof-donation-details">6 pairs · New, assorted sizes</div>
+          </div>
+          <div class="prof-donation-meta">Added Mar 5</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prof-divider"></div>
+
+    <!-- trophy wall -->
+    <div class="prof-trophy-section">
+      <div class="prof-trophy-header">
+        <div class="prof-eyebrow">Trophies earned</div>
+      </div>
+      <div class="prof-trophy-wall">
+        <div class="prof-trophy-track-wrap">
+          <div class="prof-trophy-track">
+            <div class="prof-trophy-card">
+              <img class="prof-trophy-icon" src="img/trophies/trophy1.png" alt="Still Here">
+              <div class="prof-trophy-name">Still Here</div>
+            </div>
+            <div class="prof-trophy-card">
+              <img class="prof-trophy-icon" src="img/trophies/trophy2.png" alt="Showed Up">
+              <div class="prof-trophy-name">Showed Up</div>
+            </div>
+            <div class="prof-trophy-card">
+              <img class="prof-trophy-icon" src="img/trophies/trophy3.png" alt="Regular">
+              <div class="prof-trophy-name">Regular</div>
+            </div>
+            <div class="prof-trophy-card">
+              <img class="prof-trophy-icon" src="img/trophies/trophy1.png" alt="Loudmouth">
+              <div class="prof-trophy-name">Loudmouth</div>
+            </div>
+            <div class="prof-trophy-card">
+              <img class="prof-trophy-icon" src="img/trophies/trophy2.png" alt="Appreciated">
+              <div class="prof-trophy-name">Appreciated</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prof-divider"></div>
+
+    <!-- history timeline — oldest first; first item is anchor (yellow gradient) -->
+    <div class="prof-history-section">
+      <div class="prof-eyebrow">Your story</div>
+      <div class="prof-history-list">
+        <div class="prof-history-item prof-history-item-anchor">
+          <div class="prof-history-dot distro">
+            <img src="img/icons/icon-bus.svg" alt="Distro">
+          </div>
+          <div class="prof-history-content">
+            <div class="prof-history-anchor-summary">14 events · 15 months active</div>
+            <div class="prof-history-anchor-summary-sub">Jan 2025 → present</div>
+            <div class="prof-history-title">First Distro Run</div>
+            <div class="prof-history-meta">Jan 18, 2025 · Distribution</div>
+            <span class="prof-history-role">First timer</span>
+          </div>
+        </div>
+        <div class="prof-history-item">
+          <div class="prof-history-dot distro">
+            <img src="img/icons/icon-bus.svg" alt="Distro">
+          </div>
+          <div class="prof-history-content">
+            <div class="prof-history-title">Downtown Distro #4</div>
+            <div class="prof-history-meta">Dec 14, 2025 · Distribution</div>
+            <span class="prof-history-role">Distribution helper</span>
+          </div>
+        </div>
+        <div class="prof-history-item">
+          <div class="prof-history-dot fundraiser">
+            <img src="img/icons/icon-heart.svg" alt="Fundraiser">
+          </div>
+          <div class="prof-history-content">
+            <div class="prof-history-title">Winter Warmth Fundraiser</div>
+            <div class="prof-history-meta">Jan 20, 2026 · Fundraiser</div>
+            <span class="prof-history-role">Check-in volunteer</span>
+          </div>
+        </div>
+        <div class="prof-history-item">
+          <div class="prof-history-dot drive">
+            <img src="img/icons/icon-tent.svg" alt="Drive">
+          </div>
+          <div class="prof-history-content">
+            <div class="prof-history-title">Compassion Kit Drive</div>
+            <div class="prof-history-meta">Feb 15, 2026 · Community drive</div>
+            <span class="prof-history-role">Set-up crew</span>
+          </div>
+        </div>
+        <div class="prof-history-item">
+          <div class="prof-history-dot distro">
+            <img src="img/icons/icon-bus.svg" alt="Distro">
+          </div>
+          <div class="prof-history-content">
+            <div class="prof-history-title">East Side Distro Run</div>
+            <div class="prof-history-meta">Mar 8, 2026 · Distribution</div>
+            <span class="prof-history-role">Distribution helper</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prof-divider"></div>
+
+    <!-- community presence -->
+    <div class="prof-forum-section">
+      <div class="prof-eyebrow">Community presence</div>
+      <div class="prof-forum-stats">
+        <div class="prof-forum-stat-card">
+          <div class="prof-forum-stat-num">47</div>
+          <div class="prof-forum-stat-lbl">Posts</div>
+        </div>
+        <div class="prof-forum-stat-card">
+          <div class="prof-forum-stat-num">128</div>
+          <div class="prof-forum-stat-lbl">Thumbs up</div>
+        </div>
+        <div class="prof-forum-stat-card">
+          <div class="prof-forum-stat-num">6</div>
+          <div class="prof-forum-stat-lbl">Topics</div>
+        </div>
+      </div>
+      <div class="prof-forum-post">
+        <div class="prof-forum-post-title">Anyone else bringing extra gloves for Saturday's set-up?</div>
+        <div class="prof-forum-post-meta">
+          <span class="prof-forum-post-stat"><img src="img/icons/icon-heart.svg" alt=""> 4 helpful</span>
+          <span class="prof-forum-post-stat"><img src="img/icons/icon-clock.svg" alt=""> 2 days ago</span>
+        </div>
+      </div>
+      <div class="prof-forum-post">
+        <div class="prof-forum-post-title">Reminder: Central Library distro starts at 9am sharp</div>
+        <div class="prof-forum-post-meta">
+          <span class="prof-forum-post-stat"><img src="img/icons/icon-heart.svg" alt=""> 1 helpful</span>
+          <span class="prof-forum-post-stat"><img src="img/icons/icon-clock.svg" alt=""> 5 hours ago</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- settings link -->
+    <div class="prof-settings-link" id="prof-settings-link">
+      <div class="prof-settings-link-icon">
+        <img src="img/icons/top-navbar-settings.svg" alt="Settings">
+      </div>
+      <div class="prof-settings-link-text">Settings &amp; preferences</div>
+      <div class="prof-settings-link-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+
+  </div><!-- /.page.page-profile -->
+
+  <!-- ── Forum Page ── -->
+  <div class="page page-forum">
+    <header class="top-nav">
+      <div class="logo">
+        <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+      </div>
+      <div class="nav-icons">
+        <button class="icon-btn">
+          <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        </button>
+        <button class="icon-btn top-nav-settings">
+          <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+          <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+        <button class="icon-btn top-nav-profile">
+          <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+          <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+      </div>
+    </header>
+
+    <div class="forum-page-header">
+      <button class="forum-back" id="forum-back" aria-label="Back">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <div class="forum-header-text">
+        <div class="forum-page-title">Community board</div>
+        <div class="forum-page-sub">47 posts this month</div>
+      </div>
+    </div>
+    <div class="forum-page-divider"></div>
+
+    <div class="forum-sticky-wrap">
+      <div class="forum-sticky" id="forum-sticky-note">
+        <div class="sticky-eyebrow">Pinned from Ji Woo</div>
+        <div class="sticky-title">March distro schedule is live! Check your dates before Saturday.</div>
+        <div class="sticky-meta">2 days ago · tap to read</div>
+      </div>
+    </div>
+
+    <button type="button" class="forum-new-post-btn" id="forum-new-post-btn"><span>Start a Discussion</span> <img src="img/icons/arrow-right.svg" class="forum-new-post-arrow" alt="" aria-hidden="true"></button>
+
+    <div class="forum-filter-row" id="forum-filter-row">
+      <button class="forum-filter-btn active" data-cat="all">All posts</button>
+      <button class="forum-filter-btn" data-cat="general">General</button>
+      <button class="forum-filter-btn" data-cat="questions">Questions</button>
+    </div>
+
+    <div class="forum-board" id="forum-board">
+      <div class="bpost" data-post-id="post-2" data-reply-count="7" data-cat="questions" style="transform:rotate(0.4deg);">
+        <div class="bpost-tack"></div>
+        <div class="bpost-byline">
+          <span class="bpost-author">GracelleM</span>
+          <div class="bpost-sep"></div>
+          <span class="bpost-time">2 days ago</span>
+          <span class="bpost-cat question">Question</span>
+        </div>
+        <div class="bpost-title">What's volunteering actually like at DD?</div>
+        <div class="bpost-body">I've been wanting to do more intentional volunteering and not sure where to start. Would love to hear from people who joined for the first time — what made you come back?</div>
+        <div class="bpost-rule"></div>
+        <div class="bpost-stats">
+          <div class="bpost-stat"><div class="stat-box"></div> 24 likes</div>
+          <div class="bpost-stat"><div class="stat-box"></div> 7 replies</div>
+          <span class="bpost-reply-hint">Reply</span>
+        </div>
+        <div class="bpost-reply-area" id="reply-2">
+          <div class="bpost-reply-inner">
+            <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
+            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bpost bpost-own" data-post-id="post-1" data-reply-count="0" data-cat="general" style="transform:rotate(-0.5deg);">
+        <div class="bpost-tack"></div>
+        <div class="bpost-byline">
+          <span class="bpost-author bpost-author-own">Potato23</span>
+          <div class="bpost-sep"></div>
+          <span class="bpost-time">1 day ago</span>
+          <span class="bpost-cat general">General</span>
+        </div>
+        <div class="bpost-title">This Saturday's set-up crew — who's in?</div>
+        <div class="bpost-body">Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the group chat.</div>
+        <div class="bpost-rule"></div>
+        <div class="bpost-stats">
+          <div class="bpost-stat"><div class="stat-box"></div> 1 like</div>
+          <div class="bpost-stat"><div class="stat-box"></div> 0 replies</div>
+          <span class="bpost-reply-hint">Reply</span>
+        </div>
+        <div class="bpost-reply-area" id="reply-1">
+          <div class="bpost-reply-inner">
+            <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
+            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bpost" data-post-id="post-3" data-reply-count="6" data-cat="general" style="transform:rotate(-0.3deg);">
+        <div class="bpost-tack"></div>
+        <div class="bpost-byline">
+          <span class="bpost-author">CaitlinV</span>
+          <div class="bpost-sep"></div>
+          <span class="bpost-time">3 days ago</span>
+          <span class="bpost-cat general">General</span>
+        </div>
+        <div class="bpost-title">Online deals for supplies this week</div>
+        <div class="bpost-body">Found some discount codes for Canadian Tire. Tents, thermal socks, gloves all on sale. Sharing here if you have financial capacity this month.</div>
+        <div class="bpost-rule"></div>
+        <div class="bpost-stats">
+          <div class="bpost-stat"><div class="stat-box"></div> 11 likes</div>
+          <div class="bpost-stat"><div class="stat-box"></div> 6 replies</div>
+          <span class="bpost-reply-hint">Reply</span>
+        </div>
+        <div class="bpost-reply-area" id="reply-3">
+          <div class="bpost-reply-inner">
+            <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
+            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bpost" data-post-id="post-4" data-reply-count="8" data-cat="questions" style="transform:rotate(0.6deg);">
+        <div class="bpost-tack"></div>
+        <div class="bpost-byline">
+          <span class="bpost-author">DogaCM</span>
+          <div class="bpost-sep"></div>
+          <span class="bpost-time">5 days ago</span>
+          <span class="bpost-cat question">Question</span>
+        </div>
+        <div class="bpost-title">Do I need to bring my own bags for the distro?</div>
+        <div class="bpost-body">First time attending next Saturday. Is there a list of what to bring or does everything get provided on the day?</div>
+        <div class="bpost-rule"></div>
+        <div class="bpost-stats">
+          <div class="bpost-stat"><div class="stat-box"></div> 3 likes</div>
+          <div class="bpost-stat"><div class="stat-box"></div> 8 replies</div>
+          <span class="bpost-reply-hint">Reply</span>
+        </div>
+        <div class="bpost-reply-area" id="reply-4">
+          <div class="bpost-reply-inner">
+            <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
+            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bpost" data-post-id="post-5" data-reply-count="4" data-cat="general" style="transform:rotate(-0.4deg);">
+        <div class="bpost-tack"></div>
+        <div class="bpost-byline">
+          <span class="bpost-author">JiWoo_DD</span>
+          <div class="bpost-sep"></div>
+          <span class="bpost-time">1 week ago</span>
+          <span class="bpost-cat general">General</span>
+        </div>
+        <div class="bpost-title">Thank you to everyone who came out last Saturday</div>
+        <div class="bpost-body">We distributed over 80 hygiene kits, 40 warm meals, and 60 pairs of socks. Could not have done it without every single one of you. See you next time.</div>
+        <div class="bpost-rule"></div>
+        <div class="bpost-stats">
+          <div class="bpost-stat"><div class="stat-box"></div> 41 likes</div>
+          <div class="bpost-stat"><div class="stat-box"></div> 4 replies</div>
+          <span class="bpost-reply-hint">Reply</span>
+        </div>
+        <div class="bpost-reply-area" id="reply-5">
+          <div class="bpost-reply-inner">
+            <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
+            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.page.page-forum -->
+
+  <!-- ── Compose Page ── -->
+  <div class="page page-compose">
+    <header class="top-nav">
+      <div class="logo">
+        <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+      </div>
+      <div class="nav-icons">
+        <button class="icon-btn">
+          <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        </button>
+        <button class="icon-btn top-nav-settings">
+          <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+          <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+        <button class="icon-btn top-nav-profile">
+          <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+          <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+      </div>
+    </header>
+
+    <div class="compose-header">
+      <button class="compose-back" id="compose-back" aria-label="Back">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <div class="compose-header-title">New post</div>
+    </div>
+
+    <div class="compose-inner">
+      <div class="compose-author-row">
+        <div class="compose-av">P</div>
+        <div>
+          <div class="compose-author-name">Potato23</div>
+          <div class="compose-author-dest">Posting to the community board</div>
+        </div>
+      </div>
+
+      <div class="compose-cat-row" id="compose-cats">
+        <button class="compose-cat-btn active" data-cat="general">General</button>
+        <button class="compose-cat-btn" data-cat="questions">Question</button>
+      </div>
+
+      <textarea class="compose-title-field" id="compose-title" placeholder="What's on your mind?" rows="2"></textarea>
+
+      <div class="compose-divider"></div>
+
+      <textarea class="compose-body-field" id="compose-body" placeholder="Share more, ask a question, or just say hi..." rows="7"></textarea>
+
+      <div class="compose-divider"></div>
+
+      <div class="compose-attach-row">
+        <button class="compose-attach"><div class="attach-ph"></div> Add photo</button>
+        <button class="compose-attach"><div class="attach-ph"></div> Attach link</button>
+      </div>
+    </div>
+
+    <div class="compose-footer">
+      <button type="button" class="compose-submit" id="compose-submit" disabled><span>Share post with the community</span> <img src="img/icons/icon-enter.svg" class="compose-submit-arrow" alt="" aria-hidden="true"></button>
+    </div>
+  </div><!-- /.page.page-compose -->
+
+  <!-- ── Forum post detail (Reddit-style comments) ── -->
+  <div class="page page-forum-detail">
+    <header class="top-nav">
+      <div class="logo">
+        <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+      </div>
+      <div class="nav-icons">
+        <button class="icon-btn">
+          <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+          <img src="img/icons/alert-badge.svg" class="alert-badge" alt="">
+        </button>
+        <button class="icon-btn top-nav-settings">
+          <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+          <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+        <button class="icon-btn top-nav-profile">
+          <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+          <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+        </button>
+      </div>
+    </header>
+
+    <div class="forum-detail-inner">
+      <div class="forum-detail-header">
+        <button class="forum-detail-back" id="forum-detail-back" aria-label="Back">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </button>
+        <h1 class="forum-detail-title" id="forum-detail-title">Discussion</h1>
+      </div>
+
+      <article class="forum-detail-post" id="forum-detail-post">
+        <div class="forum-detail-post-byline">
+          <div class="forum-detail-post-avatar" id="forum-detail-post-avatar"></div>
+          <span class="forum-detail-post-author" id="forum-detail-post-author"></span>
+          <span class="forum-detail-post-dot">·</span>
+          <span class="forum-detail-post-time" id="forum-detail-post-time"></span>
+        </div>
+        <h2 class="forum-detail-post-title" id="forum-detail-post-title"></h2>
+        <div class="forum-detail-post-body" id="forum-detail-post-body"></div>
+      </article>
+      <div class="forum-detail-post-divider"></div>
+
+      <h3 class="forum-detail-comments-heading">Comments</h3>
+      <div class="forum-thread" id="forum-detail-comments"></div>
+      <div class="forum-thread-empty" id="forum-detail-empty" aria-hidden="true">No comments yet. Be the first to reply.</div>
+    </div>
+  </div><!-- /.page.page-forum-detail -->
+
   </div><!-- /.screen-content -->
 
   <div class="nav-scrim"></div>
@@ -3050,21 +5753,50 @@
     <div class="nav-content">
 
       <div class="nav-item active">
-        <img src="img/icons/navbar-home.svg" class="nav-icon" alt="Home">
+        <span class="icon-wrap">
+          <svg class="icon-home nav-icon" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Orange fill (house body + door) — customize: .home-accent, --home-accent-fill -->
+            <g class="home-accent">
+              <path class="home-accent-body" d="M26.6994 23.4261L25.455 12.7261C25.3425 11.7605 24.5219 11.0592 23.595 11.1367L10.7213 12.2148C9.68379 12.3017 8.95192 13.3186 9.16067 14.3855C9.76129 17.4605 10.8825 22.928 11.4432 25.6492C11.6332 26.5723 12.4682 27.1886 13.3638 27.0661L25.2032 25.4436C26.1463 25.3142 26.8144 24.4142 26.6994 23.4261ZM21.2988 18.7911L19.3482 18.9511C18.7275 19.0017 18.1782 18.5517 18.1057 17.9336L17.9288 16.4161C17.8588 15.8186 18.2594 15.2673 18.8494 15.1492L20.8369 14.7505C21.5157 14.6142 22.1613 15.1017 22.2163 15.7917L22.3563 17.5473C22.4069 18.183 21.9338 18.7392 21.2988 18.7911Z"/>
+            </g>
+            <!-- Strokes — customize: --home-stroke, --home-stroke-width, or per-part classes -->
+            <path class="home-stroke home-stroke-base" d="M28.7656 25.6313C22.255 25.6313 16.0769 26.0963 9.79625 27.3495C7.90875 27.7263 6.00375 28.1345 4.17188 28.7338"/>
+            <path class="home-stroke home-stroke-wall-r" d="M24.7832 12.7832L25.1738 25.4295"/>
+            <path class="home-stroke home-stroke-wall-l" d="M9.6882 27.2279L7.7207 15.0186"/>
+            <path class="home-stroke home-stroke-roof" d="M4.14751 15.0123L28.0681 12.1873C28.8481 12.0954 29.0281 11.1061 28.3256 10.7736L12.4225 3.84232C12.0694 3.67544 11.64 3.77794 11.4144 4.08357L3.39688 13.8392C3.00313 14.3717 3.46438 15.0929 4.14751 15.0123Z"/>
+            <path class="home-stroke home-stroke-door" d="M15.4847 26.3794L14.9885 22.1919C14.9585 21.7181 15.2435 21.305 15.6235 21.27L18.9297 20.9681C19.3072 20.9338 19.636 21.2869 19.6654 21.7569L19.9816 25.8644"/>
+            <path class="home-stroke home-stroke-chimney" d="M20.8867 7.53124L22.128 4.12249C22.2311 3.83936 22.5442 3.69311 22.8273 3.79624L25.1473 4.64061C25.4305 4.74374 25.5767 5.05686 25.4736 5.33999L24.1573 8.95686"/>
+          </svg>
+        </span>
         <span>Home</span>
       </div>
 
       <div class="nav-item">
-        <img src="img/icons/navbar-bottom-calendar.svg" class="nav-icon" alt="Events">
+        <span class="icon-wrap">
+          <svg class="icon-calendar nav-icon" width="38" height="38" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g class="cal-header">
+              <path d="M36.1947 15.1265C35.9146 14.243 35.3784 13.3911 34.5515 12.9445C33.6459 12.4565 32.8023 12.4213 31.7966 12.577C31.3974 12.6379 30.9983 12.6951 30.5991 12.7523C24.1837 13.5907 17.7004 13.7757 11.2493 13.3011C9.37973 13.1636 7.59239 15.079 7.67461 16.9518C7.76636 19.0474 9.24747 20.4553 11.2493 20.6026C18.7573 21.1563 26.2582 20.7644 33.6971 19.6181C34.5229 19.4903 35.4321 18.6409 35.8336 17.94C36.2816 17.1575 36.4723 16.0039 36.1935 15.1265H36.1947Z" fill="#FF7534"/>
+            </g>
+            <path d="M39.5294 34.7647L38.3247 17.0817C38.3044 13.5977 35.5221 10.7696 32.1059 10.7696C32.0869 10.7696 32.0678 10.7696 32.0487 10.7708L30.3365 10.8669L30.2542 9.07318C30.234 8.63388 29.9516 8.25177 29.5429 8.11304C29.1342 7.97309 28.6838 8.10452 28.4097 8.44404L27.497 9.56969C27.3301 9.77534 27.2455 10.037 27.2587 10.3035L27.2956 11.0373L18.5257 11.5314C18.5293 10.7051 18.5328 9.85931 18.5376 9.17176C18.5412 8.69838 18.2385 8.27976 17.7941 8.14468L16.6871 7.80638C16.3713 7.71024 16.0294 7.77109 15.7648 7.97188C15.5003 8.17267 15.3442 8.48907 15.3442 8.82615V11.7115L13.2328 11.8307C10.4767 11.8478 8.23893 14.1356 8.22701 16.9515L7.4668 35.9865C7.4668 36.0011 7.4668 36.0157 7.4668 36.0303C7.4668 38.3522 9.31729 40.242 11.6027 40.242L34.4998 39.9841C37.2737 39.9804 39.5306 37.6743 39.5306 34.8401C39.5306 34.8158 39.5306 34.7903 39.5282 34.7659L39.5294 34.7647ZM10.3146 16.9722C10.3146 15.3099 11.6385 13.9579 13.2661 13.9579C13.2852 13.9579 13.3043 13.9579 13.3233 13.9567L15.3466 13.8423V15.2624C15.3466 15.7845 15.7184 16.2299 16.2224 16.3138C16.4297 16.3479 16.6192 16.3625 16.7896 16.3625C17.5033 16.3625 17.9073 16.1033 18.1003 15.9244C18.403 15.6445 18.5614 15.2417 18.5352 14.8195C18.5281 14.6941 18.5233 14.2597 18.5221 13.6646L27.404 13.1645L27.4767 14.5992C27.5053 15.1651 27.9629 15.6092 28.5181 15.6092H29.4619C29.7466 15.6092 30.0195 15.49 30.2161 15.2795C30.4127 15.0689 30.5164 14.7854 30.5033 14.4945L30.4342 12.9941L32.1333 12.8979C34.3997 12.9126 36.2395 14.8012 36.2395 17.1194C36.2395 17.1438 36.2395 17.1693 36.2418 17.1937V17.1961C33.2415 17.1328 26.5818 17.6366 18.4161 18.2889C15.1631 18.5481 11.8243 18.8146 10.2396 18.8913L10.3146 17.016C10.3146 17.0014 10.3146 16.9868 10.3146 16.9722ZM34.4962 37.852C34.4962 37.852 34.4891 37.852 34.4843 37.852L11.5932 38.11C10.4755 38.11 9.56514 37.1864 9.55441 36.0473L10.1538 21.0294C10.6232 21.0099 11.2309 20.9697 12.0329 20.915C13.7237 20.7994 16.0818 20.6108 18.5793 20.4124C24.6265 19.9293 33.4429 19.2259 36.3884 19.322L37.4477 34.873C37.4298 36.5195 36.1132 37.8532 34.4962 37.8532V37.852Z" fill="#292966"/>
+            <path d="M17.4101 21.7656L12.4246 22.1855C11.8836 22.2305 11.4678 22.6929 11.4678 23.2466V26.817C11.4678 27.4048 11.9349 27.8818 12.5104 27.8818H17.4959C18.0714 27.8818 18.5385 27.4048 18.5385 26.817V22.8268C18.5385 22.5286 18.417 22.2451 18.2025 22.0431C17.988 21.8411 17.7008 21.7401 17.4101 21.7656ZM16.4521 25.7522H13.5518V24.2274L16.4521 23.9828V25.7522Z" fill="#292966"/>
+            <path d="M20.9152 27.882H25.2799C25.8352 27.882 26.2928 27.4378 26.3214 26.8719L26.5609 22.1284C26.5763 21.8217 26.4608 21.5224 26.2451 21.3094C26.0294 21.0952 25.7327 20.9869 25.4336 21.0125L20.8306 21.4031C20.2897 21.4493 19.875 21.9106 19.875 22.4643V26.8172C19.875 27.4049 20.3421 27.882 20.9176 27.882H20.9152ZM21.9579 23.4439L24.416 23.2346L24.2897 25.7511H21.959V23.4439H21.9579Z" fill="#292966"/>
+            <path d="M28.8807 27.8819H34.7754C35.0661 27.8819 35.3426 27.7578 35.5404 27.54C35.7382 27.3222 35.8371 27.0301 35.8144 26.7344L35.3878 21.0916C35.3664 20.808 35.2341 20.5452 35.022 20.3614C34.8099 20.1777 34.5335 20.0876 34.2559 20.1132L28.7878 20.6097C28.2504 20.6583 27.8369 21.1183 27.8369 21.6708V26.8171C27.8369 27.4049 28.304 27.8819 28.8795 27.8819H28.8807ZM29.9233 22.6443L33.3908 22.3292L33.6494 25.7511H29.9233V22.6443Z" fill="#292966"/>
+            <path d="M34.7747 29.0645H28.2998C28.0055 29.0645 27.7243 29.191 27.5277 29.4149C27.3299 29.6376 27.2333 29.9358 27.2631 30.2351L27.7958 35.7319C27.8232 36.0143 27.959 36.2735 28.1735 36.4523C28.3606 36.6081 28.5941 36.6921 28.8324 36.6921C28.8682 36.6921 28.9039 36.6896 28.9397 36.686L34.8832 36.0593C35.4146 36.0033 35.8185 35.5457 35.8185 35.0006V30.1305C35.8185 29.5427 35.3515 29.0657 34.7759 29.0657L34.7747 29.0645ZM33.7321 34.0392L29.7666 34.4566L29.4508 31.1941H33.7333V34.0392H33.7321Z" fill="#292966"/>
+            <path d="M26.1123 30.0416C26.0659 29.4624 25.5738 29.0279 25.0042 29.0669L20.1092 29.3967C19.5611 29.4332 19.1357 29.898 19.1357 30.459V35.6261C19.1357 36.2138 19.6028 36.6909 20.1784 36.6909H25.5189C25.8109 36.6909 26.0885 36.5667 26.2863 36.3477C26.4841 36.1286 26.5818 35.8354 26.558 35.5384L26.1135 30.0416H26.1123ZM21.221 34.5613V31.4557L24.1189 31.261L24.3858 34.5613H21.2198H21.221Z" fill="#292966"/>
+            <path d="M16.9422 29.0645H12.6514C12.1057 29.0645 11.6517 29.494 11.6112 30.0502L11.2489 35.02C11.2275 35.3157 11.3276 35.6066 11.5242 35.8232C11.722 36.0398 11.9984 36.1639 12.288 36.1639H16.941C17.5166 36.1639 17.9837 35.6869 17.9837 35.0991V30.1293C17.9837 29.5415 17.5166 29.0645 16.941 29.0645H16.9422ZM15.8996 34.0343H13.4128L13.6202 31.1941H15.9008V34.0343H15.8996Z" fill="#292966"/>
+          </svg>
+        </span>
         <span>Events</span>
       </div>
 
       <div class="nav-item center-item">
         <div class="nav-center-circle">
           <button class="donate-icon-btn" id="donate-btn" aria-label="Donate">
-            <svg class="donate-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="donate-svg icon-donate" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="globe-body">
+                <g class="globe-accent">
                 <path d="M24.4398 37.2135C32.1946 37.2135 38.4811 30.927 38.4811 23.1722C38.4811 15.4174 32.1946 9.13086 24.4398 9.13086C16.685 9.13086 10.3984 15.4174 10.3984 23.1722C10.3984 30.927 16.685 37.2135 24.4398 37.2135Z" fill="#FF7534"/>
+                </g>
                 <path d="M22.0059 39.1221C31.4508 39.1221 39.1074 31.4654 39.1074 22.0205C39.1074 12.5756 31.4508 4.91895 22.0059 4.91895C12.5609 4.91895 4.9043 12.5756 4.9043 22.0205C4.9043 31.4654 12.5609 39.1221 22.0059 39.1221Z" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10"/>
                 <path d="M39.0541 21.0581C35.913 25.1599 29.4591 27.9726 22.0075 27.9726C14.5559 27.9726 8.10195 25.1599 4.96094 21.0581" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10"/>
                 <path d="M6.13281 16.0688C9.55398 19.441 15.3866 21.6599 22.0055 21.6599C28.6244 21.6599 34.457 19.4402 37.8781 16.0688" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10"/>
@@ -3072,11 +5804,11 @@
                 <path d="M29.2737 30.9004C29.2737 30.9004 33.1134 23.8724 28.5449 12.4883" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
                 <path d="M23.0371 13.0625C23.0371 13.0625 24.8573 22.0206 23.0371 32.0959" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
               </g>
-              <path id="p1" d="M36.7401 2.51367L34.9414 5.43125" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
-              <path id="p2" d="M41.5353 7.104L37.6191 8.28736" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
-              <path id="p3" d="M8.09375 41.0845L9.36563 38.6104" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
-              <path id="p4" d="M2.32812 39.4881L5.98648 36.5293" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
-              <path id="p5" d="M2.32812 34.4724L4.40352 33.9653" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              <path id="p1" class="donate-spark-1" d="M36.7401 2.51367L34.9414 5.43125" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              <path id="p2" class="donate-spark-2" d="M41.5353 7.104L37.6191 8.28736" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              <path id="p3" class="donate-spark-3" d="M8.09375 41.0845L9.36563 38.6104" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              <path id="p4" class="donate-spark-4" d="M2.32812 39.4881L5.98648 36.5293" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+              <path id="p5" class="donate-spark-5" d="M2.32812 34.4724L4.40352 33.9653" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
             </svg>
           </button>
           <span class="nav-center-label">Donate</span>
@@ -3084,12 +5816,39 @@
       </div>
 
       <div class="nav-item">
-        <img src="img/icons/navbar-bottom-items.svg" class="nav-icon" alt="Volunteer">
+        <span class="icon-wrap">
+          <svg class="icon-items nav-icon" width="38" height="38" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g class="items-bag-main">
+              <path d="M44.0503 14.9512C43.1197 14.1201 42.0211 13.9533 40.789 13.8207C38.6013 13.5846 36.4124 13.3631 34.2235 13.1344C32.7543 12.981 31.2804 12.919 29.9506 13.6418C29.7266 13.7635 29.518 13.8986 29.3214 14.0446C28.6959 13.0224 27.4614 12.2764 26.1709 12.3288C24.1751 12.4103 22.6701 13.7526 22.5962 15.5706C22.514 17.5931 22.5617 19.6169 22.7523 21.6333C22.7988 22.1286 22.8536 22.6226 22.9168 23.1167C23.005 23.8043 23.0335 24.5429 23.2361 25.2074C23.5352 26.187 24.2644 26.9768 25.2082 27.5025C25.8564 27.8639 26.6035 27.9698 27.3303 28.1048C29.7194 28.5478 32.1252 28.8898 34.5429 29.1818C37.2703 29.5116 41.0214 30.3598 42.6824 27.6753C43.2925 26.6908 43.4498 25.5286 43.7107 24.4407C43.955 23.4209 44.1993 22.4 44.4435 21.3802C44.6997 20.3117 45.0095 19.2408 45.1704 18.1578C45.3432 16.9944 44.9952 15.797 44.0515 14.9524L44.0503 14.9512Z" fill="#FF7534"/>
+            </g>
+            <g class="items-bag-secondary">
+              <path d="M10.7844 23.4758C8.98986 23.0584 6.80215 24.0283 6.38748 26.0253C5.94422 28.1622 5.36393 30.2626 4.65138 32.3216C4.027 34.1238 5.35797 36.3958 7.1477 36.812C9.14953 37.2781 10.8761 36.1926 11.5446 34.2626C12.2583 32.2035 12.8374 30.1031 13.2807 27.9662C13.6679 26.1031 12.7433 23.931 10.7844 23.4758Z" fill="#FF7534"/>
+              <path d="M31.2073 37.0356C28.4715 36.7107 25.0672 36.3067 23.8387 35.6057C22.7734 34.9973 21.962 34.126 21.3889 33.3423C21.825 33.4055 22.2956 33.4664 22.7758 33.5151C25.7988 33.8217 27.3324 33.4907 27.9019 32.4101C28.145 31.9489 28.1534 31.4122 27.9246 30.8975C26.9403 28.673 20.6918 26.3085 18.4826 25.7852C16.6357 25.3483 14.8877 25.0453 13.8701 24.8847C13.8689 24.4454 13.6008 24.0402 13.1802 23.8856L7.98258 21.9787C7.72044 21.8826 7.43089 21.8972 7.17947 22.0213C6.92805 22.1442 6.73501 22.3657 6.64446 22.6358L2.88388 33.8193C2.78737 34.1065 2.81477 34.4217 2.96014 34.6857C3.10551 34.9498 3.35455 35.1384 3.6441 35.2041C9.72703 36.5829 10.1048 36.5829 10.2287 36.5829C10.2751 36.5829 10.3204 36.5793 10.3633 36.5744C11.9493 38.6383 15.6181 43.192 17.8297 44.174C19.1142 44.7448 21.9227 44.8957 24.5405 44.8957H26.3422C29.6214 44.7971 33.115 44.5172 34.2971 44.2349C35.8532 43.8637 37.2462 42.7381 37.8455 41.369C38.2375 40.4734 38.2399 39.5777 37.8503 38.8476C37.3117 37.8388 35.7853 37.5783 31.2049 37.0344L31.2073 37.0356ZM8.27332 24.3493L11.618 25.5759C10.8638 29.1451 10.0202 32.8458 9.59 34.328C8.61053 34.1296 6.82915 33.7402 5.23603 33.3836L8.27332 24.3505V24.3493ZM35.945 40.5002C35.6721 41.122 34.8928 41.9069 33.824 42.1625C32.9113 42.3803 29.7751 42.665 26.2969 42.7466C21.7749 42.8512 19.3894 42.5446 18.6637 42.2233C17.0825 41.5211 13.6532 37.4542 11.6335 34.7721C11.6871 34.5835 11.7443 34.3718 11.8075 34.1345C12.0422 33.2413 12.3401 31.9988 12.6916 30.4436C12.9728 29.2011 13.2445 27.9525 13.4542 26.9754C14.4218 27.1263 16.1853 27.4268 18.0132 27.8601C19.3203 28.1692 21.2935 28.9103 22.9224 29.7025C24.4833 30.4618 25.3186 31.0569 25.719 31.422C25.259 31.5023 24.3523 31.5558 22.64 31.3599C21.0385 31.1762 19.5824 30.8671 19.5681 30.8634C19.1916 30.7831 18.802 30.9206 18.5541 31.2224C18.3075 31.5242 18.2431 31.9404 18.3873 32.3042C18.4421 32.443 19.7683 35.7213 22.8223 37.4652C24.4142 38.3742 27.7458 38.7697 30.9678 39.1518C32.7242 39.3599 35.3266 39.669 36.0558 39.9927C36.0677 40.1253 36.0296 40.3079 35.945 40.5002Z" fill="#292966"/>
+            </g>
+            <g class="items-accent">
+              <path d="M43.956 11.7165C43.7463 11.4379 43.4174 11.2833 43.0742 11.3016C41.6896 11.377 40.137 11.3016 38.4665 11.1154C39.3268 10.6955 40.0143 10.165 40.3908 9.52974C40.8496 8.75578 40.8413 7.89543 40.3706 7.10808C39.776 6.11508 38.4486 5.74149 36.728 6.08222C35.6103 6.3037 34.4592 6.81602 33.5358 7.49749C33.2832 6.56412 32.7684 5.12694 31.8199 4.13151C30.844 3.10686 29.6096 2.83062 28.4335 3.37702C27.3027 3.90151 26.732 4.93467 26.8654 6.21122C26.9643 7.15919 27.4457 8.18262 28.1118 9.11356C26.614 8.74362 25.1007 8.34934 23.5946 7.94654C23.0834 7.80903 22.5531 8.08526 22.3601 8.58785C21.5105 10.7978 20.8135 13.0101 20.2665 15.2127C20.2534 15.2517 20.2427 15.2906 20.2332 15.3308C20.2296 15.3478 20.2272 15.3636 20.2248 15.3807C19.6076 17.9033 19.1894 20.4126 18.9785 22.889C18.9522 23.2006 19.0607 23.5072 19.2764 23.7299C19.4896 23.9502 19.784 24.0646 20.0866 24.0439C20.0926 24.0439 20.0985 24.0439 20.1045 24.0439C21.5892 24.0439 37.437 27.3028 39.297 27.8601C39.4543 27.9514 39.6318 28.0001 39.8129 28.0001C39.8809 28.0001 39.9488 27.9928 40.0155 27.9794C40.5219 27.8772 40.8758 27.4196 40.8663 26.9073C41.3727 22.6846 42.4677 17.9033 44.1228 12.6937C44.2289 12.3603 44.1669 11.994 43.9572 11.7165H43.956ZM40.2562 18.7418L32.1941 16.9298L33.0901 12.4114C36.2049 13.0259 39.1433 13.4324 41.6968 13.4592C41.1475 15.2736 40.6673 17.0357 40.2562 18.7406V18.7418ZM36.436 8.35785C37.0306 8.1595 37.5287 8.09257 37.8981 8.09257C38.2675 8.09257 38.5237 8.16315 38.5975 8.22886C38.6607 8.33717 38.65 8.35542 38.6071 8.42843C38.171 9.16467 36.1096 9.92889 33.8861 10.0895C33.8861 10.0786 33.8861 10.0676 33.8861 10.0554C34.5248 9.23403 35.5507 8.65235 36.436 8.35664V8.35785ZM29.295 5.31678C29.3951 5.27054 29.5035 5.22916 29.6298 5.22916C29.8062 5.22916 30.0159 5.30948 30.2781 5.5699C31.1527 6.43513 31.6662 8.26537 31.7854 9.44456C31.7377 9.53096 31.6924 9.61979 31.6507 9.70863C30.4782 8.90425 29.0615 7.15919 28.9387 5.98487C28.8958 5.57964 29.0257 5.44212 29.295 5.31678ZM23.9699 10.2489C26.3459 10.8769 28.7314 11.478 31.0466 11.9855L30.1565 16.4722L22.5377 14.76C22.9416 13.2596 23.4182 11.7543 23.9687 10.2489H23.9699ZM22.0289 16.8264L29.7442 18.5605L28.7814 23.4135C25.8705 22.8306 22.8487 22.2575 21.1578 22.025C21.3461 20.3067 21.6368 18.5714 22.0289 16.8264ZM38.9348 25.5772C38.4641 25.464 37.8612 25.3265 37.1379 25.1659C35.4101 24.7813 33.1187 24.2958 30.8274 23.8273L31.7806 19.018L39.7843 20.8166C39.4328 22.4643 39.148 24.0536 38.9359 25.5772H38.9348Z" fill="#292966"/>
+            </g>
+          </svg>
+        </span>
         <span>Volunteer</span>
       </div>
 
       <div class="nav-item">
-        <img src="img/icons/navbar-bottom-forum.svg" class="nav-icon" alt="Forums">
+        <span class="icon-wrap">
+          <svg class="icon-forum nav-icon" width="38" height="38" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g class="forum-bubble-left">
+              <path d="M33.0634 23.4036C32.8847 22.2743 32.3223 21.2692 31.5692 20.4356C31.0413 18.7185 29.8021 17.3556 28.0076 16.8055C27.817 16.7471 27.6227 16.7106 27.4261 16.6936C26.8435 16.1216 26.0594 15.7651 25.161 15.7504C23.7502 15.7285 22.3405 15.7237 20.9297 15.7407C19.4319 15.759 17.7661 15.6409 16.3243 16.0961C15.3616 16.4003 14.5334 16.943 13.8149 17.6574C13.4241 18.0456 13.0988 18.4982 12.6937 18.8731C12.3398 19.2004 11.9394 19.4693 11.6248 19.8393C10.7824 20.8262 10.2986 21.9567 10.2998 23.2783C10.3022 25.2387 11.6868 26.7842 12.845 28.1958C13.7398 29.2874 14.7753 30.2731 15.9657 31.0264C18.4668 32.6084 21.423 32.8639 24.2673 32.4185C25.615 32.208 26.8625 31.731 28.1018 31.1615C29.2707 30.6248 30.4325 29.8788 31.3237 28.9345C32.7703 27.4012 33.3982 25.5065 33.0646 23.4024L33.0634 23.4036Z" fill="#FF7534"/>
+            </g>
+            <g class="forum-bubble-right">
+              <path d="M44.6621 24.7922C44.6097 24.3516 44.2951 23.9902 43.8733 23.8856L39.1094 22.7064C36.681 18.4715 34.5791 16.668 29.2171 17.167C28.8489 16.4721 28.3949 15.8113 27.8527 15.1968C25.7401 12.8043 22.5705 11.4316 19.1579 11.4316C13.268 11.4316 9.89469 16.4538 9.07609 17.8423L2.96813 20.4758C2.54275 20.6595 2.28537 21.1073 2.3378 21.5771C2.39023 22.0468 2.73816 22.424 3.19334 22.5056L7.87856 23.3452C7.94529 24.2859 8.24318 25.7292 9.30844 27.1347C10.9671 29.3227 13.8507 30.6504 17.8794 31.0824C18.7039 31.1712 19.4796 31.2223 20.2136 31.2394C20.4376 31.9281 20.919 33.055 21.8878 34.0955C23.6668 36.0072 26.038 36.5622 28.1899 36.5622C29.0145 36.5622 29.8081 36.4806 30.523 36.3626C33.0801 35.9415 36.507 34.7648 38.3111 31.5521C39.0093 30.3084 39.2453 29.128 39.3239 28.4113L44.1092 25.8655C44.4941 25.661 44.7145 25.2327 44.6621 24.7922ZM10.9862 25.8691C9.76004 24.2823 9.95069 22.6686 9.95784 22.6102C10.0413 22.0395 9.66353 21.504 9.10707 21.4043L7.03851 21.0331L10.2093 19.6653C10.4285 19.5704 10.6108 19.4 10.724 19.1858C10.7538 19.1298 13.7375 13.5612 19.1579 13.5612C21.9807 13.5612 24.5855 14.6772 26.3037 16.623C27.7383 18.2488 28.414 20.2798 28.2054 22.3425C27.9635 24.7337 27.5179 26.5603 26.1321 27.7079C24.6093 28.9698 21.9807 29.3799 18.0974 28.9637C14.6836 28.5974 12.2909 27.5558 10.9862 25.8679V25.8691ZM37.8368 26.8001C37.4806 26.9899 37.2613 27.3647 37.2768 27.776C37.2816 27.9926 37.3102 33.0866 30.1906 34.261C27.2033 34.7538 24.9394 34.2269 23.4642 32.6972C22.9661 32.18 22.6385 31.6263 22.4299 31.1724C24.5688 30.9729 26.2286 30.3729 27.4464 29.3641C29.5042 27.6592 30.0238 25.0879 30.2799 22.564C30.3943 21.4347 30.3038 20.3151 30.025 19.2418C31.9362 19.1262 33.2279 19.3684 34.2621 20.0279C35.4871 20.808 36.4522 22.2451 37.5246 24.163C37.6664 24.4173 37.9059 24.6011 38.1848 24.6705L40.6823 25.2887L37.838 26.8013L37.8368 26.8001Z" fill="#292966"/>
+            </g>
+            <circle class="forum-dot-1" cx="15.1015" cy="21.4505" r="1.1403" fill="#292966"/>
+            <circle class="forum-dot-2" cx="19.1571" cy="21.5262" r="1.1403" fill="#292966"/>
+            <circle class="forum-dot-3" cx="23.7204" cy="21.5625" r="1.1403" fill="#292966"/>
+            <circle class="forum-dot-4" cx="31.2519" cy="27.2185" r="1.1403" fill="#292966"/>
+            <circle class="forum-dot-5" cx="35.0436" cy="27.1797" r="1.1403" fill="#292966"/>
+          </svg>
+        </span>
         <span>Forums</span>
       </div>
 
@@ -3101,41 +5860,41 @@
 
 <div class="corner-logo-wrap">
   <div class="corner-logo-bubble" aria-hidden="true">
-    <div class="corner-logo-bubble-header">Team</div>
+    <div class="corner-logo-bubble-header">Meet the team</div>
     <div class="corner-logo-bubble-row">
       <div class="bubble-row-img" aria-hidden="true"></div>
       <div class="bubble-row-text">
         <span class="bubble-row-role">Design lead</span>
-        <div class="bubble-row-title">Placeholder title</div>
-        <div class="bubble-row-copy">Placeholder copy for this row.</div>
-        <a href="#" class="bubble-row-website">example-one.org</a>
+        <div class="bubble-row-title">Gracelle Mesina</div>
+        <div class="bubble-row-copy">Gracelle Mesina is a Vancouver-based senior designer focused on brand, product, and digital experiences. @Critical Mass</div>
+        <a href="https://gracellemesina.com/" target="_blank" class="bubble-row-website">gracellemesina.com</a>
       </div>
     </div>
     <div class="corner-logo-bubble-row">
       <div class="bubble-row-img" aria-hidden="true"></div>
       <div class="bubble-row-text">
         <span class="bubble-row-role">Design Manager</span>
-        <div class="bubble-row-title">Placeholder title</div>
-        <div class="bubble-row-copy">Placeholder copy for this row.</div>
-        <a href="#" class="bubble-row-website">example-two.org</a>
+        <div class="bubble-row-title">Ji Woo Lim</div>
+        <div class="bubble-row-copy">Ji-Woo Lim is a multidisciplinary designer exploring visual storytelling across digital, graphic, and experimental media.</div>
+        <a href="https://ji-woo-lim.format.com/" target="_blank" class="bubble-row-website">ji-woo-lim.format.com</a>
       </div>
     </div>
     <div class="corner-logo-bubble-row">
       <div class="bubble-row-img" aria-hidden="true"></div>
       <div class="bubble-row-text">
         <span class="bubble-row-role">Designer</span>
-        <div class="bubble-row-title">Placeholder title</div>
-        <div class="bubble-row-copy">Placeholder copy for this row.</div>
-        <a href="#" class="bubble-row-website">example-three.org</a>
+        <div class="bubble-row-title">Caitlin Valdez</div>
+        <div class="bubble-row-copy">Caitlin Valdez is a Toronto-based graphic designer focused on thoughtful, human-centered visual communication.</div>
+        <a href="https://www.caitlinvaldez.com/" target="_blank" class="bubble-row-website">caitlinvaldez.com</a>
       </div>
     </div>
     <div class="corner-logo-bubble-row">
       <div class="bubble-row-img" aria-hidden="true"></div>
       <div class="bubble-row-text">
         <span class="bubble-row-role">Designer</span>
-        <div class="bubble-row-title">Placeholder title</div>
-        <div class="bubble-row-copy">Placeholder copy for this row.</div>
-        <a href="#" class="bubble-row-website">example-four.org</a>
+        <div class="bubble-row-title">Doga Cimen</div>
+        <div class="bubble-row-copy">Doga Cimen is a product designer based in Toronto, Canada. He is interested in the intersection of design and technology, and how they can be used to communicate ideas and create experiences.</div>
+        <a href="https://design.dogacimen.com/" target="_blank" class="bubble-row-website">dogacimen.com</a>
       </div>
     </div>
   </div>
@@ -3149,8 +5908,10 @@
   });
 
   // ── Page Router + Event Detail Flow ──
-  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer' };
+  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', 'donate-items': 'page-donate-items', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail' };
   const navItems = document.querySelectorAll('.bottom-nav .nav-item:not(.center-item)');
+  const settingsButtons = document.querySelectorAll('.top-nav-settings');
+  const settingsBackBtn = document.getElementById('settings-back-btn');
   const detailPage = document.querySelector('.page-event-detail');
   const detailIllustration = document.getElementById('event-detail-illustration');
   const detailIcon = document.getElementById('event-detail-icon');
@@ -3161,12 +5922,182 @@
   const detailTasks = document.getElementById('event-detail-tasks');
   const detailCta = document.getElementById('event-detail-cta');
   const detailBack = document.getElementById('event-detail-back');
+  const donateMoneyBackBtn = document.getElementById('donate-money-back-btn');
+  const donateItemsBackBtn = document.getElementById('donate-items-back-btn');
+  const donateToItemsBtn = document.getElementById('donate-to-items-btn');
+  const donateModeToggle = document.getElementById('donate-mode-toggle');
+  const donateModeButtons = donateModeToggle ? donateModeToggle.querySelectorAll('.vol-toggle-opt') : [];
+  const donatePresetButtons = document.querySelectorAll('.donate-preset-btn');
+  const donateItemButtons = document.querySelectorAll('.donate-money-item-card');
+  const donateCustomInput = document.getElementById('donate-custom-input');
+  const donateAmountValue = document.getElementById('donate-amount-value');
+  const donateImpactLine = document.getElementById('donate-impact-line');
+  const donateMoneyCta = document.getElementById('donate-money-cta');
+  const detailMapWrap = document.getElementById('event-detail-map-wrap');
+  const detailMap = document.getElementById('event-detail-map');
+  if (detailMap && detailMapWrap) {
+    detailMap.addEventListener('load', function() {
+      detailMapWrap.classList.add('loaded');
+    });
+  }
+  let activePageName = 'home';
+  let settingsReturnPage = 'home';
+  let profileReturnPage = 'home';
+  let donateReturnPage = 'home';
+  var profileConfettiTimerId = null;
+  var profileConfettiCanvas = null;
+  var profileConfettiAbort = false;
 
   function setActiveNav(name) {
     navItems.forEach(item => {
-      const label = item.querySelector('span')?.textContent?.trim().toLowerCase();
+      const labelSpan = item.querySelector('span:last-of-type') || item.querySelector('span');
+      const label = labelSpan?.textContent?.trim().toLowerCase();
       item.classList.toggle('active', label === name);
     });
+  }
+
+  function launchImpactConfetti(card) {
+    var barWrap = card.querySelector('.prof-impact-bar-wrap');
+    if (!barWrap) return;
+
+    var appContainer = card.closest('.app-container');
+    if (!appContainer) return;
+
+    var barRect = barWrap.getBoundingClientRect();
+    var containerRect = appContainer.getBoundingClientRect();
+    // Origin in container coords: end of navy bar (66% of bar width)
+    var originX = barRect.left - containerRect.left + barRect.width * 0.66;
+    var originY = barRect.top - containerRect.top + barRect.height / 2;
+
+    var canvas = document.createElement('canvas');
+    canvas.width = appContainer.clientWidth;
+    canvas.height = appContainer.clientHeight;
+    canvas.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+    appContainer.appendChild(canvas);
+    profileConfettiCanvas = canvas;
+    var ctx = canvas.getContext('2d');
+
+    var palette = ['#23214A', '#EF6242', '#E8BF6A', '#F4F3EE', '#EF6242', '#23214A'];
+    var particles = [];
+    var TOTAL = 80;
+
+    for (var i = 0; i < TOTAL; i++) {
+      // mostly upward spread
+      var spread = (Math.random() - 0.5) * Math.PI * 1.1;
+      var angle = -Math.PI / 2 + spread;
+      var speed = Math.random() * 9 + 3;
+      var typeRoll = Math.random();
+      var ptype = typeRoll < 0.18 ? 'heart' : typeRoll < 0.32 ? 'trophy' : typeRoll < 0.62 ? 'rect' : 'circle';
+      particles.push({
+        x: originX + (Math.random() - 0.5) * 80,
+        y: originY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        gravity: 0.18 + Math.random() * 0.12,
+        drag: 0.98,
+        rotation: Math.random() * Math.PI * 2,
+        rotSpd: (Math.random() - 0.5) * 0.22,
+        color: palette[Math.floor(Math.random() * palette.length)],
+        type: ptype,
+        w: Math.random() * 9 + 4,
+        h: Math.random() * 5 + 3,
+        size: Math.random() * 11 + 7,
+        opacity: 1,
+        delay: Math.random() * 220
+      });
+    }
+
+    function drawHeart(ctx, s) {
+      ctx.beginPath();
+      ctx.moveTo(0, s * 0.35);
+      ctx.bezierCurveTo(0, 0, -s, 0, -s, s * 0.38);
+      ctx.bezierCurveTo(-s, s * 0.75, 0, s * 1.05, 0, s * 1.3);
+      ctx.bezierCurveTo(0, s * 1.05, s, s * 0.75, s, s * 0.38);
+      ctx.bezierCurveTo(s, 0, 0, 0, 0, s * 0.35);
+      ctx.fill();
+    }
+
+    function drawTrophy(ctx, s) {
+      // cup
+      ctx.beginPath();
+      ctx.moveTo(-s * 0.75, -s);
+      ctx.lineTo(-s * 0.9, s * 0.1);
+      ctx.quadraticCurveTo(0, s * 0.85, s * 0.9, s * 0.1);
+      ctx.lineTo(s * 0.75, -s);
+      ctx.closePath();
+      ctx.fill();
+      // handles
+      ctx.beginPath();
+      ctx.arc(-s * 0.9, -s * 0.4, s * 0.28, Math.PI * 0.5, Math.PI * 1.5);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(s * 0.9, -s * 0.4, s * 0.28, -Math.PI * 0.5, Math.PI * 0.5);
+      ctx.stroke();
+      // stem + base
+      ctx.fillRect(-s * 0.14, s * 0.85, s * 0.28, s * 0.45);
+      ctx.fillRect(-s * 0.52, s * 1.3, s * 1.04, s * 0.22);
+    }
+
+    var started = null;
+    var LIFE = 2600;
+
+    function frame(ts) {
+      if (profileConfettiAbort) {
+        if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+        profileConfettiCanvas = null;
+        return;
+      }
+      if (!started) started = ts;
+      var elapsed = ts - started;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      var alive = false;
+
+      for (var j = 0; j < particles.length; j++) {
+        var p = particles[j];
+        if (elapsed < p.delay) { alive = true; continue; }
+        p.vx *= p.drag;
+        p.vy *= p.drag;
+        p.vy += p.gravity;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rotation += p.rotSpd;
+        var age = elapsed - p.delay;
+        p.opacity = Math.max(0, 1 - age / LIFE);
+        if (p.opacity <= 0) continue;
+        alive = true;
+
+        ctx.save();
+        ctx.globalAlpha = p.opacity;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.fillStyle = p.color;
+        ctx.strokeStyle = p.color;
+        ctx.lineWidth = p.size * 0.12;
+
+        if (p.type === 'rect') {
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        } else if (p.type === 'circle') {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (p.type === 'heart') {
+          drawHeart(ctx, p.size * 0.42);
+        } else if (p.type === 'trophy') {
+          drawTrophy(ctx, p.size * 0.36);
+        }
+
+        ctx.restore();
+      }
+
+      if (alive) {
+        requestAnimationFrame(frame);
+      } else {
+        if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+        profileConfettiCanvas = null;
+      }
+    }
+
+    requestAnimationFrame(frame);
   }
 
   function showPage(name) {
@@ -3175,9 +6106,59 @@
     if (!target) return;
     target.classList.add('active');
     target.scrollTop = 0;
+    activePageName = name;
+
+    // Reset impact bar animation when leaving profile so it replays on next open
+    if (name !== 'profile') {
+      clearTimeout(profileConfettiTimerId);
+      profileConfettiTimerId = null;
+      profileConfettiAbort = true;
+      if (profileConfettiCanvas && profileConfettiCanvas.parentNode) {
+        profileConfettiCanvas.parentNode.removeChild(profileConfettiCanvas);
+        profileConfettiCanvas = null;
+      }
+      var profilePage = document.querySelector('.page-profile');
+      var impactCard = profilePage && profilePage.querySelector('.prof-impact-card');
+      if (impactCard) impactCard.classList.remove('prof-impact-bars-ready');
+    }
+
+    if (name === 'profile') {
+      profileConfettiAbort = false;
+      var impactCard = target.querySelector('.prof-impact-card');
+      if (impactCard) {
+        impactCard.classList.remove('prof-impact-bars-ready');
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            impactCard.classList.add('prof-impact-bars-ready');
+            // confetti fires after all bar + label animations complete (~2200ms)
+            profileConfettiTimerId = setTimeout(function() {
+              profileConfettiTimerId = null;
+              launchImpactConfetti(impactCard);
+            }, 2200);
+          });
+        });
+      }
+    }
+
     if (name === 'events') setActiveNav('events');
     else if (name === 'volunteer') setActiveNav('volunteer');
-    else setActiveNav('home');
+    else if (name === 'home') setActiveNav('home');
+    else if (name === 'forums' || name === 'compose' || name === 'forum-detail') setActiveNav('forums');
+
+    const centerNavItem = document.querySelector('.bottom-nav .nav-item.center-item');
+    if (centerNavItem) {
+      centerNavItem.classList.toggle('active', name === 'donate-money' || name === 'donate-items');
+    }
+  }
+
+  function openSettingsPage() {
+    if (activePageName !== 'settings') settingsReturnPage = activePageName;
+    showPage('settings');
+  }
+
+  function openProfilePage() {
+    if (activePageName !== 'profile') profileReturnPage = activePageName;
+    showPage('profile');
   }
 
   const eventDetails = {
@@ -3296,18 +6277,215 @@
     detailLocation.textContent = data.locationLabel;
     detailAddress.textContent = data.address;
     detailCta.textContent = data.cta;
+    if (detailMapWrap && detailMap) {
+      var isOnline = eventId === 'online-fundraiser' || (data.address && data.address.toLowerCase().indexOf('share the') !== -1);
+      if (isOnline) {
+        detailMapWrap.classList.add('hidden');
+        detailMapWrap.setAttribute('aria-hidden', 'true');
+        detailMap.removeAttribute('src');
+      } else {
+        detailMapWrap.classList.remove('hidden');
+        detailMapWrap.classList.remove('loaded');
+        detailMapWrap.setAttribute('aria-hidden', 'false');
+        var mapQuery = (data.locationLabel ? data.locationLabel + ', ' : '') + (data.address || '') + ', Vancouver, BC';
+        detailMap.src = 'https://www.google.com/maps?q=' + encodeURIComponent(mapQuery) + '&output=embed';
+      }
+    }
     renderDetailTasks(data.tasks);
     showPage('detail');
   }
 
-  navItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const label = item.querySelector('span')?.textContent?.trim().toLowerCase();
-      if (label === 'home') showPage('home');
-      else if (label === 'events') showPage('events');
-      else if (label === 'volunteer') showPage('volunteer');
+  // ── Donate Money / Donate Items ──
+  const donateState = {
+    mode: 'one-time',
+    amount: 15,
+    selectedPreset: 15
+  };
+
+  function formatDonateAmount(value) {
+    const num = Number(value) || 0;
+    return Math.max(0, Math.round(num)).toString();
+  }
+
+  function donateImpactCopy(amount) {
+    if (amount >= 50) return 'This helps us fund larger supply runs for multiple neighbours.';
+    if (amount >= 30) return 'This covers meaningful essentials for people through our weekly distro.';
+    if (amount >= 15) return 'This helps us restock practical items for immediate support.';
+    return 'Every amount helps us move supplies quickly to where they are needed.';
+  }
+
+  function updateDonateUI() {
+    if (donateAmountValue) donateAmountValue.textContent = formatDonateAmount(donateState.amount);
+
+    donateModeButtons.forEach(btn => {
+      const active = btn.dataset.mode === donateState.mode;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    if (donateModeToggle) {
+      const opts = Array.from(donateModeButtons);
+      const monthlyIdx = opts.findIndex(b => b.dataset.mode === 'monthly');
+      donateModeToggle.classList.toggle('right', donateState.mode === 'monthly' && monthlyIdx === 1);
+    }
+
+    donatePresetButtons.forEach(btn => {
+      const amount = Number(btn.dataset.amount);
+      btn.classList.toggle('active', donateState.selectedPreset === amount);
+    });
+
+    if (donateImpactLine) donateImpactLine.textContent = donateImpactCopy(donateState.amount);
+
+    if (donateMoneyCta && !donateMoneyCta.classList.contains('success')) {
+      donateMoneyCta.textContent = donateState.mode === 'monthly'
+        ? `Donate $${formatDonateAmount(donateState.amount)} / month`
+        : `Donate $${formatDonateAmount(donateState.amount)}`;
+    }
+  }
+
+  function setDonateAmount(nextAmount, source) {
+    const parsed = Number(nextAmount);
+    if (!Number.isFinite(parsed) || parsed <= 0) return;
+    donateState.amount = Math.round(parsed);
+
+    if (source === 'preset') {
+      donateState.selectedPreset = donateState.amount;
+      if (donateCustomInput) donateCustomInput.value = '';
+    } else if (source === 'item') {
+      donateState.selectedPreset = [5, 15, 30, 50].includes(donateState.amount) ? donateState.amount : null;
+      if (donateCustomInput) donateCustomInput.value = '';
+    } else if (source === 'custom') {
+      donateState.selectedPreset = null;
+    }
+
+    updateDonateUI();
+  }
+
+  function openDonateMoneyPage() {
+    if (activePageName !== 'donate-money' && activePageName !== 'donate-items') {
+      donateReturnPage = activePageName || 'home';
+    }
+    showPage('donate-money');
+  }
+
+  donateModeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      donateModeToggle.querySelectorAll('.vol-toggle-opt').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const opts = Array.from(donateModeToggle.querySelectorAll('.vol-toggle-opt'));
+      donateModeToggle.classList.toggle('right', opts.indexOf(btn) === 1);
+      donateState.mode = btn.dataset.mode === 'monthly' ? 'monthly' : 'one-time';
+      btn.setAttribute('aria-selected', 'true');
+      donateModeToggle.querySelectorAll('.vol-toggle-opt').forEach(b => {
+        if (b !== btn) b.setAttribute('aria-selected', 'false');
+      });
+      updateDonateUI();
     });
   });
+
+  donatePresetButtons.forEach(btn => {
+    btn.addEventListener('click', () => setDonateAmount(btn.dataset.amount, 'preset'));
+  });
+
+  donateItemButtons.forEach(card => {
+    card.addEventListener('click', () => setDonateAmount(card.dataset.amount, 'item'));
+  });
+
+  if (donateCustomInput) {
+    donateCustomInput.addEventListener('input', () => {
+      const raw = donateCustomInput.value.trim();
+      if (!raw) return;
+      setDonateAmount(raw, 'custom');
+    });
+  }
+
+  if (donateMoneyCta) {
+    donateMoneyCta.addEventListener('click', () => {
+      if (donateMoneyCta.classList.contains('success')) return;
+      donateMoneyCta.classList.add('success');
+      donateMoneyCta.innerHTML = '<span class="donate-cta-success"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Thank you</span></span>';
+      setTimeout(() => {
+        donateMoneyCta.classList.remove('success');
+        updateDonateUI();
+      }, 2000);
+    });
+  }
+
+  if (donateToItemsBtn) {
+    donateToItemsBtn.addEventListener('click', () => showPage('donate-items'));
+  }
+  if (donateMoneyBackBtn) {
+    donateMoneyBackBtn.addEventListener('click', () => showPage(donateReturnPage || 'home'));
+  }
+  if (donateItemsBackBtn) {
+    donateItemsBackBtn.addEventListener('click', () => showPage('donate-money'));
+  }
+
+  updateDonateUI();
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const labelSpan = item.querySelector('span:last-of-type') || item.querySelector('span');
+      const label = labelSpan?.textContent?.trim().toLowerCase();
+      if (label === 'home') {
+        var homeSvg = item.querySelector('.icon-home');
+        if (homeSvg) {
+          homeSvg.classList.remove('active');
+          void homeSvg.offsetWidth;
+          homeSvg.classList.add('active');
+          setTimeout(function() { homeSvg.classList.remove('active'); }, 550);
+        }
+        showPage('home');
+      } else if (label === 'events') {
+        var calSvg = item.querySelector('.icon-calendar');
+        if (calSvg) {
+          calSvg.classList.remove('active');
+          void calSvg.offsetWidth;
+          calSvg.classList.add('active');
+          setTimeout(function() { calSvg.classList.remove('active'); }, 520);
+        }
+        showPage('events');
+      }
+      else if (label === 'volunteer') {
+        var itemsSvg = item.querySelector('.icon-items');
+        if (itemsSvg) {
+          itemsSvg.classList.remove('active');
+          void itemsSvg.offsetWidth;
+          itemsSvg.classList.add('active');
+          setTimeout(function() { itemsSvg.classList.remove('active'); }, 600);
+        }
+        showPage('volunteer');
+      }
+      else if (label === 'forums') {
+        var forumSvg = item.querySelector('.icon-forum');
+        if (forumSvg) {
+          forumSvg.classList.remove('active');
+          void forumSvg.offsetWidth;
+          forumSvg.classList.add('active');
+          setTimeout(function() { forumSvg.classList.remove('active'); }, 620);
+        }
+        showPage('forums');
+      }
+    });
+  });
+
+  settingsButtons.forEach(btn => {
+    btn.addEventListener('click', openSettingsPage);
+  });
+  if (settingsBackBtn) {
+    settingsBackBtn.addEventListener('click', () => showPage(settingsReturnPage || 'home'));
+  }
+
+  document.querySelectorAll('.top-nav-profile').forEach(btn => {
+    btn.addEventListener('click', openProfilePage);
+  });
+  const profBackBtn = document.getElementById('prof-back-btn');
+  if (profBackBtn) {
+    profBackBtn.addEventListener('click', () => showPage(profileReturnPage || 'home'));
+  }
+  const profSettingsLink = document.getElementById('prof-settings-link');
+  if (profSettingsLink) {
+    profSettingsLink.addEventListener('click', openSettingsPage);
+  }
 
   document.querySelectorAll('.event-card .btn[data-event-id]').forEach(btn => {
     btn.addEventListener('click', () => openEventDetail(btn.dataset.eventId));
@@ -3316,6 +6494,211 @@
   if (detailBack) {
     detailBack.addEventListener('click', () => showPage('home'));
   }
+
+  const eventsBackBtn = document.getElementById('events-back-btn');
+  if (eventsBackBtn) {
+    eventsBackBtn.addEventListener('click', () => showPage('home'));
+  }
+
+  // ── Forum & Compose Pages ──
+  const forumPostDetails = {
+    'post-1': { title: "This Saturday's set-up crew — who's in?", body: "Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the group chat.", author: 'Potato23', time: '1 day ago', category: 'General' },
+    'post-2': { title: "What's volunteering actually like at DD?", body: "I've been wanting to do more intentional volunteering and not sure where to start. Would love to hear from people who joined for the first time — what made you come back?", author: 'GracelleM', time: '2 days ago', category: 'Question' },
+    'post-3': { title: 'Online deals for supplies this week', body: 'Found some discount codes for Canadian Tire. Tents, thermal socks, gloves all on sale. Sharing here if you have financial capacity this month.', author: 'CaitlinV', time: '3 days ago', category: 'General' },
+    'post-4': { title: 'Do I need to bring my own bags for the distro?', body: 'First time attending next Saturday. Is there a list of what to bring or does everything get provided on the day?', author: 'DogaCM', time: '5 days ago', category: 'Question' },
+    'post-5': { title: 'Thank you to everyone who came out last Saturday', body: 'We distributed over 80 hygiene kits, 40 warm meals, and 60 pairs of socks. Could not have done it without every single one of you. See you next time.', author: 'JiWoo_DD', time: '1 week ago', category: 'General' }
+  };
+
+  const forumDetailMockComments = [
+    { author: 'AlexK', time: '2d', body: 'Same here, would love to help out.', upvotes: 3 },
+    { author: 'Sam_M', time: '1d', body: 'Great question — I felt really welcomed.', upvotes: 12 },
+    { author: 'JordanT', time: '1d', body: 'Thanks for sharing these!', upvotes: 5 },
+    { author: 'RileyJ', time: '4d', body: 'You can bring bags but we have some too.', upvotes: 8 },
+    { author: 'CaseyL', time: '3d', body: 'Count me in for next time.', upvotes: 2 },
+    { author: 'MorganP', time: '2d', body: 'Seconded — the team is amazing.', upvotes: 7 },
+    { author: 'QuinnR', time: '5d', body: 'First time was last month, no regrets.', upvotes: 4 },
+    { author: 'AveryW', time: '1d', body: 'I’ll be there at 9!', upvotes: 1 }
+  ];
+
+  function openForumPostDetail(postId, replyCount) {
+    const details = forumPostDetails[postId];
+    if (!details) return;
+    const titleEl = document.getElementById('forum-detail-title');
+    const authorEl = document.getElementById('forum-detail-post-author');
+    const timeEl = document.getElementById('forum-detail-post-time');
+    const postTitleEl = document.getElementById('forum-detail-post-title');
+    const bodyEl = document.getElementById('forum-detail-post-body');
+    const container = document.getElementById('forum-detail-comments');
+    if (titleEl) titleEl.textContent = details.title.length > 40 ? details.title.slice(0, 40) + '…' : details.title;
+    if (authorEl) authorEl.textContent = details.author;
+    if (timeEl) timeEl.textContent = details.time;
+    if (postTitleEl) postTitleEl.textContent = details.title;
+    if (bodyEl) bodyEl.textContent = details.body;
+    var emptyEl = document.getElementById('forum-detail-empty');
+    if (!container) return;
+    container.innerHTML = '';
+    if (emptyEl) emptyEl.classList.remove('is-visible');
+    if (replyCount === 0) {
+      if (emptyEl) emptyEl.classList.add('is-visible');
+      return;
+    }
+    // Build flat list of N comment indices; distribute into tree: some top-level, some nested (max depth 3).
+    function buildTree(n) {
+      var nodes = [];
+      var idx = 0;
+      function addLevel(depth, parentReplies) {
+        if (depth > 3 || idx >= n) return;
+        var count = depth === 0 ? Math.max(1, Math.ceil(n / 3)) : (idx < n ? Math.min(2, n - idx) : 0);
+        for (var i = 0; i < count && idx < n; i++) {
+          var node = { index: idx++, replies: [] };
+          if (parentReplies) parentReplies.push(node); else nodes.push(node);
+          addLevel(depth + 1, node.replies);
+        }
+      }
+      addLevel(0, null);
+      return nodes;
+    }
+    var tree = buildTree(replyCount);
+    function renderComment(node, depth) {
+      var c = forumDetailMockComments[node.index % forumDetailMockComments.length];
+      var repliesHtml = node.replies.length ? '<div class="forum-comment-replies">' + node.replies.map(function(r) { return renderComment(r, depth + 1); }).join('') + '</div>' : '';
+      var nodeClass = 'forum-comment-node' + (node.replies.length ? ' has-replies' : '');
+      return '<div class="' + nodeClass + '">' + (node.replies.length ? '<span class="forum-comment-line" aria-label="Collapse thread"></span>' : '') + '<div class="forum-comment-content"><div class="forum-comment-avatar"></div><div class="forum-comment-main"><div class="forum-comment-byline"><span class="username">' + c.author + '</span><span class="dot">·</span><span class="timestamp">' + c.time + '</span></div><div class="forum-comment-body">' + c.body + '</div><div class="forum-comment-actions"><span>···</span><button type="button">↩ Reply</button><span>🔔</span><span>↑ ' + c.upvotes + ' ↓</span></div></div></div>' + repliesHtml + '</div>';
+    }
+    tree.forEach(function(node) { container.insertAdjacentHTML('beforeend', renderComment(node, 0)); });
+    container.querySelectorAll('.forum-comment-node.has-replies').forEach(function(node) {
+      var line = node.querySelector('.forum-comment-line');
+      if (line) line.addEventListener('click', function() { node.classList.toggle('collapsed'); });
+    });
+  }
+
+  (function initForumPage() {
+    const filterRow = document.getElementById('forum-filter-row');
+    const forumBoard = document.getElementById('forum-board');
+    const composeSubmitBtn = document.getElementById('compose-submit');
+    const composeTitleInput = document.getElementById('compose-title');
+    const composeBodyInput = document.getElementById('compose-body');
+    if (filterRow && forumBoard) {
+      filterRow.querySelectorAll('.forum-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterRow.querySelectorAll('.forum-filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const cat = btn.dataset.cat;
+          forumBoard.querySelectorAll('.bpost').forEach(post => {
+            post.style.display = (cat === 'all' || post.dataset.cat === cat) ? '' : 'none';
+          });
+        });
+      });
+    }
+
+    if (forumBoard) {
+      forumBoard.addEventListener('click', function(e) {
+        var replyHint = e.target.closest('.bpost-reply-hint');
+        if (replyHint) {
+          e.stopPropagation();
+          var post = replyHint.closest('.bpost');
+          var replyArea = post && post.querySelector('.bpost-reply-area');
+          if (replyArea) {
+            var isOpen = replyArea.classList.contains('open');
+            replyArea.classList.toggle('open', !isOpen);
+            if (!isOpen) {
+              setTimeout(function() {
+                var input = replyArea.querySelector('input');
+                if (input) input.focus();
+              }, 200);
+            }
+          }
+          return;
+        }
+      });
+    }
+
+    if (forumBoard) {
+      forumBoard.addEventListener('click', function(e) {
+        var bpost = e.target && e.target.closest && e.target.closest('.bpost');
+        if (!bpost) return;
+        if (e.target.closest('.bpost-reply-hint') || e.target.closest('.bpost-reply-area')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var postId = bpost.getAttribute('data-post-id');
+        var replyCount = parseInt(bpost.getAttribute('data-reply-count') || '0', 10);
+        showPage('forum-detail');
+        openForumPostDetail(postId, replyCount);
+      });
+    }
+
+    var forumDetailBack = document.getElementById('forum-detail-back');
+    if (forumDetailBack) forumDetailBack.addEventListener('click', function() { showPage('forums'); });
+
+    var forumBackBtn = document.getElementById('forum-back');
+    if (forumBackBtn) forumBackBtn.addEventListener('click', function() { showPage('home'); });
+
+    const forumNewPostBtn = document.getElementById('forum-new-post-btn');
+    if (forumNewPostBtn) {
+      forumNewPostBtn.addEventListener('click', () => {
+        if (composeTitleInput) composeTitleInput.value = '';
+        if (composeBodyInput) composeBodyInput.value = '';
+        if (composeSubmitBtn) composeSubmitBtn.disabled = true;
+        showPage('compose');
+        setTimeout(function() {
+          var titleEl = document.getElementById('compose-title');
+          if (titleEl) titleEl.focus();
+        }, 100);
+      });
+    }
+
+    function updateComposeSubmitState() {
+      if (!composeSubmitBtn) return;
+      var hasTitle = composeTitleInput && composeTitleInput.value.trim().length > 0;
+      var hasBody = composeBodyInput && composeBodyInput.value.trim().length > 0;
+      composeSubmitBtn.disabled = !hasTitle || !hasBody;
+    }
+
+    if (composeTitleInput) composeTitleInput.addEventListener('input', updateComposeSubmitState);
+    if (composeBodyInput) composeBodyInput.addEventListener('input', updateComposeSubmitState);
+
+    if (composeSubmitBtn) {
+      composeSubmitBtn.addEventListener('click', function() {
+        if (this.disabled) return;
+        var title = (composeTitleInput && composeTitleInput.value.trim()) || '';
+        var body = (composeBodyInput && composeBodyInput.value.trim()) || '';
+        var catBtn = composeCats && composeCats.querySelector('.compose-cat-btn.active');
+        var cat = (catBtn && catBtn.dataset.cat) || 'general';
+        var catLabel = cat === 'questions' ? 'Question' : 'General';
+        var catClass = cat === 'questions' ? 'question' : 'general';
+        if (!forumBoard || !title) return;
+        function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+        var postEl = document.createElement('div');
+        postEl.className = 'bpost bpost-own';
+        postEl.setAttribute('data-post-id', 'post-new');
+        postEl.setAttribute('data-reply-count', '0');
+        postEl.setAttribute('data-cat', cat);
+        postEl.setAttribute('style', 'transform:rotate(-0.2deg);');
+        postEl.innerHTML = '<div class="bpost-tack"></div><div class="bpost-byline"><span class="bpost-author bpost-author-own">Potato23</span><div class="bpost-sep"></div><span class="bpost-time">Just now</span><span class="bpost-cat ' + catClass + '">' + catLabel + '</span></div><div class="bpost-title">' + esc(title) + '</div><div class="bpost-body">' + esc(body) + '</div><div class="bpost-rule"></div><div class="bpost-stats"><div class="bpost-stat"><div class="stat-box"></div> 0 likes</div><div class="bpost-stat"><div class="stat-box"></div> 0 replies</div><span class="bpost-reply-hint">Reply</span></div><div class="bpost-reply-area"><div class="bpost-reply-inner"><input class="bpost-reply-input" type="text" placeholder="Write a reply..."><button class="bpost-reply-send"><div class="send-icon-ph"></div></button></div></div>';
+        forumBoard.insertBefore(postEl, forumBoard.firstChild);
+        if (typeof forumPostDetails !== 'undefined') forumPostDetails['post-new'] = { title: title, body: body, author: 'Potato23', time: 'Just now', category: catLabel };
+        if (composeTitleInput) composeTitleInput.value = '';
+        if (composeBodyInput) composeBodyInput.value = '';
+        composeSubmitBtn.disabled = true;
+        showPage('forums');
+      });
+    }
+
+    var composeBackBtn = document.getElementById('compose-back');
+    if (composeBackBtn) composeBackBtn.addEventListener('click', () => showPage('forums'));
+
+    if (composeSubmitBtn) composeSubmitBtn.disabled = true;
+
+    const composeCats = document.getElementById('compose-cats');
+    if (composeCats) {
+      composeCats.querySelectorAll('.compose-cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          composeCats.querySelectorAll('.compose-cat-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    }
+  })();
 
   // ── Volunteer Page ──
   (function initVolunteerPage() {
@@ -3437,11 +6820,29 @@
     updateVolCTA();
   })();
 
-  // Segment toggle for Events page calendar
+  // ── Settings Page ──
+  (function initSettingsPage() {
+    document.querySelectorAll('.page-settings [data-toggle]').forEach(toggle => {
+      toggle.addEventListener('click', () => toggle.classList.toggle('on'));
+    });
+
+    document.querySelectorAll('.page-settings #appearance-opts .settings-appearance-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('.page-settings #appearance-opts .settings-appearance-opt').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+      });
+    });
+  })();
+
+  // Segment toggle for Events page calendar (sliding pill like volunteer toggle)
   document.querySelectorAll('.seg-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      btn.closest('.segment').querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+      var seg = btn.closest('.segment');
+      if (!seg) return;
+      seg.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      var opts = Array.from(seg.querySelectorAll('.seg-btn'));
+      seg.classList.toggle('right', opts.indexOf(btn) === 1);
     });
   });
 
@@ -3488,7 +6889,7 @@
         tab.addEventListener('click', function forumTabClick() {
           const sort = this.getAttribute('data-forum-sort');
           forumTabs.forEach(t => t.classList.remove('active'));
-          this.classList.add('active');
+      this.classList.add('active');
           if (!sort) return;
           const key = 'data-sort-' + sort;
           const cards = Array.from(forumCards.querySelectorAll('.forum-card'));
@@ -3575,12 +6976,15 @@
 
   document.querySelectorAll('.events-panel').forEach(initDragScroll);
 
-  // Donate icon micro-interaction
+  // Donate icon micro-interaction (bounce: globe-spin + globe-accent-pop + spark-flick)
   const donateBtn = document.getElementById('donate-btn');
   donateBtn.addEventListener('click', () => {
-    donateBtn.classList.remove('fired');
-    void donateBtn.offsetWidth; // force reflow so animation re-triggers
-    donateBtn.classList.add('fired');
+    openDonateMoneyPage();
+    const donateSvg = donateBtn.querySelector('.donate-svg');
+    donateSvg.classList.remove('active');
+    void donateSvg.offsetWidth;
+    donateSvg.classList.add('active');
+    setTimeout(() => donateSvg.classList.remove('active'), 500);
   });
   donateBtn.addEventListener('animationend', (e) => {
     if (e.target.id === 'p5') donateBtn.classList.remove('fired');
@@ -3606,7 +7010,7 @@
       touchCursor.classList.remove('touch-cursor--down');
     });
 
-    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, label, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check';
+    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, label, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .settings-back-btn, .settings-row, .settings-toggle, .settings-appearance-opt, .prof-back, .prof-edit, .prof-trophy-card, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back';
     document.addEventListener('mouseover', (e) => {
       if (e.target.closest(interactiveSelector)) {
         touchCursor.classList.add('touch-cursor--hover');
@@ -3622,6 +7026,25 @@
     touchCursor.style.display = 'none';
     document.body.style.cursor = 'auto';
   }
+
+  /* Mobile: show active state on touchstart so it's visible before tap completes */
+  (function initTouchActivePolyfill() {
+    var touchActiveSelector = 'button, a, [role="button"], .nav-item, input, label, ' +
+      '.vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, ' +
+      '.settings-back-btn, .settings-row, .settings-toggle, .settings-appearance-opt, ' +
+      '.prof-back, .prof-edit, .prof-trophy-card, .prof-forum-post, .prof-settings-link, ' +
+      '.btn, .icon-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-back-btn, .vol-toggle-opt, .vol-cta-btn, .event-detail-back, .event-detail-share, ' +
+      '.forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back';
+    function clearTouchActive() {
+      document.querySelectorAll('.touch-active').forEach(function(el) { el.classList.remove('touch-active'); });
+    }
+    document.addEventListener('touchstart', function(e) {
+      var el = e.target && e.target.closest && e.target.closest(touchActiveSelector);
+      if (el) el.classList.add('touch-active');
+    }, { passive: true });
+    document.addEventListener('touchend', clearTouchActive, { passive: true });
+    document.addEventListener('touchcancel', clearTouchActive, { passive: true });
+  })();
 
   /* ─────────────────────────────────────────────────────────
      Streak Onboarding Animation
