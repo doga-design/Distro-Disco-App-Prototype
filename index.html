@@ -174,6 +174,108 @@
     border-radius: 42px;
   }
 
+  /* ── Splash (boot) overlay ── */
+  .app-splash-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  .app-splash-overlay .splash {
+    width: 100%;
+    height: 100%;
+    border-radius: 42px;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .app-splash-overlay .title {
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: #F5FFAB;
+    letter-spacing: 0.2px;
+  }
+  .app-splash-overlay .replay { display: none !important; }
+
+  .app-splash-overlay .burst {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+  .app-splash-overlay .burst-yellow {
+    background: #F5FFAB;
+    animation: burstGrow 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  }
+  .app-splash-overlay .burst-navy {
+    background: #FF7534;
+    animation: burstGrow 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.72s both;
+  }
+  .app-splash-overlay .burst-final {
+    background: linear-gradient(180deg, #3432A0 0%, #292966 55%, #1E1C52 100%);
+    animation: burstGrow 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1.1s both;
+  }
+  @keyframes burstGrow {
+    0%   { width: 0;      height: 0;      bottom: 0;             left: 50%; transform: translateX(-50%); position: absolute; }
+    100% { width: 1800px; height: 1800px; bottom: calc(50% - 900px); left: calc(50% - 900px); transform: none; position: absolute; }
+  }
+
+  .app-splash-overlay .stack {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .app-splash-overlay .logo-wrap {
+    display: block;
+    line-height: 0;
+    font-size: 0;
+    opacity: 0;
+    transform: translateY(8px) scale(0.93);
+    animation:
+      logoIn 0.55s cubic-bezier(0.4, 0, 0.2, 1) 1.8s forwards;
+  }
+  .app-splash-overlay .logo-wrap svg { display: block; margin: 0; padding: 0; }
+  .app-splash-overlay .logo-wrap svg {
+    width: 180px !important;
+    height: 180px !important;
+  }
+  @keyframes logoIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes logoUp { to { transform: translateY(-16px) scale(1); } }
+
+  @keyframes stroke1  { 0%{stroke-dashoffset:90.24px;stroke-dasharray:90.24px}   100%{stroke-dashoffset:0;stroke-dasharray:90.24px} }
+  @keyframes fill1    { 0%{fill:transparent} 100%{fill:#FF7534} }
+  @keyframes stroke2  { 0%{stroke-dashoffset:109.47px;stroke-dasharray:109.47px} 100%{stroke-dashoffset:0;stroke-dasharray:109.47px} }
+  @keyframes stroke3  { 0%{stroke-dashoffset:40.01px;stroke-dasharray:40.01px}   100%{stroke-dashoffset:0;stroke-dasharray:40.01px} }
+  @keyframes stroke4  { 0%{stroke-dashoffset:36.47px;stroke-dasharray:36.47px}   100%{stroke-dashoffset:0;stroke-dasharray:36.47px} }
+  @keyframes stroke5  { 0%{stroke-dashoffset:21.26px;stroke-dasharray:21.26px}   100%{stroke-dashoffset:0;stroke-dasharray:21.26px} }
+  @keyframes stroke6  { 0%{stroke-dashoffset:20.92px;stroke-dasharray:20.92px}   100%{stroke-dashoffset:0;stroke-dasharray:20.92px} }
+  @keyframes stroke7  { 0%{stroke-dashoffset:21.13px;stroke-dasharray:21.13px}   100%{stroke-dashoffset:0;stroke-dasharray:21.13px} }
+  @keyframes stroke8  { 0%{stroke-dashoffset:5.43px;stroke-dasharray:5.43px}     100%{stroke-dashoffset:0;stroke-dasharray:5.43px} }
+  @keyframes stroke9  { 0%{stroke-dashoffset:6.09px;stroke-dasharray:6.09px}     100%{stroke-dashoffset:0;stroke-dasharray:6.09px} }
+  @keyframes stroke10 { 0%{stroke-dashoffset:4.78px;stroke-dasharray:4.78px}     100%{stroke-dashoffset:0;stroke-dasharray:4.78px} }
+  @keyframes stroke11 { 0%{stroke-dashoffset:6.71px;stroke-dasharray:6.71px}     100%{stroke-dashoffset:0;stroke-dasharray:6.71px} }
+  @keyframes stroke12 { 0%{stroke-dashoffset:4.14px;stroke-dasharray:4.14px}     100%{stroke-dashoffset:0;stroke-dasharray:4.14px} }
+
+  .app-splash-overlay .e1  { animation: stroke1  1s cubic-bezier(0.86,0,0.07,1) 1.9s both, fill1 2.3s cubic-bezier(0.68,-0.55,0.265,1.55) 2.2s both; }
+  .app-splash-overlay .e2  { animation: stroke2  1s cubic-bezier(0.86,0,0.07,1) 2.1s both; }
+  .app-splash-overlay .e3  { animation: stroke3  1s cubic-bezier(0.86,0,0.07,1) 2.3s both; }
+  .app-splash-overlay .e4  { animation: stroke4  1s cubic-bezier(0.86,0,0.07,1) 2.5s both; }
+  .app-splash-overlay .e5  { animation: stroke5  1s cubic-bezier(0.86,0,0.07,1) 2.7s both; }
+  .app-splash-overlay .e6  { animation: stroke6  1s cubic-bezier(0.86,0,0.07,1) 2.9s both; }
+  .app-splash-overlay .e7  { animation: stroke7  1s cubic-bezier(0.86,0,0.07,1) 3.1s both; }
+  .app-splash-overlay .e8  { animation: stroke8  1s cubic-bezier(0.86,0,0.07,1) 3.3s both; }
+  .app-splash-overlay .e9  { animation: stroke9  1s cubic-bezier(0.86,0,0.07,1) 3.5s both; }
+  .app-splash-overlay .e10 { animation: stroke10 1s cubic-bezier(0.86,0,0.07,1) 3.7s both; }
+  .app-splash-overlay .e11 { animation: stroke11 1s cubic-bezier(0.86,0,0.07,1) 3.9s both; }
+  .app-splash-overlay .e12 { animation: stroke12 1s cubic-bezier(0.86,0,0.07,1) 4.1s both; }
+
   /* Typography */
   h1, h2 {
     font-family: 'Gaya', 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -310,7 +412,7 @@
   /* Hero Section */
   .hero { padding: 0 20px; margin-bottom: 32px; }
   .hero-card {
-    background: linear-gradient(180deg, #FFF4C4 0%, #FFF8DC 35%, #FFFEF5 55%, var(--bg-color) 100%);
+    background: linear-gradient(180deg, #F5FFAB 0%, #F5FFAB 25%, #FFFEF5 65%, var(--bg-color) 100%);
     border-radius: var(--radius-xl);
     padding: 24px 20px;
     box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
@@ -365,6 +467,18 @@
     color: var(--text-muted);
     line-height: 1.5;
     margin-top: 4px;
+  }
+
+  @keyframes stat-icon-bounce {
+    0%   { transform: scale(1); }
+    28%  { transform: scale(1.4); }
+    52%  { transform: scale(0.86); }
+    72%  { transform: scale(1.16); }
+    88%  { transform: scale(0.97); }
+    100% { transform: scale(1); }
+  }
+  .stat-icon-bouncing {
+    animation: stat-icon-bounce 460ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   /* Sections Common */
@@ -806,6 +920,8 @@
     width: 12px; height: 12px; stroke: white; stroke-width: 2.5;
     fill: none; stroke-linecap: round; stroke-linejoin: round;
   }
+  /* Ensure "Same as profile" checkmark is always white */
+  .page-volunteer #vol-same-profile svg { stroke: #fff; }
   .page-volunteer .vol-toggle-switch {
     width: 40px; height: 24px; border-radius: 12px;
     background: var(--border-color); position: relative;
@@ -930,17 +1046,30 @@
     display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
   }
   .page-volunteer .vol-consent-check {
-    width: 20px; height: 20px; border: 2px solid var(--border-color);
-    border-radius: 4px; flex-shrink: 0; background: var(--white);
-    display: flex; align-items: center; justify-content: center; cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid #d0d0d0;
+    background: #f0f0f0;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .page-volunteer .vol-consent-check.checked {
-    background: var(--orange); border-color: var(--orange);
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
   }
   .page-volunteer .vol-consent-check svg {
-    width: 11px; height: 11px; stroke: white; stroke-width: 2.5;
-    fill: none; stroke-linecap: round; stroke-linejoin: round;
+    width: 13px;
+    height: 13px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .page-volunteer .vol-consent-text { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
   .page-volunteer .vol-cta-btn {
@@ -1265,24 +1394,26 @@
     padding: 14px 20px;
     border: none;
     border-radius: var(--radius-md);
-    background: var(--navy);
-    color: white;
+    background-color: var(--navy);
+    color: var(--white);
     font-family: 'Geist', system-ui, sans-serif;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    box-shadow: 0 2px 8px rgba(35,33,74,0.15);
-    transition: transform 0.1s, background 0.12s, box-shadow 0.1s;
+    box-shadow:
+      rgba(0, 0, 0, 0.4) 0px 2px 4px,
+      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   }
   .page-forum .forum-new-post-btn:active,
   .page-forum .forum-new-post-btn.touch-active {
     transform: scale(0.98);
+    box-shadow: none;
     background: var(--orange);
-    box-shadow: 0 1px 4px rgba(35,33,74,0.1);
   }
   .page-forum .forum-new-post-arrow {
     width: 18px;
@@ -1967,6 +2098,23 @@
     font-size: 72px;
     line-height: 0.95;
     letter-spacing: -2px;
+    position: relative;
+    z-index: 0;
+    display: inline-block;
+  }
+  .donate-amount-value::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    right: -8px;
+    bottom: 6px;
+    height: 0.62em;
+    background: #F5FFAB;
+    border-radius: 10px;
+    transform: rotate(-1.2deg);
+    z-index: -1;
+    clip-path: polygon(0% 30%, 6% 18%, 14% 26%, 24% 16%, 36% 24%, 48% 14%, 60% 22%, 74% 12%, 86% 20%, 94% 12%, 100% 22%, 100% 86%, 94% 96%, 84% 88%, 74% 98%, 62% 90%, 48% 100%, 34% 92%, 22% 100%, 12% 90%, 6% 96%, 0% 88%);
+    opacity: 0.95;
   }
 
   .donate-preset-grid {
@@ -2099,6 +2247,13 @@
   }
   .page-donate-items::-webkit-scrollbar { display: none; }
 
+  /* Desktop: extra scroll room so "Load more items" isn't hidden by FAB */
+  @media (min-width: 768px) {
+    .page-donate-items { padding-bottom: 170px; }
+    /* Extra scroll room after the last button */
+    #di-item-feed { padding-bottom: 60px !important; }
+  }
+
   .page-donate-items .di-switch-to-money {
     display: flex;
     align-items: center;
@@ -2128,7 +2283,7 @@
   #di-item-feed {
     display: flex;
     flex-direction: column;
-    padding-bottom: 130px;
+    padding-bottom: 130px !important;
   }
   .di-cat-eyebrow {
     font-family: 'Geist', system-ui, sans-serif;
@@ -2141,15 +2296,6 @@
   }
   .page-donate-items .di-item-card {
     margin-bottom: 10px;
-  }
-  .page-donate-items .di-item-card-extra {
-    display: none;
-  }
-  .page-donate-items .di-item-card.di-item-card-extra.visible {
-    display: flex;
-  }
-  .di-cat-eyebrow.di-item-card-extra.visible {
-    display: block;
   }
   .page-donate-items .di-item-card h4 {
     font-family: 'Geist', system-ui, sans-serif;
@@ -2189,29 +2335,6 @@
     background: var(--input-bg);
     border-radius: 50px;
     padding: 2px 8px;
-  }
-  .di-load-more-wrap {
-    padding: 6px 0 4px;
-    display: flex;
-    justify-content: center;
-  }
-  .di-load-more-btn {
-    font-family: 'Geist', system-ui, sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1px;
-    color: var(--text-muted);
-    background: var(--input-bg);
-    border: none;
-    border-radius: 999px;
-    padding: 8px 14px;
-    cursor: pointer;
-    transition: transform 120ms cubic-bezier(0.34,1.56,0.64,1), opacity 200ms ease;
-  }
-  .di-load-more-btn:active,
-  .di-load-more-btn.touch-active {
-    transform: scale(0.95);
-    opacity: 0.85;
   }
 
   /* Donation FAB */
@@ -3252,8 +3375,13 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: var(--card-bg);
-    box-shadow: var(--shadow-soft);
+    background: rgba(255, 255, 255, 0.248);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 3px solid rgb(255, 255, 255);
+    box-shadow:
+      0 12px 28px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.32);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4627,6 +4755,10 @@
       overflow: hidden;
     }
 
+    .app-splash-overlay .splash {
+      border-radius: 0;
+    }
+
     body, button, a, input, textarea, select,
     .nav-item, .tab, .icon-btn, .comment-btn, .donate-icon-btn {
       cursor: auto !important;
@@ -4681,7 +4813,16 @@
   }
 
   .cal-scroll-wrap {
-    padding: 16px 20px 120px;
+    padding: 16px 20px 0px;
+  }
+
+  .cal-tent-wrap {
+    margin-top: 16px;
+  }
+  .cal-tent-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   /* Segment toggle — exact same design as vol-commit-toggle (One Time / Repeating) */
@@ -5112,6 +5253,34 @@
   <div class="phone-btn phone-btn-power"></div>
 
 <div class="app-container">
+  <div class="app-splash-overlay" id="app-splash-overlay" aria-hidden="true">
+    <div class="splash" id="splash">
+      <div class="burst burst-yellow"></div>
+      <div class="burst burst-navy"></div>
+      <div class="burst burst-final"></div>
+
+      <div class="stack">
+        <div class="logo-wrap">
+          <svg width="220" height="220" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="e1" d="M24.4398 37.2135C32.1946 37.2135 38.4811 30.927 38.4811 23.1722C38.4811 15.4174 32.1946 9.13086 24.4398 9.13086C16.685 9.13086 10.3984 15.4174 10.3984 23.1722C10.3984 30.927 16.685 37.2135 24.4398 37.2135Z" stroke="#FF7534" stroke-width="1.65"/>
+            <path class="e2" d="M22.0059 39.1221C31.4508 39.1221 39.1074 31.4654 39.1074 22.0205C39.1074 12.5756 31.4508 4.91895 22.0059 4.91895C12.5609 4.91895 4.9043 12.5756 4.9043 22.0205C4.9043 31.4654 12.5609 39.1221 22.0059 39.1221Z" stroke="#F5FFAB" stroke-width="1.65" stroke-miterlimit="10"/>
+            <path class="e3" d="M39.0541 21.0581C35.913 25.1599 29.4591 27.9726 22.0075 27.9726C14.5559 27.9726 8.10195 25.1599 4.96094 21.0581" stroke="#F5FFAB" stroke-width="1.65" stroke-miterlimit="10"/>
+            <path class="e4" d="M6.13281 16.0688C9.55398 19.441 15.3866 21.6599 22.0055 21.6599C28.6244 21.6599 34.457 19.4402 37.8781 16.0688" stroke="#F5FFAB" stroke-width="1.65" stroke-miterlimit="10"/>
+            <path class="e5" d="M17.4798 31.4647C17.4798 31.4647 13.0867 23.8722 17.4798 12.7476" stroke="#F5FFAB" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path class="e6" d="M29.2737 30.9004C29.2737 30.9004 33.1134 23.8724 28.5449 12.4883" stroke="#F5FFAB" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path class="e7" d="M23.0371 13.0625C23.0371 13.0625 24.8573 22.0206 23.0371 32.0959" stroke="#F5FFAB" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path class="e8" d="M36.7401 2.51367L34.9414 5.43125" stroke="#FF7534" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path class="e9" d="M41.5353 7.104L37.6191 8.28736" stroke="#FF7534" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path class="e10" d="M8.09375 41.0845L9.36563 38.6104" stroke="#FF7534" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path class="e11" d="M2.32812 39.4881L5.98648 36.5293" stroke="#FF7534" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path class="e12" d="M2.32812 34.4724L4.40352 33.9653" stroke="#FF7534" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <button class="replay" type="button" aria-hidden="true" tabindex="-1">Replay ↺</button>
+    </div>
+  </div>
   <div class="dynamic-island"></div>
 
   <div class="screen-content">
@@ -5144,9 +5313,9 @@
       
       <div class="impact-grid">
         <div class="stat-cell">
-          <span class="stat-cell-label">District Explorer</span>
-          <img src="img/icons/icon-car.svg" class="stat-cell-icon" alt="District Explorer">
-          <span class="stat-cell-sub">6 districts</span>
+          <span class="stat-cell-label">Star Neighbour</span>
+          <img src="img/icons/icon-rewards.svg" class="stat-cell-icon" alt="District Explorer">
+          <span class="stat-cell-sub">supported 17 distros</span>
         </div>
         <div class="stat-cell">
           <span class="stat-cell-label">Active Attendee</span>
@@ -5154,13 +5323,13 @@
           <span class="stat-cell-sub">11 events</span>
         </div>
         <div class="stat-cell">
-          <span class="stat-cell-label">Committed Donor</span>
-          <img src="img/icons/icon-hand.svg" class="stat-cell-icon" alt="Committed Donor">
+          <span class="stat-cell-label">Super Contributor</span>
+          <img src="img/icons/icon-gift.svg" class="stat-cell-icon" alt="Committed Donor">
           <span class="stat-cell-sub">8 months</span>
           </div>
         <div class="stat-cell">
-          <span class="stat-cell-label">Helpful Chatterbox</span>
-          <img src="img/icons/icon-rewards.svg" class="stat-cell-icon" alt="Helpful Chatterbox">
+          <span class="stat-cell-label">Sweet Talker</span>
+          <img src="img/icons/navbar-bottom-forum.svg" class="stat-cell-icon" alt="Helpful Chatterbox">
           <span class="stat-cell-sub">14 thumbs up</span>
         </div>
       </div>
@@ -5693,6 +5862,11 @@
       </div>
 
     </div><!-- /.cal-card -->
+
+    <div class="cal-tent-wrap">
+      <img src="img/dd-tent.svg" alt="">
+    </div>
+
   </div><!-- /.cal-scroll-wrap -->
   </div><!-- /.page.page-events -->
 
@@ -5976,7 +6150,15 @@
     <!-- Zone 1: Item feed -->
     <div style="padding: 0 20px;" id="di-item-feed">
 
-      <div class="di-cat-eyebrow">Shelter & Sleep</div>
+      <div class="di-cat-eyebrow">Requested items</div>
+
+      <div class="item-card di-item-card" data-item="2XL-6XL clothes">
+        <div class="item-left">
+          <img src="img/icons/icon-2xl-6xl-clothes.svg" class="item-icon" alt="2XL-6XL clothes">
+          <div><h4>2XL-6XL clothes</h4></div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
 
       <div class="item-card di-item-card" data-item="Tents">
         <div class="item-left">
@@ -5986,161 +6168,66 @@
         <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
       </div>
 
-      <div class="item-card di-item-card" data-item="Sleeping Bags">
+      <div class="item-card di-item-card" data-item="Reusable bags">
         <div class="item-left">
-          <img src="img/icons/icon-sleeping-bag.svg" class="item-icon" alt="Sleeping bags">
-          <div>
-            <h4>Sleeping Bags</h4>
-            <span class="di-item-note">–5°C rated or lower</span>
-          </div>
+          <img src="img/icons/icon-reusable-bags.svg" class="item-icon" alt="Reusable bags">
+          <div><h4>Reusable bags</h4></div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="item-card di-item-card" data-item="Socks">
+        <div class="item-left">
+          <img src="img/icons/icon-socks.svg" class="item-icon" alt="Socks">
+          <div><h4>Socks</h4></div>
         </div>
         <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
       </div>
 
       <div class="item-card di-item-card" data-item="Tarps">
         <div class="item-left">
-          <img src="img/icons/icon-tarp.svg" class="item-icon" alt="Tarps">
+          <img src="img/icons/icon-tarps.svg" class="item-icon" alt="Tarps">
           <div>
             <h4>Tarps</h4>
-            <span class="di-item-note">12×12 or larger</span>
+            <span class="di-item-note">12x12 or larger</span>
           </div>
         </div>
         <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
       </div>
 
-      <div class="item-card di-item-card" data-item="Sleeping Mats">
+      <div class="item-card di-item-card" data-item="Tea lights">
         <div class="item-left">
-          <img src="img/icons/icon-sleeping-mat.svg" class="item-icon" alt="Sleeping mats">
-          <div><h4>Sleeping Mats</h4></div>
+          <img src="img/icons/icon-tea-lights.svg" class="item-icon" alt="Tea lights">
+          <div><h4>Tea lights</h4></div>
         </div>
         <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
       </div>
 
-      <div class="item-card di-item-card" data-item="Sleeping Cots">
+      <div class="item-card di-item-card" data-item="Umbrellas">
         <div class="item-left">
-          <img src="img/icons/icon-sleeping-cot.svg" class="item-icon" alt="Sleeping cots">
-          <div><h4>Sleeping Cots</h4></div>
+          <img src="img/icons/icon-umbrellas.svg" class="item-icon" alt="Umbrellas">
+          <div><h4>Umbrellas</h4></div>
         </div>
         <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
       </div>
 
-      <div class="di-cat-eyebrow">Carry & Lighting</div>
-
-      <div class="item-card di-item-card" data-item="Backpacks">
+      <div class="item-card di-item-card" data-item="Sleeping bags">
         <div class="item-left">
-          <img src="img/icons/icon-backpack.svg" class="item-icon" alt="Backpacks">
-          <div><h4>Backpacks / Duffle Bags / Hiking Bags</h4></div>
-        </div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-
-      <div class="item-card di-item-card" data-item="Headlamps">
-        <div class="item-left">
-          <img src="img/icons/icon-headlamp.svg" class="item-icon" alt="Headlamps">
-          <div><h4>Headlamps</h4></div>
-        </div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-
-      <div class="item-card di-item-card" data-item="Lanterns">
-        <div class="item-left">
-          <img src="img/icons/icon-lantern.svg" class="item-icon" alt="Lanterns">
+          <img src="img/icons/icon-sleeping-bags.svg" class="item-icon" alt="Sleeping bags">
           <div>
-            <h4>Lanterns</h4>
-            <span class="di-item-note">Solar or battery-powered</span>
+            <h4>Sleeping bags</h4>
+            <span class="di-item-note">-5C rated or lower</span>
           </div>
         </div>
         <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
       </div>
 
-      <div class="di-cat-eyebrow di-item-card-extra">Warmth & Medical</div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="Hand Warmers">
-        <div class="item-left"><img src="img/icons/icon-hand-warmers.svg" class="item-icon" alt="Hand warmers"><div><h4>Hand Warmers</h4></div></div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="First Aid Kits">
-        <div class="item-left"><img src="img/icons/icon-first-aid.svg" class="item-icon" alt="First aid kits"><div><h4>First Aid Kits</h4></div></div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-
-      <div class="di-cat-eyebrow di-item-card-extra">Clothing & Hygiene</div>
-
-      <div class="item-card di-item-card di-item-card-extra" data-item="New Underwear & Boxers">
+      <div class="item-card di-item-card" data-item="Rain jackets">
         <div class="item-left">
-          <img src="img/icons/icon-underwear.svg" class="item-icon" alt="Underwear and boxers">
-          <div>
-            <h4>New Underwear &amp; Boxers</h4>
-            <span class="di-item-note">M / L / XL</span>
-          </div>
+          <img src="img/icons/icon-rain-jackets.svg" class="item-icon" alt="Rain jackets">
+          <div><h4>Rain jackets</h4></div>
         </div>
         <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="New Socks">
-        <div class="item-left">
-          <img src="img/icons/icon-new-socks.svg" class="item-icon" alt="Socks">
-          <div>
-            <h4>New Socks</h4>
-            <span class="di-item-note">Small &amp; Large</span>
-          </div>
-        </div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="Rain Jackets">
-        <div class="item-left"><img src="img/icons/icon-rain-jacket.svg" class="item-icon" alt="Rain jackets"><div><h4>Rain Jackets</h4></div></div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="Baby Wipes">
-        <div class="item-left">
-          <img src="img/icons/icon-baby-wipes.svg" class="item-icon" alt="Baby wipes">
-          <div>
-            <h4>Baby Wipes</h4>
-            <span class="di-item-note">Not antibacterial · smaller packs</span>
-          </div>
-        </div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="Toothbrushes & Toothpaste">
-        <div class="item-left"><img src="img/icons/icon-toothbrush.svg" class="item-icon" alt="Toothbrushes and toothpaste"><div><h4>Toothbrushes &amp; Toothpaste</h4></div></div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="Deodorant">
-        <div class="item-left">
-          <img src="img/icons/icon-deodorant.svg" class="item-icon" alt="Deodorant">
-          <div>
-            <h4>Deodorant</h4>
-            <span class="di-item-note">Men's-branded goes faster</span>
-          </div>
-        </div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-
-      <div class="di-cat-eyebrow di-item-card-extra">Power & Utility</div>
-
-      <div class="item-card di-item-card di-item-card-extra" data-item="Rope">
-        <div class="item-left">
-          <img src="img/icons/icon-rope.svg" class="item-icon" alt="Rope">
-          <div>
-            <h4>Rope</h4>
-            <span class="di-item-note">Cut to 20' lengths, ends burnt</span>
-          </div>
-        </div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="Flashlight">
-        <div class="item-left"><img src="img/icons/icon-flashlight.svg" class="item-icon" alt="Flashlight"><div><h4>Flashlight</h4></div></div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="Battery Banks">
-        <div class="item-left"><img src="img/icons/icon-battery-bank.svg" class="item-icon" alt="Battery banks"><div><h4>Battery Banks</h4></div></div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-      <div class="item-card di-item-card di-item-card-extra" data-item="Reusable Water Bottles">
-        <div class="item-left"><img src="img/icons/icon-water-bottle.svg" class="item-icon" alt="Reusable water bottles"><div><h4>Reusable Water Bottles</h4></div></div>
-        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
-      </div>
-
-      <div class="di-load-more-wrap">
-        <button class="di-load-more-btn" id="di-load-more-btn">Load more items</button>
       </div>
 
     </div><!-- /#di-item-feed -->
@@ -6173,17 +6260,17 @@
                   <div class="di-sheet-mini-row">
                     <div class="di-sheet-mini-chip di-sheet-mini-chip-pair" data-item="Tarps">
                       <div class="di-sheet-mini-icon-wrap">
-                        <img src="img/icons/icon-tent.svg" class="di-sheet-mini-icon" alt="">
+                        <img src="img/icons/icon-tarps.svg" class="di-sheet-mini-icon" alt="">
                         <span class="di-sheet-mini-plus-badge" data-pair-plus="true">+</span>
                       </div>
                       <span class="di-sheet-mini-chip-label">Tarps</span>
                     </div>
-                    <div class="di-sheet-mini-chip di-sheet-mini-chip-pair" data-item="Flashlight">
+                    <div class="di-sheet-mini-chip di-sheet-mini-chip-pair" data-item="Tea lights">
                       <div class="di-sheet-mini-icon-wrap">
-                        <img src="img/icons/icon-batteries.svg" class="di-sheet-mini-icon" alt="">
+                        <img src="img/icons/icon-tea-lights.svg" class="di-sheet-mini-icon" alt="">
                         <span class="di-sheet-mini-plus-badge" data-pair-plus="true">+</span>
                       </div>
-                      <span class="di-sheet-mini-chip-label">Flashlight</span>
+                      <span class="di-sheet-mini-chip-label">Tea lights</span>
                     </div>
                   </div>
                 </div>
@@ -6310,7 +6397,7 @@
         </div>
         <div class="dc-make-changes-wrap">
           
-          <button type="button" class="dc-confirm-btn" id="dc-confirm-btn">Commit donation</button>
+          <button type="button" class="dc-confirm-btn" id="dc-confirm-btn">Commit my donation</button>
           <button type="button" class="dc-make-changes-btn" id="dc-make-changes-btn">Make changes to donation</button>
         </div>
       </section>
@@ -7173,13 +7260,13 @@
 
     <div class="forum-sticky-wrap">
       <div class="forum-sticky" id="forum-sticky-note">
-        <div class="sticky-eyebrow">Pinned from Ji Woo</div>
+        <div class="sticky-eyebrow">Pinned by CaitlinV</div>
         <div class="sticky-title">March distro schedule is live! Check your dates before Saturday.</div>
         <div class="sticky-meta">2 days ago · tap to read</div>
       </div>
     </div>
 
-    <button type="button" class="forum-new-post-btn" id="forum-new-post-btn"><span>Start a Discussion</span> <img src="img/icons/arrow-right.svg" class="forum-new-post-arrow" alt="" aria-hidden="true"></button>
+    <button type="button" class="forum-new-post-btn" id="forum-new-post-btn"><span>Start a Discussion</span> <img src="img/icons/icon-edit.svg" class="forum-new-post-arrow" alt="" aria-hidden="true"></button>
 
     <div class="forum-filter-row" id="forum-filter-row">
       <button class="forum-filter-btn active" data-cat="all">All posts</button>
@@ -8670,7 +8757,7 @@
     function setVolSameProfile(on) {
       if (on) {
         volSameProfile.classList.add('checked');
-        volSameProfile.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+        volSameProfile.innerHTML = '<svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;"><polyline points="20 6 9 17 4 12"/></svg>';
       } else {
         volSameProfile.classList.remove('checked');
         volSameProfile.innerHTML = '';
@@ -9124,7 +9211,7 @@
     var CIRCLE_MAX = 128;
     var CIRCLE_MIN = 44;
     var COUNT_AT_MIN = 5;
-    var ICON_TO_CIRCLE_RATIO = 0.58;
+    var ICON_TO_CIRCLE_RATIO = 0.74;
     var circleSize = Math.round(CIRCLE_MAX - ((count - 1) / (COUNT_AT_MIN - 1)) * (CIRCLE_MAX - CIRCLE_MIN));
     if (circleSize < CIRCLE_MIN) circleSize = CIRCLE_MIN;
     if (circleSize > CIRCLE_MAX) circleSize = CIRCLE_MAX;
@@ -9210,6 +9297,76 @@
     rafId = requestAnimationFrame(tick);
   }
 
+  // ── Single icon raindrop (hero card tap) ──
+  function dropOneIcon(src, container) {
+    if (!src || !container) return;
+    var iconSize = 92;
+    var rect = container.getBoundingClientRect();
+    var vw = rect.width;
+    var vh = rect.height;
+    var exitY = vh + 60 + iconSize;
+    var fadeOutStartY = vh - 80;
+    var layer = document.createElement('div');
+    layer.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:999;';
+    var el = document.createElement('div');
+    // Icon-only particle (no background fill)
+    el.style.position = 'absolute';
+    el.style.width = iconSize + 'px';
+    el.style.height = iconSize + 'px';
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    var img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'contain';
+    el.appendChild(img);
+    var startX = Math.random() * Math.max(0, vw - iconSize);
+    el.style.left = startX + 'px';
+    el.style.top = (-iconSize) + 'px';
+    el.style.opacity = '0';
+    layer.appendChild(el);
+    container.appendChild(layer);
+    var p = {
+      y: 0,
+      vy: 0.5 + Math.random() * 0.7,
+      gravity: 0.18 + Math.random() * 0.14,
+      driftPhase: Math.random() * Math.PI * 2,
+      driftAmp: 18,
+      driftSpeed: 0.02 + Math.random() * 0.02,
+      angle: 0,
+      rotationRate: (0.08 + Math.random() * 0.14) * (Math.random() < 0.5 ? -1 : 1),
+      done: false,
+      startTime: performance.now()
+    };
+    function tick() {
+      if (p.done) {
+        if (layer.parentNode) layer.parentNode.removeChild(layer);
+        return;
+      }
+      var now = performance.now();
+      var elapsed = now - p.startTime;
+      p.vy += p.gravity;
+      p.vy *= 0.995;
+      p.y += p.vy;
+      var driftX = Math.sin(p.driftPhase + now * p.driftSpeed * 0.06) * p.driftAmp;
+      p.driftPhase += 0.002;
+      p.driftAmp *= 0.998;
+      if (p.driftAmp < 0.5) p.driftAmp = 0.5;
+      p.angle += p.rotationRate;
+      el.style.transform = 'translate(' + driftX + 'px, ' + p.y + 'px) rotate(' + p.angle + 'deg)';
+      var opacity = 1;
+      if (elapsed < 200) opacity = elapsed / 200;
+      else if (p.y > fadeOutStartY) opacity = Math.max(0, 1 - (p.y - fadeOutStartY) / (exitY - fadeOutStartY));
+      el.style.opacity = String(opacity);
+      if (p.y >= exitY) p.done = true;
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
   function initDonateConfirmPage(config) {
     const page = document.querySelector('.page-donate-confirm');
     const backBtn = document.getElementById('donate-confirm-back-btn');
@@ -9220,14 +9377,9 @@
     if (!page || !backBtn || !itemList || !mapWrap || !mapFrame) return null;
 
     const CONDITION_NOTES = {
-      'Sleeping Bags': '-5C rated or lower',
+      '2XL-6XL clothes': 'Clean and in usable condition',
       'Tarps': '12x12 or larger',
-      'Lanterns': 'Solar or battery-powered',
-      'New Underwear & Boxers': 'M / L / XL',
-      'New Socks': 'Small & Large',
-      'Baby Wipes': 'Not antibacterial - smaller packs',
-      'Deodorant': "Men's-branded goes faster",
-      'Rope': "Cut to 20' lengths, ends burnt"
+      'Sleeping bags': '-5C rated or lower'
     };
 
     function animateEntrance() {
@@ -9355,7 +9507,7 @@
     const confirmUsername = 'Potato31#';
     const usedPairSuggestions = new Set();
     const pairedItems = new Map();
-    const PAIR_PARENT_ITEM = 'Rope';
+    const PAIR_PARENT_ITEM = 'Tents';
     const DROP_OFF_LOCATIONS = [
       { id: 'private', mapQuery: 'Private Residence, 436 12th Ave East, Vancouver, BC' },
       { id: 'cross', mapQuery: 'Cross & Crows Books, 2836 Commercial Dr, Vancouver, BC' },
@@ -9387,26 +9539,15 @@
     });
 
     const getItemIconSrc = (name) => ({
+      '2XL-6XL clothes': 'img/icons/icon-2xl-6xl-clothes.svg',
       'Tents': 'img/icons/icon-tents.svg',
-      'Sleeping Bags': 'img/icons/icon-sleeping-bag.svg',
-      'Tarps': 'img/icons/icon-tarp.svg',
-      'Sleeping Mats': 'img/icons/icon-sleeping-mat.svg',
-      'Sleeping Cots': 'img/icons/icon-sleeping-cot.svg',
-      'Rope': 'img/icons/icon-rope.svg',
-      'Flashlight': 'img/icons/icon-flashlight.svg',
-      'Battery Banks': 'img/icons/icon-battery-bank.svg',
-      'Reusable Water Bottles': 'img/icons/icon-water-bottle.svg',
-      'Backpacks': 'img/icons/icon-backpack.svg',
-      'Headlamps': 'img/icons/icon-headlamp.svg',
-      'Lanterns': 'img/icons/icon-lantern.svg',
-      'Hand Warmers': 'img/icons/icon-hand-warmers.svg',
-      'First Aid Kits': 'img/icons/icon-first-aid.svg',
-      'New Underwear & Boxers': 'img/icons/icon-underwear.svg',
-      'New Socks': 'img/icons/icon-new-socks.svg',
-      'Rain Jackets': 'img/icons/icon-rain-jacket.svg',
-      'Baby Wipes': 'img/icons/icon-baby-wipes.svg',
-      'Toothbrushes & Toothpaste': 'img/icons/icon-toothbrush.svg',
-      'Deodorant': 'img/icons/icon-deodorant.svg'
+      'Reusable bags': 'img/icons/icon-reusable-bags.svg',
+      'Socks': 'img/icons/icon-socks.svg',
+      'Tarps': 'img/icons/icon-tarps.svg',
+      'Tea lights': 'img/icons/icon-tea-lights.svg',
+      'Umbrellas': 'img/icons/icon-umbrellas.svg',
+      'Sleeping bags': 'img/icons/icon-sleeping-bags.svg',
+      'Rain jackets': 'img/icons/icon-rain-jackets.svg'
     }[name] || 'img/icons/icon-stars.svg');
 
     function getDropoffById(id) {
@@ -9829,20 +9970,6 @@
       });
     }
 
-    // Load more items reveal
-    const diLoadMoreBtn = document.getElementById('di-load-more-btn');
-    if (diLoadMoreBtn) {
-      diLoadMoreBtn.addEventListener('click', function() {
-        document.querySelectorAll('.page-donate-items .di-item-card-extra').forEach(function(card) {
-          card.classList.add('visible');
-        });
-        document.querySelectorAll('.page-donate-items .di-cat-eyebrow.di-item-card-extra').forEach(function(tag) {
-          tag.classList.add('visible');
-        });
-        diLoadMoreBtn.style.display = 'none';
-      });
-    }
-
     // Back button
     const diBackBtn = document.getElementById('donate-items-back-btn');
     if (diBackBtn) {
@@ -10063,7 +10190,7 @@
       touchCursor.classList.remove('touch-cursor--down');
     });
 
-    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, label, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .settings-back-btn, .settings-row, .settings-toggle, .settings-appearance-opt, .prof-back, .prof-edit, .prof-trophy-card, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back, .top-nav-activities, .activities-back-btn, .activities-filter-btn';
+    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, label, .stat-cell-icon, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .settings-back-btn, .settings-row, .settings-toggle, .settings-appearance-opt, .prof-back, .prof-edit, .prof-trophy-card, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back, .top-nav-activities, .activities-back-btn, .activities-filter-btn';
     document.addEventListener('mouseover', (e) => {
       if (e.target.closest(interactiveSelector) && !e.target.closest('.bottom-nav')) {
         touchCursor.classList.add('touch-cursor--hover');
@@ -10088,7 +10215,7 @@
       '.prof-back, .prof-edit, .prof-trophy-card, .prof-forum-post, .prof-settings-link, ' +
       '.btn, .icon-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-back-btn, .vol-toggle-opt, .vol-cta-btn, .event-detail-back, .event-detail-share, ' +
       '.forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back, .top-nav-activities, .activities-back-btn, .activities-filter-btn, ' +
-      '.dm-cta-btn, .dc-make-changes-btn, .dm-switch-to-items, .dm-toggle-switch, .dm-copy-btn, .di-item-btn, .di-switch-to-money, .di-load-more-btn, .di-fab, .di-sheet-close, .di-bs-consent-box';
+      '.dm-cta-btn, .dc-make-changes-btn, .dm-switch-to-items, .dm-toggle-switch, .dm-copy-btn, .di-item-btn, .di-switch-to-money, .di-fab, .di-sheet-close, .di-bs-consent-box';
     function clearTouchActive() {
       document.querySelectorAll('.touch-active').forEach(function(el) { el.classList.remove('touch-active'); });
     }
@@ -10098,6 +10225,32 @@
     }, { passive: true });
     document.addEventListener('touchend', clearTouchActive, { passive: true });
     document.addEventListener('touchcancel', clearTouchActive, { passive: true });
+  })();
+
+  // ── Hero card icon tap: bounce + single raindrop ──
+  (function initStatCellIconTaps() {
+    var appContainer = document.querySelector('.app-container');
+    document.querySelectorAll('.stat-cell-icon').forEach(function(icon) {
+      icon.addEventListener('click', function() {
+        icon.classList.remove('stat-icon-bouncing');
+        void icon.offsetWidth;
+        icon.classList.add('stat-icon-bouncing');
+        icon.addEventListener('animationend', function() {
+          icon.classList.remove('stat-icon-bouncing');
+        }, { once: true });
+        dropOneIcon(icon.src, appContainer);
+      });
+    });
+  })();
+
+  // ── App boot splash ──
+  (function initAppSplash() {
+    var overlay = document.getElementById('app-splash-overlay');
+    if (!overlay) return;
+    // Let the existing splash animation play, then remove the overlay.
+    setTimeout(function() {
+      if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+    }, 5200);
   })();
 </script>
 
