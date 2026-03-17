@@ -72,7 +72,7 @@
     --icon-size-nav: 38px;
     --icon-size-nav-center: 48px;
     --icon-size-stat: 48px;
-    --icon-size-section-title: 20px;
+    --icon-size-section-title: 28px;
     --icon-size-card: 48px;
     --icon-size-meta: 16px;
     --icon-size-item: 28px;
@@ -267,7 +267,7 @@
     width: auto;
     display: block;
   }
-  .nav-icons { display: flex; gap: 10px; align-items: center; }
+  .nav-icons { display: flex; gap: 4px; align-items: center; }
   .icon-btn {
     background: none; border: none; color: var(--navy);
     display: flex; align-items: center; justify-content: center; position: relative;
@@ -370,7 +370,7 @@
   /* Sections Common */
   .section { padding: 0 20px; margin-bottom: 32px; }
   .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-  .section-title { display: flex; align-items: center; gap: 8px; font-size: 20px; color: var(--navy); }
+  .section-title { display: flex; align-items: center; gap: 8px; font-size: 18px; color: var(--navy); }
   .section-title img { width: var(--icon-size-section-title); height: var(--icon-size-section-title); object-fit: contain; }
   
   /* Tabs */
@@ -555,6 +555,7 @@
     background: var(--navy);
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border: 3px solid white;
+    margin-top: -3px; /* keep active dot center aligned with inactive dots */
   }
   
   .page-volunteer .vol-tl-dot.active::before,
@@ -606,8 +607,10 @@
     box-shadow: 0 4px 20px rgba(35,33,74,0.08);
     margin-bottom: 14px;
     overflow: hidden;
-    border: 1.5px solid transparent;
-    transition: border-color 0.2s;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 6px solid var(--orange);
+    transition: border-color 0.2s, border-left-color 0.2s;
   }
   .page-volunteer .vol-role-card-header {
     display: flex; align-items: center; gap: 14px;
@@ -619,18 +622,31 @@
   .page-volunteer .vol-role-card.active .vol-role-card-header {
     background: var(--navy); border-radius: 18px 18px 0 0;
   }
+  .page-volunteer .vol-role-card.active {
+    border-left-color: transparent;
+    border-left-width: 0;
+    border-radius: 20px;
+  }
   .page-volunteer .vol-role-card.disabled .vol-role-card-header {
     background: var(--card-bg); opacity: 0.55;
   }
   .page-volunteer .vol-role-icon-ph {
     width: 46px; height: 46px; border-radius: 10px;
-    background: var(--input-bg); border: 1.5px dashed var(--border-color);
+    background: transparent; border: none;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     transition: border-color 450ms cubic-bezier(0.16,1,0.3,1), background 450ms cubic-bezier(0.16,1,0.3,1);
   }
   .page-volunteer .vol-role-card.active .vol-role-icon-ph {
-    background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25);
+    background: transparent; border-color: transparent;
+  }
+  .page-volunteer .vol-role-icon-ph img {
+    object-fit: contain;
+    transition: filter 200ms ease;
+  }
+  .page-volunteer .vol-role-card.active .vol-role-icon-ph img {
+    /* make role icons white on active cards */
+    filter: brightness(0) invert(1);
   }
   .page-volunteer .vol-role-icon-ph span {
     font-size: 7px; color: var(--text-muted); font-weight: 700;
@@ -677,11 +693,71 @@
   }
   .page-volunteer .vol-role-tasks { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
   .page-volunteer .vol-role-task {
-    display: flex; align-items: flex-start; gap: 10px;
+    display: flex; align-items: flex-start; gap: 18px;
     font-size: 13px; line-height: 1.5; color: var(--navy);
   }
-  .page-volunteer .vol-task-star { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
-  .page-volunteer .vol-task-star svg { width: 18px; height: 18px; }
+  .page-volunteer .vol-task-star { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
+  .page-volunteer .vol-task-star svg {
+    width: 14px;
+    height: 14px;
+    transform-origin: center center;
+  }
+  /* Slight variations per task position and card to give each star a unique feel */
+  .page-volunteer #vol-card-1 .vol-role-task:nth-child(1) .vol-task-star svg {
+    transform: scale(0.9) rotate(-8deg);
+  }
+  .page-volunteer #vol-card-1 .vol-role-task:nth-child(2) .vol-task-star svg {
+    transform: scale(0.84) rotate(9deg);
+  }
+  .page-volunteer #vol-card-1 .vol-role-task:nth-child(3) .vol-task-star svg {
+    transform: scale(0.8) rotate(-14deg);
+  }
+  .page-volunteer #vol-card-1 .vol-role-task:nth-child(4) .vol-task-star svg {
+    transform: scale(0.82) rotate(13deg);
+  }
+
+  .page-volunteer #vol-card-2 .vol-role-task:nth-child(1) .vol-task-star svg {
+    transform: scale(0.86) rotate(6deg);
+  }
+  .page-volunteer #vol-card-2 .vol-role-task:nth-child(2) .vol-task-star svg {
+    transform: scale(0.82) rotate(-10deg);
+  }
+  .page-volunteer #vol-card-2 .vol-role-task:nth-child(3) .vol-task-star svg {
+    transform: scale(0.78) rotate(15deg);
+  }
+
+  .page-volunteer #vol-card-3 .vol-role-task:nth-child(1) .vol-task-star svg {
+    transform: scale(0.88) rotate(-11deg);
+  }
+  .page-volunteer #vol-card-3 .vol-role-task:nth-child(2) .vol-task-star svg {
+    transform: scale(0.83) rotate(12deg);
+  }
+  .page-volunteer #vol-card-3 .vol-role-task:nth-child(3) .vol-task-star svg {
+    transform: scale(0.79) rotate(-16deg);
+  }
+
+  .page-volunteer #vol-card-5 .vol-role-task:nth-child(1) .vol-task-star svg {
+    transform: scale(0.87) rotate(8deg);
+  }
+  .page-volunteer #vol-card-5 .vol-role-task:nth-child(2) .vol-task-star svg {
+    transform: scale(0.81) rotate(-13deg);
+  }
+  .page-volunteer #vol-card-5 .vol-role-task:nth-child(3) .vol-task-star svg {
+    transform: scale(0.77) rotate(17deg);
+  }
+
+  .page-volunteer #vol-card-6 .vol-role-task:nth-child(1) .vol-task-star svg {
+    transform: scale(0.89) rotate(-9deg);
+  }
+  .page-volunteer #vol-card-6 .vol-role-task:nth-child(2) .vol-task-star svg {
+    transform: scale(0.83) rotate(10deg);
+  }
+  .page-volunteer #vol-card-6 .vol-role-task:nth-child(3) .vol-task-star svg {
+    transform: scale(0.78) rotate(-15deg);
+  }
+  .page-volunteer #vol-card-6 .vol-role-task:nth-child(4) .vol-task-star svg {
+    transform: scale(0.8) rotate(18deg);
+  }
 
   /* Commitment toggle */
   .page-volunteer .vol-commit-toggle {
@@ -758,7 +834,7 @@
     max-height: 600px; opacity: 1; padding: 24px 20px 0;
   }
   .page-volunteer .vol-contact-row {
-    display: flex; align-items: center; gap: 8px; margin-top: 16px;
+    display: flex; align-items: center; gap: 20px; margin-top: 16px;
   }
   .page-volunteer .vol-contact-opt {
     display: flex; flex-direction: row; align-items: center;
@@ -784,12 +860,13 @@
     display: flex; flex-direction: column; align-items: center; gap: 4px;
   }
   .page-volunteer .vol-contact-icon-ph {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--input-bg); border: 1.5px dashed var(--border-color);
+    width: 28px; height: 28px; border-radius: 10px;
+    background: transparent; border: none;
     display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
   }
-  .page-volunteer .vol-contact-icon-ph span {
-    font-size: 7px; color: var(--text-muted); font-weight: 700;
+  .page-volunteer .vol-contact-icon-ph img {
+    width: 32px; height: 32px; object-fit: contain; display: block;
   }
   .page-volunteer .vol-contact-label {
     font-size: 11px; font-weight: 600; color: var(--text-muted);
@@ -830,12 +907,19 @@
   .page-volunteer .vol-info-badges { padding: 24px 20px 0; display: flex; flex-direction: column; gap: 16px; }
   .page-volunteer .vol-info-badge { display: flex; align-items: flex-start; gap: 14px; }
   .page-volunteer .vol-badge-icon {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--input-bg); border: 1.5px dashed var(--border-color);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
-  .page-volunteer .vol-badge-icon span {
-    font-size: 7px; color: var(--text-muted); font-weight: 700; text-align: center; line-height: 1.2;
+  .page-volunteer .vol-badge-icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    display: block;
   }
   .page-volunteer .vol-badge-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
   .page-volunteer .vol-badge-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
@@ -860,15 +944,30 @@
   }
   .page-volunteer .vol-consent-text { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
   .page-volunteer .vol-cta-btn {
-    width: 100%; padding: 15px; border-radius: var(--radius-md);
-    border: none; background: var(--input-bg); color: #b0aec0;
-    font-family: 'Geist', system-ui, sans-serif; font-size: 14px;
-    font-weight: 600; letter-spacing: -0.1px; cursor: not-allowed;
-    transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+    width: 100%;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    border: none;
+    background: var(--input-bg);
+    color: #b0aec0;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    cursor: not-allowed;
+    transition: background 200ms ease, transform 120ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 200ms ease, color 200ms ease;
   }
   .page-volunteer .vol-cta-btn.enabled {
-    background: var(--navy); color: var(--white); cursor: pointer;
-    box-shadow: rgba(0,0,0,0.3) 0px 6px 18px -3px;
+    background: var(--orange);
+    color: var(--white);
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  }
+  .page-volunteer .vol-cta-btn.enabled:active,
+  .page-volunteer .vol-cta-btn.enabled.touch-active {
+    background: var(--navy);
+    box-shadow: none;
+    transform: scale(0.98);
   }
 
   /* ── Forum Feed & Compose Pages ── */
@@ -1681,6 +1780,10 @@
   }
   .page-donate-money .dm-toggle-switch.on { background: var(--orange); }
   .page-donate-money .dm-toggle-switch.on::after { left: 19px; }
+  @media (hover: hover) and (pointer: fine) {
+    .page-donate-money .dm-toggle-switch,
+    .page-donate-money .dm-freq-row { cursor: default; }
+  }
   .page-donate-money .dm-bus-callout {
     font-family: 'Geist', system-ui, sans-serif;
     font-size: 12px;
@@ -1820,10 +1923,16 @@
     background: none;
     cursor: pointer;
   }
-  @keyframes swap-icon-pop {
-    0% { transform: scale(1); }
-    38% { transform: scale(1.14); }
-    100% { transform: scale(1); }
+  /* Swap icon micro-interactions: single, fast half-rotations */
+  @keyframes swap-icon-pop-cw {
+    0%   { transform: rotate(0deg)   scale(1); }
+    45%  { transform: rotate(160deg) scale(1.16); }
+    100% { transform: rotate(180deg) scale(1); }
+  }
+  @keyframes swap-icon-pop-ccw {
+    0%   { transform: rotate(0deg)    scale(1); }
+    45%  { transform: rotate(-160deg) scale(1.16); }
+    100% { transform: rotate(-180deg) scale(1); }
   }
   .page-donate-money .dm-switch-to-items-icon {
     width: 36px;
@@ -1837,7 +1946,7 @@
     color: var(--navy);
   }
   .page-donate-money .dm-switch-to-items-icon.swap-icon-pop {
-    animation: swap-icon-pop 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: swap-icon-pop-cw 260ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
   .page-donate-money .dm-switch-to-items-icon svg { display: block; }
 
@@ -1935,30 +2044,17 @@
     height: 40px;
     border-radius: 50%;
     flex-shrink: 0;
-    background: linear-gradient(135deg, #1a1840 0%, var(--navy) 50%, #3a3770 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--white);
+    overflow: hidden;
     margin-left: -52px;
     margin-right: 0;
     position: relative;
     z-index: 1;
   }
-  .donate-feed-avatar.purple {
-    background: linear-gradient(135deg, #1a1840 0%, #4338ca 50%, #7c3aed 100%);
-  }
-  .donate-feed-avatar.teal {
-    background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #22c55e 100%);
-  }
-  .donate-feed-avatar.orange {
-    background: linear-gradient(135deg, #9a3412 0%, #f97316 50%, #fb923c 100%);
-  }
-  .donate-feed-avatar.pink {
-    background: linear-gradient(135deg, #9d174d 0%, #ec4899 50%, #f97316 100%);
+  .donate-feed-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .donate-feed-body {
     flex: 1;
@@ -2024,7 +2120,7 @@
     color: var(--navy);
   }
   .page-donate-items .di-switch-to-money-icon.swap-icon-pop {
-    animation: swap-icon-pop 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: swap-icon-pop-ccw 260ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
   .page-donate-items .di-switch-to-money-icon svg { display: block; }
 
@@ -2206,7 +2302,7 @@
   .di-sheet-shell {
     height: 100%;
     display: grid;
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr);
     background: var(--white);
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
@@ -2230,8 +2326,11 @@
     position: relative;
     z-index: 2;
     background: var(--white);
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 0;
+    padding-right: 0;
+    /* Counteract di-sheet-body horizontal padding so footer spans full sheet width */
+    margin-left: -20px;
+    margin-right: -20px;
   }
   .di-sheet-body-items,
   .di-sheet-body-dropoff {
@@ -2369,7 +2468,18 @@
     justify-content: center;
     padding: 0 6px;
     transform: translateY(-50%);
+    transform-origin: center center;
     box-shadow: rgba(35,33,74,0.12) 0px 2px 8px, rgba(35,33,74,0.06) 0px 1px 3px;
+    will-change: transform;
+  }
+  @keyframes di-badge-jump {
+    0%   { transform: translateY(-50%) scale(1); }
+    40%  { transform: translateY(-52%) scale(1.18); }
+    70%  { transform: translateY(-49%) scale(0.96); }
+    100% { transform: translateY(-50%) scale(1); }
+  }
+  .di-badge-jump {
+    animation: di-badge-jump 190ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .di-sheet-item-name {
     display: flex;
@@ -2602,6 +2712,7 @@
   .di-sheet-body-dropoff .di-sheet-section {
     padding-top: 0px;
   }
+
 .di-sheet-loc-heading {
     display: flex;
     align-items: center;
@@ -2850,14 +2961,14 @@
   }
   .di-bs-footer {
     position: relative;
-    padding: 14px 0 18px;
+    padding: 25px 20px 18px;
     background-color: var(--card-bg);
     z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding-top: 25px;
   }
+
   .di-bs-standards {
     font-weight: 700;
     text-decoration: underline;
@@ -2866,16 +2977,16 @@
   /* ── Donate Confirm Page ── */
   .page-donate-confirm {
     position: relative;
-    height: 100%;
+    height: auto;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none;
     background: var(--bg-color);
-    padding-bottom: 60px;
+    padding-bottom: 0;
+    z-index: 300; /* above bottom nav (100) */
   }
   .page-donate-confirm::-webkit-scrollbar { display: none; }
   .page-donate-confirm .dc-surface {
-    min-height: 100%;
     background: var(--bg-color);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -2890,16 +3001,16 @@
     opacity: 1;
   }
   .page-donate-confirm .dc-top {
-    padding: 18px 20px 0;
+    padding: 10px 20px 0;
   }
   .page-donate-confirm .dc-hero {
     text-align: center;
-    padding: 48px 20px 0;
+    padding: 10px 20px 0;
   }
   .page-donate-confirm .dc-hero-img-wrap {
     width: 100%;
     padding: 0 24px;
-    margin-top: -24px;
+    margin-top: 0;
     margin-bottom: 12px;
     box-sizing: border-box;
   }
@@ -2909,6 +3020,7 @@
     display: block;
     object-fit: contain;
   }
+
   .page-donate-confirm .dc-thank-you {
     margin: 0;
     font-family: 'Gaya', 'Geist', system-ui, sans-serif;
@@ -3036,7 +3148,7 @@
     align-items: center;
     gap: 10px;
     padding: 0;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
   }
   .page-donate-confirm .dc-reminder-icon {
     width: 32px;
@@ -3062,11 +3174,34 @@
   }
 
   .page-donate-confirm .dc-make-changes-wrap {
-    padding: 0px 0 40px;
+    padding: 0 0 16px;
     margin: 0;
     text-align: center;
   }
   .dc-make-changes-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    cursor: pointer;
+    transition: background 200ms ease, transform 120ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 200ms ease;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none;
+    margin: 6px 0 0 0;
+  }
+  .dc-make-changes-btn:active,
+  .dc-make-changes-btn.touch-active {
+    background: black;
+    box-shadow: none;
+    transform: scale(0.98);
+  }
+
+  .dc-confirm-btn {
     width: 100%;
     padding: 15px;
     border-radius: var(--radius-md);
@@ -3080,30 +3215,7 @@
     transition: background 200ms ease, transform 120ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 200ms ease;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border: none;
-    margin: 18px 0 0 0;
-  }
-  .dc-make-changes-btn:active,
-  .dc-make-changes-btn.touch-active {
-    background: var(--navy);
-    box-shadow: none;
-    transform: scale(0.98);
-  }
-
-  .dc-confirm-btn {
-    width: 100%;
-    padding: 15px;
-    border-radius: var(--radius-md);
-    background: var(--navy);
-    color: var(--white);
-    font-family: 'Geist', system-ui, sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -0.1px;
-    cursor: pointer;
-    transition: background 200ms ease, transform 120ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 200ms ease;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    border: none;
-    margin: 8px 0px 0 0;
+    margin: 12px 0px 0 0;
   }
   .dc-confirm-btn:active,
   .dc-confirm-btn.touch-active {
@@ -3154,6 +3266,17 @@
 
   /* ── Profile Page ── */
   .page-profile { position: relative; height: 100%; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: 48px; }
+
+  /* Override base .page padding for Donate Confirm so buttons sit near bottom */
+  .page.page-donate-confirm {
+    padding-bottom: 8px;
+  }
+  /* Desktop: extra bottom padding so confirm buttons aren't clipped by phone frame */
+  @media (min-width: 768px) {
+    .page.page-donate-confirm {
+      padding-bottom: 48px;
+    }
+  }
   .page-profile::-webkit-scrollbar { display: none; }
 
   /* page header */
@@ -3919,6 +4042,15 @@
     background: linear-gradient(to top, rgba(35, 33, 74, 0.88) 0%, transparent 100%);
     pointer-events: none;
     z-index: 99;
+  }
+
+  /* Hide bottom nav + scrim when donate-items sheet is open (mobile) */
+  body.donate-sheet-open .nav-scrim,
+  body.donate-sheet-open .bottom-nav {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(100%);
+    transition: opacity 220ms ease, transform 220ms cubic-bezier(0.16,1,0.3,1);
   }
 
   /* Bottom Navigation */
@@ -5043,7 +5175,7 @@
         <img src="img/icons/icon-stars.svg" alt="">
         Upcoming Events
       </h2>
-      <a href="#">View Calendar</a>
+      <a href="#" class="link-view-calendar">View Calendar</a>
     </div>
 
     <div class="tabs-container">
@@ -5252,7 +5384,7 @@
         <span class="badge-title">15</span>
         Hot Ticket Items
       </h2>
-      <a href="#">See All</a>
+      <a href="#" class="link-hot-items">See All</a>
     </div>
 
     <div class="item-card">
@@ -5292,7 +5424,7 @@
   <section class="section forum">
     <div class="section-header">
       <h2 class="section-title">Community Forum</h2>
-      <a href="#">See Forum</a>
+      <a href="#" class="link-see-forum">See Forum</a>
     </div>
 
     <div class="tabs-container forum-tabs">
@@ -5431,7 +5563,7 @@
     <div class="seg-wrap">
       <div class="segment">
         <div class="seg-btn active">Calendar</div>
-        <div class="seg-btn seg-btn-disabled" aria-disabled="true">Events Detail (coming soon)</div>
+        <div class="seg-btn seg-btn-disabled" aria-disabled="true">Events Detail</div>
       </div>
     </div>
 
@@ -5735,7 +5867,9 @@
         <div class="donate-feed-eyebrow">Recent donations</div>
         <div class="donate-feed-timeline">
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar purple" aria-hidden="true">P</div>
+            <div class="donate-feed-avatar" aria-hidden="true">
+              <img src="img/avatars/avatar-cool-disco.png" alt="">
+            </div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Potato23</span>
@@ -5746,7 +5880,9 @@
             </div>
           </div>
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar teal" aria-hidden="true">?</div>
+            <div class="donate-feed-avatar" aria-hidden="true">
+              <img src="img/avatars/avatar-cowboy.png" alt="">
+            </div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Someone</span>
@@ -5757,7 +5893,9 @@
             </div>
           </div>
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar orange" aria-hidden="true">M</div>
+            <div class="donate-feed-avatar" aria-hidden="true">
+              <img src="img/avatars/avatar-flowers.png" alt="">
+            </div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Maya</span>
@@ -5768,7 +5906,9 @@
             </div>
           </div>
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar pink" aria-hidden="true">?</div>
+            <div class="donate-feed-avatar" aria-hidden="true">
+              <img src="img/avatars/avatar-ribbon.png" alt="">
+            </div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Someone</span>
@@ -5779,7 +5919,9 @@
             </div>
           </div>
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar teal" aria-hidden="true">J</div>
+            <div class="donate-feed-avatar" aria-hidden="true">
+              <img src="img/avatars/avatar-toque.png" alt="">
+            </div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Jay</span>
@@ -6093,26 +6235,26 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="di-sheet-bottombar">
-          <div class="di-bs-footer">
-            <label class="di-bs-consent">
-              <button class="di-bs-consent-box" id="di-bs-consent-box" type="button" aria-label="Confirm donation item condition"></button>
-              <span>I confirm these items are in good, usable condition by <span class="di-bs-standards">DD’s Standards</span></span>
-            </label>
+          <div class="di-sheet-bottombar">
+            <div class="di-bs-footer">
+              <label class="di-bs-consent">
+                <button class="di-bs-consent-box" id="di-bs-consent-box" type="button" aria-label="Confirm donation item condition"></button>
+                <span>I confirm these items are in good, usable condition by <span class="di-bs-standards">DD’s Standards</span></span>
+              </label>
 
-            <div class="di-bs-slide-cta" id="di-bs-slide-cta" aria-label="Slide to confirm donation">
-              <div class="di-bs-slide-track" id="di-bs-slide-track">
-                <div class="di-bs-slide-fill" id="di-bs-slide-fill"></div>
-                <div class="di-bs-slide-success-circle" id="di-bs-slide-success-circle" aria-hidden="true"></div>
-                <div class="di-bs-slide-glow" id="di-bs-slide-glow"></div>
-                <div class="di-bs-slide-label" id="di-bs-slide-label">Slide to donate 0 items</div>
-                <div class="di-bs-slide-done" id="di-bs-slide-done">Confirmed ✓</div>
-                <div class="di-bs-slide-thumb" id="di-bs-slide-thumb" aria-hidden="true">
-                  <svg class="di-bs-slide-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+              <div class="di-bs-slide-cta" id="di-bs-slide-cta" aria-label="Slide to confirm donation">
+                <div class="di-bs-slide-track" id="di-bs-slide-track">
+                  <div class="di-bs-slide-fill" id="di-bs-slide-fill"></div>
+                  <div class="di-bs-slide-success-circle" id="di-bs-slide-success-circle" aria-hidden="true"></div>
+                  <div class="di-bs-slide-glow" id="di-bs-slide-glow"></div>
+                  <div class="di-bs-slide-label" id="di-bs-slide-label">Slide to donate 0 items</div>
+                  <div class="di-bs-slide-done" id="di-bs-slide-done">Confirmed ✓</div>
+                  <div class="di-bs-slide-thumb" id="di-bs-slide-thumb" aria-hidden="true">
+                    <svg class="di-bs-slide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
@@ -6167,8 +6309,9 @@
           </div>
         </div>
         <div class="dc-make-changes-wrap">
+          
+          <button type="button" class="dc-confirm-btn" id="dc-confirm-btn">Commit donation</button>
           <button type="button" class="dc-make-changes-btn" id="dc-make-changes-btn">Make changes to donation</button>
-          <button type="button" class="dc-confirm-btn" id="dc-confirm-btn">Confirm donation queued</button>
         </div>
       </section>
     </div>
@@ -6253,11 +6396,13 @@
       <div class="vol-section-eyebrow">Open Roles</div>
       <h2 class="vol-section-heading">Roles we need help with right now</h2>
 
-      <!-- Card 1: active + expanded -->
+      <!-- Card 1: General Distro Volunteer (active + expanded) -->
       <div class="vol-role-card active" id="vol-card-1">
         <div class="vol-role-card-header">
-          <div class="vol-role-icon-ph"><span>ICON</span></div>
-          <span class="vol-role-card-title">Lorem Ipsum</span>
+          <div class="vol-role-icon-ph">
+            <img src="img/icons/icon-hand-outline.svg" alt="Helping hands icon">
+          </div>
+          <span class="vol-role-card-title">General Distro Volunteer</span>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
@@ -6268,13 +6413,25 @@
               <div class="vol-task-star">
                 <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
               </div>
-              <span>To drive the bus to/from the venue</span>
+              <span>Set up tables, organize inventory, and help neighbours find what they need</span>
             </div>
             <div class="vol-role-task">
               <div class="vol-task-star">
                 <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
               </div>
-              <span>At the table to welcome our neighbours and ensure items are distributed fairly (at least 2-3 folks)</span>
+              <span>Go in and out of the bus to restock items throughout the distro</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Stay for take-down and do a quick inventory count at the end</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Available most Saturdays at Grandview Park, Oppenheimer Park, or near Trillium Park — shifts run about 3 hours</span>
             </div>
           </div>
           <div class="vol-commit-toggle" id="vol-toggle-1">
@@ -6284,11 +6441,13 @@
         </div>
       </div>
 
-      <!-- Card 2: inactive -->
+      <!-- Card 2: Supply Runner -->
       <div class="vol-role-card" id="vol-card-2">
         <div class="vol-role-card-header">
-          <div class="vol-role-icon-ph"><span>ICON</span></div>
-          <span class="vol-role-card-title">Lorem Ipsum</span>
+          <div class="vol-role-icon-ph">
+            <img src="img/icons/icon-box-outline.svg" alt="Car icon">
+          </div>
+          <span class="vol-role-card-title">Supply Runner</span>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
@@ -6299,7 +6458,19 @@
               <div class="vol-task-star">
                 <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
               </div>
-              <span>To drive the bus to/from the venue</span>
+              <span>Do regular supply runs to stores around Vancouver (reimbursement provided)</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Pick up donated items from our drop-off spots — Cross &amp; Crows, Wildfires Bookshop, and the private residence on 12th Ave East</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Requires regular access to a vehicle and availability at least 2x per month</span>
             </div>
           </div>
           <div class="vol-commit-toggle" id="vol-toggle-2">
@@ -6309,11 +6480,13 @@
         </div>
       </div>
 
-      <!-- Card 3: inactive -->
+      <!-- Card 3: Fundraising Team -->
       <div class="vol-role-card" id="vol-card-3">
         <div class="vol-role-card-header">
-          <div class="vol-role-icon-ph"><span>ICON</span></div>
-          <span class="vol-role-card-title">Lorem Ipsum</span>
+          <div class="vol-role-icon-ph">
+            <img src="img/icons/icon-wallet-outline.svg" alt="Wallet icon">
+          </div>
+          <span class="vol-role-card-title">Fundraising Team</span>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
@@ -6324,7 +6497,19 @@
               <div class="vol-task-star">
                 <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
               </div>
-              <span>To drive the bus to/from the venue</span>
+              <span>Brainstorm and execute fundraising ideas — past initiatives include talent shows, merch sales, online raffles, and social media callouts</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Work mostly remotely through Discord and occasional online meetings</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Ramp up hours when an event or initiative is approaching — otherwise 1–3 hours per week</span>
             </div>
           </div>
           <div class="vol-commit-toggle" id="vol-toggle-3">
@@ -6334,11 +6519,97 @@
         </div>
       </div>
 
-      <!-- Card 4: disabled / full -->
+      <!-- Card 5: Food Partner -->
+      <div class="vol-role-card" id="vol-card-5">
+        <div class="vol-role-card-header">
+          <div class="vol-role-icon-ph">
+            <img src="img/icons/icon-food-outline.svg" alt="Food box icon">
+          </div>
+          <span class="vol-role-card-title">Food Partner</span>
+          <div class="vol-role-check">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <div class="vol-role-card-body">
+          <div class="vol-role-tasks">
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Prep and serve food at one distro per month — either Trillium Park (2nd Saturday) or Oppenheimer Park (4th Saturday)</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Food can be self-funded or you can run a callout for dedicated food funds — current partners spend around $100/month</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Examples: soup, pizza, sandwiches, fruit — whatever you can make work</span>
+            </div>
+          </div>
+          <div class="vol-commit-toggle" id="vol-toggle-5">
+            <button class="vol-toggle-opt active">One Time</button>
+            <button class="vol-toggle-opt">Repeating</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Volunteer Coordinator -->
+      <div class="vol-role-card" id="vol-card-6">
+        <div class="vol-role-card-header">
+          <div class="vol-role-icon-ph">
+            <img src="img/icons/icon-chat-outline.svg" alt="Clock icon">
+          </div>
+          <span class="vol-role-card-title">Volunteer Coordinator</span>
+          <div class="vol-role-check">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <div class="vol-role-card-body">
+          <div class="vol-role-tasks">
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Check the volunteer schedule regularly and send callouts via email or Discord to fill open shifts</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Plan quarterly volunteer meetings and coordinate new volunteer onboarding as needed</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Work is mostly remote and async — 1 to 3 hours per week, more when organizing events</span>
+            </div>
+            <div class="vol-role-task">
+              <div class="vol-task-star">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
+              </div>
+              <span>Only apply if you can commit consistently — the team depends on this role staying active</span>
+            </div>
+          </div>
+          <div class="vol-commit-toggle" id="vol-toggle-6">
+            <button class="vol-toggle-opt active">One Time</button>
+            <button class="vol-toggle-opt">Repeating</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: disabled / full (Bus Driver) -->
       <div class="vol-role-card disabled" id="vol-card-4">
         <div class="vol-role-card-header">
-          <div class="vol-role-icon-ph"><span>ICON</span></div>
-          <span class="vol-role-card-title">Lorem Ipsum</span>
+          <div class="vol-role-icon-ph">
+            <img src="img/icons/icon-bus-outline.svg" alt="Bus icon">
+          </div>
+          <span class="vol-role-card-title">Bus Driver</span>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
@@ -6366,35 +6637,41 @@
     <!-- Contact method — hidden until toggle is on -->
     <div class="vol-contact-section" id="vol-contact-section">
       <div class="vol-section-eyebrow">Preferred contact method</div>
-      <div class="vol-contact-row" id="vol-contact-row">
-        <div class="vol-contact-opt active" data-vol-contact="phone">
-          <div class="vol-contact-radio">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <div class="vol-contact-row" id="vol-contact-row">
+          <div class="vol-contact-opt active" data-vol-contact="phone">
+            <div class="vol-contact-radio">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="vol-contact-icon-label">
+              <div class="vol-contact-icon-ph">
+                <img src="img/icons/icon-chat-outline.svg" alt="Contact icon">
+              </div>
+              <span class="vol-contact-label">Phone</span>
+            </div>
           </div>
-          <div class="vol-contact-icon-label">
-            <div class="vol-contact-icon-ph"><span>PHN</span></div>
-            <span class="vol-contact-label">Phone</span>
+          <div class="vol-contact-opt" data-vol-contact="email">
+            <div class="vol-contact-radio">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="vol-contact-icon-label">
+              <div class="vol-contact-icon-ph">
+                <img src="img/icons/icon-chat-outline.svg" alt="Contact icon">
+              </div>
+              <span class="vol-contact-label">Email</span>
+            </div>
+          </div>
+          <div class="vol-contact-opt" data-vol-contact="other">
+            <div class="vol-contact-radio">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="vol-contact-icon-label">
+              <div class="vol-contact-icon-ph">
+                <img src="img/icons/icon-chat-outline.svg" alt="Contact icon">
+              </div>
+              <span class="vol-contact-label">Other</span>
+            </div>
           </div>
         </div>
-        <div class="vol-contact-opt" data-vol-contact="email">
-          <div class="vol-contact-radio">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="vol-contact-icon-label">
-            <div class="vol-contact-icon-ph"><span>EML</span></div>
-            <span class="vol-contact-label">Email</span>
-          </div>
-        </div>
-        <div class="vol-contact-opt" data-vol-contact="other">
-          <div class="vol-contact-radio">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="vol-contact-icon-label">
-            <div class="vol-contact-icon-ph"><span>OTH</span></div>
-            <span class="vol-contact-label">Other</span>
-          </div>
-        </div>
-      </div>
       <div class="vol-contact-input-wrap" id="vol-input-phone">
         <input class="vol-contact-input" type="tel" placeholder="Phone number">
       </div>
@@ -6416,21 +6693,27 @@
     <!-- Info badges -->
     <div class="vol-info-badges">
       <div class="vol-info-badge">
-        <div class="vol-badge-icon"><span>ICON</span></div>
+        <div class="vol-badge-icon">
+          <img src="img/icons/icon-heart.svg" alt="Community-run badge">
+        </div>
         <div>
           <div class="vol-badge-title">Community-run</div>
           <div class="vol-badge-desc">Community-run, by volunteers for everyone</div>
         </div>
       </div>
       <div class="vol-info-badge">
-        <div class="vol-badge-icon"><span>ICON</span></div>
+        <div class="vol-badge-icon">
+          <img src="img/icons/icon-car.svg" alt="Physically active badge">
+        </div>
         <div>
           <div class="vol-badge-title">Physically Active</div>
           <div class="vol-badge-desc">Our tasks can sometime be physically active, be ready to move</div>
         </div>
       </div>
       <div class="vol-info-badge">
-        <div class="vol-badge-icon"><span>ICON</span></div>
+        <div class="vol-badge-icon">
+          <img src="img/icons/icon-chat-outline.svg" alt="Async communication badge">
+        </div>
         <div>
           <div class="vol-badge-title">Async Communication</div>
           <div class="vol-badge-desc">Coordinated through multiple mediums including this app</div>
@@ -7513,6 +7796,13 @@
     activePageName = name;
     document.body.classList.toggle('is-fullscreen-confirm', name === 'donate-confirm');
 
+    // Ensure donate-items bottom sheet state never leaks across pages:
+    // if we are not on the donate-items page, always clear the sheet-open lock.
+    if (name !== 'donate-items') {
+      document.body.classList.remove('donate-sheet-open');
+      document.body.style.overflow = '';
+    }
+
     // Reset impact bar animation when leaving profile so it replays on next open
     if (name !== 'profile') {
       var trophyOverlay = document.getElementById('prof-trophy-overlay');
@@ -7764,11 +8054,9 @@
     if (dmImpactLine) {
       const newCopy = donateImpactCopy(donateState.amount, dmIsMonthly);
       if (dmImpactLine.textContent !== newCopy) {
-        dmImpactLine.style.opacity = '0';
-        setTimeout(() => {
-          dmImpactLine.textContent = newCopy;
-          dmImpactLine.style.opacity = '1';
-        }, 120);
+        // Keep this change instant on mobile to avoid any overlap / flicker
+        dmImpactLine.style.opacity = '1';
+        dmImpactLine.textContent = newCopy;
       }
     }
 
@@ -8418,6 +8706,22 @@
       else setVolSameProfile(true);
     });
 
+    // Let label text in \"About You\" rows also toggle the controls
+    const sameProfileRow = volSameProfile && volSameProfile.closest('.vol-checkbox-row');
+    if (sameProfileRow) {
+      sameProfileRow.addEventListener('click', (e) => {
+        if (e.target.closest('#vol-same-profile')) return;
+        volSameProfile.click();
+      });
+    }
+    const volNewContactRow = volNewContactToggle && volNewContactToggle.closest('.vol-checkbox-row');
+    if (volNewContactRow) {
+      volNewContactRow.addEventListener('click', (e) => {
+        if (e.target.closest('#vol-new-contact-toggle')) return;
+        volNewContactToggle.click();
+      });
+    }
+
     // Contact method radio
     function showVolContactInput(key) {
       ['phone', 'email', 'other'].forEach(k => {
@@ -8458,6 +8762,40 @@
     }
 
     updateVolCTA();
+  })();
+
+  // ── Inline navigation links (home + volunteer) ──
+  (function initInlineLinks() {
+    const viewCalendarLink = document.querySelector('.link-view-calendar');
+    if (viewCalendarLink) {
+      viewCalendarLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage('events');
+      });
+    }
+
+    const hotItemsLink = document.querySelector('.link-hot-items');
+    if (hotItemsLink) {
+      hotItemsLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage('donate-items');
+      });
+    }
+
+    const seeForumLink = document.querySelector('.link-see-forum');
+    if (seeForumLink) {
+      seeForumLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage('forums');
+      });
+    }
+
+    document.querySelectorAll('.vol-timeline-view-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage('events');
+      });
+    });
   })();
 
   function initSlideConfirmCTA(config) {
@@ -9100,6 +9438,8 @@
       if (diSheetBackdrop) diSheetBackdrop.classList.remove('is-open');
       if (diSheet) diSheet.classList.remove('is-open');
       diSheetOpen = false;
+      document.body.classList.remove('donate-sheet-open');
+      document.body.style.overflow = '';
       updateSheetDonateState();
     }
 
@@ -9289,6 +9629,7 @@
       diSheetBackdrop.classList.add('is-open');
       diSheet.classList.add('is-open');
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('donate-sheet-open');
       renderSheetItems();
       renderDropoffSelection();
       updateSheetDonateState();
@@ -9301,6 +9642,7 @@
       diSheetBackdrop.classList.remove('is-open');
       diSheet.classList.remove('is-open');
       document.body.style.overflow = '';
+      document.body.classList.remove('donate-sheet-open');
     }
 
     function updateDiUI() {
@@ -9314,6 +9656,29 @@
       renderSheetItems();
       renderDropoffSelection();
       updateSheetDonateState();
+    }
+
+    function jumpBadgeForItem(itemName, qty) {
+      if (!diSheetItems || !itemName || qty == null) return;
+      var safe = itemName;
+      if (window.CSS && CSS.escape) {
+        safe = CSS.escape(itemName);
+      } else {
+        safe = itemName.replace(/"/g, '\\"');
+      }
+      const row = diSheetItems.querySelector('.di-sheet-item-row[data-item="' + safe + '"]');
+      if (!row) return;
+      const badge = row.querySelector('.di-sheet-item-count');
+      if (!badge) return;
+      badge.textContent = 'x' + qty;
+      badge.classList.remove('di-badge-jump');
+      // force reflow so animation can restart
+      void badge.offsetWidth;
+      badge.classList.add('di-badge-jump');
+      badge.addEventListener('animationend', function handle() {
+        badge.classList.remove('di-badge-jump');
+        badge.removeEventListener('animationend', handle);
+      });
     }
 
     // Drop-off selection (single select persisted)
@@ -9337,8 +9702,7 @@
         if (el.classList.contains('di-bs-consent') || el.closest('.di-bs-consent') === el) el = el.querySelector('.di-bs-consent-box') || el;
         if (diSheetTapTimeout) { clearTimeout(diSheetTapTimeout); if (diSheetTapEl) { diSheetTapEl.style.transform = ''; diSheetTapEl.style.transition = ''; } }
         diSheetTapEl = el;
-        if (el.classList.contains('di-bs-location-card')) return;
-        el.style.transform = 'scale(1.12)';
+        el.style.transform = 'scale(1.03)';
         diSheetTapTimeout = setTimeout(function() { if (diSheetTapEl) diSheetTapEl.style.transform = ''; diSheetTapEl = null; diSheetTapTimeout = null; }, 90);
       });
     }
@@ -9359,18 +9723,24 @@
         }
 
         if (action === 'inc') {
-          setItemQuantity(itemName, (itemQuantities.get(itemName) || 0) + 1);
-          updateDiUI();
+          const nextQty = (itemQuantities.get(itemName) || 0) + 1;
+          setItemQuantity(itemName, nextQty);
           editingItemName = itemName;
-          renderSheetItems();
+          updateDiUI();
+          jumpBadgeForItem(itemName, nextQty);
           return;
         }
 
         if (action === 'dec') {
           const nextQty = (itemQuantities.get(itemName) || 0) - 1;
           setItemQuantity(itemName, nextQty);
-          if (!itemQuantities.has(itemName)) editingItemName = null;
+          if (!itemQuantities.has(itemName)) {
+            editingItemName = null;
+            updateDiUI();
+            return;
+          }
           updateDiUI();
+          jumpBadgeForItem(itemName, nextQty);
         }
       });
     }
