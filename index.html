@@ -412,7 +412,24 @@
   /* Hero Section */
   .hero { padding: 0 20px; margin-bottom: 32px; }
   .hero-card {
-    background: linear-gradient(180deg, #F5FFAB 0%, #F5FFAB 25%, #FFFEF5 65%, var(--bg-color) 100%);
+    /* Solid fallback so yellow still shows if gradients fail */
+    background-color: #F5FFAB;
+    /* WebKit-prefixed gradient for older Safari/WebKit */
+    background-image: -webkit-linear-gradient(
+      top,
+      #F5FFAB 0%,
+      #F5FFAB 25%,
+      #FFFEF5 65%,
+      #F8F7F4 100%
+    );
+    /* Standard gradient – preserves original look */
+    background-image: linear-gradient(
+      180deg,
+      #F5FFAB 0%,
+      #F5FFAB 25%,
+      #FFFEF5 65%,
+      #F8F7F4 100%
+    );
     border-radius: var(--radius-xl);
     padding: 24px 20px;
     box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
@@ -6053,7 +6070,7 @@
       <div class="dm-payment-info">
         <div class="dm-copy-row">
           <span>E-transfer or PayPal:</span>
-          <strong>distrodisco1312@gmail.com</strong>
+          <strong>distrodisco@gmail.com</strong>
           <button class="dm-copy-btn" id="dm-copy-email" aria-label="Copy email address">
             <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           </button>
@@ -8250,7 +8267,20 @@
   const dmCopyConfirm = document.getElementById('dm-copy-confirm');
   if (dmCopyEmailBtn) {
     dmCopyEmailBtn.addEventListener('click', () => {
-      navigator.clipboard?.writeText('distrodisco1312@gmail.com').catch(() => {});
+      const email = 'distrodisco@gmail.com';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).catch(() => {});
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = email;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(textarea);
+      }
       if (dmCopyConfirm) {
         dmCopyConfirm.classList.add('visible');
         setTimeout(() => dmCopyConfirm.classList.remove('visible'), 1800);
