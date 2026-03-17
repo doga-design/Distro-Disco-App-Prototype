@@ -2,7 +2,6 @@
 
 A single-page prototype of the Distro Disco app, rendered inside a realistic iPhone-style frame with custom fonts, smooth in-frame scrolling, and a custom touch-style cursor for desktop.
 
-## 🔗 [Visit Website](https://doga-design.github.io/Distro-Disco-App-Prototype/)
 ---
 
 ## Tech stack

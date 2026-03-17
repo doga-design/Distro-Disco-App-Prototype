@@ -497,6 +497,354 @@
     margin-top: 4px;
   }
 
+  .donation-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.45);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+  .donation-modal-backdrop.is-visible {
+    opacity: 1;
+  }
+  .donation-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 48px);
+    max-width: 342px;
+    padding: 10px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    z-index: 201;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.88);
+    transition: opacity 380ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: var(--shadow-soft);
+  }
+  .donation-modal.is-visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .donation-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.18);
+    color: #fff;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 202;
+  }
+  .donation-modal-media {
+    height: 200px;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--navy) 0%, #3B3778 55%, var(--orange) 100%);
+  }
+  .donation-modal-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .donation-modal-copy {
+    padding: 24px 24px 28px;
+  }
+  .donation-modal-title {
+    color: var(--navy);
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .donation-modal-title span {
+    color: var(--orange);
+  }
+  .donation-modal-body {
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  .donation-modal-cta {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .page-home .donation-card {
+    margin: 0 20px 16px;
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    max-height: 9999px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: max-height 400ms cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms ease, transform 300ms ease;
+    transform-origin: center center;
+  }
+  .page-home .donation-card.is-entering {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  .page-home .donation-card.is-collapsed {
+    max-height: 44px;
+    background: #F5FFAB;
+  }
+  .page-home .donation-card.is-leaving {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  .page-home .donation-card.is-pulsing {
+    animation: donation-card-pulse 300ms ease;
+  }
+  @keyframes donation-card-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+  .page-home .donation-card-header {
+    border: 0;
+    background: transparent;
+    width: 100%;
+    height: 44px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+  }
+  .page-home .donation-card-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .page-home .donation-card-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+    animation: vol-tl-pulse 2.4s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .page-home .donation-card-header-text {
+    color: var(--navy);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .page-home .donation-card-header-text.di-badge-jump {
+    animation: donation-card-qty-pop 190ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .page-home .donation-card.is-collapsed .donation-card-header-text {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .page-home .donation-card-chevron {
+    color: var(--text-muted);
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .page-home .donation-card.is-collapsed .donation-card-chevron {
+    transform: rotate(180deg);
+  }
+  .page-home .donation-card-body {
+    opacity: 1;
+    transition: opacity 180ms ease;
+  }
+  .page-home .donation-card.is-collapsed .donation-card-body {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .page-home .donation-card-items {
+    padding: 0 18px 14px;
+  }
+  .page-home .donation-card-group {
+    position: relative;
+    padding-top: 8px;
+  }
+  .page-home .donation-card-group:first-child {
+    padding-top: 0;
+  }
+  .page-home .donation-card-group:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    top: 0;
+    height: 0;
+    border-top: 2px dashed var(--border-color);
+  }
+  .page-home .donation-card-group.is-group-entering {
+    animation: donation-group-in 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .page-home .donation-card-group.is-group-leaving {
+    opacity: 0;
+    transform: translateY(-12px);
+    transition: opacity 280ms ease-in, transform 280ms ease-in;
+  }
+  .page-home .donation-card-group.is-group-leaving::before {
+    opacity: 0;
+    transition: opacity 280ms ease-in;
+  }
+  @keyframes donation-group-in {
+    0% { opacity: 0; transform: translateY(-12px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .page-home .donation-card-item-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .page-home .donation-card-item-row.is-row-entering {
+    animation: donation-row-in 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes donation-row-in {
+    0% { opacity: 0; transform: translateY(-8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .page-home .donation-card-item-row:last-child {
+    border-bottom: 0;
+  }
+  .page-home .donation-card-item-row img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .page-home .donation-card-item-name {
+    color: var(--navy);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    flex: 1;
+    min-width: 0;
+  }
+  .page-home .donation-card-more {
+    color: var(--text-muted);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .page-home .donation-card-qty,
+  .page-home .donation-card-check {
+    margin-left: auto;
+    border-radius: 999px;
+    padding: 4px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .page-home .donation-card-qty.di-badge-jump {
+    animation: donation-card-qty-pop 190ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes donation-card-qty-pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.18); }
+    70% { transform: scale(0.96); }
+    100% { transform: scale(1); }
+  }
+  .page-home .donation-card-qty {
+    background: var(--orange);
+    width: 24px;
+    height: 24px;
+    padding: 0;
+  }
+  .page-home .donation-card-check {
+    background: var(--orange);
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    font-size: 0;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  .page-home .donation-card-check.is-visible {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 200ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .page-home .donation-card-check svg {
+    width: 4px;
+    height: 4px;
+  }
+  .page-home .donation-card-dropoff {
+    margin: 0 18px 14px;
+    background: var(--input-bg);
+    border-radius: var(--radius-md);
+    padding: 12px 14px 10px;
+  }
+  .page-home .donation-card-dropoff-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .page-home .donation-card-dropoff-main img {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  .page-home .donation-card-dropoff-map {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .page-home .donation-card-dropoff-map iframe {
+    display: block;
+    width: 100%;
+    height: 140px;
+    border: 0;
+  }
+  @media (pointer: fine) {
+    .page-home .donation-card-dropoff-map iframe {
+      cursor: none;
+    }
+  }
+  .page-home .donation-card-dropoff-name {
+    color: var(--navy);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .page-home .donation-card-dropoff-meta {
+    color: var(--text-muted);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+  .page-home .donation-card-group-slider {
+    padding: 0 18px 14px;
+  }
+
   @keyframes stat-icon-bounce {
     0%   { transform: scale(1); }
     28%  { transform: scale(1.4); }
@@ -579,6 +927,12 @@
   .item-right { display: flex; align-items: center; gap: 12px; }
   .item-badge { background: var(--navy); color: white; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 12px; }
   .item-icon { width: var(--icon-size-item); height: var(--icon-size-item); object-fit: contain; }
+
+  /* Slightly larger icons in Donate Items list */
+  .page-donate-items .item-icon {
+    width: 34px;
+    height: 34px;
+  }
 
   /* Forum */
   .forum-cards { display: flex; flex-direction: column; gap: 16px; }
@@ -2110,7 +2464,7 @@
   .page-donate-money .dm-switch-to-items-icon svg { display: block; }
   .dm-switch-label {
     font-family: 'Geist', system-ui, sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--navy);
     white-space: nowrap;
@@ -2456,6 +2810,21 @@
   }
   .di-fab:active,
   .di-fab.touch-active { transform: translateY(0) scale(0.96); }
+
+  @keyframes di-fab-bounce {
+    0% {
+      transform: translateY(0) scale(1);
+    }
+    40% {
+      transform: translateY(-3px) scale(1.08);
+    }
+    100% {
+      transform: translateY(0) scale(1);
+    }
+  }
+  .di-fab.di-fab-bounce {
+    animation: di-fab-bounce 320ms cubic-bezier(0.16,1,0.3,1);
+  }
 
   /* Donate items bottom sheet */
   .di-sheet-backdrop {
@@ -3022,7 +3391,6 @@
     border-radius: 6px;
     border: 1.5px solid #d0d0d0;
     background: #f0f0f0;
-    cursor: pointer;
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
@@ -3032,6 +3400,12 @@
     background: var(--orange);
     border-color: var(--orange);
     color: white;
+  }
+  @media (pointer: fine) {
+    .page-donate-items .di-bs-consent,
+    .page-donate-items .di-bs-consent * {
+      cursor: none !important;
+    }
   }
   .di-bs-slide-cta {
     margin: 6px 0 0;
@@ -3276,6 +3650,17 @@
     pointer-events: none;
     margin: 0;
     align-items: center;
+    background-image: linear-gradient(270deg, #F5FFAB 0%, rgba(245,255,171,0) 70%);
+    webkit-background-image: linear-gradient(270deg, #F5FFAB 0%, rgba(245,255,171,0) 70%);
+    background-image: linear-gradient(270deg, #F5FFAB 0%, rgba(245,255,171,0) 70%);
+    background-image: -webkit-linear-gradient(270deg, #F5FFAB 0%, rgba(245,255,171,0) 70%);
+    background-image: -moz-linear-gradient(270deg, #F5FFAB 0%, rgba(245,255,171,0) 70%);
+    background-image: -ms-linear-gradient(270deg, #F5FFAB 0%, rgba(245,255,171,0) 70%);
+    background-image: -o-linear-gradient(270deg, #F5FFAB 0%, rgba(245,255,171,0) 70%);
+    background-image: -webkit-gradient(linear, right top, left top, color-stop(0%, #F5FFAB), color-stop(70%, rgba(245,255,171,0)));
+    background-image: -webkit-linear-gradient(right, #F5FFAB 0%, rgba(245,255,171,0) 70%);
+    background-color: var(--card-bg);
+    background-blend-mode: normal;
   }
   .page-donate-confirm .dc-item-card .item-left {
     min-width: 0;
@@ -5311,6 +5696,11 @@
     width: 100%;
     height: 100%;
     border: 0;
+  }
+  @media (pointer: fine) {
+    .event-detail-map {
+      cursor: none;
+    }
   }
   .event-detail-heading {
     font-size: 13px;
@@ -7884,6 +8274,56 @@
   var profileConfettiTimerId = null;
   var profileConfettiCanvas = null;
   var profileConfettiAbort = false;
+  var donationJustConfirmed = false;
+  var donationGroups = [];
+  var pendingHomeCelebrations = 0;
+  var donationCardShownOnce = false;
+  var donationCardCollapsed = false;
+  var donationGetItemIconSrc = null;
+  var donationLastConfirmedItems = [];
+  var homeDonationCelebrationController = null;
+
+  function mergeDonationGroupSession(session) {
+    if (!session || !session.dropoff || !session.dropoff.id || !Array.isArray(session.items) || !session.items.length) return false;
+    var incomingItems = session.items
+      .filter(function(entry) { return entry && entry.itemName && (entry.qty || 0) > 0; })
+      .map(function(entry) { return { itemName: entry.itemName, qty: entry.qty }; });
+    if (!incomingItems.length) return false;
+
+    var existing = donationGroups.find(function(group) {
+      return group && group.dropoff && group.dropoff.id === session.dropoff.id;
+    });
+
+    if (existing) {
+      incomingItems.forEach(function(incoming) {
+        var match = existing.items.find(function(item) { return item.itemName === incoming.itemName; });
+        if (match) match.qty += incoming.qty;
+        else existing.items.push({ itemName: incoming.itemName, qty: incoming.qty });
+      });
+      existing.items = existing.items.filter(function(item) { return (item.qty || 0) > 0; });
+    } else {
+      donationGroups.push({
+        id: session.id || String(Date.now()) + '-' + Math.random().toString(36).slice(2),
+        dropoff: session.dropoff,
+        items: incomingItems,
+        confirmedAt: session.confirmedAt || Date.now()
+      });
+    }
+
+    donationGroups = donationGroups
+      .map(function(group) {
+        return {
+          id: group.id,
+          dropoff: group.dropoff,
+          confirmedAt: group.confirmedAt || Date.now(),
+          items: (group.items || []).filter(function(item) { return (item.qty || 0) > 0; })
+        };
+      })
+      .filter(function(group) { return group.items.length > 0; })
+      .sort(function(a, b) { return (a.confirmedAt || 0) - (b.confirmedAt || 0); });
+
+    return donationGroups.length > 0;
+  }
 
   function setActiveNav(name) {
     navItems.forEach(item => {
@@ -8038,6 +8478,7 @@
   }
 
   function showPage(name) {
+    var prevPageName = activePageName;
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.querySelector('.' + pageMap[name]);
     if (!target) return;
@@ -8045,6 +8486,10 @@
     target.scrollTop = 0;
     activePageName = name;
     document.body.classList.toggle('is-fullscreen-confirm', name === 'donate-confirm');
+
+    if (prevPageName === 'home' && name !== 'home' && homeDonationCelebrationController) {
+      homeDonationCelebrationController.onHomeHidden();
+    }
 
     // Ensure donate-items bottom sheet state never leaks across pages:
     // if we are not on the donate-items page, always clear the sheet-open lock.
@@ -8117,6 +8562,10 @@
           });
         }
       });
+    }
+
+    if (name === 'home' && homeDonationCelebrationController) {
+      homeDonationCelebrationController.onHomeShown();
     }
   }
 
@@ -9392,6 +9841,12 @@
     if (circleSize < CIRCLE_MIN) circleSize = CIRCLE_MIN;
     if (circleSize > CIRCLE_MAX) circleSize = CIRCLE_MAX;
     var iconSize = Math.round(circleSize * ICON_TO_CIRCLE_RATIO);
+
+    // Home page: crank particle size up aggressively (confirmation page stays unchanged)
+    if (pageEl && pageEl.classList && pageEl.classList.contains('page-home')) {
+      circleSize = 150;
+      iconSize = Math.round(circleSize * ICON_TO_CIRCLE_RATIO);
+    }
     var rect = pageEl.getBoundingClientRect();
     var vw = rect.width;
     var vh = rect.height;
@@ -9473,6 +9928,16 @@
     rafId = requestAnimationFrame(tick);
   }
 
+  function startHomeIconRainHeavy(names, getItemIconSrc, pageEl) {
+    if (!pageEl || !Array.isArray(names) || !names.length || typeof getItemIconSrc !== 'function') return;
+    var items = [];
+    var target = 7;
+    for (var i = 0; i < target; i++) {
+      items.push({ itemName: names[i % names.length], qty: 1 });
+    }
+    startIconRain(items, getItemIconSrc, pageEl);
+  }
+
   // ── Single icon raindrop (hero card tap) ──
   function dropOneIcon(src, container) {
     if (!src || !container) return;
@@ -9542,6 +10007,570 @@
     }
     requestAnimationFrame(tick);
   }
+
+  (function initHomePostDonationCelebration() {
+    var homePage = document.querySelector('.page-home');
+    var appContainer = document.querySelector('.app-container');
+    var heroSection = homePage ? homePage.querySelector('.hero') : null;
+    if (!homePage || !appContainer || !heroSection) return;
+
+    var modalBackdropEl = null;
+    var modalEl = null;
+    var cardEl = null;
+    var groupSliderControllers = new Map();
+    var pendingTimeoutIds = [];
+    var modalDelayTimer = null;
+    var groupsCompleting = new Set();
+    var cardGroupsEl = null;
+
+    function prefersReducedMotion() {
+      return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    }
+
+    function trackTimeout(fn, ms) {
+      var id = setTimeout(function() {
+        pendingTimeoutIds = pendingTimeoutIds.filter(function(entry) { return entry !== id; });
+        fn();
+      }, ms);
+      pendingTimeoutIds.push(id);
+      return id;
+    }
+
+    function clearPendingTimeouts() {
+      pendingTimeoutIds.forEach(function(id) { clearTimeout(id); });
+      pendingTimeoutIds = [];
+      if (modalDelayTimer) {
+        clearTimeout(modalDelayTimer);
+        modalDelayTimer = null;
+      }
+    }
+
+    function normalizeDonationGroups() {
+      donationGroups = (donationGroups || [])
+        .map(function(group) {
+          return {
+            id: group.id,
+            dropoff: group.dropoff,
+            confirmedAt: group.confirmedAt || Date.now(),
+            items: (group.items || []).filter(function(item) {
+              return item && item.itemName && (item.qty || 0) > 0;
+            })
+          };
+        })
+        .filter(function(group) { return group.items.length > 0; })
+        .sort(function(a, b) { return (a.confirmedAt || 0) - (b.confirmedAt || 0); });
+    }
+
+    function hasActiveDonation() {
+      normalizeDonationGroups();
+      return donationGroups.length > 0;
+    }
+
+    function getDisplayUsername() {
+      var profileName = document.querySelector('.page-profile .prof-name');
+      if (profileName && profileName.textContent.trim()) return profileName.textContent.trim();
+      var homeTitle = document.querySelector('.page-home .hero-card h1');
+      if (homeTitle && homeTitle.textContent.indexOf(',') !== -1) {
+        return homeTitle.textContent.split(',').slice(1).join(',').trim() || 'friend';
+      }
+      return 'friend';
+    }
+
+    function getDropoffPresentation(dropoffObj) {
+      if (!dropoffObj) return { name: 'Drop-off location', meta: 'Next: Monthly drive' };
+      var raw = dropoffObj.mapQuery || '';
+      var baseName = raw.split(',')[0] || 'Drop-off location';
+      var id = dropoffObj.id || '';
+      var meta = 'Next: Monthly drive';
+      if (id === 'cross') meta = 'Wed-Sun · 11am-6pm';
+      else if (id === 'wildfires') meta = 'Daily · 12pm-7pm';
+      return { name: baseName, meta: meta };
+    }
+
+    function getDropoffMapUrl(dropoffObj) {
+      if (!dropoffObj || !dropoffObj.mapQuery) return '';
+      return 'https://www.google.com/maps?q=' + encodeURIComponent(dropoffObj.mapQuery) + '&output=embed';
+    }
+
+    function getTotalPendingItems() {
+      normalizeDonationGroups();
+      var total = 0;
+      donationGroups.forEach(function(group) {
+        group.items.forEach(function(entry) {
+          total += (entry.qty || 0);
+        });
+      });
+      return total;
+    }
+
+    function collectRainNames() {
+      var names = (donationLastConfirmedItems || []).map(function(entry) { return entry.itemName; });
+      if (names.length) return names;
+      normalizeDonationGroups();
+      donationGroups.forEach(function(group) {
+        group.items.forEach(function(entry) { names.push(entry.itemName); });
+      });
+      return names;
+    }
+
+    function removeModalImmediately() {
+      if (modalEl && modalEl.parentNode) modalEl.parentNode.removeChild(modalEl);
+      if (modalBackdropEl && modalBackdropEl.parentNode) modalBackdropEl.parentNode.removeChild(modalBackdropEl);
+      modalEl = null;
+      modalBackdropEl = null;
+    }
+
+    function triggerHeaderCountPop() {
+      if (!cardEl || !donationCardCollapsed) return;
+      var headerText = cardEl.querySelector('.donation-card-header-text');
+      if (!headerText) return;
+      headerText.classList.remove('di-badge-jump');
+      void headerText.offsetWidth;
+      headerText.classList.add('di-badge-jump');
+      headerText.addEventListener('animationend', function done() {
+        headerText.classList.remove('di-badge-jump');
+        headerText.removeEventListener('animationend', done);
+      });
+    }
+
+    function setCardCollapsed(nextCollapsed) {
+      donationCardCollapsed = !!nextCollapsed;
+      if (!cardEl) return;
+      cardEl.classList.toggle('is-collapsed', donationCardCollapsed);
+      var headerText = cardEl.querySelector('.donation-card-header-text');
+      if (!headerText) return;
+      if (donationCardCollapsed) {
+        headerText.textContent = getTotalPendingItems() + ' items pending drop-off';
+      } else {
+        headerText.textContent = 'Currently donating';
+      }
+    }
+
+    function createGroupRow(itemName, qty, iconResolver, animateEnter) {
+      var row = document.createElement('div');
+      row.className = 'donation-card-item-row';
+      row.dataset.itemName = itemName;
+      if (animateEnter && !prefersReducedMotion()) row.classList.add('is-row-entering');
+      row.innerHTML = '' +
+        '<img src="' + iconResolver(itemName) + '" alt="">' +
+        '<div class="donation-card-item-name">' + itemName + '</div>' +
+        '<span class="donation-card-qty">×' + (qty || 0) + '</span>';
+      return row;
+    }
+
+    function getGroupSliderRootId(groupId) {
+      return 'home-group-slide-cta-' + groupId;
+    }
+
+    function escapeForSelector(value) {
+      if (window.CSS && CSS.escape) return CSS.escape(value);
+      return String(value).replace(/"/g, '\\"');
+    }
+
+    function initGroupSlider(groupId) {
+      if (!groupId || groupSliderControllers.has(groupId)) return;
+      var rootId = getGroupSliderRootId(groupId);
+      var controller = initSlideConfirmCTA({
+        rootId: rootId,
+        onConfirm: function() {
+          startGroupCompletionSequence(groupId);
+        }
+      });
+      if (!controller) return;
+      controller.setEnabled(true);
+      controller.setLabel('Slide to confirm drop-off');
+      groupSliderControllers.set(groupId, controller);
+    }
+
+    function applyQtyBadgePop(badge) {
+      if (!badge) return;
+      badge.classList.remove('di-badge-jump');
+      void badge.offsetWidth;
+      badge.classList.add('di-badge-jump');
+      badge.addEventListener('animationend', function handle() {
+        badge.classList.remove('di-badge-jump');
+        badge.removeEventListener('animationend', handle);
+      });
+    }
+
+    function renderGroupSection(group, iconResolver, animateEnter) {
+      var wrap = document.createElement('section');
+      wrap.className = 'donation-card-group';
+      wrap.dataset.groupId = group.id;
+      if (animateEnter && !prefersReducedMotion()) wrap.classList.add('is-group-entering');
+
+      var dropoff = getDropoffPresentation(group.dropoff);
+      var mapUrl = getDropoffMapUrl(group.dropoff);
+      var sliderRootId = getGroupSliderRootId(group.id);
+      wrap.innerHTML = '' +
+        '<div class="donation-card-items"></div>' +
+        '<div class="donation-card-dropoff">' +
+          '<div class="donation-card-dropoff-main">' +
+            '<img src="img/icons/icon-location.svg" alt="" aria-hidden="true">' +
+            '<div>' +
+              '<div class="donation-card-dropoff-name">' + dropoff.name + '</div>' +
+              '<div class="donation-card-dropoff-meta">' + dropoff.meta + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="donation-card-dropoff-map">' +
+            '<iframe class="donation-card-dropoff-frame" title="Drop-off location map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+          '</div>' +
+        '</div>' +
+        '<div class="donation-card-group-slider">' +
+          '<div class="di-bs-slide-cta" id="' + sliderRootId + '" aria-label="Slide to confirm drop-off">' +
+            '<div class="di-bs-slide-track">' +
+              '<div class="di-bs-slide-fill"></div>' +
+              '<div class="di-bs-slide-success-circle" aria-hidden="true"></div>' +
+              '<div class="di-bs-slide-glow"></div>' +
+              '<div class="di-bs-slide-label">Slide to confirm drop-off</div>' +
+              '<div class="di-bs-slide-done">Confirmed ✓</div>' +
+              '<div class="di-bs-slide-thumb" aria-hidden="true">' +
+                '<svg class="di-bs-slide-icon" viewBox="0 0 24 24" aria-hidden="true">' +
+                  '<polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></polyline>' +
+                '</svg>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+      var mapFrameEl = wrap.querySelector('.donation-card-dropoff-frame');
+      if (mapFrameEl && mapUrl) mapFrameEl.src = mapUrl;
+
+      var itemsWrap = wrap.querySelector('.donation-card-items');
+      var visibleItems = group.items.slice(0, 4);
+      visibleItems.forEach(function(entry) {
+        itemsWrap.appendChild(createGroupRow(entry.itemName, entry.qty, iconResolver, false));
+      });
+      if (group.items.length > 4) {
+        var moreRow = document.createElement('div');
+        moreRow.className = 'donation-card-item-row donation-card-item-row-more';
+        moreRow.innerHTML = '<div class="donation-card-more">+' + (group.items.length - 4) + ' more items</div>';
+        itemsWrap.appendChild(moreRow);
+      }
+
+      return wrap;
+    }
+
+    function syncMergedGroupInPlace(section, group, iconResolver) {
+      if (!section || !group) return;
+      var itemsWrap = section.querySelector('.donation-card-items');
+      if (!itemsWrap) return;
+
+      var nextVisible = group.items.slice(0, 4);
+      var desiredNames = nextVisible.map(function(entry) { return entry.itemName; });
+      var existingRows = Array.from(itemsWrap.querySelectorAll('.donation-card-item-row[data-item-name]'));
+      existingRows.forEach(function(row) {
+        if (desiredNames.indexOf(row.dataset.itemName) === -1 && row.parentNode) {
+          row.parentNode.removeChild(row);
+        }
+      });
+
+      nextVisible.forEach(function(entry, idx) {
+        var selectorName = entry.itemName.replace(/"/g, '\\"');
+        var row = itemsWrap.querySelector('.donation-card-item-row[data-item-name="' + selectorName + '"]');
+        if (!row) {
+          row = createGroupRow(entry.itemName, entry.qty, iconResolver, true);
+          var refRow = itemsWrap.querySelector('.donation-card-item-row:nth-child(' + (idx + 1) + ')');
+          if (refRow) itemsWrap.insertBefore(row, refRow);
+          else itemsWrap.appendChild(row);
+        } else {
+          var qtyBadge = row.querySelector('.donation-card-qty');
+          var nextText = '×' + entry.qty;
+          if (qtyBadge && qtyBadge.textContent !== nextText) {
+            qtyBadge.textContent = nextText;
+            applyQtyBadgePop(qtyBadge);
+          }
+        }
+      });
+
+      var moreRow = itemsWrap.querySelector('.donation-card-item-row-more');
+      var overflow = group.items.length - 4;
+      if (overflow > 0) {
+        if (!moreRow) {
+          moreRow = document.createElement('div');
+          moreRow.className = 'donation-card-item-row donation-card-item-row-more';
+          moreRow.innerHTML = '<div class="donation-card-more"></div>';
+          itemsWrap.appendChild(moreRow);
+        }
+        var moreLabel = moreRow.querySelector('.donation-card-more');
+        if (moreLabel) moreLabel.textContent = '+' + overflow + ' more items';
+      } else if (moreRow && moreRow.parentNode) {
+        moreRow.parentNode.removeChild(moreRow);
+      }
+    }
+
+    function syncCardGroups(animateDelta) {
+      if (!cardGroupsEl) return;
+      normalizeDonationGroups();
+      var iconResolver = donationGetItemIconSrc || function() { return 'img/icons/icon-stars.svg'; };
+
+      if (!animateDelta || !donationCardShownOnce) {
+        cardGroupsEl.innerHTML = '';
+        groupSliderControllers.clear();
+        groupsCompleting.clear();
+        donationGroups.forEach(function(group) {
+          cardGroupsEl.appendChild(renderGroupSection(group, iconResolver, false));
+          initGroupSlider(group.id);
+        });
+        return;
+      }
+
+      var existingSections = Array.from(cardGroupsEl.querySelectorAll('.donation-card-group'));
+      var sectionById = new Map();
+      existingSections.forEach(function(section) { sectionById.set(section.dataset.groupId, section); });
+
+      donationGroups.forEach(function(group) {
+        var existing = sectionById.get(group.id);
+        if (!existing) {
+          cardGroupsEl.appendChild(renderGroupSection(group, iconResolver, true));
+          initGroupSlider(group.id);
+        } else {
+          syncMergedGroupInPlace(existing, group, iconResolver);
+        }
+      });
+
+      existingSections.forEach(function(section) {
+        var keep = donationGroups.some(function(group) { return group.id === section.dataset.groupId; });
+        if (!keep) {
+          groupSliderControllers.delete(section.dataset.groupId);
+          if (section.parentNode) section.parentNode.removeChild(section);
+        }
+      });
+    }
+
+    function finalizeDonationCard() {
+      if (cardEl && cardEl.parentNode) cardEl.parentNode.removeChild(cardEl);
+      cardEl = null;
+      cardGroupsEl = null;
+      groupSliderControllers.clear();
+      groupsCompleting.clear();
+      donationGroups = [];
+      donationLastConfirmedItems = [];
+      pendingHomeCelebrations = 0;
+      donationCardShownOnce = false;
+      donationCardCollapsed = false;
+    }
+
+    function startGroupCompletionSequence(groupId) {
+      if (!cardEl || !groupId || groupsCompleting.has(groupId)) return;
+      var safeGroupId = escapeForSelector(groupId);
+      var section = cardEl.querySelector('.donation-card-group[data-group-id="' + safeGroupId + '"]');
+      if (!section) return;
+      groupsCompleting.add(groupId);
+
+      var rows = Array.from(section.querySelectorAll('.donation-card-item-row[data-item-name]'));
+      var reduced = prefersReducedMotion();
+      var stagger = reduced ? 0 : 60;
+      var revealDuration = reduced ? 0 : 200;
+
+      function revealCheck(row) {
+        if (!row || !row.isConnected) return;
+        var qtyBadge = row.querySelector('.donation-card-qty');
+        if (!qtyBadge) return;
+        var check = document.createElement('span');
+        check.className = 'donation-card-check';
+        check.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.2 8.4l3.1 3.1 6.5-6.7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        qtyBadge.replaceWith(check);
+        if (reduced) check.classList.add('is-visible');
+        else requestAnimationFrame(function() { check.classList.add('is-visible'); });
+      }
+
+      if (reduced) {
+        rows.forEach(revealCheck);
+      } else {
+        rows.forEach(function(row, idx) {
+          trackTimeout(function() { revealCheck(row); }, idx * stagger);
+        });
+      }
+
+      var settle = (rows.length ? ((rows.length - 1) * stagger + revealDuration) : 0) + 400;
+      trackTimeout(function() {
+        if (!section || !section.isConnected) {
+          groupsCompleting.delete(groupId);
+          return;
+        }
+        if (!reduced) section.classList.add('is-group-leaving');
+
+        trackTimeout(function() {
+          if (section && section.parentNode) section.parentNode.removeChild(section);
+          groupSliderControllers.delete(groupId);
+          groupsCompleting.delete(groupId);
+          donationGroups = donationGroups.filter(function(group) { return group.id !== groupId; });
+          normalizeDonationGroups();
+
+          if (donationGroups.length === 0) {
+            if (!cardEl || !cardEl.isConnected) return finalizeDonationCard();
+            if (!reduced) cardEl.classList.add('is-pulsing');
+            trackTimeout(function() {
+              if (!cardEl || !cardEl.isConnected) return finalizeDonationCard();
+              if (reduced) return finalizeDonationCard();
+              cardEl.classList.add('is-leaving');
+              trackTimeout(finalizeDonationCard, 300);
+            }, reduced ? 0 : 300);
+            return;
+          }
+
+          setCardCollapsed(donationCardCollapsed);
+          triggerHeaderCountPop();
+        }, reduced ? 0 : 280);
+      }, settle);
+    }
+
+    function renderDonationCard(withEntryAnimation) {
+      if (!hasActiveDonation()) return;
+      if (!heroSection.parentNode) return;
+
+      if (!cardEl) {
+        cardEl = document.createElement('section');
+        cardEl.className = 'donation-card';
+        if (withEntryAnimation && !prefersReducedMotion() && !donationCardShownOnce) {
+          cardEl.classList.add('is-entering');
+        }
+        cardEl.innerHTML = '' +
+          '<button type="button" class="donation-card-header" aria-expanded="true">' +
+            '<div class="donation-card-left">' +
+              '<span class="donation-card-dot" aria-hidden="true"></span>' +
+              '<span class="donation-card-header-text">Currently donating</span>' +
+            '</div>' +
+            '<span class="donation-card-chevron" aria-hidden="true">⌃</span>' +
+          '</button>' +
+          '<div class="donation-card-body">' +
+            '<div class="donation-card-groups"></div>' +
+          '</div>';
+
+        heroSection.parentNode.insertBefore(cardEl, heroSection);
+        donationCardShownOnce = true;
+        cardGroupsEl = cardEl.querySelector('.donation-card-groups');
+
+        var headerBtn = cardEl.querySelector('.donation-card-header');
+        if (headerBtn) {
+          headerBtn.addEventListener('click', function() {
+            setCardCollapsed(!donationCardCollapsed);
+            headerBtn.setAttribute('aria-expanded', String(!donationCardCollapsed));
+          });
+        }
+      }
+
+      syncCardGroups(!!(donationCardShownOnce && withEntryAnimation));
+      setCardCollapsed(donationCardCollapsed);
+
+      if (cardEl.classList.contains('is-entering')) {
+        requestAnimationFrame(function() {
+          if (cardEl) cardEl.classList.remove('is-entering');
+        });
+      }
+    }
+
+    function dismissModalAndContinue() {
+      if (!modalEl && !modalBackdropEl) {
+        renderDonationCard(true);
+        triggerHeaderCountPop();
+        return;
+      }
+      if (prefersReducedMotion()) {
+        removeModalImmediately();
+        renderDonationCard(true);
+        triggerHeaderCountPop();
+        return;
+      }
+      if (modalEl) modalEl.classList.remove('is-visible');
+      if (modalBackdropEl) modalBackdropEl.classList.remove('is-visible');
+      trackTimeout(function() {
+        removeModalImmediately();
+        renderDonationCard(true);
+        triggerHeaderCountPop();
+      }, 200);
+    }
+
+    function renderThankYouModal() {
+      if (modalEl || !hasActiveDonation()) return;
+      modalBackdropEl = document.createElement('div');
+      modalBackdropEl.className = 'donation-modal-backdrop';
+
+      modalEl = document.createElement('div');
+      modalEl.className = 'donation-modal';
+      modalEl.innerHTML = '' +
+        '<button type="button" class="donation-modal-close" aria-label="Close">×</button>' +
+        '<div class="donation-modal-media">' +
+          '<img src="img/dd-together.svg" alt="Donation appreciation image">' +
+        '</div>' +
+        '<div class="donation-modal-copy">' +
+          '<h3 class="donation-modal-title">Thank you, <span></span>!</h3>' +
+          '<p class="donation-modal-body">We\'ve noted your items. Drop them off when you\'re ready and someone stays warm. You can track, update, or cancel your donation any time from your home page.</p>' +
+          '<button type="button" class="btn btn-primary donation-modal-cta">Got it</button>' +
+        '</div>';
+
+      var titleName = modalEl.querySelector('.donation-modal-title span');
+      if (titleName) titleName.textContent = getDisplayUsername();
+
+      appContainer.appendChild(modalBackdropEl);
+      appContainer.appendChild(modalEl);
+
+      modalBackdropEl.addEventListener('click', dismissModalAndContinue);
+      var closeBtn = modalEl.querySelector('.donation-modal-close');
+      var ctaBtn = modalEl.querySelector('.donation-modal-cta');
+      if (closeBtn) closeBtn.addEventListener('click', dismissModalAndContinue);
+      if (ctaBtn) ctaBtn.addEventListener('click', dismissModalAndContinue);
+
+      if (prefersReducedMotion()) {
+        modalBackdropEl.classList.add('is-visible');
+        modalEl.classList.add('is-visible');
+      } else {
+        requestAnimationFrame(function() {
+          if (modalBackdropEl) modalBackdropEl.classList.add('is-visible');
+          if (modalEl) modalEl.classList.add('is-visible');
+        });
+      }
+    }
+
+    function startCelebrationFlow() {
+      if (!hasActiveDonation()) return;
+      if (typeof donationGetItemIconSrc === 'function') {
+        var names = collectRainNames();
+        if (!names.length) names = ['Tents', 'Sleeping bags', 'Tarps'];
+        startHomeIconRainHeavy(names, donationGetItemIconSrc, homePage);
+      }
+      modalDelayTimer = setTimeout(function() {
+        modalDelayTimer = null;
+        if (activePageName !== 'home') return;
+        renderThankYouModal();
+      }, 1200);
+    }
+
+    function processPendingCelebration() {
+      if (!hasActiveDonation() || pendingHomeCelebrations <= 0) return;
+      if (modalEl || modalBackdropEl) removeModalImmediately();
+      pendingHomeCelebrations = Math.max(0, pendingHomeCelebrations - 1);
+      startCelebrationFlow();
+    }
+
+    homeDonationCelebrationController = {
+      onHomeShown: function() {
+        if (!hasActiveDonation()) return;
+        if (donationJustConfirmed || pendingHomeCelebrations > 0) {
+          donationJustConfirmed = false;
+          processPendingCelebration();
+          return;
+        }
+        if (!modalEl && !cardEl) {
+          renderDonationCard(!donationCardShownOnce);
+        } else if (cardEl) {
+          syncCardGroups(false);
+          setCardCollapsed(donationCardCollapsed);
+        }
+      },
+      onHomeHidden: function() {
+        clearPendingTimeouts();
+        if (modalEl || modalBackdropEl) {
+          removeModalImmediately();
+          donationJustConfirmed = false;
+        }
+        if (groupsCompleting.size > 0) {
+          finalizeDonationCard();
+        }
+      }
+    };
+  })();
 
   function initDonateConfirmPage(config) {
     const page = document.querySelector('.page-donate-confirm');
@@ -9623,8 +10652,12 @@
       });
     }
 
-    function renderMap(selectedDropoffId) {
-      const location = config.getDropoffById(selectedDropoffId);
+    var latestSnapshot = null;
+
+    function renderMap(selectedDropoffRef) {
+      const location = typeof selectedDropoffRef === 'string'
+        ? config.getDropoffById(selectedDropoffRef)
+        : selectedDropoffRef;
       if (!location || !location.mapQuery) {
         mapWrap.classList.add('hidden');
         mapWrap.setAttribute('aria-hidden', 'true');
@@ -9657,6 +10690,7 @@
     var confirmBtn = document.getElementById('dc-confirm-btn');
     if (confirmBtn) {
       confirmBtn.addEventListener('click', function() {
+        if (typeof config.onConfirm === 'function') config.onConfirm(latestSnapshot);
         showPage('home');
       });
     }
@@ -9664,6 +10698,7 @@
     return {
       open: function(snapshot) {
         if (!snapshot) return;
+        latestSnapshot = snapshot;
         if (usernameEl) usernameEl.textContent = snapshot.username || 'Potato31#';
         renderItems(snapshot.items || []);
         renderMap(snapshot.selectedDropoff);
@@ -9692,6 +10727,7 @@
 
     const diFab = document.getElementById('di-fab');
     const diFabCount = document.getElementById('di-fab-count');
+    let lastFabCount = 0;
     const diSheetBackdrop = document.getElementById('di-sheet-backdrop');
     const diSheet = document.getElementById('di-sheet');
     const diSheetClose = document.getElementById('di-sheet-close');
@@ -9734,10 +10770,11 @@
       const items = Array.from(itemQuantities.entries()).map(function(entry) {
         return { itemName: entry[0], qty: entry[1] };
       });
+      const selectedDropoffObj = getDropoffById(selectedDropoff);
       return {
         username: confirmUsername,
         items: items,
-        selectedDropoff: selectedDropoff
+        selectedDropoff: selectedDropoffObj
       };
     }
 
@@ -9763,8 +10800,36 @@
     donateConfirmController = initDonateConfirmPage({
       getItemIconSrc: getItemIconSrc,
       getDropoffById: getDropoffById,
-      onBack: resetDonateItemsUIForNextRun
+      onBack: resetDonateItemsUIForNextRun,
+      onConfirm: function(snapshot) {
+        if (!snapshot || !snapshot.items || !snapshot.items.length) return;
+        var session = {
+          id: String(Date.now()) + '-' + Math.random().toString(36).slice(2),
+          confirmedAt: Date.now(),
+          dropoff: snapshot.selectedDropoff || getDropoffById(selectedDropoff),
+          items: snapshot.items.map(function(entry) {
+            return { itemName: entry.itemName, qty: entry.qty };
+          })
+        };
+        if (!mergeDonationGroupSession(session)) return;
+        donationGetItemIconSrc = getItemIconSrc;
+        donationLastConfirmedItems = session.items.map(function(entry) {
+          return { itemName: entry.itemName, qty: entry.qty };
+        });
+        donationJustConfirmed = true;
+        pendingHomeCelebrations += 1;
+      }
     });
+
+    // After a donation is committed, start fresh next time user donates
+    var dcCommitBtn = document.getElementById('dc-confirm-btn');
+    if (dcCommitBtn) {
+      dcCommitBtn.addEventListener('click', function() {
+        itemQuantities.clear();
+        selectedDropoff = 'private';
+        updateDiUI();
+      });
+    }
 
     function openDonateConfirm() {
       if (!donateConfirmController) return;
@@ -9967,6 +11032,14 @@
       if (diFab && diFabCount) {
         diFab.classList.toggle('visible', count > 0);
         diFabCount.textContent = String(count);
+
+        if (count > lastFabCount && count > 0) {
+          diFab.classList.remove('di-fab-bounce');
+          // Force reflow so the animation can restart
+          void diFab.offsetWidth;
+          diFab.classList.add('di-fab-bounce');
+        }
+        lastFabCount = count;
       }
       if (count === 0 && diSheetOpen) closeDiSheet();
       syncPageCardsFromState();
