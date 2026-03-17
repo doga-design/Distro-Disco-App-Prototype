@@ -4629,7 +4629,7 @@
     pointer-events: auto;
   }
   .corner-logo-bubble {
-    background: var(--white);
+    background: linear-gradient(to bottom left, #F5FFAB 0%, #ffffff 45%, #f7f5f0 100%);
     color: var(--navy);
     border-radius: var(--radius-lg);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
@@ -4649,15 +4649,31 @@
     transform: scaleY(1);
     pointer-events: auto;
   }
+  .corner-logo-bubble,
+  .corner-logo-bubble * {
+    cursor: none !important;
+  }
   .corner-logo-bubble-header {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--text-muted);
     padding: 0 24px 12px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     margin-bottom: 4px;
+  }
+  .corner-logo-bubble-header-team {
+    font-family: 'Gaya','Geist', system-ui, sans-serif;
+    font-weight: 900;
+    color: var(--navy);
+    font-size: 16px;
+  }
+  .corner-logo-bubble-header-star {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    margin-right: -2.5px;
+    transform: translateY(2px);
+    display: inline-block;
   }
   .corner-logo-bubble-row {
     display: flex;
@@ -4666,6 +4682,7 @@
     padding: 12px 24px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     transition: background 0.2s ease;
+    cursor: default;
   }
   .corner-logo-bubble-row:last-child { border-bottom: none; }
   .corner-logo-bubble-row:hover { background: rgba(0, 0, 0, 0.02); }
@@ -4702,7 +4719,7 @@
     margin-bottom: 2px;
   }
   .corner-logo-bubble-row .bubble-row-copy {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text-muted);
     line-height: 1.4;
     white-space: normal;
@@ -7648,7 +7665,7 @@
 
 <div class="corner-logo-wrap">
   <div class="corner-logo-bubble" aria-hidden="true">
-    <div class="corner-logo-bubble-header">Meet the team</div>
+    <div class="corner-logo-bubble-header">Meet the <span class="corner-logo-bubble-header-team"><img src="img/icons/icon-stars.svg" alt="" aria-hidden="true" class="corner-logo-bubble-header-star"> team</span></div>
     <div class="corner-logo-bubble-row">
       <div class="bubble-row-img" aria-hidden="true" style="background:#F2D5D5;"><img src="img/avatars/avatar-cool-disco.png" alt=""></div>
       <div class="bubble-row-text">
@@ -7694,6 +7711,20 @@
   document.addEventListener('dragstart', (e) => {
     e.preventDefault();
   });
+
+  // Meet the team: clicking a row opens member website (desktop)
+  (function initMeetTheTeamLinks() {
+    document.querySelectorAll('.corner-logo-bubble-row').forEach(function(row) {
+      row.addEventListener('click', function(e) {
+        // If user clicked the link itself, let the browser handle it.
+        if (e.target && e.target.closest && e.target.closest('a')) return;
+        var a = row.querySelector('.bubble-row-website');
+        var href = a && a.getAttribute('href');
+        if (!href) return;
+        window.open(href, '_blank', 'noopener');
+      });
+    });
+  })();
 
   // ── Page Router + Event Detail Flow ──
   const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', 'donate-items': 'page-donate-items', 'donate-confirm': 'page-donate-confirm', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail', activities: 'page-activities' };
