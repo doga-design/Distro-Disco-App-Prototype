@@ -2074,9 +2074,9 @@
     margin-bottom: 12px;
   }
   .page-donate-money .dm-switch-to-items {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
     padding: 0;
     border: none;
     background: none;
@@ -2108,6 +2108,28 @@
     animation: swap-icon-pop-cw 260ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
   .page-donate-money .dm-switch-to-items-icon svg { display: block; }
+  .dm-switch-label {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--navy);
+    white-space: nowrap;
+    position: relative;
+    z-index: 0;
+    display: inline-block;
+  }
+  .dm-switch-label::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    bottom: 0;
+    height: 0.6em;
+    background: #F5FFAB;
+    border-radius: 999px;
+    z-index: -1;
+    opacity: 0.95;
+  }
 
   .donate-amount-display {
     display: flex;
@@ -2283,9 +2305,9 @@
   }
 
   .page-donate-items .di-switch-to-money {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
     padding: 0;
     border: none;
     background: none;
@@ -2306,6 +2328,28 @@
     animation: swap-icon-pop-ccw 260ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
   .page-donate-items .di-switch-to-money-icon svg { display: block; }
+  .di-switch-label {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--navy);
+    white-space: nowrap;
+    position: relative;
+    z-index: 0;
+    display: inline-block;
+  }
+  .di-switch-label::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    bottom: 0;
+    height: 0.6em;
+    background: #F5FFAB;
+    border-radius: 999px;
+    z-index: -1;
+    opacity: 0.95;
+  }
 
   /* Item feed (home item-card style) */
   #di-item-feed {
@@ -6052,6 +6096,7 @@
       <h1 class="donate-page-title" style="font-family:'Gaya',system-ui,sans-serif;">Donate Money</h1>
       <div class="donate-header-end">
         <button type="button" class="dm-switch-to-items" id="dm-switch-to-items" aria-label="Switch to donate items">
+          <span class="dm-switch-label">I will donate items</span>
           <span class="dm-switch-to-items-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"/></svg>
           </span>
@@ -6210,6 +6255,7 @@
       <h1 class="donate-page-title" style="font-family:'Gaya',system-ui,sans-serif;">Donate Items</h1>
       <div class="donate-header-end">
         <button type="button" class="di-switch-to-money" id="di-switch-to-money" aria-label="Switch to donate money">
+          <span class="di-switch-label">I will fund money</span>
           <span class="di-switch-to-money-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"/></svg>
           </span>
@@ -6304,7 +6350,7 @@
     </div><!-- /#di-item-feed -->
 
     <button class="di-fab" id="di-fab" aria-label="Open donation summary">
-      Donation
+      Continue to donation
       <span class="di-fab-count" id="di-fab-count">0</span>
     </button>
 
