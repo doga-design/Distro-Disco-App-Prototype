@@ -88,51 +88,6 @@
     --detail-illustration-width: 340px;
     --detail-illustration-height: 220px;
     --detail-illustration-opacity: 0.14;
-
-    /* Streak onboarding overlay (root editor) */
-    --onboard-backdrop-bg: rgba(0, 0, 0, 0.4);
-    --onboard-backdrop-blur: 10px;
-    --onboard-hero-top: 50%;
-    --onboard-hero-size: 90px;
-    --onboard-fire-fill: #FF7534;
-    --onboard-fire-fill-dark: #FF7534;
-    --onboard-glow-color: rgba(255, 100, 20, 0.75);
-    --onboard-glow-color-mid: rgba(255, 130, 20, 0.9);
-    --onboard-glow-color-soft: rgba(255, 60, 0, 0.4);
-    --onboard-timeline-top: 62%;
-    --onboard-tl-slot-size: 36px;
-    --onboard-tl-icon-size: 28px;
-    --onboard-tl-dot-bg: rgba(255, 255, 255, 0.2);
-    --onboard-tl-dot-border: rgb(255, 255, 255);
-    --onboard-tl-slot-glow: rgba(255, 100, 20, 0.8);
-    --onboard-tl-label-dim: rgb(207, 207, 207);
-    --onboard-tl-label-lit: rgb(255, 255, 255);
-    --onboard-shine-color: rgba(255, 255, 255, 0.55);
-    --onboard-modal-max-width: 340px;
-    --onboard-modal-bg: rgba(255, 255, 255, 0.98);
-    --onboard-modal-border: rgba(35, 33, 74, 0.08);
-    --onboard-modal-shadow: 0 24px 60px rgba(35, 33, 74, 0.18), 0 0 0 1px rgba(35, 33, 74, 0.04);
-    --onboard-modal-padding: 28px 22px 22px;
-    --onboard-modal-radius: var(--radius-xl);
-    --onboard-title-size: 20px;
-    --onboard-title-color: var(--navy);
-    --onboard-body-size: 13px;
-    --onboard-body-color: var(--text-muted);
-    --onboard-cta-bg: var(--navy);
-    --onboard-cta-color: white;
-    --onboard-cta-radius: var(--radius-md);
-    --onboard-cta-padding: 14px;
-    --onboard-cta-font-size: 14px;
-    --onboard-cta-font-weight: 600;
-    --onboard-cta-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    --onboard-cta-overlay: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 60%);
-    --onboard-streak-bg: rgba(35, 33, 74, 0.04);
-    --onboard-streak-border: rgba(35, 33, 74, 0.08);
-    --onboard-streak-radius: var(--radius-md);
-    --onboard-streak-gap: 8px;
-    --onboard-streak-padding: 12px 8px;
-    --onboard-s-slot-size: 24px;
-    --onboard-slot7-size: 28px;
   }
 
   * {
@@ -142,7 +97,10 @@
     -webkit-tap-highlight-color: transparent;
     -webkit-user-select: none;
     user-select: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
+  *::-webkit-scrollbar { width: 0; height: 0; display: none; }
 
   input, textarea {
     -webkit-user-select: text;
@@ -272,7 +230,7 @@
   .btn-primary { background-color: var(--navy); color: var(--white); }
   .btn-secondary { background-color: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
   .btn-outline { background-color: transparent; border: 1px solid var(--navy); color: var(--navy); }
-  .btn-small { padding: 8px 12px; font-size: 12px; border-radius: var(--radius-sm); }
+  .btn-small { padding: 8px 12px; font-size: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);}
   .btn-light { background-color: var(--input-bg); color: var(--navy); border: none; }
 
   /* Button active (pressed) states - simple reversed colours */
@@ -400,43 +358,6 @@
   .stat-cell-sub {
     font-size: 12px;
     font-weight: 600;
-  }
-
-  /* Pulsing fire glow behind the streak icon */
-  .stat-cell--streak {
-    position: relative;
-  }
-  .stat-cell--streak::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 117, 52, 0.75) 0%, rgba(255, 117, 52, 0.4) 45%, transparent 72%);
-    animation: streak-fire-glow 2800ms ease-in-out infinite;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .stat-cell--streak .stat-cell-icon,
-  .stat-cell--streak .stat-cell-label,
-  .stat-cell--streak .stat-cell-sub {
-    position: relative;
-    z-index: 1;
-  }
-  @keyframes streak-fire-glow {
-    0%, 100% {
-      opacity: 0.9;
-      transform: translate(-50%, -50%) scale(1);
-      filter: blur(6px);
-    }
-    50% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1.5);
-      filter: blur(10px);
-    }
   }
 
   .hero-copy {
@@ -668,7 +589,8 @@
 
   /* Sign-up section */
   .page-volunteer .vol-signup-section { padding: 20px 20px 0; }
-  .page-volunteer .vol-section-eyebrow {
+  .vol-section-eyebrow {
+    font-family: 'Geist', system-ui, sans-serif;
     font-size: 10px; font-weight: 600; color: var(--text-muted);
     text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px;
   }
@@ -787,53 +709,6 @@
     transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .page-volunteer .vol-toggle-opt.active { color: white; }
-
-  /* Donate mode toggle — exact same design as vol-commit-toggle (One Time / Repeating) */
-  .page-donate-money .vol-commit-toggle {
-    background: var(--input-bg);
-    border-radius: 50px;
-    padding: 4px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    isolation: isolate;
-    margin-bottom: 14px;
-  }
-  .page-donate-money .vol-commit-toggle::before {
-    content: '';
-    position: absolute;
-    top: 4px;
-    bottom: 4px;
-    left: 4px;
-    width: calc(50% - 4px);
-    background: var(--navy);
-    border-radius: 50px;
-    box-shadow: 0 4px 14px rgba(35, 33, 74, 0.25);
-    transform: translateX(0);
-    transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 0;
-  }
-  .page-donate-money .vol-commit-toggle.right::before {
-    transform: translateX(100%);
-  }
-  .page-donate-money .vol-toggle-opt {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 10px 0;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-muted);
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    font-family: 'Geist', system-ui, sans-serif;
-    transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .page-donate-money .vol-toggle-opt.active {
-    color: white;
-  }
 
   /* About You */
   .page-volunteer .vol-about-section { padding: 24px 20px 0; }
@@ -1084,7 +959,7 @@
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(35,33,74,0.1);
   }
-  .page-forum .sticky-eyebrow { font-size: 9px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.7px; opacity: 0.5; margin-bottom: 6px; }
+  .page-forum .sticky-eyebrow { font-family: 'Geist', system-ui, sans-serif; font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
   .page-forum .sticky-title { font-family: 'Gaya', 'Geist', serif; font-size: 18px; font-weight: 400; font-style: italic; color: var(--navy); line-height: 1.4; margin-bottom: 8px; }
   .page-forum .sticky-meta { font-size: 10px; font-weight: 600; color: var(--text-muted); }
 
@@ -1759,11 +1634,143 @@
   }
   .page-donate-money::-webkit-scrollbar { display: none; }
 
+  /* ── Donate Money redesign zones ── */
+  .page-donate-money .dm-amount-zone {
+    padding: 28px 20px 0;
+  }
+  .page-donate-money .dm-impact-line {
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--navy);
+    line-height: 1.4;
+    transition: opacity 120ms ease;
+  }
+  .page-donate-money .dm-freq-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .page-donate-money .dm-freq-label {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .page-donate-money .dm-toggle-switch {
+    width: 40px;
+    height: 24px;
+    border-radius: 12px;
+    background: var(--border-color);
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .page-donate-money .dm-toggle-switch::after {
+    content: '';
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: left 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+  .page-donate-money .dm-toggle-switch.on { background: var(--orange); }
+  .page-donate-money .dm-toggle-switch.on::after { left: 19px; }
+  .page-donate-money .dm-bus-callout {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 14px 20px 0;
+    line-height: 1.5;
+  }
+  .page-donate-money .dm-cta-zone {
+    padding: 20px 20px 0;
+  }
+  .page-donate-money .dm-cta-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    background: var(--orange);
+    color: var(--white);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    cursor: pointer;
+    transition: background 200ms ease, transform 120ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 200ms ease;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none;
+  }
+  .page-donate-money .dm-cta-btn:active,
+  .page-donate-money .dm-cta-btn.touch-active {
+    background: var(--navy);
+    box-shadow: none;
+    transform: scale(0.98);
+  }
+  .page-donate-money .dm-payment-info {
+    padding: 14px 0 0;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .page-donate-money .dm-copy-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .page-donate-money .dm-copy-row strong {
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .page-donate-money .dm-copy-btn {
+    background: none;
+    border: none;
+    padding: 2px;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    opacity: 0.6;
+    transition: opacity 150ms ease;
+    flex-shrink: 0;
+  }
+  .page-donate-money .dm-copy-btn:active,
+  .page-donate-money .dm-copy-btn.touch-active { opacity: 1; }
+  .page-donate-money .dm-copy-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .page-donate-money .dm-copy-confirm {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+  .page-donate-money .dm-copy-confirm.visible { opacity: 1; }
+
   .donate-page-header {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 18px 20px 20px;
+  }
+  .donate-header-end {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
   }
   .donate-back-btn {
     width: 36px;
@@ -1804,32 +1811,42 @@
     margin: 0 20px;
     margin-bottom: 12px;
   }
-  .donate-money-content {
-    padding: 0 20px 24px;
+  .page-donate-money .dm-switch-to-items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
   }
-
-  .donate-amount-card {
-    background: var(--card-bg);
+  @keyframes swap-icon-pop {
+    0% { transform: scale(1); }
+    38% { transform: scale(1.14); }
+    100% { transform: scale(1); }
+  }
+  .page-donate-money .dm-switch-to-items-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-soft);
-    padding: 20px 18px;
-    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--navy);
   }
-  .donate-amount-eyebrow {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
+  .page-donate-money .dm-switch-to-items-icon.swap-icon-pop {
+    animation: swap-icon-pop 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
+  .page-donate-money .dm-switch-to-items-icon svg { display: block; }
+
   .donate-amount-display {
     display: flex;
     align-items: baseline;
     gap: 4px;
     color: var(--navy);
-    margin-bottom: 14px;
+    margin-bottom: 18px;
   }
   .donate-amount-currency {
     font-family: 'Gaya', 'Geist', system-ui, sans-serif;
@@ -1838,201 +1855,43 @@
   }
   .donate-amount-value {
     font-family: 'Gaya', 'Geist', system-ui, sans-serif;
-    font-size: 56px;
+    font-size: 72px;
     line-height: 0.95;
-    letter-spacing: -1px;
+    letter-spacing: -2px;
   }
 
   .donate-preset-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 12px;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .donate-preset-btn {
+    flex: 1;
+    min-width: 0;
+    border: none;
   }
   .donate-preset-btn.active {
     background-color: var(--navy);
     color: var(--white);
-    border-color: var(--navy);
+    box-shadow: none;
   }
 
-  .donate-custom-wrap {
-    margin-bottom: 12px;
-  }
-  .donate-custom-label {
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-  }
   .donate-custom-input {
     width: 100%;
-    border: 1px solid var(--border-color);
+    border: none;
     background: var(--input-bg);
     border-radius: var(--radius-md);
     padding: 12px 14px;
     font-size: 14px;
+    font-family: 'Geist', system-ui, sans-serif;
     color: var(--navy);
     outline: none;
   }
   .donate-custom-input:focus {
-    border-color: #B8B6C4;
-    box-shadow: 0 0 0 2px rgba(35,33,74,0.06);
+    box-shadow: 0 0 0 2px rgba(35,33,74,0.10);
   }
-
-  .donate-impact-bar-block {
-    margin: 16px 0 18px;
-    padding: 16px 14px;
-    background: rgba(35, 33, 74, 0.04);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-color);
-  }
-  .donate-impact-bar-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: -0.2px;
-    margin-bottom: 4px;
-  }
-  .donate-impact-bar-goal {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-  }
-  .donate-impact-bar-goal strong {
-    color: var(--navy);
-    font-weight: 700;
-  }
-  .donate-impact-bar-wrap {
-    position: relative;
-    margin-bottom: 38px;
-  }
-  .donate-impact-bar-track {
-    height: 26px;
-    border-radius: 999px;
-    background: #E2E0D8;
-    overflow: visible;
-    position: relative;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
-  }
-  .donate-impact-bar-fill {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 66%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, #1a1840 0%, var(--navy) 40%, #3a3770 100%);
-    z-index: 1;
-  }
-  .donate-impact-bar-pip {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 66%;
-    height: 100%;
-    border-radius: 999px;
-    background: repeating-linear-gradient(
-      -45deg,
-      var(--orange) 0px,
-      var(--orange) 5px,
-      rgba(255,255,255,0.25) 5px,
-      rgba(255,255,255,0.25) 9px
-    );
-    z-index: 0;
-    transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .donate-impact-bar-track-end {
-    position: absolute;
-    top: 34px;
-    right: 0;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: 0.2px;
-  }
-  .donate-impact-bar-label {
-    position: absolute;
-    top: 34px;
-    left: 66%;
-    transform: translateX(-50%);
-    background: var(--orange);
-    color: var(--white);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 5px 12px;
-    border-radius: 50px;
-    white-space: nowrap;
-    box-shadow: 0 2px 10px rgba(239,98,66,0.4);
-    transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .donate-subdivider {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 14px 0 12px;
-    color: var(--text-muted);
-    font-size: 11px;
-    font-weight: 600;
-  }
-  .donate-subdivider::before,
-  .donate-subdivider::after {
-    content: '';
-    height: 1px;
-    flex: 1;
-    background: var(--border-color);
-  }
-
-  .donate-impact-line {
-    font-size: 12px;
-    color: var(--navy);
-    opacity: 0.85;
-    margin: 2px 2px 14px;
-    line-height: 1.4;
-  }
-  .donate-money-cta {
-    width: 100%;
-    padding: 14px;
-    background-color: var(--orange);
-    color: var(--white);
-    border: 1px solid orangered;
-  }
-
-  .donate-money-cta:active,
-  .donate-money-cta.touch-active {
-    background-color: var(--navy);
-    color: var(--white);
-    border: 1px solid var(--navy);
-  }
-  .donate-section-break {
-    height: 1px;
-    background: var(--border-color);
-    margin: 6px 0 10px;
-  }
-  .donate-handoff-row {
-    width: 100%;
-    border: 1px solid var(--navy);
-    background: transparent;
-    border-radius: var(--radius-md);
-    padding: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--navy);
-    cursor: pointer;
-  }
-  .donate-handoff-row img {
-    width: 18px;
-    height: 18px;
-    opacity: 0.7;
-  }
-  .page-donate-money .donate-handoff-row {
-    margin-bottom: 25px;
-  }
+  .donate-custom-input::placeholder { color: #b0aec0; }
 
   /* Donation activity feed */
   .donate-feed {
@@ -2040,8 +1899,9 @@
     padding-top: 20px;
   }
   .donate-feed-eyebrow {
+    font-family: 'Geist', system-ui, sans-serif;
     font-size: 10px;
-    font-weight: 400;
+    font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.6px;
@@ -2088,6 +1948,18 @@
     position: relative;
     z-index: 1;
   }
+  .donate-feed-avatar.purple {
+    background: linear-gradient(135deg, #1a1840 0%, #4338ca 50%, #7c3aed 100%);
+  }
+  .donate-feed-avatar.teal {
+    background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #22c55e 100%);
+  }
+  .donate-feed-avatar.orange {
+    background: linear-gradient(135deg, #9a3412 0%, #f97316 50%, #fb923c 100%);
+  }
+  .donate-feed-avatar.pink {
+    background: linear-gradient(135deg, #9d174d 0%, #ec4899 50%, #f97316 100%);
+  }
   .donate-feed-body {
     flex: 1;
     min-width: 0;
@@ -2119,6 +1991,1165 @@
     font-weight: 400;
     color: var(--text-muted);
     margin-top: 4px;
+  }
+
+  /* ── Donate Items Page ── */
+  .page-donate-items {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding-bottom: 190px;
+  }
+  .page-donate-items::-webkit-scrollbar { display: none; }
+
+  .page-donate-items .di-switch-to-money {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  .page-donate-items .di-switch-to-money-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--navy);
+  }
+  .page-donate-items .di-switch-to-money-icon.swap-icon-pop {
+    animation: swap-icon-pop 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .page-donate-items .di-switch-to-money-icon svg { display: block; }
+
+  /* Item feed (home item-card style) */
+  #di-item-feed {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 130px;
+  }
+  .di-cat-eyebrow {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    margin: 10px 2px 8px;
+  }
+  .page-donate-items .di-item-card {
+    margin-bottom: 10px;
+  }
+  .page-donate-items .di-item-card-extra {
+    display: none;
+  }
+  .page-donate-items .di-item-card.di-item-card-extra.visible {
+    display: flex;
+  }
+  .di-cat-eyebrow.di-item-card-extra.visible {
+    display: block;
+  }
+  .page-donate-items .di-item-card h4 {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+    margin: 0;
+  }
+  .page-donate-items .di-item-card .item-left {
+    align-items: flex-start;
+    flex: 1;
+    min-width: 0;
+  }
+  .page-donate-items .di-item-card .item-right {
+    align-self: center;
+  }
+  .page-donate-items .di-item-card .item-right .btn {
+    width: auto;
+    white-space: nowrap;
+  }
+  .page-donate-items .di-item-card.selected {
+    box-shadow: 0 0 0 2px rgba(35,33,74,0.08), var(--shadow-soft);
+  }
+  .page-donate-items .di-item-card.selected .di-item-btn {
+    background: var(--navy);
+    color: var(--white);
+    box-shadow: none;
+  }
+  .di-item-note {
+    display: inline-block;
+    margin-top: 4px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+    background: var(--input-bg);
+    border-radius: 50px;
+    padding: 2px 8px;
+  }
+  .di-load-more-wrap {
+    padding: 6px 0 4px;
+    display: flex;
+    justify-content: center;
+  }
+  .di-load-more-btn {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+    color: var(--text-muted);
+    background: var(--input-bg);
+    border: none;
+    border-radius: 999px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: transform 120ms cubic-bezier(0.34,1.56,0.64,1), opacity 200ms ease;
+  }
+  .di-load-more-btn:active,
+  .di-load-more-btn.touch-active {
+    transform: scale(0.95);
+    opacity: 0.85;
+  }
+
+  /* Donation FAB */
+  .di-fab {
+    position: absolute;
+    right: 16px;
+    bottom: 108px;
+    height: 46px;
+    border: none;
+    border-radius: 10px;
+    padding: 0 16px 0 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--orange);
+    box-shadow:
+      rgba(0, 0, 0, 0.4) 0px 2px 4px,
+      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px) scale(0.96);
+    transition: opacity 220ms ease, transform 220ms cubic-bezier(0.16,1,0.3,1);
+    z-index: 220;
+  }
+  .di-fab.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+  .di-fab-count {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 7px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .di-fab:active,
+  .di-fab.touch-active { transform: translateY(0) scale(0.96); }
+
+  /* Donate items bottom sheet */
+  .di-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(35, 33, 74, 0.837);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+    z-index: 240;
+  }
+  .di-sheet-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .di-sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: min(90%, 740px);
+    background: transparent;
+    transform: translateY(104%);
+    transition: transform 320ms cubic-bezier(0.16,1,0.3,1);
+    z-index: 241;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* Desktop-only tweaks: align sheet and FAB within phone frame */
+  @media (min-width: 768px) {
+    .di-sheet {
+      bottom: 44px;
+    }
+    .di-fab {
+      bottom: 155px;
+    }
+  }
+  .di-sheet-shell {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    background: var(--white);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    overflow: hidden;
+  }
+  .di-sheet-topbar {
+    position: relative;
+    z-index: 2;
+    background: var(--card-bg);
+  }
+  .di-sheet-body {
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    background: var(--white);
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .di-sheet-bottombar {
+    position: relative;
+    z-index: 2;
+    background: var(--white);
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .di-sheet-body-items,
+  .di-sheet-body-dropoff {
+    background: var(--white);
+  }
+  .di-sheet.is-open { transform: translateY(0); }
+  .di-sheet-head {
+    position: relative;
+    background: var(--card-bg);
+    padding: 16px 20px 0;
+  }
+  .di-sheet-close {
+    position: absolute;
+    right: 20px;
+    top: 16px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border:2px solid var(--bg-color);
+    background: transparent;
+    color: var(--text-main);
+    font-size: 24px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0;
+    z-index: 6;
+  }
+  .di-sheet-title {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-main);
+    margin: 50px 0 20px 0;
+    letter-spacing: -0.4px;
+  }
+  .di-sheet-title .accent { color: var(--orange); font-weight: 600;}
+
+
+  .di-sheet-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0;
+  }
+  .di-sheet-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-main);
+    padding: 18px 0 12px;
+  }
+  .di-sheet-subtitle .spark {
+    color: var(--orange);
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+  .di-sheet-subtitle .spark img {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+  .di-sheet-block {
+    padding: 0 0 8px;
+    background: var(--white);
+    margin: 0;
+  }
+.di-sheet-primary {
+  background: var(--white);
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  z-index: 1;
+}  .di-sheet-empty {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 10px 0 4px;
+  }
+  .di-sheet-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    margin-bottom: 8px;
+  }
+  .di-sheet-item-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .di-sheet-item-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 15px;
+    border-radius: 10px;
+    background:var(--bg-color);
+  }
+  .di-sheet-item-thumb {
+    width: 38px;
+    height: 38px;
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .di-sheet-item-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.9;
+  }
+  .di-sheet-item-count {
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    min-width: 32px;
+    height: 32px;
+    border: 2px solid var(--white);
+    border-radius: 50%;
+    background: var(--orange);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    transform: translateY(-50%);
+    box-shadow: rgba(35,33,74,0.12) 0px 2px 8px, rgba(35,33,74,0.06) 0px 1px 3px;
+  }
+  .di-sheet-item-name {
+    display: flex;
+    align-items: center;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: -0.2px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-left: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
+  }
+  .di-sheet-item-row.is-paired {
+    margin-top: 4px;
+  }
+  .di-sheet-edit {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--bg-color);
+    border: 2px solid var(--white);
+    box-shadow: rgba(35,33,74,0.12) 0px 2px 8px, rgba(35,33,74,0.06) 0px 1px 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--navy);
+  }
+  .di-sheet-edit img {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+  .di-sheet-qty {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .di-sheet-qty-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    background: var(--bg-color);
+    box-shadow: rgba(35,33,74,0.12) 0px 2px 8px, rgba(35,33,74,0.06) 0px 1px 3px;
+    color: var(--navy);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .di-sheet-qty-confirm {
+    margin-left: 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: none;
+    background: var(--navy);
+    color: #fff;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+  }
+  .di-sheet-qty-num {
+    min-width: 18px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-main);
+    font-family: 'Geist', system-ui, sans-serif;
+  }
+  .di-sheet-mini-grid {
+    display: flex;
+    align-items: stretch;
+    padding: 16px 16px 8px;
+    margin-top: 12px;
+  }
+  .di-sheet-mini-col {
+    flex: 1;
+    padding: 0;
+  }
+  .di-sheet-mini-col-pairs {
+    max-width: 100%;
+    transition: opacity 350ms cubic-bezier(0.16,1,0.3,1), max-width 350ms cubic-bezier(0.16,1,0.3,1), flex 350ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .di-sheet-mini-col:first-child {
+    flex: 1.4;
+    padding-right: 20px;
+    position: relative;
+  }
+  .di-sheet-mini-col:last-child {
+    flex: 0.9;
+    padding-left: 20px;
+  }
+  .di-sheet-mini-col:first-child::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    background: var(--border-color);
+    transition: opacity 350ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .di-sheet-mini-label {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 11px;
+    color: #9b9b9b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0px;
+    text-align: left;
+  }
+  .di-sheet-mini-row {
+    display: flex;
+    gap: 16px;
+    padding-top: 16px;
+  }
+  .di-sheet-mini-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .di-sheet-mini-chip-label {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .di-sheet-mini-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .di-sheet-mini-icon {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    padding: 0;
+  }
+  .di-sheet-mini-plus-badge {
+    position: absolute;
+    bottom: 0px;
+    right: -20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--bg-color);
+    border: 2px solid var(--white);
+    box-shadow: rgba(35,33,74,0.12) 0px 2px 8px, rgba(35,33,74,0.06) 0px 1px 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--navy);
+  }
+  .di-sheet-mini-chip.used .di-sheet-mini-plus-badge {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+    transition: opacity 200ms ease, transform 200ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .di-sheet-mini-col.di-sheet-mini-col-donate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .di-sheet-mini-col.di-sheet-mini-col-donate .di-sheet-mini-label {
+    text-align: center;
+  }
+  .di-sheet-mini-col.di-sheet-mini-col-donate .di-sheet-mini-row {
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
+  .di-sheet-mini-grid.all-pairs-used {
+    padding: 0;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    /* counteract .di-sheet-block horizontal padding so donate-more can be truly flush */
+    margin-left: -16px;
+    margin-right: -16px;
+    border-top: none;
+  }
+  .di-sheet-mini-grid.all-pairs-used .di-sheet-mini-col-pairs {
+    opacity: 0;
+    max-width: 0;
+    flex: 0;
+  }
+  .di-sheet-mini-grid.all-pairs-used .di-sheet-mini-col-pairs::after {
+    opacity: 0;
+  }
+  .di-sheet-mini-grid.all-pairs-used .di-sheet-mini-col.di-sheet-mini-col-donate {
+    flex: 1;
+    align-items: flex-start;
+    padding-left: 0;
+  }
+  .di-sheet-mini-grid.all-pairs-used .di-sheet-mini-col.di-sheet-mini-col-donate .di-sheet-mini-label {
+    text-align: left;
+    display: none;
+  }
+  .di-sheet-mini-grid.all-pairs-used .di-sheet-mini-col.di-sheet-mini-col-donate .di-sheet-mini-row {
+    justify-content: flex-start;
+  }
+  .di-sheet-mini-gift {
+    width: 52px;
+    height: 52px;
+    padding: 8px;
+    color: var(--orange);
+  }
+  .di-sheet-section {
+    background-color: var(--white);
+    padding: 38px 0 10px 0;
+    border-top: 1px solid var(--border-color);
+  }
+  .di-sheet-body-dropoff .di-sheet-section {
+    padding-top: 0px;
+  }
+.di-sheet-loc-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 18px;
+    letter-spacing: -0.3px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin: 0 0 12px;
+    margin-top: 12px;
+  }
+.di-sheet-loc-heading img {
+    width: 38px;
+    height: 38px;
+    display: block;
+  }
+.di-bs-location-card {
+    margin: 0 0 16px;
+    height: 138px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    background-color: #8a8a8a;
+    background-image: url('img/other-dropoff.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .di-bs-location-card[data-sheet-location="private"] {
+    background-image: url('img/private-residence-dropoff.png');
+  }
+  .di-bs-location-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.24), rgba(0,0,0,0.78));
+  }
+  .di-bs-location-card.is-selected::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(112, 43, 0, 0.764), rgba(255, 125, 44, 0.125));
+    z-index: 0;
+  }
+
+  .di-bs-distance {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 1;
+    background: #f7f7f7;
+    color: #252525;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .di-bs-loc-text {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    right: 52px;
+    color: #fff;
+    z-index: 1;
+  }
+  .di-bs-loc-name {
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 600;
+    font-family: 'Geist', system-ui, sans-serif;
+    margin-bottom: 4px;
+  }
+  .di-bs-loc-meta {
+    font-size: 14px;
+    line-height: 1.3;
+    font-family: 'Geist', system-ui, sans-serif;
+  }
+  .di-bs-loc-check {
+    position: absolute;
+    right: 11px;
+    bottom: 11px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: white;
+    border: 0px solid var(--orange);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    z-index: 1;
+  }
+  .di-bs-location-card:not(.is-selected) .di-bs-loc-check {
+    background: transparent;
+    color: transparent;
+  }
+  .di-bs-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 16px 8px;
+    color: #555;
+    font-weight: 500;
+    font-size: 12px;
+    font-family: 'Geist', system-ui, sans-serif;
+  }
+  .di-bs-consent-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid #d0d0d0;
+    background: #f0f0f0;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .di-bs-consent-box.checked {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+  }
+  .di-bs-slide-cta {
+    margin: 6px 0 0;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 220ms ease;
+  }
+  .di-bs-slide-track {
+    position: relative;
+    width: 100%;
+    height: 54px;
+    border-radius: var(--radius-md);
+    background: var(--input-bg);
+    overflow: hidden;
+    isolation: isolate;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .di-bs-slide-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    border-radius: var(--radius-md);
+    background: var(--orange);
+    z-index: 0;
+    pointer-events: none;
+    will-change: width;
+  }
+  .di-bs-slide-success-circle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+    border-radius: 50%;
+    background: #28A745;
+    pointer-events: none;
+    z-index: 2.5;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 800ms cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  .di-bs-slide-success-circle.is-expanded {
+    transform: translate(-50%, -50%) scale(5);
+  }
+  .di-bs-slide-glow {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1;
+    will-change: transform, opacity, width, height;
+    display: none;
+  }
+  .di-bs-slide-label,
+  .di-bs-slide-done {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+  .di-bs-slide-label {
+    color: var(--text-muted);
+    z-index: 3;
+    transition: opacity 150ms ease;
+  }
+  .di-bs-slide-done {
+    color: #fff;
+    z-index: 4;
+    opacity: 0;
+  }
+  .di-bs-slide-thumb {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--orange);
+    z-index: 2;
+    will-change: left, transform;
+    touch-action: none;
+    transition: transform .12s cubic-bezier(.34,1.56,.64,1);
+  }
+  .di-bs-slide-thumb svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    transform: translateY(-3px);
+    color: white;
+  }
+  .di-bs-slide-spark {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform, opacity;
+  }
+  .di-bs-slide-cta.is-disabled {
+    opacity: 0.64;
+  }
+  .di-bs-slide-cta.is-disabled .di-bs-slide-track {
+    cursor: default;
+    filter: grayscale(1);
+  }
+  .di-bs-footer {
+    position: relative;
+    padding: 14px 0 18px;
+    background-color: var(--card-bg);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 25px;
+  }
+  .di-bs-standards {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  /* ── Donate Confirm Page ── */
+  .page-donate-confirm {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    background: var(--bg-color);
+    padding-bottom: 60px;
+  }
+  .page-donate-confirm::-webkit-scrollbar { display: none; }
+  .page-donate-confirm .dc-surface {
+    min-height: 100%;
+    background: var(--bg-color);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    transform: translateY(16px);
+    opacity: 0;
+    transition: transform 320ms cubic-bezier(0.16,1,0.3,1), border-radius 320ms cubic-bezier(0.16,1,0.3,1), opacity 220ms ease;
+  }
+  .page-donate-confirm.is-open .dc-surface {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .page-donate-confirm .dc-top {
+    padding: 18px 20px 0;
+  }
+  .page-donate-confirm .dc-hero {
+    text-align: center;
+    padding: 48px 20px 0;
+  }
+  .page-donate-confirm .dc-hero-img-wrap {
+    width: 100%;
+    padding: 0 24px;
+    margin-top: -24px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+  }
+  .page-donate-confirm .dc-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+  .page-donate-confirm .dc-thank-you {
+    margin: 0;
+    font-family: 'Gaya', 'Geist', system-ui, sans-serif;
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.2;
+    color: var(--navy);
+  }
+  .page-donate-confirm .dc-thank-you .dc-user {
+    color: var(--orange);
+  }
+  .page-donate-confirm .dc-subline {
+    margin: 10px auto 28px;
+    max-width: 240px;
+    text-align: center;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+  .page-donate-confirm .dc-section {
+    padding: 26px 20px 0;
+  }
+  .page-donate-confirm .dc-heading-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .page-donate-confirm .dc-heading-row img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+  .page-donate-confirm .dc-heading {
+    margin: 0;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--navy);
+  }
+  .page-donate-confirm .dc-section-title {
+    margin: 0 0 12px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--navy);
+  }
+  .page-donate-confirm .dc-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .page-donate-confirm .dc-item-card {
+    pointer-events: none;
+    margin: 0;
+    align-items: center;
+  }
+  .page-donate-confirm .dc-item-card .item-left {
+    min-width: 0;
+    flex: 1;
+  }
+  .page-donate-confirm .dc-item-card h4 {
+    margin: 0;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .page-donate-confirm .dc-item-card .dc-item-note {
+    display: inline-block;
+    margin-top: 4px;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+  .page-donate-confirm .dc-item-right {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .page-donate-confirm .dc-item-right img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: block;
+  }
+  .page-donate-confirm .dc-item-fallback {
+    font-size: 26px;
+    line-height: 1;
+  }
+  .page-donate-confirm .dc-qty-badge {
+    position: absolute;
+    right: -6px;
+    top: -2px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+  }
+  .page-donate-confirm .dc-reminder-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 20px 0 16px;
+  }
+  .page-donate-confirm .dc-reminder {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    margin-bottom: 24px;
+  }
+  .page-donate-confirm .dc-reminder-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+  .page-donate-confirm .dc-reminder-title {
+    margin: 0;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.3;;
+  }
+  .page-donate-confirm .dc-reminder-copy {
+    margin: 2px 0 0;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--text-muted);
+    opacity: 0.9;
+  }
+
+  .page-donate-confirm .dc-make-changes-wrap {
+    padding: 0px 0 40px;
+    margin: 0;
+    text-align: center;
+  }
+  .dc-make-changes-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    background: var(--orange);
+    color: var(--white);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    cursor: pointer;
+    transition: background 200ms ease, transform 120ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 200ms ease;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none;
+    margin: 18px 0 0 0;
+  }
+  .dc-make-changes-btn:active,
+  .dc-make-changes-btn.touch-active {
+    background: var(--navy);
+    box-shadow: none;
+    transform: scale(0.98);
+  }
+
+  .dc-confirm-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    cursor: pointer;
+    transition: background 200ms ease, transform 120ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 200ms ease;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none;
+    margin: 8px 0px 0 0;
+  }
+  .dc-confirm-btn:active,
+  .dc-confirm-btn.touch-active {
+    background: black;
+    box-shadow: none;
+    transform: scale(0.98);
+  }
+
+  .page-donate-confirm .dc-map-wrap {
+    padding-bottom: 65%;
+    margin-bottom: 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    box-sizing: border-box;
+  }
+  .page-donate-confirm .dc-anim {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .page-donate-confirm.is-content-visible .dc-anim {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 380ms ease, transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--dc-delay, 0ms);
+  }
+  #dc-rain-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 10;
+  }
+  .dc-rain-particle {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .dc-rain-particle img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
   }
 
   /* ── Profile Page ── */
@@ -2185,7 +3216,6 @@
     border: 1px solid var(--border-color); background: var(--input-bg);
     font-size: 11px; font-weight: 600; color: var(--text-muted);
   }
-  .page-profile .prof-chip.streak { background: #FFF3EE; border-color: #FDD8CD; color: var(--orange); }
   .page-profile .prof-chip img { width: 20px; height: 20px; object-fit: contain; }
   .page-profile .prof-edit {
     display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -2298,6 +3328,7 @@
 
   /* section eyebrow */
   .page-profile .prof-eyebrow {
+    font-family: 'Geist', system-ui, sans-serif;
     font-size: 10px; font-weight: 600; color: var(--text-muted);
     text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 12px;
   }
@@ -2876,8 +3907,7 @@
   .touch-active { opacity: 0.92; }
   .btn.touch-active, .btn-primary.touch-active, .btn-secondary.touch-active,
   .btn-outline.touch-active, .btn-light.touch-active,
-  .donate-icon-btn.touch-active,
-  #dd-onboarding .cta-btn.touch-active { opacity: 1; }
+  .donate-icon-btn.touch-active { opacity: 1; }
 
   /* Navbar gradient scrim */
   .nav-scrim {
@@ -3565,6 +4595,11 @@
     font-family: 'Geist', system-ui, sans-serif;
     transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+  .seg-btn.seg-btn-disabled {
+    cursor: default;
+    opacity: 0.4;
+    pointer-events: none;
+  }
   .seg-btn.active {
     color: white;
   }
@@ -3692,326 +4727,6 @@
   .day-cell.distro .day-num { color: white; }
   .day-cell.faded { opacity: 0.55; }
   .month-gap { height: 24px; }
-
-  /* ── Streak Onboarding Overlay ── */
-  #dd-onboarding {
-    position: absolute;
-    inset: 0;
-    z-index: 200;
-    overflow: hidden;
-  }
-
-  /* Backdrop */
-  #dd-onboarding #backdrop {
-    position: absolute;
-    inset: 0;
-    background: var(--onboard-backdrop-bg);
-    backdrop-filter: blur(var(--onboard-backdrop-blur));
-    -webkit-backdrop-filter: blur(var(--onboard-backdrop-blur));
-    z-index: 10;
-    opacity: 0;
-    transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  #dd-onboarding #backdrop.visible { opacity: 1; }
-
-  /* Stage */
-  #dd-onboarding #stage {
-    position: absolute;
-    inset: 0;
-    z-index: 20;
-    pointer-events: none;
-  }
-
-  /* Hero fire */
-  #dd-onboarding #hero-fire {
-    position: absolute;
-    left: 50%;
-    top: var(--onboard-hero-top);
-    transform: translate(-50%, -50%) scale(0.4);
-    opacity: 0;
-    will-change: transform, opacity;
-    filter: drop-shadow(0 0 0px transparent);
-  }
-  #dd-onboarding #hero-fire svg {
-    width: var(--onboard-hero-size);
-    height: var(--onboard-hero-size);
-    display: block;
-  }
-  #dd-onboarding #hero-fire svg path:first-of-type { fill: var(--onboard-fire-fill); }
-  #dd-onboarding #hero-fire svg path:last-of-type { fill: var(--onboard-fire-fill-dark); }
-
-  @keyframes dd-flicker {
-    0%   { transform: scale(1) rotate(-1deg); }
-    25%  { transform: scale(1.04) rotate(1deg); }
-    50%  { transform: scale(0.97) rotate(-0.5deg); }
-    75%  { transform: scale(1.02) rotate(0.8deg); }
-    100% { transform: scale(1) rotate(-1deg); }
-  }
-  #dd-onboarding #hero-fire.flickering svg {
-    animation: dd-flicker 600ms cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-  @keyframes dd-glow-pulse {
-    0%, 100% { filter: drop-shadow(0 0 18px var(--onboard-glow-color)) drop-shadow(0 0 40px var(--onboard-glow-color-soft)); }
-    50%       { filter: drop-shadow(0 0 28px var(--onboard-glow-color-mid)) drop-shadow(0 0 60px rgba(255,80,0,0.55)); }
-  }
-  #dd-onboarding #hero-fire.glowing {
-    animation: dd-glow-pulse 1200ms cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  /* Timeline */
-  #dd-onboarding #timeline {
-    position: absolute;
-    left: 50%;
-    top: var(--onboard-timeline-top);
-    transform: translate(-50%, 0) translateY(30px);
-    opacity: 0;
-    display: flex;
-    align-items: center;
-    gap: var(--onboard-streak-gap);
-    will-change: transform, opacity;
-  }
-  #dd-onboarding #timeline.visible {
-    opacity: 1;
-    transform: translate(-50%, 0) translateY(0px);
-    transition: opacity 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
-                transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  #dd-onboarding .tl-slot {
-    width: var(--onboard-tl-slot-size);
-    height: var(--onboard-tl-slot-size);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    flex-shrink: 0;
-  }
-  #dd-onboarding .tl-slot svg {
-    width: var(--onboard-tl-icon-size);
-    height: var(--onboard-tl-icon-size);
-    opacity: 0;
-    transform: scale(0.3);
-    will-change: transform, opacity;
-  }
-  #dd-onboarding .tl-slot svg path:first-of-type { fill: var(--onboard-fire-fill); }
-  #dd-onboarding .tl-slot svg path:last-of-type { fill: var(--onboard-fire-fill-dark); }
-  #dd-onboarding .tl-slot.dot::after {
-    content: '';
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--onboard-tl-dot-bg);
-    border: 2px solid var(--onboard-tl-dot-border);
-    display: block;
-    transition: opacity 200ms ease;
-  }
-  #dd-onboarding .tl-slot.dot.hidden-dot::after { opacity: 0; }
-  #dd-onboarding .tl-slot.lit { filter: drop-shadow(0 0 8px var(--onboard-tl-slot-glow)); }
-  #dd-onboarding .tl-label {
-    position: absolute;
-    bottom: -18px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    font-weight: 700;
-    color: var(--onboard-tl-label-dim);
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-  }
-  #dd-onboarding .tl-slot.lit .tl-label { color: var(--onboard-tl-label-lit); }
-
-  /* Timeline shine */
-  #dd-onboarding #timeline-shine {
-    position: absolute;
-    inset: -10px -5px;
-    border-radius: 30px;
-    overflow: hidden;
-    pointer-events: none;
-    opacity: 0;
-  }
-  #dd-onboarding #timeline-shine::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 60px;
-    background: linear-gradient(90deg, transparent 0%, var(--onboard-shine-color) 50%, transparent 100%);
-    left: -60px;
-  }
-  @keyframes dd-shine-sweep {
-    0%   { left: -60px; }
-    100% { left: calc(100% + 60px); }
-  }
-  #dd-onboarding #timeline-shine.sweeping { opacity: 1; }
-  #dd-onboarding #timeline-shine.sweeping::after {
-    animation: dd-shine-sweep 420ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  /* Particle canvas */
-  #dd-onboarding #particle-canvas {
-    position: absolute;
-    inset: 0;
-    z-index: 25;
-    pointer-events: none;
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Modal */
-  #dd-onboarding #modal {
-    position: absolute;
-    inset: 0;
-    z-index: 30;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px 20px;
-    transform: translateY(20px) scale(0.95);
-    opacity: 0;
-    will-change: transform, opacity;
-    pointer-events: none;
-  }
-  #dd-onboarding #modal.visible {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-    pointer-events: all;
-    transition: transform 500ms cubic-bezier(0.34, 1.32, 0.64, 1),
-                opacity 320ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Modal card — design system restyled */
-  #dd-onboarding #modal-card {
-    width: 100%;
-    max-width: var(--onboard-modal-max-width);
-    background: var(--onboard-modal-bg);
-    border: 1px solid var(--onboard-modal-border);
-    border-radius: var(--onboard-modal-radius);
-    padding: var(--onboard-modal-padding);
-    text-align: center;
-    box-shadow: var(--onboard-modal-shadow);
-    overflow: hidden;
-    position: relative;
-  }
-  #dd-onboarding #modal-card::before { display: none; }
-
-  #dd-onboarding .modal-title {
-    font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: var(--onboard-title-size);
-    font-weight: 700;
-    color: var(--onboard-title-color);
-    letter-spacing: -0.3px;
-    margin-bottom: 8px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 300ms 100ms ease, transform 300ms 100ms ease;
-  }
-  #dd-onboarding .modal-title .onboard-title-fire {
-    width: 1.15em;
-    height: 1.15em;
-    object-fit: contain;
-    flex-shrink: 0;
-  }
-  #dd-onboarding .modal-body {
-    font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: var(--onboard-body-size);
-    line-height: 1.6;
-    color: var(--onboard-body-color);
-    margin-bottom: 22px;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 300ms 180ms ease, transform 300ms 180ms ease;
-  }
-  #dd-onboarding .modal-body strong { color: var(--navy); font-weight: 700; }
-  #dd-onboarding #modal.visible .modal-title,
-  #dd-onboarding #modal.visible .modal-body { opacity: 1; transform: translateY(0); }
-
-  #dd-onboarding .cta-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    width: 100%;
-    padding: var(--onboard-cta-padding);
-    border-radius: var(--onboard-cta-radius);
-    border: none;
-    background: var(--onboard-cta-bg);
-    color: var(--onboard-cta-color);
-    font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: var(--onboard-cta-font-size);
-    font-weight: var(--onboard-cta-font-weight);
-    letter-spacing: -0.1px;
-    opacity: 0;
-    transform: translateY(8px);
-    transition:
-      opacity 300ms 260ms ease,
-      transform 300ms 260ms ease,
-      box-shadow 200ms ease,
-      scale 100ms ease;
-    box-shadow: var(--onboard-cta-shadow);
-    position: relative;
-    overflow: hidden;
-  }
-  #dd-onboarding .cta-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--onboard-cta-overlay);
-    pointer-events: none;
-  }
-  #dd-onboarding #modal.visible .cta-btn { opacity: 1; transform: translateY(0); }
-  #dd-onboarding .cta-btn:active,
-  #dd-onboarding .cta-btn.touch-active {
-    scale: 0.98;
-    box-shadow: none;
-    background: var(--orange);
-    color: var(--white);
-  }
-
-  /* Streak bar */
-  #dd-onboarding #streak-bar {
-    margin-bottom: 18px;
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 350ms 60ms ease, transform 350ms 60ms cubic-bezier(0.34,1.4,0.64,1);
-  }
-  #dd-onboarding #modal.visible #streak-bar { opacity: 1; transform: translateY(0); }
-  #dd-onboarding .streak-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--onboard-streak-gap);
-    padding: var(--onboard-streak-padding);
-    background: var(--onboard-streak-bg);
-    border: 1px solid var(--onboard-streak-border);
-    border-radius: var(--onboard-streak-radius);
-  }
-  #dd-onboarding .s-slot { display: flex; align-items: center; justify-content: center; }
-  #dd-onboarding .s-slot svg {
-    width: var(--onboard-s-slot-size);
-    height: var(--onboard-s-slot-size);
-    display: block;
-  }
-  #dd-onboarding .s-slot svg path:first-of-type { fill: var(--onboard-fire-fill); }
-  #dd-onboarding .s-slot svg path:last-of-type { fill: var(--onboard-fire-fill-dark); }
-
-  /* Slot7 fire */
-  #dd-onboarding #slot7-fire {
-    position: absolute;
-    z-index: 22;
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.1);
-    will-change: transform, opacity;
-  }
-  #dd-onboarding #slot7-fire svg {
-    width: var(--onboard-slot7-size);
-    height: var(--onboard-slot7-size);
-  }
-  #dd-onboarding #slot7-fire svg path:first-of-type { fill: var(--onboard-fire-fill); }
-  #dd-onboarding #slot7-fire svg path:last-of-type { fill: var(--onboard-fire-fill-dark); }
 
   /* ── Event Detail Page ── */
   .page-event-detail {
@@ -4267,90 +4982,6 @@
 <div class="app-container">
   <div class="dynamic-island"></div>
 
-  <!-- ── Streak Onboarding Overlay ── -->
-  <div id="dd-onboarding">
-    <!-- Dark blurred backdrop -->
-    <div id="backdrop"></div>
-
-    <!-- Particle canvas -->
-    <canvas id="particle-canvas"></canvas>
-
-    <!-- Stage: hero fire + day timeline -->
-    <div id="stage">
-
-      <!-- Hero fire -->
-      <div id="hero-fire">
-        <svg viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/>
-          <path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/>
-        </svg>
-      </div>
-
-      <!-- Timeline: 6 active + 1 grey dot -->
-      <div id="timeline">
-        <div class="tl-slot" id="slot-1">
-          <svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg>
-          <span class="tl-label">Day 1</span>
-        </div>
-        <div class="tl-slot" id="slot-2">
-          <svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg>
-          <span class="tl-label">Day 2</span>
-        </div>
-        <div class="tl-slot" id="slot-3">
-          <svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg>
-          <span class="tl-label">Day 3</span>
-        </div>
-        <div class="tl-slot" id="slot-4">
-          <svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg>
-          <span class="tl-label">Day 4</span>
-        </div>
-        <div class="tl-slot" id="slot-5">
-          <svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg>
-          <span class="tl-label">Day 5</span>
-        </div>
-        <div class="tl-slot" id="slot-6">
-          <svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg>
-          <span class="tl-label">Day 6</span>
-        </div>
-        <!-- Day 7: grey dot, ignited by animation -->
-        <div class="tl-slot dot" id="slot-7">
-          <span class="tl-label">Day 7</span>
-        </div>
-        <!-- Shine overlay -->
-        <div id="timeline-shine"></div>
-      </div>
-
-    </div><!-- /#stage -->
-
-    <!-- Modal -->
-    <div id="modal">
-      <div id="modal-card">
-        <!-- Static streak bar -->
-        <div id="streak-bar">
-          <div class="streak-row">
-            <span class="s-slot"><svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg></span>
-            <span class="s-slot"><svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg></span>
-            <span class="s-slot"><svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg></span>
-            <span class="s-slot"><svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg></span>
-            <span class="s-slot"><svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg></span>
-            <span class="s-slot"><svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg></span>
-            <span class="s-slot"><svg viewBox="0 0 47 47" fill="none"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg></span>
-          </div>
-        </div>
-
-        <p class="modal-title">7 Day Streak <img src="img/icons/fire.svg" alt="" class="onboard-title-fire"></p>
-        <p class="modal-body">You showed up every single day this week.<br><strong>That's the hardest part</strong> — and you nailed it.<br>Keep the fire going.</p>
-        <button class="cta-btn" id="cta-btn">
-          Continue to app
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div><!-- /#modal-card -->
-    </div><!-- /#modal -->
-
-    <!-- Slot-7 fire: lives outside #stage so parent opacity fade cannot kill it -->
-    <div id="slot7-fire" style="position:absolute;z-index:22;opacity:0;pointer-events:none;transform:scale(0.1);will-change:transform,opacity;"><svg viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40.6183 25.3481C40.0452 23.9146 38.2531 23.9992 37.7907 25.3076C37.6537 25.3743 37.5203 25.4613 37.3975 25.5745C36.8077 26.1178 36.144 26.5325 35.3754 26.7231C34.7356 26.8828 34.0492 26.8173 33.5226 26.5146C33.2831 26.3776 33.0304 26.175 32.9244 26.0308C32.6623 25.6734 32.5467 25.2194 32.4919 24.7785C32.3763 23.8348 32.4645 22.7707 32.5169 21.7996C32.636 19.6143 32.9578 17.3837 32.7052 15.1984C32.5729 14.0545 32.2976 12.9749 31.7483 11.9549C31.5565 11.5998 31.336 11.259 31.0965 10.9302C30.6009 9.97931 30.0372 9.0618 29.4713 8.15264C28.6979 6.91223 27.8329 5.81122 26.6615 4.92589C26.658 4.92351 26.6544 4.92112 26.6496 4.91874C26.372 4.68996 26.0622 4.4874 25.7166 4.31462C24.9969 3.95596 24.1033 4.12278 23.6791 4.84844C23.175 5.70994 23.6278 6.25806 24.2832 6.80022C24.9945 7.38766 25.4747 8.22652 25.6725 9.12377C25.9025 10.1711 25.7631 11.2793 25.3842 12.2814C24.6037 14.3404 22.9248 15.8513 21.4175 17.3837C19.7398 19.0888 18.2992 20.9965 17.5997 23.3177C17.2041 24.6284 17.0492 25.9975 17.1159 27.3571C17.0218 27.3142 16.9265 27.2677 16.8323 27.2153C16.1937 26.8614 15.6396 26.3907 15.1773 25.7949C14.1335 24.4496 13.6711 22.7421 13.3208 21.1073C13.0146 19.6774 10.7673 19.6965 10.448 21.1073C8.7321 28.6952 10.6148 37.197 17.0492 42.0002C18.5887 43.5051 20.4809 44.6073 22.6412 45.1435C26.1337 46.011 29.7262 45.4307 32.9852 44.0091C34.5473 43.3276 36.026 42.4542 37.3892 41.4318C38.8322 40.3487 40.1179 39.0808 40.8554 37.4067C42.4938 33.6831 42.1018 29.0586 40.6207 25.3505L40.6183 25.3481Z" fill="#FF7534"/><path d="M24.1835 44.9255C23.8999 44.9255 23.6128 44.9207 23.3196 44.91C16.5396 44.6729 11.1454 41.0279 8.52162 34.9092C7.17396 31.7671 6.67589 28.1233 7.12034 24.6487C7.58386 21.0192 9.0042 17.7769 11.2277 15.2699C11.5375 14.9207 12.0427 14.8195 12.4633 15.0244C12.8839 15.2282 13.1175 15.6869 13.0341 16.1469C12.2572 20.4579 12.7457 22.6039 14.0028 23.9301C14.5176 18.872 16.9627 16.0491 18.9716 13.7304C20.2621 12.2397 21.2821 11.0637 21.5085 9.65761C21.7599 8.10619 21.0056 6.2271 19.1373 3.74388C18.8727 3.39237 18.8572 2.91217 19.0991 2.54398C19.341 2.17578 19.7878 1.99943 20.2156 2.1031C25.9792 3.49723 29.4979 5.78026 30.9742 9.08208C32.2623 11.9633 31.7607 15.022 31.3186 17.7197C31.0016 19.6512 30.7026 21.4755 31.2388 22.5873C31.6868 23.5155 32.223 24.0314 32.8343 24.1208C34.0759 24.3019 35.6916 22.8792 36.1599 22.3668C36.372 22.1333 36.6794 22.0082 36.9952 22.0284C37.3098 22.0475 37.5993 22.2083 37.7828 22.4657C39.1293 24.3651 39.9276 26.8769 40.0313 29.54C40.1385 32.2985 39.5225 35.0033 38.2499 37.3638C36.7057 40.2271 32.8486 44.9231 24.1859 44.9243L24.1835 44.9255Z" fill="#292966"/></svg></div>
-  </div><!-- /#dd-onboarding -->
-
   <div class="screen-content">
   <!-- ── Home Page ── -->
   <div class="page page-home active">
@@ -4380,11 +5011,11 @@
       <p style="color: var(--navy);">Here's your impact so far</p>
       
       <div class="impact-grid">
-        <div class="stat-cell stat-cell--streak">
-          <span class="stat-cell-label">Streaks</span>
-          <img src="img/icons/fire.svg" class="stat-cell-icon" alt="Streaks">
-          <span class="stat-cell-sub">7-day streak!</span>
-          </div>
+        <div class="stat-cell">
+          <span class="stat-cell-label">District Explorer</span>
+          <img src="img/icons/icon-car.svg" class="stat-cell-icon" alt="District Explorer">
+          <span class="stat-cell-sub">6 districts</span>
+        </div>
         <div class="stat-cell">
           <span class="stat-cell-label">Active Attendee</span>
           <img src="img/icons/navbar-bottom-calendar.svg" class="stat-cell-icon" alt="Active Attendee">
@@ -4800,7 +5431,7 @@
     <div class="seg-wrap">
       <div class="segment">
         <div class="seg-btn active">Calendar</div>
-        <div class="seg-btn">Events Detail</div>
+        <div class="seg-btn seg-btn-disabled" aria-disabled="true">Events Detail (coming soon)</div>
       </div>
     </div>
 
@@ -5041,64 +5672,70 @@
       <button class="donate-back-btn" id="donate-money-back-btn" aria-label="Back from donate">
         <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
       </button>
-      <h1 class="donate-page-title">Donate</h1>
+      <h1 class="donate-page-title" style="font-family:'Gaya',system-ui,sans-serif;">Donate Money</h1>
+      <div class="donate-header-end">
+        <button type="button" class="dm-switch-to-items" id="dm-switch-to-items" aria-label="Switch to donate items">
+          <span class="dm-switch-to-items-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"/></svg>
+          </span>
+        </button>
+      </div>
     </div>
     <div class="donate-divider"></div>
 
-    <div class="donate-money-content">
-      <div class="vol-commit-toggle" id="donate-mode-toggle" role="tablist" aria-label="Donation mode">
-        <button class="vol-toggle-opt active" data-mode="one-time" role="tab" aria-selected="true">Donate Money</button>
-        <button class="vol-toggle-opt" data-mode="monthly" role="tab" aria-selected="false">Donate Items</button>
+    <!-- Zone 1: Amount -->
+    <div class="dm-amount-zone">
+      <div class="donate-amount-display">
+        <span class="donate-amount-currency">$</span>
+        <span class="donate-amount-value" id="donate-amount-value">25</span>
       </div>
-
-      <div class="donate-amount-card">
-        <div class="donate-amount-eyebrow">Your amount</div>
-        <div class="donate-amount-display">
-          <span class="donate-amount-currency">$</span>
-          <span class="donate-amount-value" id="donate-amount-value">15</span>
-        </div>
-
-        <div class="donate-preset-grid">
-          <button type="button" class="btn btn-outline donate-preset-btn" data-amount="5">$5</button>
-          <button type="button" class="btn btn-outline donate-preset-btn active" data-amount="15">$15</button>
-          <button type="button" class="btn btn-outline donate-preset-btn" data-amount="30">$30</button>
-          <button type="button" class="btn btn-outline donate-preset-btn" data-amount="50">$50</button>
-        </div>
-
-        <div class="donate-custom-wrap">
-          <label class="donate-custom-label" for="donate-custom-input">Custom amount</label>
-          <input id="donate-custom-input" class="donate-custom-input" type="number" min="1" step="1" inputmode="numeric" placeholder="Enter amount">
-        </div>
-
-        <!-- donate impact bar + copy hidden
-        <div class="donate-impact-bar-block">
-          <div class="donate-impact-bar-title">Toward our monthly goal</div>
-          <div class="donate-impact-bar-goal">Goal: <strong id="donate-impact-goal-amount">$500</strong> · Your donation adds this much</div>
-          <div class="donate-impact-bar-wrap">
-            <div class="donate-impact-bar-track">
-              <div class="donate-impact-bar-fill"></div>
-              <div class="donate-impact-bar-pip" id="donate-impact-bar-pip"></div>
-            </div>
-            <div class="donate-impact-bar-label" id="donate-impact-bar-label">+3%</div>
-            <div class="donate-impact-bar-track-end" id="donate-impact-track-end">$500</div>
-          </div>
-        </div>
-
-        <p class="donate-impact-line" id="donate-impact-line">This amount helps us deliver practical support where it is needed most.</p>
-        -->
+      <div class="donate-preset-grid">
+        <button type="button" class="btn btn-outline donate-preset-btn" data-amount="12">$12</button>
+        <button type="button" class="btn btn-outline donate-preset-btn active" data-amount="25">$25</button>
+        <button type="button" class="btn btn-outline donate-preset-btn" data-amount="50">$50</button>
+        <button type="button" class="btn btn-outline donate-preset-btn" data-amount="75">$75</button>
       </div>
+      <input id="donate-custom-input" class="donate-custom-input" type="number" min="1" step="1" inputmode="numeric" placeholder="Other amount">
+    </div>
 
-      <button id="donate-money-cta" class="btn btn-primary donate-money-cta">Donate $15</button>
+    <!-- Zone 2: Impact statement -->
+    <div style="padding: 16px 20px 0;">
+      <p class="dm-impact-line" id="dm-impact-line">A headlamp. Light when there's none.</p>
+    </div>
 
-      <button id="donate-to-items-btn" class="btn btn-outline donate-handoff-row" style="margin-top: 12px;">
-        <span>Become A Donor - $30/month</span>
-      </button>
+    <!-- Zone 3: Frequency nudge -->
+    <div style="padding: 0 20px;">
+      <div class="dm-freq-row">
+        <div class="dm-toggle-switch" id="dm-monthly-toggle" role="switch" aria-checked="false"></div>
+        <span class="dm-freq-label">Make it monthly?</span>
+      </div>
+    </div>
 
+    <!-- Zone 4: Bus callout -->
+    <p class="dm-bus-callout">Donations also keep our bus running — insurance, gas, and maintenance.</p>
+
+    <!-- Zone 5: CTA + payment info -->
+    <div class="dm-cta-zone">
+      <button class="dm-cta-btn" id="donate-money-cta">Donate $25</button>
+      <div class="dm-payment-info">
+        <div class="dm-copy-row">
+          <span>E-transfer or PayPal:</span>
+          <strong>distrodisco1312@gmail.com</strong>
+          <button class="dm-copy-btn" id="dm-copy-email" aria-label="Copy email address">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+          <span class="dm-copy-confirm" id="dm-copy-confirm">Copied</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zone 6: Recent donations feed -->
+    <div style="padding: 0 20px;">
       <section class="donate-feed" aria-label="Recent donations">
         <div class="donate-feed-eyebrow">Recent donations</div>
         <div class="donate-feed-timeline">
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar" aria-hidden="true">P</div>
+            <div class="donate-feed-avatar purple" aria-hidden="true">P</div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Potato23</span>
@@ -5109,7 +5746,7 @@
             </div>
           </div>
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar" aria-hidden="true">?</div>
+            <div class="donate-feed-avatar teal" aria-hidden="true">?</div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Someone</span>
@@ -5120,7 +5757,7 @@
             </div>
           </div>
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar" aria-hidden="true">M</div>
+            <div class="donate-feed-avatar orange" aria-hidden="true">M</div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Maya</span>
@@ -5131,7 +5768,7 @@
             </div>
           </div>
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar" aria-hidden="true">?</div>
+            <div class="donate-feed-avatar pink" aria-hidden="true">?</div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Someone</span>
@@ -5142,7 +5779,7 @@
             </div>
           </div>
           <div class="donate-feed-entry">
-            <div class="donate-feed-avatar" aria-hidden="true">J</div>
+            <div class="donate-feed-avatar teal" aria-hidden="true">J</div>
             <div class="donate-feed-body">
               <div class="donate-feed-line">
                 <span class="donate-feed-donor">Jay</span>
@@ -5156,6 +5793,386 @@
       </section>
     </div>
   </div><!-- /.page.page-donate-money -->
+
+  <!-- ── Donate Items Page ── -->
+  <div class="page page-donate-items">
+  <header class="top-nav">
+    <div class="logo">
+      <img src="img/icons/distro-disco-top-nav-logo.svg" class="logo-img" alt="Distro Disco">
+    </div>
+    <div class="nav-icons">
+      <button class="icon-btn top-nav-activities">
+        <img src="img/icons/top-navbar-alerts.svg" class="top-nav-icon" alt="Alerts">
+        <span class="item-badge">3</span>
+      </button>
+      <button class="icon-btn top-nav-settings">
+        <img src="img/icons/top-navbar-settings.svg" class="top-nav-icon top-nav-icon-default" alt="Settings">
+        <img src="img/icons/top-navbar-settings-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+      </button>
+      <button class="icon-btn top-nav-profile">
+        <img src="img/icons/top-navbar-profile.svg" class="top-nav-icon top-nav-icon-default" alt="Profile">
+        <img src="img/icons/top-navbar-profile-active.svg" class="top-nav-icon top-nav-icon-active" alt="">
+      </button>
+    </div>
+  </header>
+
+    <div class="donate-page-header">
+      <button class="donate-back-btn" id="donate-items-back-btn" aria-label="Back">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <h1 class="donate-page-title" style="font-family:'Gaya',system-ui,sans-serif;">Donate Items</h1>
+      <div class="donate-header-end">
+        <button type="button" class="di-switch-to-money" id="di-switch-to-money" aria-label="Switch to donate money">
+          <span class="di-switch-to-money-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"/></svg>
+          </span>
+        </button>
+      </div>
+    </div>
+    <div class="donate-divider"></div>
+
+    <!-- Zone 1: Item feed -->
+    <div style="padding: 0 20px;" id="di-item-feed">
+
+      <div class="di-cat-eyebrow">Shelter & Sleep</div>
+
+      <div class="item-card di-item-card" data-item="Tents">
+        <div class="item-left">
+          <img src="img/icons/icon-tents.svg" class="item-icon" alt="Tents">
+          <div><h4>Tents</h4></div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="item-card di-item-card" data-item="Sleeping Bags">
+        <div class="item-left">
+          <img src="img/icons/icon-sleeping-bag.svg" class="item-icon" alt="Sleeping bags">
+          <div>
+            <h4>Sleeping Bags</h4>
+            <span class="di-item-note">–5°C rated or lower</span>
+          </div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="item-card di-item-card" data-item="Tarps">
+        <div class="item-left">
+          <img src="img/icons/icon-tarp.svg" class="item-icon" alt="Tarps">
+          <div>
+            <h4>Tarps</h4>
+            <span class="di-item-note">12×12 or larger</span>
+          </div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="item-card di-item-card" data-item="Sleeping Mats">
+        <div class="item-left">
+          <img src="img/icons/icon-sleeping-mat.svg" class="item-icon" alt="Sleeping mats">
+          <div><h4>Sleeping Mats</h4></div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="item-card di-item-card" data-item="Sleeping Cots">
+        <div class="item-left">
+          <img src="img/icons/icon-sleeping-cot.svg" class="item-icon" alt="Sleeping cots">
+          <div><h4>Sleeping Cots</h4></div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="di-cat-eyebrow">Carry & Lighting</div>
+
+      <div class="item-card di-item-card" data-item="Backpacks">
+        <div class="item-left">
+          <img src="img/icons/icon-backpack.svg" class="item-icon" alt="Backpacks">
+          <div><h4>Backpacks / Duffle Bags / Hiking Bags</h4></div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="item-card di-item-card" data-item="Headlamps">
+        <div class="item-left">
+          <img src="img/icons/icon-headlamp.svg" class="item-icon" alt="Headlamps">
+          <div><h4>Headlamps</h4></div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="item-card di-item-card" data-item="Lanterns">
+        <div class="item-left">
+          <img src="img/icons/icon-lantern.svg" class="item-icon" alt="Lanterns">
+          <div>
+            <h4>Lanterns</h4>
+            <span class="di-item-note">Solar or battery-powered</span>
+          </div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="di-cat-eyebrow di-item-card-extra">Warmth & Medical</div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="Hand Warmers">
+        <div class="item-left"><img src="img/icons/icon-hand-warmers.svg" class="item-icon" alt="Hand warmers"><div><h4>Hand Warmers</h4></div></div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="First Aid Kits">
+        <div class="item-left"><img src="img/icons/icon-first-aid.svg" class="item-icon" alt="First aid kits"><div><h4>First Aid Kits</h4></div></div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="di-cat-eyebrow di-item-card-extra">Clothing & Hygiene</div>
+
+      <div class="item-card di-item-card di-item-card-extra" data-item="New Underwear & Boxers">
+        <div class="item-left">
+          <img src="img/icons/icon-underwear.svg" class="item-icon" alt="Underwear and boxers">
+          <div>
+            <h4>New Underwear &amp; Boxers</h4>
+            <span class="di-item-note">M / L / XL</span>
+          </div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="New Socks">
+        <div class="item-left">
+          <img src="img/icons/icon-new-socks.svg" class="item-icon" alt="Socks">
+          <div>
+            <h4>New Socks</h4>
+            <span class="di-item-note">Small &amp; Large</span>
+          </div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="Rain Jackets">
+        <div class="item-left"><img src="img/icons/icon-rain-jacket.svg" class="item-icon" alt="Rain jackets"><div><h4>Rain Jackets</h4></div></div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="Baby Wipes">
+        <div class="item-left">
+          <img src="img/icons/icon-baby-wipes.svg" class="item-icon" alt="Baby wipes">
+          <div>
+            <h4>Baby Wipes</h4>
+            <span class="di-item-note">Not antibacterial · smaller packs</span>
+          </div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="Toothbrushes & Toothpaste">
+        <div class="item-left"><img src="img/icons/icon-toothbrush.svg" class="item-icon" alt="Toothbrushes and toothpaste"><div><h4>Toothbrushes &amp; Toothpaste</h4></div></div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="Deodorant">
+        <div class="item-left">
+          <img src="img/icons/icon-deodorant.svg" class="item-icon" alt="Deodorant">
+          <div>
+            <h4>Deodorant</h4>
+            <span class="di-item-note">Men's-branded goes faster</span>
+          </div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="di-cat-eyebrow di-item-card-extra">Power & Utility</div>
+
+      <div class="item-card di-item-card di-item-card-extra" data-item="Rope">
+        <div class="item-left">
+          <img src="img/icons/icon-rope.svg" class="item-icon" alt="Rope">
+          <div>
+            <h4>Rope</h4>
+            <span class="di-item-note">Cut to 20' lengths, ends burnt</span>
+          </div>
+        </div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="Flashlight">
+        <div class="item-left"><img src="img/icons/icon-flashlight.svg" class="item-icon" alt="Flashlight"><div><h4>Flashlight</h4></div></div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="Battery Banks">
+        <div class="item-left"><img src="img/icons/icon-battery-bank.svg" class="item-icon" alt="Battery banks"><div><h4>Battery Banks</h4></div></div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+      <div class="item-card di-item-card di-item-card-extra" data-item="Reusable Water Bottles">
+        <div class="item-left"><img src="img/icons/icon-water-bottle.svg" class="item-icon" alt="Reusable water bottles"><div><h4>Reusable Water Bottles</h4></div></div>
+        <div class="item-right"><button class="btn btn-light btn-small di-item-btn">I have this item</button></div>
+      </div>
+
+      <div class="di-load-more-wrap">
+        <button class="di-load-more-btn" id="di-load-more-btn">Load more items</button>
+      </div>
+
+    </div><!-- /#di-item-feed -->
+
+    <button class="di-fab" id="di-fab" aria-label="Open donation summary">
+      Donation
+      <span class="di-fab-count" id="di-fab-count">0</span>
+    </button>
+
+    <div class="di-sheet-backdrop" id="di-sheet-backdrop"></div>
+    <div class="di-sheet" id="di-sheet" aria-modal="true" role="dialog" aria-label="Current items being donated">
+      <div class="di-sheet-shell">
+        <div class="di-sheet-topbar">
+          <div class="di-sheet-head">
+            <button class="di-sheet-close" id="di-sheet-close" aria-label="Close">×</button>
+            <h2 class="di-sheet-title">Almost done, <span class="accent">Potato31.</span></h2>
+            <div class="di-sheet-divider"></div>
+          </div>
+        </div>
+
+        <div class="di-sheet-body">
+          <div class="di-sheet-body-items">
+            <div class="di-sheet-block">
+              <div class="di-sheet-subtitle"><span class="spark"><img src="img/icons/icon-stars-outline.svg" alt=""></span> You are contributing</div>
+              <div id="di-sheet-items"></div>
+
+              <div class="di-sheet-mini-grid">
+                <div class="di-sheet-mini-col di-sheet-mini-col-pairs">
+                  <div class="di-sheet-mini-label">Pairs well with</div>
+                  <div class="di-sheet-mini-row">
+                    <div class="di-sheet-mini-chip di-sheet-mini-chip-pair" data-item="Tarps">
+                      <div class="di-sheet-mini-icon-wrap">
+                        <img src="img/icons/icon-tent.svg" class="di-sheet-mini-icon" alt="">
+                        <span class="di-sheet-mini-plus-badge" data-pair-plus="true">+</span>
+                      </div>
+                      <span class="di-sheet-mini-chip-label">Tarps</span>
+                    </div>
+                    <div class="di-sheet-mini-chip di-sheet-mini-chip-pair" data-item="Flashlight">
+                      <div class="di-sheet-mini-icon-wrap">
+                        <img src="img/icons/icon-batteries.svg" class="di-sheet-mini-icon" alt="">
+                        <span class="di-sheet-mini-plus-badge" data-pair-plus="true">+</span>
+                      </div>
+                      <span class="di-sheet-mini-chip-label">Flashlight</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="di-sheet-mini-col di-sheet-mini-col-donate">
+                  <div class="di-sheet-mini-row">
+                    <div class="di-sheet-mini-chip">
+                      <div class="di-sheet-mini-icon-wrap di-sheet-mini-icon-wrap-gift">
+                        <img src="img/icons/gift.svg" class="di-sheet-mini-icon" alt="">
+                        <span class="di-sheet-mini-plus-badge" data-donate-more="true">+</span>
+                      </div>
+                      <span class="di-sheet-mini-chip-label">Donate more</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="di-sheet-body-dropoff">
+            <div class="di-sheet-section">
+              <button type="button" class="dc-make-changes-btn" id="di-change-mind-btn">Cancel donation</button>
+              <h3 class="di-sheet-loc-heading"><span class="di-sheet-loc-emoji"><img src="img/icons/icon-bus-outline.svg" alt=""></span> Select Drop-Off location</h3>
+
+              <div class="di-bs-location-card is-selected" data-sheet-location="private">
+                <span class="di-bs-distance">2.3 mi away</span>
+                <div class="di-bs-loc-text">
+                  <div class="di-bs-loc-name">Private Residence</div>
+                  <div class="di-bs-loc-meta">436 12th Ave East<br>Open: 10:00 AM - 10:00 PM</div>
+                </div>
+                <span class="di-bs-loc-check">✓</span>
+              </div>
+
+              <div class="di-bs-location-card is-muted" data-sheet-location="cross">
+                <span class="di-bs-distance">4.1 mi away</span>
+                <div class="di-bs-loc-text">
+                  <div class="di-bs-loc-name">Cross &amp; Crows Books</div>
+                  <div class="di-bs-loc-meta">2836 Commercial Dr<br>Open: Mon-Tue: 12-6 PM, Wed-Sat: 10-6 PM, Sun: 12-6 PM.</div>
+                </div>
+                <span class="di-bs-loc-check">✓</span>
+              </div>
+
+              <div class="di-bs-location-card is-muted" data-sheet-location="wildfires">
+                <span class="di-bs-distance">16.1 mi away</span>
+                <div class="di-bs-loc-text">
+                  <div class="di-bs-loc-name">Wildfires Bookshop</div>
+                  <div class="di-bs-loc-meta">712B 12th St, New Westminster</div>
+                </div>
+                <span class="di-bs-loc-check">✓</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="di-sheet-bottombar">
+          <div class="di-bs-footer">
+            <label class="di-bs-consent">
+              <button class="di-bs-consent-box" id="di-bs-consent-box" type="button" aria-label="Confirm donation item condition"></button>
+              <span>I confirm these items are in good, usable condition by <span class="di-bs-standards">DD’s Standards</span></span>
+            </label>
+
+            <div class="di-bs-slide-cta" id="di-bs-slide-cta" aria-label="Slide to confirm donation">
+              <div class="di-bs-slide-track" id="di-bs-slide-track">
+                <div class="di-bs-slide-fill" id="di-bs-slide-fill"></div>
+                <div class="di-bs-slide-success-circle" id="di-bs-slide-success-circle" aria-hidden="true"></div>
+                <div class="di-bs-slide-glow" id="di-bs-slide-glow"></div>
+                <div class="di-bs-slide-label" id="di-bs-slide-label">Slide to donate 0 items</div>
+                <div class="di-bs-slide-done" id="di-bs-slide-done">Confirmed ✓</div>
+                <div class="di-bs-slide-thumb" id="di-bs-slide-thumb" aria-hidden="true">
+                  <svg class="di-bs-slide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.page.page-donate-items -->
+
+  <!-- ── Donate Confirm Page ── -->
+  <div class="page page-donate-confirm">
+    <div class="dc-surface">
+      <div class="dc-top">
+        <button class="donate-back-btn" id="donate-confirm-back-btn" aria-label="Back to home">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </button>
+      </div>
+
+      <section class="dc-hero">
+        <div class="dc-hero-img-wrap dc-anim" style="--dc-delay:0ms">
+          <img src="img/dd-together.svg" alt="" class="dc-hero-img">
+        </div>
+        <h2 class="dc-thank-you dc-anim" style="--dc-delay:120ms">Your donation is queued, <span class="dc-user" id="dc-username">Potato31#</span>.</h2>
+        <p class="dc-subline dc-anim" style="--dc-delay:220ms">We've noted your items. Bring them by before your drop-off window and someone will be grateful.</p>
+      </section>
+
+      <section class="dc-section dc-anim" style="--dc-delay:80ms">
+        <div class="vol-section-eyebrow">What you're donating</div>
+        <h3 class="dc-section-title">You are bringing these</h3>
+        <div class="dc-item-list" id="dc-item-list"></div>
+      </section>
+
+      <section class="dc-section dc-anim" style="--dc-delay:160ms">
+        <div class="dc-heading-row">
+          <img src="img/icons/icon-location.svg" alt="">
+          <h3 class="dc-heading">Drop-off Location</h3>
+        </div>
+        <div class="event-detail-map-wrap dc-map-wrap hidden" id="dc-map-wrap" aria-hidden="true">
+          <div class="event-detail-map-loading" id="dc-map-loading" aria-live="polite">
+            <span class="event-detail-map-loading-spinner"></span>
+            <span class="event-detail-map-loading-text">Map loading</span>
+          </div>
+          <iframe id="dc-map" class="event-detail-map" title="Drop-off location map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="" allow="fullscreen"></iframe>
+        </div>
+        <div class="dc-reminder-divider"></div>
+        <div class="dc-reminder">
+          <img src="img/icons/navbar-bottom-calendar.svg" alt="" class="dc-reminder-icon" aria-hidden="true">
+          <div>
+            <p class="dc-reminder-title">We'll remind you</p>
+            <p class="dc-reminder-copy">You'll get a notification before drop-off window.</p>
+          </div>
+        </div>
+        <div class="dc-make-changes-wrap">
+          <button type="button" class="dc-make-changes-btn" id="dc-make-changes-btn">Make changes to donation</button>
+          <button type="button" class="dc-confirm-btn" id="dc-confirm-btn">Confirm donation queued</button>
+        </div>
+      </section>
+    </div>
+  </div><!-- /.page.page-donate-confirm -->
 
   <!-- ── Volunteer Page ── -->
   <div class="page page-volunteer">
@@ -5512,11 +6529,6 @@
         <div class="settings-row-right"><span class="settings-row-value">Members only</span><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
       </div>
       <div class="settings-row no-tap">
-        <div class="settings-row-icon orange"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
-        <div class="settings-row-text"><div class="settings-row-label">Show streak on profile</div></div>
-        <div class="settings-row-right"><div class="settings-toggle on" data-toggle></div></div>
-      </div>
-      <div class="settings-row no-tap">
         <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
         <div class="settings-row-text"><div class="settings-row-label">Show activity to community</div></div>
         <div class="settings-row-right"><div class="settings-toggle" data-toggle></div></div>
@@ -5717,7 +6729,7 @@
       <div class="prof-impact-actions">
         <button class="btn btn-secondary">
           Keep contributing
-        <img src="img/icons/arrow-right.svg" alt=""> </button>
+        <img src="img/icons/gift.svg" alt=""> </button>
       </div>
     </div>
 
@@ -6304,7 +7316,7 @@
   });
 
   // ── Page Router + Event Detail Flow ──
-  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail', activities: 'page-activities' };
+  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', 'donate-items': 'page-donate-items', 'donate-confirm': 'page-donate-confirm', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail', activities: 'page-activities' };
   const navItems = document.querySelectorAll('.bottom-nav .nav-item:not(.center-item)');
   const settingsButtons = document.querySelectorAll('.top-nav-settings');
   const settingsBackBtn = document.getElementById('settings-back-btn');
@@ -6319,20 +7331,11 @@
   const detailCta = document.getElementById('event-detail-cta');
   const detailBack = document.getElementById('event-detail-back');
   const donateMoneyBackBtn = document.getElementById('donate-money-back-btn');
-  const donateToItemsBtn = document.getElementById('donate-to-items-btn');
-  const donateModeToggle = document.getElementById('donate-mode-toggle');
-  const donateModeButtons = donateModeToggle ? donateModeToggle.querySelectorAll('.vol-toggle-opt') : [];
-  const donatePresetButtons = document.querySelectorAll('.donate-preset-btn');
+  const dmSwitchToItems = document.getElementById('dm-switch-to-items');
+  const donatePresetButtons = document.querySelectorAll('.page-donate-money .donate-preset-btn');
   const donateCustomInput = document.getElementById('donate-custom-input');
   const donateAmountValue = document.getElementById('donate-amount-value');
-  const donateImpactLine = document.getElementById('donate-impact-line');
-  const donateImpactBarPip = document.getElementById('donate-impact-bar-pip');
-  const donateImpactBarLabel = document.getElementById('donate-impact-bar-label');
-  const donateImpactGoalAmount = document.getElementById('donate-impact-goal-amount');
-  const donateImpactTrackEnd = document.getElementById('donate-impact-track-end');
   const donateMoneyCta = document.getElementById('donate-money-cta');
-  const DONATE_MONTHLY_GOAL = 500;
-  const DONATE_IMPACT_BASE_PERCENT = 66;
   const detailMapWrap = document.getElementById('event-detail-map-wrap');
   const detailMap = document.getElementById('event-detail-map');
   if (detailMap && detailMapWrap) {
@@ -6508,6 +7511,7 @@
     target.classList.add('active');
     target.scrollTop = 0;
     activePageName = name;
+    document.body.classList.toggle('is-fullscreen-confirm', name === 'donate-confirm');
 
     // Reset impact bar animation when leaving profile so it replays on next open
     if (name !== 'profile') {
@@ -6546,7 +7550,7 @@
     // Bottom nav: only one item active at a time
     document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
     const centerNavItem = document.querySelector('.bottom-nav .nav-item.center-item');
-    if (name === 'donate-money' && centerNavItem) {
+    if ((name === 'donate-money' || name === 'donate-items') && centerNavItem) {
       centerNavItem.classList.add('active');
     } else {
       if (name === 'events') setActiveNav('events');
@@ -6554,6 +7558,25 @@
       else if (name === 'home') setActiveNav('home');
       else if (name === 'forums' || name === 'compose' || name === 'forum-detail') setActiveNav('forums');
       else if (name === 'activities') setActiveNav('activities');
+    }
+
+    // Swap-icon micro-interaction: one fluid pop (up then back, no hold at peak)
+    var swapTarget = window.__swapIconAnimTarget;
+    window.__swapIconAnimTarget = null;
+    if (swapTarget) {
+      requestAnimationFrame(function() {
+        var btn = swapTarget === 'donate-items' ? document.getElementById('di-switch-to-money') : document.getElementById('dm-switch-to-items');
+        var icon = btn && btn.querySelector(swapTarget === 'donate-items' ? '.di-switch-to-money-icon' : '.dm-switch-to-items-icon');
+        if (icon) {
+          icon.classList.remove('swap-icon-pop');
+          icon.offsetHeight;
+          icon.classList.add('swap-icon-pop');
+          icon.addEventListener('animationend', function once() {
+            icon.removeEventListener('animationend', once);
+            icon.classList.remove('swap-icon-pop');
+          });
+        }
+      });
     }
   }
 
@@ -6706,63 +7729,51 @@
     showPage('detail');
   }
 
-  // ── Donate Money / Donate Items ──
+  // ── Donate Money ──
   const donateState = {
-    mode: 'one-time',
-    amount: 15,
-    selectedPreset: 15
+    amount: 25,
+    selectedPreset: 25
   };
+
+  let dmIsMonthly = false;
 
   function formatDonateAmount(value) {
     const num = Number(value) || 0;
     return Math.max(0, Math.round(num)).toString();
   }
 
-  function donateImpactCopy(amount) {
-    if (amount >= 50) return 'This helps us fund larger supply runs for multiple neighbours.';
-    if (amount >= 30) return 'This covers meaningful essentials for people through our weekly distro.';
-    if (amount >= 15) return 'This helps us restock practical items for immediate support.';
-    return 'Every amount helps us move supplies quickly to where they are needed.';
+  function donateImpactCopy(amount, monthly) {
+    const prefix = monthly ? 'Every month, ' : '';
+    if (amount >= 75) return prefix + 'A cot. Off the frozen ground.';
+    if (amount >= 50) return prefix + 'A sleeping bag rated to -5°C.';
+    if (amount >= 25) return prefix + 'A headlamp. Light when there\'s none.';
+    if (amount >= 12) return prefix + 'A tarp. Shelter from the rain, tonight.';
+    return 'Every dollar goes directly to supplies.';
   }
 
   function updateDonateUI() {
     if (donateAmountValue) donateAmountValue.textContent = formatDonateAmount(donateState.amount);
-
-    donateModeButtons.forEach(btn => {
-      const active = btn.dataset.mode === donateState.mode;
-      btn.classList.toggle('active', active);
-      btn.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-    if (donateModeToggle) {
-      const opts = Array.from(donateModeButtons);
-      const monthlyIdx = opts.findIndex(b => b.dataset.mode === 'monthly');
-      donateModeToggle.classList.toggle('right', donateState.mode === 'monthly' && monthlyIdx === 1);
-    }
 
     donatePresetButtons.forEach(btn => {
       const amount = Number(btn.dataset.amount);
       btn.classList.toggle('active', donateState.selectedPreset === amount);
     });
 
-    if (donateImpactLine) donateImpactLine.textContent = donateImpactCopy(donateState.amount);
-    const rawImpactPercent = (donateState.amount / DONATE_MONTHLY_GOAL) * 100;
-    const impactPercent = Math.max(0, Math.min(100, rawImpactPercent));
-    const orangeWidthPercent = Math.max(
-      DONATE_IMPACT_BASE_PERCENT,
-      Math.min(100, DONATE_IMPACT_BASE_PERCENT + impactPercent)
-    );
-    const impactPctLabel = Number.isInteger(impactPercent) ? impactPercent.toString() : impactPercent.toFixed(1);
-    if (donateImpactBarPip) donateImpactBarPip.style.width = `${orangeWidthPercent}%`;
-    if (donateImpactBarLabel) {
-      donateImpactBarLabel.style.left = `${orangeWidthPercent}%`;
-      donateImpactBarLabel.textContent = `+${impactPctLabel}%`;
+    // Impact line cross-dissolve
+    const dmImpactLine = document.getElementById('dm-impact-line');
+    if (dmImpactLine) {
+      const newCopy = donateImpactCopy(donateState.amount, dmIsMonthly);
+      if (dmImpactLine.textContent !== newCopy) {
+        dmImpactLine.style.opacity = '0';
+        setTimeout(() => {
+          dmImpactLine.textContent = newCopy;
+          dmImpactLine.style.opacity = '1';
+        }, 120);
+      }
     }
-    const goalFormatted = '$' + DONATE_MONTHLY_GOAL;
-    if (donateImpactGoalAmount) donateImpactGoalAmount.textContent = goalFormatted;
-    if (donateImpactTrackEnd) donateImpactTrackEnd.textContent = goalFormatted;
 
     if (donateMoneyCta) {
-      donateMoneyCta.textContent = donateState.mode === 'monthly'
+      donateMoneyCta.textContent = dmIsMonthly
         ? `Donate $${formatDonateAmount(donateState.amount)} / month`
         : `Donate $${formatDonateAmount(donateState.amount)}`;
     }
@@ -6790,19 +7801,9 @@
     showPage('donate-money');
   }
 
-  donateModeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      donateModeToggle.querySelectorAll('.vol-toggle-opt').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const opts = Array.from(donateModeToggle.querySelectorAll('.vol-toggle-opt'));
-      donateModeToggle.classList.toggle('right', opts.indexOf(btn) === 1);
-      donateState.mode = btn.dataset.mode === 'monthly' ? 'monthly' : 'one-time';
-      btn.setAttribute('aria-selected', 'true');
-      donateModeToggle.querySelectorAll('.vol-toggle-opt').forEach(b => {
-        if (b !== btn) b.setAttribute('aria-selected', 'false');
-      });
-      updateDonateUI();
-    });
+  if (dmSwitchToItems) dmSwitchToItems.addEventListener('click', function() {
+    window.__swapIconAnimTarget = 'donate-items';
+    showPage('donate-items');
   });
 
   donatePresetButtons.forEach(btn => {
@@ -6812,18 +7813,35 @@
   if (donateCustomInput) {
     donateCustomInput.addEventListener('input', () => {
       const raw = donateCustomInput.value.trim();
-      if (!raw) return;
+      if (!raw) { donateState.selectedPreset = null; updateDonateUI(); return; }
       setDonateAmount(raw, 'custom');
     });
   }
 
-  if (donateMoneyCta) {
-    donateMoneyCta.addEventListener('click', () => { /* placeholder */ });
+  // Monthly toggle
+  const dmMonthlyToggle = document.getElementById('dm-monthly-toggle');
+  if (dmMonthlyToggle) {
+    dmMonthlyToggle.addEventListener('click', () => {
+      dmIsMonthly = !dmIsMonthly;
+      dmMonthlyToggle.classList.toggle('on', dmIsMonthly);
+      dmMonthlyToggle.setAttribute('aria-checked', dmIsMonthly ? 'true' : 'false');
+      updateDonateUI();
+    });
   }
 
-  if (donateToItemsBtn) {
-    donateToItemsBtn.addEventListener('click', () => { /* placeholder – no action */ });
+  // Copy-email
+  const dmCopyEmailBtn = document.getElementById('dm-copy-email');
+  const dmCopyConfirm = document.getElementById('dm-copy-confirm');
+  if (dmCopyEmailBtn) {
+    dmCopyEmailBtn.addEventListener('click', () => {
+      navigator.clipboard?.writeText('distrodisco1312@gmail.com').catch(() => {});
+      if (dmCopyConfirm) {
+        dmCopyConfirm.classList.add('visible');
+        setTimeout(() => dmCopyConfirm.classList.remove('visible'), 1800);
+      }
+    });
   }
+
   if (donateMoneyBackBtn) {
     donateMoneyBackBtn.addEventListener('click', () => showPage(donateReturnPage || 'home'));
   }
@@ -7442,6 +8460,1040 @@
     updateVolCTA();
   })();
 
+  function initSlideConfirmCTA(config) {
+    const root = document.getElementById(config.rootId);
+    if (!root) return null;
+    const track = root.querySelector('.di-bs-slide-track');
+    const thumb = root.querySelector('.di-bs-slide-thumb');
+    const fill = root.querySelector('.di-bs-slide-fill');
+    const successCircle = root.querySelector('.di-bs-slide-success-circle');
+    const glow = root.querySelector('.di-bs-slide-glow');
+    const label = root.querySelector('.di-bs-slide-label');
+    const done = root.querySelector('.di-bs-slide-done');
+    if (!track || !thumb || !fill || !glow || !label || !done) return null;
+
+    const THUMB_W = 50;
+    const THUMB_PAD = 6;
+    const SNAP_AT = 0.82;
+    const SPRING_K = 220;
+    const SPRING_D = 26;
+    const SPARK_COLORS = [
+      'color-mix(in srgb, var(--orange) 85%, var(--navy))',
+      'color-mix(in srgb, var(--orange) 70%, var(--navy))',
+      'color-mix(in srgb, var(--orange) 55%, var(--navy))',
+      'color-mix(in srgb, var(--orange) 85%, white)'
+    ];
+
+    let enabled = false;
+    let confirmed = false;
+    let dragging = false;
+    let pos = 0;
+    let vel = 0;
+    let springRAF = null;
+    let dragStartPageX = 0;
+    let dragStartPos = 0;
+    let velPageX = 0;
+    let velT = 0;
+    let velX = 0;
+
+    function trackW() { return track.offsetWidth; }
+    function maxPos() { return trackW() - THUMB_W - THUMB_PAD * 2; }
+
+    function baseTrackBg() {
+      return 'var(--input-bg)';
+    }
+
+    function render(rawPos) {
+      const m = maxPos();
+      const cPos = Math.max(0, Math.min(rawPos, m));
+      const p = m > 0 ? cPos / m : 0;
+      thumb.style.left = (cPos + THUMB_PAD) + 'px';
+
+      let fillW = cPos + THUMB_W + THUMB_PAD;
+      if (p > 0.95) {
+        const ov = (p - 0.95) / 0.05;
+        fillW = fillW + (trackW() - fillW) * ov;
+      }
+      fill.style.width = fillW + 'px';
+      fill.style.background = 'color-mix(in srgb, var(--orange) ' + Math.round(p * 100) + '%, var(--navy))';
+      thumb.style.background = 'transparent';
+      thumb.style.color = 'color-mix(in srgb, var(--orange) ' + Math.round(p * 100) + '%, var(--navy))';
+      track.style.background = baseTrackBg();
+
+      const cx = cPos + THUMB_PAD + THUMB_W / 2;
+      label.style.opacity = String(Math.max(0, 1 - p * 2.8));
+
+      if (dragging && p > 0.35 && Math.random() < (p - 0.35) * 0.55) {
+        spawnSpark(cx, p);
+      }
+    }
+
+    function showConfirmed() {
+      label.style.opacity = '0';
+      thumb.style.opacity = '0';
+      thumb.style.transition = 'opacity .12s ease';
+      glow.style.opacity = '0';
+      fill.style.transition = 'width .15s cubic-bezier(.22,1,.36,1)';
+      fill.style.width = trackW() + 'px';
+      thumb.style.background = 'transparent';
+      thumb.style.color = 'var(--orange)';
+      track.style.transition = 'background .15s ease';
+      track.style.background = 'var(--input-bg)';
+      done.style.transition = 'opacity .12s ease';
+      done.style.opacity = '1';
+
+      if (successCircle) {
+        successCircle.classList.remove('is-expanded');
+        successCircle.style.opacity = '1';
+        void successCircle.offsetWidth;
+        successCircle.classList.add('is-expanded');
+        successCircle.addEventListener('transitionend', function onEnd() {
+          successCircle.removeEventListener('transitionend', onEnd);
+          fill.style.background = '#28A745';
+          successCircle.style.opacity = '0';
+          if (typeof config.onConfirm === 'function') config.onConfirm();
+        }, { once: true });
+      } else {
+        fill.style.background = '#28A745';
+        setTimeout(function() { if (typeof config.onConfirm === 'function') config.onConfirm(); }, 200);
+      }
+    }
+
+    function springTo(target, onDone) {
+      if (springRAF) cancelAnimationFrame(springRAF);
+      const dt = 1 / 60;
+      (function tick() {
+        const force = -SPRING_K * (pos - target) - SPRING_D * vel;
+        vel += force * dt;
+        pos += vel * dt;
+        render(pos);
+        const settled = Math.abs(pos - target) < 0.08 && Math.abs(vel) < 0.08;
+        if (settled) {
+          pos = target;
+          vel = 0;
+          render(pos);
+          if (onDone) onDone();
+        } else {
+          springRAF = requestAnimationFrame(tick);
+        }
+      })();
+    }
+
+    function confirm() {
+      confirmed = true;
+      dragging = false;
+      showConfirmed();
+      vel = Math.max(vel, 6);
+      springTo(maxPos(), null);
+    }
+
+    function snapBack() {
+      vel = Math.min(vel, 0);
+      springTo(0, null);
+    }
+
+    function onDown(pageX) {
+      if (!enabled || confirmed) return;
+      if (springRAF) {
+        cancelAnimationFrame(springRAF);
+        springRAF = null;
+      }
+      dragging = true;
+      dragStartPageX = pageX;
+      dragStartPos = pos;
+      velPageX = pageX;
+      velT = performance.now();
+      velX = 0;
+      thumb.style.transition = 'transform .1s cubic-bezier(.34,1.56,.64,1)';
+      thumb.style.transform = 'scale(0.92)';
+    }
+
+    function onMove(pageX) {
+      if (!enabled || !dragging || confirmed) return;
+      const now = performance.now();
+      const dt = Math.max(4, now - velT);
+      velX = (pageX - velPageX) / dt * 16;
+      velPageX = pageX;
+      velT = now;
+      let raw = dragStartPos + (pageX - dragStartPageX);
+      const m = maxPos();
+      if (raw < 0) raw = raw * 0.18;
+      if (raw > m) raw = m + (raw - m) * 0.14;
+      pos = raw;
+      vel = velX;
+      render(pos);
+    }
+
+    function onUp() {
+      if (!dragging) return;
+      dragging = false;
+      thumb.style.transition = 'transform .35s cubic-bezier(.34,1.56,.64,1)';
+      thumb.style.transform = 'scale(1)';
+      if (confirmed || !enabled) return;
+      const m = maxPos();
+      const p = m > 0 ? Math.max(0, Math.min(pos, m)) / m : 0;
+      vel = velX * 0.55;
+      if (p >= SNAP_AT || (p > 0.55 && vel > 7)) confirm();
+      else snapBack();
+    }
+
+    function spawnSpark(cx, p) {
+      const s = document.createElement('div');
+      s.className = 'di-bs-slide-spark';
+      const size = 1.5 + Math.random() * 4 * p;
+      s.style.width = size + 'px';
+      s.style.height = size + 'px';
+      s.style.background = SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)];
+      const sx = cx - THUMB_W * 0.3 - Math.random() * 12;
+      s.style.left = sx + 'px';
+      s.style.top = (10 + Math.random() * 44) + 'px';
+      track.appendChild(s);
+      let vx = -0.8 - Math.random() * 3.5 * p;
+      let vy = (Math.random() - 0.52) * 4 * p;
+      let life = 0;
+      const max = 14 + Math.random() * 18;
+      (function tick() {
+        life += 1;
+        vx *= 0.93;
+        vy += 0.18;
+        s.style.left = (parseFloat(s.style.left) + vx) + 'px';
+        s.style.top = (parseFloat(s.style.top) + vy) + 'px';
+        s.style.opacity = String(Math.max(0, 1 - life / max));
+        if (life < max) requestAnimationFrame(tick);
+        else if (s.parentNode) s.parentNode.removeChild(s);
+      })();
+    }
+
+    function burstSparks() {
+      const w = trackW();
+      for (let i = 0; i < 36; i += 1) {
+        (function burstOne() {
+          const s = document.createElement('div');
+          s.className = 'di-bs-slide-spark';
+          const sz = 3 + Math.random() * 8;
+          s.style.width = sz + 'px';
+          s.style.height = sz + 'px';
+          s.style.background = SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)];
+          s.style.left = (w * 0.25 + Math.random() * w * 0.6) + 'px';
+          s.style.top = (8 + Math.random() * 48) + 'px';
+          track.appendChild(s);
+          const angle = Math.random() * Math.PI * 2;
+          const spd = 2.5 + Math.random() * 6.5;
+          let vx = Math.cos(angle) * spd;
+          let vy = Math.sin(angle) * spd - 3.5;
+          let life = 0;
+          const max = 28 + Math.random() * 22;
+          (function tick() {
+            life += 1;
+            vy += 0.2;
+            vx *= 0.97;
+            s.style.left = (parseFloat(s.style.left) + vx) + 'px';
+            s.style.top = (parseFloat(s.style.top) + vy) + 'px';
+            s.style.opacity = String(Math.max(0, 1 - life / max));
+            if (life < max) requestAnimationFrame(tick);
+            else if (s.parentNode) s.parentNode.removeChild(s);
+          })();
+        })();
+      }
+    }
+
+    track.addEventListener('touchstart', function(e) {
+      if (!e.touches || !e.touches[0]) return;
+      onDown(e.touches[0].pageX);
+    }, { passive: true });
+    track.addEventListener('touchmove', function(e) {
+      if (!e.touches || !e.touches[0]) return;
+      onMove(e.touches[0].pageX);
+    }, { passive: true });
+    track.addEventListener('touchend', onUp, { passive: true });
+    track.addEventListener('touchcancel', onUp, { passive: true });
+    track.addEventListener('mousedown', function(e) {
+      onDown(e.pageX);
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (dragging) onMove(e.pageX);
+    });
+    window.addEventListener('mouseup', onUp);
+
+    thumb.style.left = THUMB_PAD + 'px';
+    render(0);
+
+    return {
+      setEnabled: function(nextEnabled) {
+        enabled = !!nextEnabled;
+        root.classList.toggle('is-disabled', !enabled);
+        if (!enabled && !confirmed && !dragging) {
+          pos = 0;
+          vel = 0;
+          render(0);
+        }
+      },
+      setLabel: function(text) {
+        label.textContent = text;
+      },
+      reset: function() {
+        confirmed = false;
+        dragging = false;
+        pos = 0;
+        vel = 0;
+        if (springRAF) {
+          cancelAnimationFrame(springRAF);
+          springRAF = null;
+        }
+        fill.style.transition = '';
+        fill.style.width = '0px';
+        fill.style.background = 'color-mix(in srgb, var(--orange) 0%, var(--navy))';
+        track.style.transition = '';
+        track.style.background = baseTrackBg();
+        thumb.style.transition = '';
+        thumb.style.opacity = '1';
+        thumb.style.transform = 'scale(1)';
+        thumb.style.color = 'var(--orange)';
+        label.style.opacity = '1';
+        done.style.opacity = '0';
+        if (successCircle) {
+          successCircle.classList.remove('is-expanded');
+          successCircle.style.opacity = '0';
+        }
+        render(0);
+      },
+      isConfirmed: function() {
+        return confirmed;
+      },
+      burstSparks: burstSparks
+    };
+  }
+
+  function startIconRain(items, getItemIconSrc, pageEl) {
+    if (!pageEl || !items || !items.length) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches && !document.documentElement.dataset.allowRain) return;
+    var flat = [];
+    items.forEach(function(entry) {
+      var n = (entry.qty || 0);
+      var name = entry.itemName;
+      for (var i = 0; i < n; i++) flat.push(name);
+    });
+    if (flat.length > 24) {
+      var step = flat.length / 24;
+      var sampled = [];
+      for (var i = 0; i < 24; i++) sampled.push(flat[Math.min(Math.floor(i * step), flat.length - 1)]);
+      flat = sampled;
+    }
+    if (flat.length === 0) return;
+    var count = flat.length;
+    // Rain particle sizing (edit these only)
+    var CIRCLE_MAX = 128;
+    var CIRCLE_MIN = 44;
+    var COUNT_AT_MIN = 5;
+    var ICON_TO_CIRCLE_RATIO = 0.58;
+    var circleSize = Math.round(CIRCLE_MAX - ((count - 1) / (COUNT_AT_MIN - 1)) * (CIRCLE_MAX - CIRCLE_MIN));
+    if (circleSize < CIRCLE_MIN) circleSize = CIRCLE_MIN;
+    if (circleSize > CIRCLE_MAX) circleSize = CIRCLE_MAX;
+    var iconSize = Math.round(circleSize * ICON_TO_CIRCLE_RATIO);
+    var rect = pageEl.getBoundingClientRect();
+    var vw = rect.width;
+    var vh = rect.height;
+    var exitY = vh + 60 + circleSize;
+    var fadeOutStartY = vh - 80;
+    var layer = document.createElement('div');
+    layer.id = 'dc-rain-layer';
+    var particles = [];
+    var startTime = performance.now();
+    for (var i = 0; i < flat.length; i++) {
+      var itemName = flat[i];
+      var src = getItemIconSrc(itemName);
+      var el = document.createElement('div');
+      el.className = 'dc-rain-particle';
+      el.style.width = circleSize + 'px';
+      el.style.height = circleSize + 'px';
+      var img = document.createElement('img');
+      img.src = src || '';
+      img.alt = '';
+      img.style.width = iconSize + 'px';
+      img.style.height = iconSize + 'px';
+      el.appendChild(img);
+      var startX = Math.random() * Math.max(0, vw - circleSize) + (Math.random() * 16 - 8);
+      el.style.left = startX + 'px';
+      el.style.top = '-60px';
+      el.style.opacity = '0';
+      layer.appendChild(el);
+      var delay = flat.length === 1 ? 0 : (i / (flat.length - 1)) * 600;
+      particles.push({
+        el: el,
+        startX: startX,
+        y: 0,
+        vy: 0.4 + Math.random() * 0.8,
+        gravity: 0.18 + Math.random() * 0.14,
+        delay: delay,
+        startTime: startTime,
+        driftPhase: Math.random() * Math.PI * 2,
+        driftAmp: 18,
+        driftSpeed: 0.02 + Math.random() * 0.02,
+        drift: 0,
+        angle: 0,
+        rotationRate: (0.08 + Math.random() * 0.14) * (Math.random() < 0.5 ? -1 : 1),
+        done: false
+      });
+    }
+    pageEl.appendChild(layer);
+    var rafId = null;
+    function tick() {
+      var now = performance.now();
+      var allDone = true;
+      particles.forEach(function(p) {
+        if (p.done) return;
+        allDone = false;
+        var elapsed = now - p.startTime - p.delay;
+        if (elapsed < 0) return;
+        p.vy += p.gravity;
+        p.vy *= 0.995;
+        p.y += p.vy;
+        var driftX = Math.sin(p.driftPhase + now * p.driftSpeed * 0.06) * p.driftAmp;
+        p.driftPhase += 0.002;
+        p.driftAmp *= 0.998;
+        if (p.driftAmp < 0.5) p.driftAmp = 0.5;
+        p.angle += p.rotationRate;
+        p.el.style.transform = 'translate(' + (driftX) + 'px, ' + p.y + 'px) rotate(' + p.angle + 'deg)';
+        var opacity = 1;
+        if (elapsed < 200) opacity = elapsed / 200;
+        else if (p.y > fadeOutStartY) {
+          var fadeSpan = exitY - fadeOutStartY;
+          opacity = Math.max(0, 1 - (p.y - fadeOutStartY) / fadeSpan);
+        }
+        p.el.style.opacity = String(opacity);
+        if (p.y >= exitY) p.done = true;
+      });
+      if (!allDone) rafId = requestAnimationFrame(tick);
+      else {
+        if (layer.parentNode) layer.parentNode.removeChild(layer);
+      }
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function initDonateConfirmPage(config) {
+    const page = document.querySelector('.page-donate-confirm');
+    const backBtn = document.getElementById('donate-confirm-back-btn');
+    const usernameEl = document.getElementById('dc-username');
+    const itemList = document.getElementById('dc-item-list');
+    const mapWrap = document.getElementById('dc-map-wrap');
+    const mapFrame = document.getElementById('dc-map');
+    if (!page || !backBtn || !itemList || !mapWrap || !mapFrame) return null;
+
+    const CONDITION_NOTES = {
+      'Sleeping Bags': '-5C rated or lower',
+      'Tarps': '12x12 or larger',
+      'Lanterns': 'Solar or battery-powered',
+      'New Underwear & Boxers': 'M / L / XL',
+      'New Socks': 'Small & Large',
+      'Baby Wipes': 'Not antibacterial - smaller packs',
+      'Deodorant': "Men's-branded goes faster",
+      'Rope': "Cut to 20' lengths, ends burnt"
+    };
+
+    function animateEntrance() {
+      page.classList.remove('is-open', 'is-content-visible');
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          page.classList.add('is-open');
+          setTimeout(function() { page.classList.add('is-content-visible'); }, 320);
+        });
+      });
+    }
+
+    function renderItems(entries) {
+      itemList.innerHTML = '';
+      if (!entries || !entries.length) {
+        const empty = document.createElement('div');
+        empty.className = 'di-sheet-empty';
+        empty.textContent = 'No items to confirm.';
+        itemList.appendChild(empty);
+        return;
+      }
+
+      entries.forEach(function(entry) {
+        const itemName = entry.itemName;
+        const qty = entry.qty;
+        const card = document.createElement('div');
+        card.className = 'item-card dc-item-card';
+
+        const left = document.createElement('div');
+        left.className = 'item-left';
+        const textWrap = document.createElement('div');
+        const title = document.createElement('h4');
+        title.textContent = itemName;
+        textWrap.appendChild(title);
+        if (CONDITION_NOTES[itemName]) {
+          const note = document.createElement('span');
+          note.className = 'dc-item-note';
+          note.textContent = CONDITION_NOTES[itemName];
+          textWrap.appendChild(note);
+        }
+        left.appendChild(textWrap);
+
+        const right = document.createElement('div');
+        right.className = 'item-right dc-item-right';
+        const iconSrc = config.getItemIconSrc(itemName);
+        if (iconSrc) {
+          const icon = document.createElement('img');
+          icon.src = iconSrc;
+          icon.alt = '';
+          right.appendChild(icon);
+        } else {
+          const fallback = document.createElement('span');
+          fallback.className = 'dc-item-fallback';
+          fallback.textContent = '📦';
+          right.appendChild(fallback);
+        }
+        const qtyBadge = document.createElement('span');
+        qtyBadge.className = 'dc-qty-badge';
+        qtyBadge.textContent = 'x' + qty;
+        right.appendChild(qtyBadge);
+
+        card.appendChild(left);
+        card.appendChild(right);
+        itemList.appendChild(card);
+      });
+    }
+
+    function renderMap(selectedDropoffId) {
+      const location = config.getDropoffById(selectedDropoffId);
+      if (!location || !location.mapQuery) {
+        mapWrap.classList.add('hidden');
+        mapWrap.setAttribute('aria-hidden', 'true');
+        mapFrame.removeAttribute('src');
+        return;
+      }
+      mapWrap.classList.remove('hidden');
+      mapWrap.classList.remove('loaded');
+      mapWrap.setAttribute('aria-hidden', 'false');
+      mapFrame.src = 'https://www.google.com/maps?q=' + encodeURIComponent(location.mapQuery) + '&output=embed';
+    }
+
+    mapFrame.addEventListener('load', function() {
+      mapWrap.classList.add('loaded');
+    });
+
+    backBtn.addEventListener('click', function() {
+      if (typeof config.onBack === 'function') config.onBack();
+      showPage('donate-items');
+    });
+
+    var makeChangesBtn = document.getElementById('dc-make-changes-btn');
+    if (makeChangesBtn) {
+      makeChangesBtn.addEventListener('click', function() {
+        if (typeof config.onBack === 'function') config.onBack();
+        showPage('donate-items');
+      });
+    }
+
+    var confirmBtn = document.getElementById('dc-confirm-btn');
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', function() {
+        showPage('home');
+      });
+    }
+
+    return {
+      open: function(snapshot) {
+        if (!snapshot) return;
+        if (usernameEl) usernameEl.textContent = snapshot.username || 'Potato31#';
+        renderItems(snapshot.items || []);
+        renderMap(snapshot.selectedDropoff);
+        showPage('donate-confirm');
+        animateEntrance();
+        setTimeout(function() { startIconRain(snapshot.items || [], config.getItemIconSrc, page); }, 300);
+      }
+    };
+  }
+
+  // ── Donate Items Page ──
+  (function initDonateItemsPage() {
+    const itemQuantities = new Map();
+    let diSheetOpen = false;
+    let editingItemName = null;
+    let selectedDropoff = 'private';
+    const confirmUsername = 'Potato31#';
+    const usedPairSuggestions = new Set();
+    const pairedItems = new Map();
+    const PAIR_PARENT_ITEM = 'Rope';
+    const DROP_OFF_LOCATIONS = [
+      { id: 'private', mapQuery: 'Private Residence, 436 12th Ave East, Vancouver, BC' },
+      { id: 'cross', mapQuery: 'Cross & Crows Books, 2836 Commercial Dr, Vancouver, BC' },
+      { id: 'wildfires', mapQuery: 'Wildfires Bookshop, 712B 12th St, New Westminster, BC' }
+    ];
+
+    const diFab = document.getElementById('di-fab');
+    const diFabCount = document.getElementById('di-fab-count');
+    const diSheetBackdrop = document.getElementById('di-sheet-backdrop');
+    const diSheet = document.getElementById('di-sheet');
+    const diSheetClose = document.getElementById('di-sheet-close');
+    const diSheetConsent = document.getElementById('di-bs-consent-box');
+    const diSheetItems = document.getElementById('di-sheet-items');
+    const diSheetMiniGrid = document.querySelector('.di-sheet-mini-grid');
+    const diPairsRow = diSheetMiniGrid ? diSheetMiniGrid.querySelector('.di-sheet-mini-col-pairs .di-sheet-mini-row') : null;
+    const initialPairsMarkup = diPairsRow ? diPairsRow.innerHTML : '';
+    let shouldOpenConfirmAfterSheetClose = false;
+    const diChangeMindBtn = document.getElementById('di-change-mind-btn');
+    let donateConfirmController = null;
+    const diSlideController = initSlideConfirmCTA({
+      rootId: 'di-bs-slide-cta',
+      onConfirm: function() {
+        if (diSheet && diSheet.classList.contains('is-open')) {
+          shouldOpenConfirmAfterSheetClose = true;
+          if (diSlideController && diSlideController.reset) diSlideController.reset();
+          openDonateConfirm();
+        }
+      }
+    });
+
+    const getItemIconSrc = (name) => ({
+      'Tents': 'img/icons/icon-tents.svg',
+      'Sleeping Bags': 'img/icons/icon-sleeping-bag.svg',
+      'Tarps': 'img/icons/icon-tarp.svg',
+      'Sleeping Mats': 'img/icons/icon-sleeping-mat.svg',
+      'Sleeping Cots': 'img/icons/icon-sleeping-cot.svg',
+      'Rope': 'img/icons/icon-rope.svg',
+      'Flashlight': 'img/icons/icon-flashlight.svg',
+      'Battery Banks': 'img/icons/icon-battery-bank.svg',
+      'Reusable Water Bottles': 'img/icons/icon-water-bottle.svg',
+      'Backpacks': 'img/icons/icon-backpack.svg',
+      'Headlamps': 'img/icons/icon-headlamp.svg',
+      'Lanterns': 'img/icons/icon-lantern.svg',
+      'Hand Warmers': 'img/icons/icon-hand-warmers.svg',
+      'First Aid Kits': 'img/icons/icon-first-aid.svg',
+      'New Underwear & Boxers': 'img/icons/icon-underwear.svg',
+      'New Socks': 'img/icons/icon-new-socks.svg',
+      'Rain Jackets': 'img/icons/icon-rain-jacket.svg',
+      'Baby Wipes': 'img/icons/icon-baby-wipes.svg',
+      'Toothbrushes & Toothpaste': 'img/icons/icon-toothbrush.svg',
+      'Deodorant': 'img/icons/icon-deodorant.svg'
+    }[name] || 'img/icons/icon-stars.svg');
+
+    function getDropoffById(id) {
+      return DROP_OFF_LOCATIONS.find(function(loc) { return loc.id === id; }) || DROP_OFF_LOCATIONS[0];
+    }
+
+    function getDonateConfirmSnapshot() {
+      const items = Array.from(itemQuantities.entries()).map(function(entry) {
+        return { itemName: entry[0], qty: entry[1] };
+      });
+      return {
+        username: confirmUsername,
+        items: items,
+        selectedDropoff: selectedDropoff
+      };
+    }
+
+    function resetDonateItemsUIForNextRun() {
+      shouldOpenConfirmAfterSheetClose = false;
+      if (diSlideController && diSlideController.reset) diSlideController.reset();
+      if (diSheetConsent) {
+        diSheetConsent.classList.remove('checked');
+        diSheetConsent.innerHTML = '';
+      }
+      if (diSheetMiniGrid) diSheetMiniGrid.classList.remove('all-pairs-used');
+      if (diPairsRow && initialPairsMarkup) diPairsRow.innerHTML = initialPairsMarkup;
+      usedPairSuggestions.clear();
+      pairedItems.clear();
+      if (diSheetBackdrop) diSheetBackdrop.classList.remove('is-open');
+      if (diSheet) diSheet.classList.remove('is-open');
+      diSheetOpen = false;
+      updateSheetDonateState();
+    }
+
+    donateConfirmController = initDonateConfirmPage({
+      getItemIconSrc: getItemIconSrc,
+      getDropoffById: getDropoffById,
+      onBack: resetDonateItemsUIForNextRun
+    });
+
+    function openDonateConfirm() {
+      if (!donateConfirmController) return;
+      const snapshot = getDonateConfirmSnapshot();
+      donateConfirmController.open(snapshot);
+    }
+
+    function getTotalItemCount() {
+      let total = 0;
+      itemQuantities.forEach(function(qty) { total += qty; });
+      return total;
+    }
+
+    function setItemQuantity(itemName, qty) {
+      if (qty <= 0) itemQuantities.delete(itemName);
+      else itemQuantities.set(itemName, qty);
+    }
+
+    function syncPageCardsFromState() {
+      document.querySelectorAll('.page-donate-items .di-item-card[data-item]').forEach(function(card) {
+        const itemName = card.dataset.item;
+        const btn = card.querySelector('.di-item-btn');
+        const active = itemQuantities.has(itemName);
+        card.classList.toggle('selected', active);
+        if (btn) btn.textContent = active ? 'Added' : 'I have this item';
+      });
+    }
+
+    function renderSheetItems() {
+      if (!diSheetItems) return;
+      diSheetItems.innerHTML = '';
+
+      if (itemQuantities.size === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'di-sheet-empty';
+        empty.textContent = 'No items added yet.';
+        diSheetItems.appendChild(empty);
+        return;
+      }
+
+      const entries = Array.from(itemQuantities.entries());
+      const rendered = new Set();
+
+      function appendRow(itemName, qty, isPaired) {
+        if (rendered.has(itemName)) return;
+        rendered.add(itemName);
+
+        const row = document.createElement('div');
+        row.className = 'di-sheet-item-row';
+        if (isPaired) row.classList.add('is-paired');
+        row.dataset.item = itemName;
+
+        const left = document.createElement('div');
+        left.className = 'di-sheet-item-left';
+
+        const main = document.createElement('div');
+        main.className = 'di-sheet-item-main';
+
+        const thumb = document.createElement('div');
+        thumb.className = 'di-sheet-item-thumb';
+        const icon = document.createElement('img');
+        icon.alt = '';
+        icon.src = getItemIconSrc(itemName);
+        thumb.appendChild(icon);
+        const count = document.createElement('span');
+        count.className = 'di-sheet-item-count';
+        count.textContent = 'x' + qty;
+        thumb.appendChild(count);
+
+        const name = document.createElement('div');
+        name.className = 'di-sheet-item-name';
+        name.textContent = itemName;
+
+        main.appendChild(thumb);
+        main.appendChild(name);
+        left.appendChild(main);
+        row.appendChild(left);
+
+        if (editingItemName === itemName) {
+          const qtyWrap = document.createElement('div');
+          qtyWrap.className = 'di-sheet-qty';
+
+          const dec = document.createElement('button');
+          dec.className = 'di-sheet-qty-btn';
+          dec.dataset.action = 'dec';
+          dec.dataset.item = itemName;
+          dec.type = 'button';
+          dec.textContent = '-';
+
+          const num = document.createElement('span');
+          num.className = 'di-sheet-qty-num';
+          num.textContent = String(qty);
+
+          const inc = document.createElement('button');
+          inc.className = 'di-sheet-qty-btn';
+          inc.dataset.action = 'inc';
+          inc.dataset.item = itemName;
+          inc.type = 'button';
+          inc.textContent = '+';
+
+          qtyWrap.appendChild(dec);
+          qtyWrap.appendChild(num);
+          qtyWrap.appendChild(inc);
+          const confirm = document.createElement('button');
+          confirm.className = 'di-sheet-qty-confirm';
+          confirm.type = 'button';
+          confirm.textContent = 'Update';
+          confirm.addEventListener('click', function() {
+            editingItemName = null;
+            renderSheetItems();
+            updateDiUI();
+          });
+          row.appendChild(qtyWrap);
+          row.appendChild(confirm);
+        } else {
+          const edit = document.createElement('button');
+          edit.className = 'di-sheet-edit';
+          edit.dataset.action = 'edit';
+          edit.dataset.item = itemName;
+          edit.type = 'button';
+          edit.setAttribute('aria-label', 'Edit ' + itemName + ' quantity');
+          const editIcon = document.createElement('img');
+          editIcon.src = 'img/icons/icon-edit.svg';
+          editIcon.alt = '';
+          edit.appendChild(editIcon);
+          left.appendChild(edit);
+        }
+
+        diSheetItems.appendChild(row);
+      }
+
+      // Render the primary parent item first with any paired suggestions directly below.
+      entries.forEach(function(entry) {
+        const itemName = entry[0];
+        const qty = entry[1];
+        if (itemName === PAIR_PARENT_ITEM) {
+          appendRow(itemName, qty, false);
+          entries.forEach(function(innerEntry) {
+            const childName = innerEntry[0];
+            const childQty = innerEntry[1];
+            if (pairedItems.get(childName) === PAIR_PARENT_ITEM) {
+              appendRow(childName, childQty, true);
+            }
+          });
+        }
+      });
+
+      // Render any remaining items that are not yet rendered.
+      entries.forEach(function(entry) {
+        const itemName = entry[0];
+        const qty = entry[1];
+        if (!rendered.has(itemName)) {
+          const isPaired = pairedItems.has(itemName);
+          appendRow(itemName, qty, isPaired);
+        }
+      });
+    }
+
+    function renderDropoffSelection() {
+      document.querySelectorAll('.di-bs-location-card').forEach(function(card) {
+        const isSelected = card.dataset.sheetLocation === selectedDropoff;
+        card.classList.toggle('is-selected', isSelected);
+        card.classList.toggle('is-muted', !isSelected);
+      });
+    }
+
+    function updateSheetDonateState() {
+      if (!diSlideController || !diSheetConsent) return;
+      const enabled = diSheetConsent.classList.contains('checked') && getTotalItemCount() > 0 && !!selectedDropoff;
+      const count = getTotalItemCount();
+      diSlideController.setEnabled(enabled);
+      diSlideController.setLabel('Slide to donate ' + count + ' item' + (count === 1 ? '' : 's'));
+    }
+
+    function openDiSheet() {
+      if (!diSheet || !diSheetBackdrop) return;
+      if (getTotalItemCount() === 0) return;
+      diSheetOpen = true;
+      diSheetBackdrop.classList.add('is-open');
+      diSheet.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      renderSheetItems();
+      renderDropoffSelection();
+      updateSheetDonateState();
+    }
+
+    function closeDiSheet() {
+      if (!diSheet || !diSheetBackdrop) return;
+      diSheetOpen = false;
+      editingItemName = null;
+      diSheetBackdrop.classList.remove('is-open');
+      diSheet.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    function updateDiUI() {
+      const count = getTotalItemCount();
+      if (diFab && diFabCount) {
+        diFab.classList.toggle('visible', count > 0);
+        diFabCount.textContent = String(count);
+      }
+      if (count === 0 && diSheetOpen) closeDiSheet();
+      syncPageCardsFromState();
+      renderSheetItems();
+      renderDropoffSelection();
+      updateSheetDonateState();
+    }
+
+    // Drop-off selection (single select persisted)
+    document.querySelectorAll('.di-bs-location-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        selectedDropoff = card.dataset.sheetLocation || selectedDropoff;
+        renderDropoffSelection();
+        updateSheetDonateState();
+      });
+    });
+
+    // Tap scale effect on pointerdown so it fires immediately before click (things may disappear on click)
+    var diSheetTapTimeout = null;
+    var diSheetTapEl = null;
+    var diSheetTappableSelector = 'button, a, [role="button"], .di-sheet-close, .di-sheet-mini-chip, .di-sheet-edit, .di-bs-consent-box, .di-bs-consent, .di-bs-location-card';
+    if (diSheet) {
+      diSheet.addEventListener('pointerdown', function(e) {
+        if (e.target.closest('.di-bs-slide-cta')) return;
+        var el = e.target.closest(diSheetTappableSelector);
+        if (!el || !diSheet.contains(el)) return;
+        if (el.classList.contains('di-bs-consent') || el.closest('.di-bs-consent') === el) el = el.querySelector('.di-bs-consent-box') || el;
+        if (diSheetTapTimeout) { clearTimeout(diSheetTapTimeout); if (diSheetTapEl) { diSheetTapEl.style.transform = ''; diSheetTapEl.style.transition = ''; } }
+        diSheetTapEl = el;
+        if (el.classList.contains('di-bs-location-card')) return;
+        el.style.transform = 'scale(1.12)';
+        diSheetTapTimeout = setTimeout(function() { if (diSheetTapEl) diSheetTapEl.style.transform = ''; diSheetTapEl = null; diSheetTapTimeout = null; }, 90);
+      });
+    }
+
+    // Inline quantity editor controls (event delegation)
+    if (diSheetItems) {
+      diSheetItems.addEventListener('click', function(e) {
+        const btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        const action = btn.dataset.action;
+        const itemName = btn.dataset.item;
+        if (!itemName || !itemQuantities.has(itemName)) return;
+
+        if (action === 'edit') {
+          editingItemName = editingItemName === itemName ? null : itemName;
+          renderSheetItems();
+          return;
+        }
+
+        if (action === 'inc') {
+          setItemQuantity(itemName, (itemQuantities.get(itemName) || 0) + 1);
+          updateDiUI();
+          editingItemName = itemName;
+          renderSheetItems();
+          return;
+        }
+
+        if (action === 'dec') {
+          const nextQty = (itemQuantities.get(itemName) || 0) - 1;
+          setItemQuantity(itemName, nextQty);
+          if (!itemQuantities.has(itemName)) editingItemName = null;
+          updateDiUI();
+        }
+      });
+    }
+
+    // \"Pairs well with\" and \"Donate more\" mini-grid interactions
+    if (diSheetMiniGrid) {
+      diSheetMiniGrid.addEventListener('click', function(e) {
+        const plus = e.target.closest('.di-sheet-mini-plus-badge');
+        if (!plus) return;
+
+        // Donate more button: close sheet without changing state
+        if (plus.dataset.donateMore === 'true') {
+          closeDiSheet();
+          return;
+        }
+
+        // Pairs well with suggestions
+        if (plus.dataset.pairPlus === 'true') {
+          const chip = plus.closest('.di-sheet-mini-chip');
+          if (!chip) return;
+          const itemName = chip.dataset.item;
+          if (!itemName) return;
+
+          const currentQty = itemQuantities.get(itemName) || 0;
+          setItemQuantity(itemName, currentQty + 1);
+          usedPairSuggestions.add(itemName);
+          pairedItems.set(itemName, PAIR_PARENT_ITEM);
+          chip.classList.add('used');
+          // Remove the chip from the UI immediately so its icon disappears.
+          chip.remove();
+
+          updateDiUI();
+
+          const remainingPairChip = diSheetMiniGrid.querySelector('.di-sheet-mini-chip-pair:not(.used)');
+          if (!remainingPairChip) {
+            diSheetMiniGrid.classList.add('all-pairs-used');
+          }
+        }
+      });
+    }
+
+    // Item selection buttons
+    document.querySelectorAll('.page-donate-items .di-item-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const card = btn.closest('.di-item-card');
+        if (!card) return;
+        const itemName = card.dataset.item;
+        if (!itemName) return;
+
+        if (itemQuantities.has(itemName)) {
+          setItemQuantity(itemName, 0);
+          if (editingItemName === itemName) editingItemName = null;
+        } else {
+          setItemQuantity(itemName, 1);
+          btn.style.transform = 'scale(1.12)';
+          setTimeout(function() { btn.style.transform = ''; }, 90);
+        }
+        updateDiUI();
+      });
+    });
+
+    // FAB and bottom sheet open/close
+    if (diFab) diFab.addEventListener('click', openDiSheet);
+    if (diSheetClose) diSheetClose.addEventListener('click', closeDiSheet);
+    if (diChangeMindBtn) {
+      diChangeMindBtn.addEventListener('click', function() {
+        itemQuantities.clear();
+        selectedDropoff = 'private';
+        updateDiUI();
+      });
+    }
+    if (diSheetBackdrop) diSheetBackdrop.addEventListener('click', closeDiSheet);
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && diSheetOpen) closeDiSheet();
+    });
+
+    // consent
+    if (diSheetConsent) {
+      diSheetConsent.addEventListener('click', function() {
+        diSheetConsent.classList.toggle('checked');
+        diSheetConsent.innerHTML = diSheetConsent.classList.contains('checked')
+          ? '<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;"><polyline points="20 6 9 17 4 12"/></svg>'
+          : '';
+        updateSheetDonateState();
+      });
+    }
+
+    // Load more items reveal
+    const diLoadMoreBtn = document.getElementById('di-load-more-btn');
+    if (diLoadMoreBtn) {
+      diLoadMoreBtn.addEventListener('click', function() {
+        document.querySelectorAll('.page-donate-items .di-item-card-extra').forEach(function(card) {
+          card.classList.add('visible');
+        });
+        document.querySelectorAll('.page-donate-items .di-cat-eyebrow.di-item-card-extra').forEach(function(tag) {
+          tag.classList.add('visible');
+        });
+        diLoadMoreBtn.style.display = 'none';
+      });
+    }
+
+    // Back button
+    const diBackBtn = document.getElementById('donate-items-back-btn');
+    if (diBackBtn) {
+      diBackBtn.addEventListener('click', function() {
+        closeDiSheet();
+        showPage(donateReturnPage || 'home');
+      });
+    }
+
+    const diSwitchToMoney = document.getElementById('di-switch-to-money');
+    if (diSwitchToMoney) {
+      diSwitchToMoney.addEventListener('click', function() {
+        window.__swapIconAnimTarget = 'donate-money';
+        closeDiSheet();
+        showPage('donate-money');
+      });
+    }
+
+    updateDiUI();
+  })();
+
   // ── Settings Page ──
   (function initSettingsPage() {
     document.querySelectorAll('.page-settings [data-toggle]').forEach(toggle => {
@@ -7665,7 +9717,8 @@
       '.settings-back-btn, .settings-row, .settings-toggle, .settings-appearance-opt, ' +
       '.prof-back, .prof-edit, .prof-trophy-card, .prof-forum-post, .prof-settings-link, ' +
       '.btn, .icon-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-back-btn, .vol-toggle-opt, .vol-cta-btn, .event-detail-back, .event-detail-share, ' +
-      '.forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back, .top-nav-activities, .activities-back-btn, .activities-filter-btn';
+      '.forum-filter-btn, .bpost, .forum-new-post-btn, .forum-sticky, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-line, .forum-back, .top-nav-activities, .activities-back-btn, .activities-filter-btn, ' +
+      '.dm-cta-btn, .dc-make-changes-btn, .dm-switch-to-items, .dm-toggle-switch, .dm-copy-btn, .di-item-btn, .di-switch-to-money, .di-load-more-btn, .di-fab, .di-sheet-close, .di-bs-consent-box';
     function clearTouchActive() {
       document.querySelectorAll('.touch-active').forEach(function(el) { el.classList.remove('touch-active'); });
     }
@@ -7675,319 +9728,6 @@
     }, { passive: true });
     document.addEventListener('touchend', clearTouchActive, { passive: true });
     document.addEventListener('touchcancel', clearTouchActive, { passive: true });
-  })();
-
-  /* ─────────────────────────────────────────────────────────
-     Streak Onboarding Animation
-     Runs only on first app open (sessionStorage gate)
-  ───────────────────────────────────────────────────────── */
-  (function initStreakOnboarding() {
-    const wrapper = document.getElementById('dd-onboarding');
-    if (!wrapper) return;
-
-    // ── sessionStorage gate ──
-    if (sessionStorage.getItem('dd_onboarded')) {
-      wrapper.style.display = 'none';
-      return;
-    }
-    sessionStorage.setItem('dd_onboarded', '1');
-
-    const appContainer = document.querySelector('.app-container');
-
-    // ── Helpers (original, unchanged) ──
-    const $ = id => document.getElementById(id);
-    const delay = ms => new Promise(r => setTimeout(r, ms));
-
-    function easeOutBack(t) {
-      const c1 = 1.70158, c3 = c1 + 1;
-      return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
-    }
-    function lerp(a, b, t) { return a + (b - a) * t; }
-
-    function animate({ duration, onUpdate, easing = t => t, onComplete }) {
-      const start = performance.now();
-      function frame(now) {
-        const raw = Math.min((now - start) / duration, 1);
-        const t = easing(raw);
-        onUpdate(t, raw);
-        if (raw < 1) requestAnimationFrame(frame);
-        else onComplete && onComplete();
-      }
-      requestAnimationFrame(frame);
-    }
-
-    function cubicBezier(p1x, p1y, p2x, p2y) {
-      return function(t) {
-        let x = t, i = 0;
-        for (; i < 8; i++) {
-          const cx = 3*p1x, bx = 3*(p2x-p1x)-cx, ax = 1-cx-bx;
-          const xCur = ((ax*x+bx)*x+cx)*x;
-          const dxCur = (3*ax*x+2*bx)*x+cx;
-          if (Math.abs(xCur-t) < 1e-6) break;
-          x -= (xCur-t)/dxCur;
-        }
-        const cy = 3*p1y, by = 3*(p2y-p1y)-cy, ay = 1-cy-by;
-        return ((ay*x+by)*x+cy)*x;
-      };
-    }
-
-    const easeOutExpo   = cubicBezier(0.16, 1, 0.3, 1);
-    const easeOutSpring = cubicBezier(0.34, 1.56, 0.64, 1);
-    const easeInExpo    = cubicBezier(0.7, 0, 0.84, 0);
-    const easeInOutSine = cubicBezier(0.37, 0, 0.63, 1);
-
-    // ── Particle System (original, adapted for scoped canvas) ──
-    const canvas = $('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-
-    function resizeCanvas() {
-      canvas.width  = appContainer.offsetWidth;
-      canvas.height = appContainer.offsetHeight;
-    }
-    resizeCanvas();
-
-    function spawnParticles(x, y, count = 28) {
-      for (let i = 0; i < count; i++) {
-        const angle = (Math.PI * 2 * i / count) + (Math.random() - 0.5) * 0.4;
-        const speed = 2.5 + Math.random() * 4;
-        const colors = ['#FF7534','#FF5500','#FF9A3C','#FFB347','#FF3D00','#FFCC00'];
-        particles.push({
-          x, y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 1.5,
-          life: 1,
-          decay: 0.022 + Math.random() * 0.018,
-          radius: 2.5 + Math.random() * 3.5,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          gravity: 0.12
-        });
-      }
-    }
-
-    let rafRunning = false;
-    function runParticleLoop() {
-      if (rafRunning) return;
-      rafRunning = true;
-      function loop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles = particles.filter(p => p.life > 0);
-        for (const p of particles) {
-          p.x  += p.vx;
-          p.y  += p.vy;
-          p.vy += p.gravity;
-          p.vx *= 0.97;
-          p.life -= p.decay;
-          ctx.globalAlpha = Math.max(0, p.life);
-          ctx.fillStyle = p.color;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, Math.max(0, p.radius * p.life), 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-        if (particles.length > 0) requestAnimationFrame(loop);
-        else rafRunning = false;
-      }
-      requestAnimationFrame(loop);
-    }
-
-    // ── Slot ignition helper (original) ──
-    function igniteSlot(slotEl) {
-      const svg = slotEl.querySelector('svg');
-      if (!svg) return;
-      slotEl.classList.add('lit');
-      animate({
-        duration: 280,
-        easing: easeOutSpring,
-        onUpdate(t) {
-          svg.style.opacity = t;
-          svg.style.transform = `scale(${lerp(0.2, 1, t)})`;
-        }
-      });
-    }
-
-    // ── Main sequence (original, with window.inner* → appContainer offsets) ──
-    async function runSequence() {
-      const hero      = $('hero-fire');
-      const timeline  = $('timeline');
-      const slot7     = $('slot-7');
-      const slot7fire = $('slot7-fire');
-      const shine     = $('timeline-shine');
-      const modal     = $('modal');
-      const backdrop  = $('backdrop');
-
-      // Phase 1: Backdrop
-      backdrop.classList.add('visible');
-      await delay(120);
-
-      // Phase 2: Hero fire enters
-      hero.style.transition = 'none';
-      animate({
-        duration: 500,
-        easing: easeOutSpring,
-        onUpdate(t) {
-          const scale = lerp(0.5, 1, t);
-          hero.style.opacity = Math.min(t * 2, 1);
-          hero.style.transform = `translate(-50%, -50%) scale(${scale})`;
-          const glow = lerp(0, 22, t);
-          hero.style.filter = `drop-shadow(0 0 ${glow}px rgba(255,100,20,0.75)) drop-shadow(0 0 ${glow*2}px rgba(255,60,0,0.4))`;
-        },
-        onComplete() {
-          hero.classList.add('flickering', 'glowing');
-        }
-      });
-
-      await delay(550);
-
-      // Phase 3: Timeline slides up
-      timeline.classList.add('visible');
-      const slots = [1,2,3,4,5,6].map(i => $(`slot-${i}`));
-      for (let i = 0; i < slots.length; i++) {
-        await delay(i === 0 ? 120 : 55);
-        igniteSlot(slots[i]);
-      }
-
-      await delay(220);
-
-      // Phase 4: Tension — day 7 dot pulses
-      const pulseDot = () => new Promise(res => {
-        animate({
-          duration: 300,
-          easing: easeInOutSine,
-          onUpdate(t) {
-            const s = 1 + Math.sin(t * Math.PI) * 0.25;
-            slot7.style.transform = `scale(${s})`;
-          },
-          onComplete: res
-        });
-      });
-      await pulseDot();
-      await pulseDot();
-
-      // Phase 5A: Measure positions for hero → slot 7 travel
-      hero.classList.remove('flickering', 'glowing');
-
-      // Use appContainer dimensions instead of window.inner*
-      const heroX = appContainer.offsetWidth  * 0.5;
-      const heroY = appContainer.offsetHeight * 0.5;
-
-      const slot7Rect = slot7.getBoundingClientRect();
-      const contRect  = appContainer.getBoundingClientRect();
-      const targetX = slot7Rect.left + slot7Rect.width  / 2 - contRect.left;
-      const targetY = slot7Rect.top  + slot7Rect.height / 2 - contRect.top;
-
-      const dx = targetX - heroX;
-      const dy = targetY - heroY;
-
-      animate({
-        duration: 480,
-        easing: cubicBezier(0.4, 0, 0.2, 1),
-        onUpdate(t) {
-          const ex = cubicBezier(0.16, 1, 0.3, 1)(t);
-          const x  = lerp(0, dx, ex);
-          const y  = lerp(0, dy, ex);
-          const sc = lerp(1, 0.32, ex);
-          const opacity = t > 0.9 ? lerp(1, 0, (t - 0.9) / 0.1) : 1;
-          const glow = lerp(22, 0, ex);
-          hero.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${sc})`;
-          hero.style.opacity = opacity;
-          hero.style.filter = `drop-shadow(0 0 ${glow}px rgba(255,100,20,0.75))`;
-        },
-        async onComplete() {
-          // Phase 5B: Landing — slot 7 ignites
-          hero.style.opacity = '0';
-
-          slot7.classList.add('hidden-dot');
-          slot7.classList.remove('dot');
-          slot7.classList.add('lit');
-
-          // Position slot7-fire over slot-7 (coords relative to app-container)
-          slot7fire.style.left      = targetX + 'px';
-          slot7fire.style.top       = targetY + 'px';
-          slot7fire.style.width     = '28px';
-          slot7fire.style.height    = '28px';
-          slot7fire.style.marginLeft = '-14px';
-          slot7fire.style.marginTop  = '-14px';
-          slot7fire.style.opacity   = '0';
-          slot7fire.style.transform = 'scale(0.1)';
-
-          spawnParticles(targetX, targetY, 32);
-          runParticleLoop();
-
-          setTimeout(() => {
-            timeline.style.transition = 'filter 150ms ease';
-            timeline.style.filter = 'drop-shadow(0 0 20px rgba(255,120,20,0.7))';
-            setTimeout(() => {
-              timeline.style.filter = 'drop-shadow(0 0 8px rgba(255,100,20,0.3))';
-            }, 300);
-          }, 60);
-
-          setTimeout(() => {
-            shine.classList.add('sweeping');
-            setTimeout(() => { shine.style.opacity = '0'; }, 480);
-          }, 100);
-
-          await new Promise(resolve => {
-            animate({
-              duration: 340,
-              easing: easeOutSpring,
-              onUpdate(t) {
-                slot7fire.style.opacity = String(t);
-                slot7fire.style.transform = `scale(${lerp(0.1, 1.08, t)})`;
-                const glow = lerp(0, 18, t);
-                slot7.style.filter = `drop-shadow(0 0 ${glow}px rgba(255,100,20,0.9))`;
-              },
-              onComplete: resolve
-            });
-          });
-
-          await new Promise(resolve => {
-            animate({
-              duration: 140,
-              easing: easeInOutSine,
-              onUpdate(t) {
-                slot7fire.style.transform = `scale(${lerp(1.08, 1, t)})`;
-              },
-              onComplete: resolve
-            });
-          });
-
-          await delay(320);
-
-          // Phase 6: Fade stage, hide slot7-fire, show modal
-          const stage = document.getElementById('stage');
-          stage.style.transition = 'opacity 300ms cubic-bezier(0.4,0,0.2,1)';
-          stage.style.opacity = '0';
-          slot7fire.style.opacity = '0';
-          slot7fire.style.pointerEvents = 'none';
-          await delay(320);
-          modal.classList.add('visible');
-        }
-      });
-    }
-
-    // ── CTA exit ──
-    document.getElementById('cta-btn').addEventListener('click', async () => {
-      const modal    = $('modal');
-      const backdrop = $('backdrop');
-      const stage    = document.getElementById('stage');
-
-      modal.style.transition = 'transform 380ms cubic-bezier(0.4,0,1,1), opacity 300ms ease';
-      modal.style.transform  = 'translateY(16px) scale(0.95)';
-      modal.style.opacity    = '0';
-
-      setTimeout(() => {
-        backdrop.style.transition = 'opacity 350ms ease';
-        backdrop.classList.remove('visible');
-      }, 150);
-
-      setTimeout(() => {
-        document.getElementById('dd-onboarding').style.display = 'none';
-      }, 600);
-    });
-
-    // ── Boot ──
-    setTimeout(runSequence, 300);
   })();
 </script>
 
