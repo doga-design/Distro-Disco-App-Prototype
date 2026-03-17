@@ -88,6 +88,7 @@
     --detail-illustration-width: 340px;
     --detail-illustration-height: 220px;
     --detail-illustration-opacity: 0.14;
+    --shell-scale: 1;
   }
 
   * {
@@ -128,6 +129,9 @@
     padding: 16px 0;
     color: var(--text-main);
   }
+  body.shell-scaled {
+    align-items: flex-start;
+  }
 
   /* ── iPhone Frame ── */
   .phone-frame {
@@ -137,6 +141,13 @@
     padding: 12px;
     box-shadow: rgba(0, 0, 0, 0.5) 0px 22px 70px 4px;
     flex-shrink: 0;
+  }
+  @media (pointer: fine) and (min-width: 501px) {
+    .phone-frame {
+      transform: scale(var(--shell-scale, 1));
+      transform-origin: center top;
+      will-change: transform;
+    }
   }
 
   /* Side hardware buttons */
@@ -4652,8 +4663,14 @@
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
     padding: 16px 0 20px;
     margin-bottom: 12px;
-    min-width: 300px;
+    min-width: min(300px, calc(100vw - 64px));
+    width: min(340px, calc(100vw - 64px));
     max-width: 340px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     opacity: 0;
     transform: scaleY(0);
     transform-origin: bottom center;
@@ -4765,6 +4782,16 @@
     transform: translate3d(0, -2px, 0) scale(1.06);
     opacity: 1;
     filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.45));
+  }
+  @media (pointer: fine) and (max-height: 900px) {
+    .corner-logo-wrap { right: 20px; bottom: 14px; }
+    .corner-logo { width: 146px; }
+    .corner-logo-bubble { max-height: calc(100vh - 122px); }
+  }
+  @media (pointer: fine) and (max-height: 780px) {
+    .corner-logo-wrap { right: 14px; bottom: 10px; }
+    .corner-logo { width: 132px; }
+    .corner-logo-bubble { max-height: calc(100vh - 98px); }
   }
 
   /* ── Mobile: strip iPhone frame, fill real screen ── */
@@ -7728,6 +7755,38 @@
   document.addEventListener('dragstart', (e) => {
     e.preventDefault();
   });
+
+  // Keep the fixed iPhone shell fully visible on shorter laptop viewports.
+  (function initShellViewportFit() {
+    var FRAME_W = 414; // 390 app + 12px frame padding on each side
+    var FRAME_H = 868; // 844 app + 12px frame padding on each side
+    var V_MARGIN = 32; // body vertical padding budget
+    var H_MARGIN = 32; // safe horizontal breathing room
+    var root = document.documentElement;
+    var bodyEl = document.body;
+
+    function updateShellScale() {
+      var isDesktopLike = window.matchMedia('(pointer: fine)').matches && window.innerWidth > 500;
+      if (!isDesktopLike) {
+        root.style.setProperty('--shell-scale', '1');
+        bodyEl.classList.remove('shell-scaled');
+        return;
+      }
+
+      var scaleByHeight = (window.innerHeight - V_MARGIN) / FRAME_H;
+      var scaleByWidth = (window.innerWidth - H_MARGIN) / FRAME_W;
+      var scale = Math.min(1, scaleByHeight, scaleByWidth);
+      if (!Number.isFinite(scale)) scale = 1;
+      scale = Math.max(0.72, scale);
+
+      root.style.setProperty('--shell-scale', String(scale));
+      bodyEl.classList.toggle('shell-scaled', scale < 0.999);
+    }
+
+    window.addEventListener('resize', updateShellScale, { passive: true });
+    window.addEventListener('orientationchange', updateShellScale, { passive: true });
+    updateShellScale();
+  })();
 
   // Meet the team: clicking a row opens member website (desktop)
   (function initMeetTheTeamLinks() {
