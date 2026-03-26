@@ -1663,44 +1663,29 @@
       <div class="vol-section-eyebrow">Preferred contact method</div>
         <div class="vol-contact-row" id="vol-contact-row">
           <div class="vol-contact-opt active" data-vol-contact="phone">
-            <div class="vol-contact-radio">
+            <div class="vol-contact-check">
               <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <div class="vol-contact-icon-label">
-              <div class="vol-contact-icon-ph">
-                <img src="img/icons/icon-chat-outline.svg" alt="Contact icon">
-              </div>
-              <span class="vol-contact-label">Phone</span>
-            </div>
+            <span class="vol-contact-label">Phone</span>
           </div>
           <div class="vol-contact-opt" data-vol-contact="email">
-            <div class="vol-contact-radio">
+            <div class="vol-contact-check">
               <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <div class="vol-contact-icon-label">
-              <div class="vol-contact-icon-ph">
-                <img src="img/icons/icon-chat-outline.svg" alt="Contact icon">
-              </div>
-              <span class="vol-contact-label">Email</span>
-            </div>
+            <span class="vol-contact-label">Email</span>
           </div>
           <div class="vol-contact-opt" data-vol-contact="push">
-            <div class="vol-contact-radio">
+            <div class="vol-contact-check">
               <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <div class="vol-contact-icon-label">
-              <div class="vol-contact-icon-ph">
-                <img src="img/icons/icon-chat-outline.svg" alt="Contact icon">
-              </div>
-              <span class="vol-contact-label">Push notifications</span>
-            </div>
+            <span class="vol-contact-label">Push notifications</span>
           </div>
         </div>
       <div class="vol-contact-input-wrap visible" id="vol-input-phone">
-        <input class="vol-contact-input" type="tel" placeholder="Phone number">
+        <input class="vol-contact-input" type="tel" placeholder="Phone number" value="(604) 721-4839" data-mock-prefill="true">
       </div>
       <div class="vol-contact-input-wrap" id="vol-input-email">
-        <input class="vol-contact-input" type="email" placeholder="Email address">
+        <input class="vol-contact-input" type="email" placeholder="Email address" value="johndoe@gmail.com" data-mock-prefill="true">
       </div>
       <div class="vol-contact-input-wrap" id="vol-input-push">
         <input class="vol-contact-input" type="text" placeholder="Optional (e.g. quiet hours)">
@@ -2589,7 +2574,7 @@
   </nav>
 
   <button type="button" class="btn btn-secondary back-to-top" id="back-to-top-btn" aria-label="Back to top" aria-hidden="true" tabindex="-1">
-    <span class="btn__label">Back to top</span></button>
+    <span class="btn__label">Back to top &uarr;</span></button>
 
   <!-- Avatar picker bottom sheet -->
   <div class="avatar-sheet-backdrop" id="avatar-sheet-backdrop"></div>

@@ -277,8 +277,16 @@
   .day-cell.muted {
     opacity: 0.58;
   }
+  .day-cell.muted.is-selected {
+    opacity: 1;
+  }
   .day-cell.muted .day-num {
     opacity: 1;
+  }
+  .day-cell.muted.is-selected .day-num {
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 120ms ease, transform 180ms ease;
   }
   .day-cell.today {
     border: 2px solid var(--navy);

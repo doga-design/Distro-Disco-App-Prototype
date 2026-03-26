@@ -2406,7 +2406,7 @@
     function showVolContactInput(key) {
       ['phone', 'email', 'push'].forEach(k => {
         const el = document.getElementById('vol-input-' + k);
-        if (el) el.classList.toggle('visible', k === key);
+        if (el) el.classList.toggle('visible', key !== 'push' && k === key);
       });
     }
 
@@ -2416,6 +2416,15 @@
         opt.classList.add('active');
         showVolContactInput(opt.dataset.volContact);
       });
+    });
+    document.querySelectorAll('.page-volunteer .vol-contact-input[data-mock-prefill="true"]').forEach(function(input) {
+      function resetMockValueOnTap() {
+        if (input.dataset.mockPrefill !== 'true') return;
+        input.value = '';
+        input.dataset.mockPrefill = 'false';
+      }
+      input.addEventListener('focus', resetMockValueOnTap);
+      input.addEventListener('pointerdown', resetMockValueOnTap);
     });
 
     // Consent + CTA
