@@ -330,6 +330,38 @@
     margin-bottom: 16px;
   }
 
+  /* iOS Safari: prevent auto-zoom/reflow and keep native date/time controls stable */
+  @supports (-webkit-touch-callout: none) {
+    .cal-add-input,
+    .cal-add-textarea {
+      font-size: 16px;
+    }
+    .cal-add-input[type="date"],
+    .cal-add-input[type="time"] {
+      min-height: 44px;
+      -webkit-appearance: auto;
+      appearance: auto;
+      display: block;
+      width: 100%;
+      line-height: normal;
+    }
+    .cal-add-input[type="date"]::-webkit-date-and-time-value,
+    .cal-add-input[type="time"]::-webkit-date-and-time-value {
+      text-align: left;
+    }
+    .cal-add-input[type="date"]::-webkit-calendar-picker-indicator,
+    .cal-add-input[type="time"]::-webkit-calendar-picker-indicator {
+      opacity: 0.92;
+    }
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .cal-add-field-row {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+
   @media (max-width: 430px) {
     .cal-add-modal-root {
       padding: 12px;
