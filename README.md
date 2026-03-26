@@ -9,7 +9,7 @@ A single-page prototype of the Distro Disco app, rendered inside a realistic iPh
 - **HTML/CSS/Vanilla JS** – no build tools required
 - **Local fonts**:
   - `fonts/GayaTrial/GayaTrial-Regular.otf` / `GayaTrial-Italic.otf` (headlines)
-  - `fonts/Geist/...` (body, UI text)
+  - `fonts/Public Sans/...` (body, UI text)
 
 ---
 
@@ -27,17 +27,17 @@ A single-page prototype of the Distro Disco app, rendered inside a realistic iPh
      /GayaTrial
        GayaTrial-Regular.otf
        GayaTrial-Italic.otf
-     /Geist
-       Geist-VariableFont_wght.ttf
+     /Public Sans
+       Public Sans-VariableFont_wght.ttf
        /static
-         Geist-Thin.ttf
-         Geist-ExtraLight.ttf
-         Geist-Light.ttf
-         Geist-Regular.ttf
-         Geist-Medium.ttf
-         Geist-SemiBold.ttf
-         Geist-Bold.ttf
-         Geist-Black.ttf
+         Public Sans-Thin.ttf
+         Public Sans-ExtraLight.ttf
+         Public Sans-Light.ttf
+         Public Sans-Regular.ttf
+         Public Sans-Medium.ttf
+         Public Sans-SemiBold.ttf
+         Public Sans-Bold.ttf
+         Public Sans-Black.ttf
    ```
 
 3. **Run locally** (any static server works). For example with Python:
@@ -65,7 +65,7 @@ A single-page prototype of the Distro Disco app, rendered inside a realistic iPh
 
 - **Typography**
   - **Gaya** for large headings (`h1–h4`)
-  - **Geist** for body, meta text, buttons, tabs, and nav labels
+  - **Public Sans** for body, meta text, buttons, tabs, and nav labels
 
 - **Interaction & motion**
   - `screen-content` is the only scrollable region; outer page is locked to `100vw × 100vh`
@@ -86,7 +86,7 @@ A single-page prototype of the Distro Disco app, rendered inside a realistic iPh
 
 - `index.html` – full UI, inline CSS, and JS
 - `img/` – icons and navbar imagery
-- `fonts/` – local Gaya and Geist font files (see structure above)
+- `fonts/` – local Gaya and Public Sans font files (see structure above)
 
 ---
 

@@ -1,0 +1,170 @@
+/* ── Volunteer confirm page (mirrors donate confirm shell + dc-anim) ── */
+  .page-volunteer-confirm {
+    position: relative;
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    background: var(--bg-color);
+    padding-bottom: 24px !important;
+    z-index: 300;
+  }
+  .page-volunteer-confirm::-webkit-scrollbar {
+    display: none;
+  }
+  .page-volunteer-confirm .dc-anim {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .page-volunteer-confirm.is-content-visible .dc-anim {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 380ms ease, transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--dc-delay, 0ms);
+  }
+
+  .page-volunteer-confirm .dc-hero {
+    text-align: center;
+    padding: 10px 20px 0;
+  }
+  .page-volunteer-confirm .dc-hero-img-wrap {
+    width: 100%;
+    padding: 0 24px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+  }
+  .page-volunteer-confirm .dc-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+  .page-volunteer-confirm .dc-thank-you {
+    margin: 0;
+    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.2;
+    color: var(--navy);
+  }
+  .page-volunteer-confirm .dc-subline {
+    margin: 10px auto 20px;
+    max-width: 280px;
+    text-align: center;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+
+  .page-volunteer-confirm .vc-event-float {
+    animation: vc-event-float 4.5s ease-in-out infinite;
+  }
+  @keyframes vc-event-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .page-volunteer-confirm .vc-event-float {
+      animation: none;
+    }
+  }
+
+  .page-volunteer-confirm .event-card--vc-static {
+    pointer-events: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 36px;
+  }
+  .page-volunteer-confirm .event-card--vc-static .card-top {
+    padding: 0;
+    justify-content: flex-start;
+  }
+  .page-volunteer-confirm .event-card--vc-static h3 {
+    padding: 0;
+    margin: 8px 0 0;
+  }
+  .page-volunteer-confirm .event-card--vc-static .event-meta {
+    margin: 10px 0 16px;
+  }
+  .page-volunteer-confirm .vc-next-divider {
+    height: 1px;
+    margin: 0;
+    background: var(--border-color);
+  }
+  .page-volunteer-confirm .vc-next-block {
+    padding: 14px 0 0;
+    background: transparent;
+  }
+  .page-volunteer-confirm .vc-next-title {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .page-volunteer-confirm .vc-next-copy {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .page-volunteer-confirm .vc-details-section {
+    padding-top: 8px;
+  }
+  .page-volunteer-confirm .vc-details-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    text-align: center;
+  }
+  .page-volunteer-confirm .vc-detail-value {
+    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--navy);
+    letter-spacing: -0.2px;
+    line-height: 1.2;
+  }
+  .page-volunteer-confirm #vc-role,
+  .page-volunteer-confirm #vc-shift,
+  .page-volunteer-confirm #vc-date {
+    display: inline;
+    padding: 0.12em 0.32em 0.18em;
+    margin: 0 -0.06em;
+    background: linear-gradient(
+      100deg,
+      rgba(255, 252, 190, 0.72) 0%,
+      #F5FFAB 14%,
+      #F5FFAB 86%,
+      rgba(255, 248, 165, 0.78) 100%
+    );
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    border-radius: 0.1em 0.18em 0.14em 0.12em;
+    box-shadow: inset 0 -0.06em 0 rgba(230, 220, 120, 0.35);
+  }
+
+  .page-volunteer-confirm .dc-make-changes-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-bottom: 4px;
+  }
+  .page-volunteer-confirm .dc-confirm-btn,
+  .page-volunteer-confirm .dc-make-changes-btn {
+    font-size: 15px;
+    letter-spacing: -0.1px;
+  }
+  .page-volunteer-confirm .dcm-footer-note {
+    margin: 0;
+    padding: 8px 24px 28px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(107, 101, 96, 0.7);
+  }

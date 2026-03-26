@@ -1,0 +1,96 @@
+/* ── Settings Page ── */
+  .page-settings .settings-page-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 18px 20px 20px;
+  }
+  .page-settings .settings-page-title { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
+
+  .page-settings .settings-section-label {
+    font-size: 10px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.6px;
+    padding: 0 20px; margin-bottom: 8px;
+  }
+  .page-settings .settings-group {
+    margin: 0 20px 20px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+  }
+  .page-settings .settings-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+    /* cursor: inherit — do not set cursor: default here: it overrides body’s cursor:none on desktop */
+    min-height: 52px;
+  }
+  .page-settings .settings-row:last-child { border-bottom: none; }
+  /* Row is a layout shell; only .settings-row--link rows are navigable taps */
+  .page-settings .settings-row--link {
+    transition: background 120ms;
+  }
+  .page-settings .settings-row--link:active,
+  .page-settings .settings-row--link.touch-active { background: var(--input-bg); }
+  .page-settings .settings-row.no-tap:active,
+  .page-settings .settings-row.no-tap.touch-active { background: transparent; }
+  .page-settings .settings-row-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; background: var(--input-bg);
+  }
+  .page-settings .settings-row-icon svg { width: 16px; height: 16px; }
+  .page-settings .settings-row-icon.accent { background: rgba(35,33,74,0.08); color: var(--navy); }
+  .page-settings .settings-row-icon.orange { background: #FFF0EB; color: var(--orange); }
+  .page-settings .settings-row-icon.red { background: #FFEBEB; color: #DC2626; }
+  .page-settings .settings-row-text { flex: 1; }
+  .page-settings .settings-row-label { font-size: 14px; font-weight: 500; color: var(--navy); line-height: 1.2; }
+  .page-settings .settings-row-sublabel { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .page-settings .settings-row-label.destructive { color: #DC2626; }
+  .page-settings .settings-row-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .page-settings .settings-row-value { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  .page-settings .settings-chevron svg { width: 14px; height: 14px; stroke: #C5C3BC; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .page-settings .settings-toggle {
+    width: 40px; height: 24px; border-radius: 12px;
+    background: var(--border-color); position: relative;
+    flex-shrink: 0; transition: background 0.2s;
+    /* cursor from global desktop rules (cursor:none + #touch-cursor); avoid cursor:pointer here */
+  }
+  .page-settings .settings-toggle::after {
+    content: ''; width: 18px; height: 18px; border-radius: 50%;
+    background: white; position: absolute; top: 3px; left: 3px;
+    transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+  .page-settings .settings-toggle.on { background: var(--orange); }
+  .page-settings .settings-toggle.on::after { left: 19px; }
+
+  .page-settings .settings-appearance-opts { display: flex; gap: 6px; width: 100%; margin-top: 4px; }
+  .page-settings .settings-appearance-opt {
+    flex: 1; border-radius: var(--radius-sm);
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    transition: border-color 200ms;
+  }
+  .page-settings .settings-appearance-opt.active { border-color: var(--navy); }
+  .page-settings .settings-appearance-preview { height: 28px; }
+  .page-settings .settings-appearance-preview.light { background: #F8F7F4; }
+  .page-settings .settings-appearance-preview.dark { background: #1a1840; }
+  .page-settings .settings-appearance-preview.sys { background: linear-gradient(135deg,#F8F7F4 50%,#1a1840 50%); }
+  .page-settings .settings-appearance-name {
+    padding: 3px 0 4px; text-align: center;
+    font-size: 9px; font-weight: 700; color: var(--text-muted);
+    background: var(--input-bg); text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .page-settings .settings-appearance-opt.active .settings-appearance-name { color: var(--navy); background: rgba(35,33,74,0.06); }
+  .page-settings .settings-footer { padding: 8px 20px 16px; text-align: center; }
+  .page-settings .settings-version { font-size: 12px; color: #C0BDBA; font-weight: 500; }
+
+  /* Touch / coarse pointer: normal arrow is fine; link rows can show pointer affordance */
+  @media (pointer: coarse) {
+    .page-settings .settings-row {
+      cursor: auto;
+    }
+    .page-settings .settings-row--link {
+      cursor: pointer;
+    }
+  }

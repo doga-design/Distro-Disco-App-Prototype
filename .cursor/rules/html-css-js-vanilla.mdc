@@ -1,0 +1,108 @@
+---
+description: Core editing standards — vanilla HTML/CSS/JS; never overwrite; match existing style
+alwaysApply: true
+---
+
+# Cursor Rules — HTML / CSS / JS Projects
+
+## Core Editing Philosophy
+
+Never overwrite. Always edit. Every change must be consistent with the existing code's style, structure, and formatting. Read the surrounding code before touching anything.
+
+Never hide, always delete. When changing CSS, remove the original/unused rules and properties entirely — don't comment them out, set them to 0, none, hidden, or unset as a workaround. Dead code gets deleted, not buried.
+
+---
+
+## Before You Edit
+
+- Read the full file or the relevant section before making changes
+- Identify the existing naming conventions, indentation, spacing, and comment style
+- Match them exactly — do not introduce your own preferences
+- If something looks inconsistent in the original, leave it as-is unless the user explicitly asks to clean it up
+
+---
+
+## Editing Rules
+
+### General
+- Make the smallest change that achieves the goal
+- Never delete code unless the user explicitly says to remove it
+- Never reorganize, reorder, or refactor unless asked
+- Never rename variables, classes, IDs, or functions unless asked
+- If you add something new, it should look like it was written by the same person who wrote the rest of the file
+
+### HTML
+- Match the existing indentation (spaces vs tabs, 2 vs 4 — check the file)
+- Keep attribute order consistent with surrounding elements (e.g. `class` before `id`, or however it's already done)
+- Don't add or remove blank lines between elements unless the pattern is already established
+- Use lowercase tags and attributes if the file already does; match exactly if it doesn't
+- New elements go in the logical position — never appended randomly at the bottom
+
+### CSS
+- Add new rules in the section where they logically belong (e.g. layout with layout, typography with typography)
+- Match the existing property order within rules (alphabetical, shorthand-first, or positional — read the file)
+- Match comment style: `/* Section Header */` vs `/* section header */` vs no comments — copy what's there
+- Use the same unit style already in use (`px`, `rem`, `em`, `%`) — don't switch units unless asked
+- Variables go with the other variables (`--var-name` pattern must match existing naming)
+- Never touch a rule that doesn't need to change
+
+### JS
+- Match the existing declaration style (`const`, `let`, `var` — use what's already in the file)
+- Match function style: arrow functions vs `function` declarations — copy what's there
+- Match spacing inside functions, conditionals, and loops exactly
+- New functions go near related functions, not at the top or bottom by default
+- Event listeners follow the existing pattern (inline vs `.addEventListener` — don't mix)
+- Don't add `console.log` unless debugging was already in the file
+- Comments: match the existing style — inline `//`, block `/* */`, or none at all
+
+---
+
+## What You Must Never Do
+
+- Never rewrite a working block "to clean it up" unprompted
+- Never change a class name because you think a different one is clearer
+- Never switch between quote styles (`"` vs `'`) mid-file
+- Never add or remove semicolons to align with your preference
+- Never add frameworks, libraries, or external dependencies — this is vanilla HTML/CSS/JS only
+- Never introduce CSS resets, normalize sheets, or utility class systems unless already present
+- Never split a file into multiple files unless explicitly asked
+
+---
+
+## When Adding New Code
+
+New code must answer yes to all three:
+
+1. **Could the original author have written this?** (style, naming, structure)
+2. **Is it in the right place?** (not appended, not randomly inserted)
+3. **Does it do only what was asked?** (no bonus refactors, no unrequested improvements)
+
+---
+
+## Commenting
+
+- Only add comments if the file already has them
+- Match the tone and detail level exactly (terse vs descriptive)
+- Never add `// TODO` or `// FIXME` comments unprompted
+- Never remove existing comments
+
+---
+
+## Formatting
+
+- Indentation: match the file exactly
+- Blank lines: match the rhythm of the file — don't add or remove
+- Line length: don't introduce hard wrapping if the file doesn't use it
+- Trailing spaces: leave the file as-is
+
+---
+
+## Output Behavior
+
+- Show only the changed lines or block unless the user asks for the full file
+- If showing a full file, clearly mark what changed with a comment: `/* CHANGED */` or `// CHANGED`
+- Never silently restructure things while delivering the asked-for change
+
+---
+
+*Stack: HTML · CSS · JS (vanilla only)*
