@@ -72,6 +72,17 @@
     avatars.forEach(function(avatar, avatarIndex) {
       const bubble = avatar.querySelector('.corner-team-chat');
       if (!bubble) return;
+      const avatarImg = avatar.querySelector('.corner-team-avatar-img');
+      const baseSrc = avatarImg ? avatarImg.getAttribute('src') : null;
+      function getHoverSrc() {
+        if (!avatar.classList) return null;
+        if (avatar.classList.contains('corner-team-avatar--gracelle')) return 'img/dd-party-hover.png';
+        if (avatar.classList.contains('corner-team-avatar--jiwoo')) return 'img/dd-flowers-hover.png';
+        if (avatar.classList.contains('corner-team-avatar--doga')) return 'img/dd-cowboy-hover.png';
+        if (avatar.classList.contains('corner-team-avatar--caitlin')) return 'img/dd-bow-hover.png';
+        return null;
+      }
+      const hoverSrc = getHoverSrc();
       const preset = fxPresets[avatarIndex] || fxPresets[0];
       const fxRoot = document.createElement('div');
       fxRoot.className = 'corner-team-fx';
@@ -88,6 +99,7 @@
           cleanupTimer = null;
         }
         clearFxNow();
+        if (avatarImg && hoverSrc) avatarImg.setAttribute('src', hoverSrc);
         preset.forEach(function(item, i) {
           const wrap = document.createElement('span');
           wrap.className = 'corner-team-fx-icon';
@@ -112,6 +124,7 @@
           icon.classList.remove('is-visible');
           icon.classList.add('is-exiting');
         });
+        if (avatarImg && baseSrc) avatarImg.setAttribute('src', baseSrc);
         cleanupTimer = setTimeout(clearFxNow, 180);
       }
 

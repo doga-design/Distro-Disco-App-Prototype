@@ -217,6 +217,11 @@
   visibility: hidden;
   pointer-events: none;
 }
+
+  /* No button box-shadow inside event cards */
+  .page-events .event-card .btn {
+    box-shadow: var(--btn-shadow-none);
+  }
 .day-cell::before {
   content: '';
   position: absolute;
@@ -629,6 +634,11 @@
     border-radius: 16px;
     padding: 16px 18px;
     font-size: 13px;
+  }
+
+  /* No box-shadow on secondary CTA inside event-detail page */
+  .page-event-detail .event-detail-cta .btn.btn-secondary {
+    box-shadow: var(--btn-shadow-none);
   }
 
   .detail-theme-distro .event-detail-illustration img { filter: saturate(1.05) hue-rotate(-8deg); }

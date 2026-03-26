@@ -812,7 +812,7 @@
   .corner-team-chat {
     position: absolute;
     left: 50%;
-    bottom: 166px;
+    bottom: 200px;
     transform: translateX(-50%) translateY(10px);
     opacity: 0;
     pointer-events: none;
@@ -1131,12 +1131,12 @@
   @media (pointer: fine) and (max-height: 900px) {
     .corner-logo-wrap { right: 18px; bottom: -22px; }
     .corner-team-avatar { width: 112px; }
-    .corner-team-chat { bottom: 142px; }
+    .corner-team-chat { bottom: 136px; }
   }
   @media (pointer: fine) and (max-height: 780px) {
     .corner-logo-wrap { right: 14px; bottom: -20px; }
     .corner-team-avatar { width: 96px; }
-    .corner-team-chat { bottom: 124px; }
+    .corner-team-chat { bottom: 118px; }
   }
 
   /* ── Mobile: strip iPhone frame, fill real screen ── */

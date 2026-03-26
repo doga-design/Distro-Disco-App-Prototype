@@ -95,6 +95,11 @@
     color: var(--white);
     box-shadow: none;
   }
+
+  /* No button box-shadow inside donate-items item cards */
+  .page-donate-items .di-item-card .di-item-btn {
+    box-shadow: var(--btn-shadow-none);
+  }
   .di-item-note {
     display: inline-block;
     margin-top: 4px;

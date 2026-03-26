@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RGD Prototype - To Do List</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #f8fafc;
+        --surface-color: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --navy: #0f172a;
+        --orange: #f97316;
+        --border: #e2e8f0;
+        --radius: 12px;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Public Sans', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.5;
+        padding: 40px 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    header {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        margin-bottom: 16px;
+    }
+
+    /* Progress Bar */
+    .progress-wrapper {
+        background: var(--border);
+        height: 6px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 8px;
+    }
+
+    .progress-fill {
+        background: var(--navy);
+        height: 100%;
+        width: 0%;
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-text {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 600;
+    }
+
+    /* Categories & Tasks */
+    .category {
+        background: var(--surface-color);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        margin-bottom: 24px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    }
+
+    .category h2 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .task {
+        display: flex;
+        align-items: flex-start;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+        transition: opacity 0.3s ease;
+    }
+
+    .task:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    /* Custom Checkbox */
+    .task input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border);
+        border-radius: 6px;
+        margin-right: 16px;
+        margin-top: 2px;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+    }
+
+    .task input[type="checkbox"]:checked {
+        background-color: var(--navy);
+        border-color: var(--navy);
+    }
+
+    .task input[type="checkbox"]:checked::after {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: 2px;
+        width: 4px;
+        height: 9px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+
+    .task label {
+        cursor: pointer;
+        font-size: 15px;
+        color: var(--text-main);
+        transition: color 0.3s ease;
+    }
+
+    .task.completed label {
+        color: var(--text-muted);
+        text-decoration: line-through;
+        text-decoration-color: rgba(100, 116, 139, 0.45);
+        text-decoration-thickness: 1px;
+    }
+
+    .task.completed {
+        opacity: 0.82;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>PROTOTYPE TASK LIST</h1>
+        <div class="progress-wrapper">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">0% Completed</div>
+    </header>
+
+    <div id="todo-list">
+        </div>
+</div>
+
+<script>
+    const defaultUncheckedTasks = new Set([
+        "Swap all generic icons to custom SVGs",
+        "Update avatar colors + centre them"
+    ]);
+
+    const tasksData = {
+        "Global UI & Styling": [
+            "Confirm all app fonts are Public Sans",
+            "Swap all generic icons to custom SVGs",
+            "If a thing is NOT CLICKABLE ensure that the CURSOR doesn’t indicate that it’s 'clickable' by sizing-up & becoming orange",
+            "Add enough padding at the bottom of pages so we could read some things better",
+            "Swap the orange bg & navy check mark icon for orange bg & white checkmark icon, across the app",
+            "Change username to 'RGDfriend123'",
+            "Swap trophies for same achievements as homepage"
+        ],
+        "Buttons & Shadows": [
+            "ONLY use ONE SINGLE drop shadow style for ALL BUTTONS across the website",
+            "Make ALL 'stretch' btns the exact same UI design across the app. Make sure ALL BTNS get icons on right",
+            "Make all btn styles consistent; primary cta: navy fill + white text. Secondary cta: transparent bg fill + navy text & navy border",
+            "At the end of long pages, add a 'Back to top' CTA once users reach the end"
+        ],
+        "Navigation & Header": [
+            "Scale up the logo so it looks same size with nav icons next to it (also make sure if tapped it redirects home)",
+            "Make sure the top navbar 'hides' when scrolled down and 'appears' when scrolled up & make it sticky/fixed",
+            "Make icons have equal stroke sizes in home page top navbar"
+        ],
+        "Posts & Event Cards": [
+            "Add liking/commenting interface under posts",
+            "Update avatar colors + centre them",
+            "Event cards: 2 lines max for body copy, truncates (if 1 line, card should NOT shrink)",
+            "Event cards: Ensure uniform size and button placement across horizontal scrolls",
+            "Add the last 'end of cards' card ui component to book end the experience"
+        ],
+        "Donation Flow": [
+            "Make the default 'donation page' 'item donation' not 'money donation' (switch arrow/swap icon for toggle)",
+            "Replace donation queued page image with the 'heart hands' gif",
+            "Create a 'donation sent' page for money donation (like the item donation queued page)",
+            "Money Donation copy needs contextualizing: 'This amount could get our neighbours: [existing copy]'",
+            "Change 'your story' to 'your activity'",
+            "Change 'what ur donating rn' to 'Your Commitments' (include: monthly item donation, one-time item donation, one-time volunteer role)"
+        ],
+        "Volunteer Page": [
+            "Change outlined icon to coloured icon in volunteer page",
+            "Leaf shape card transition: leave orange bar in with navy bg, but round the bottom left corner (3/4 corners rounded)",
+            "Remove 'same as profile' radio button",
+            "Remove 'add new contact info' toggle, just keep preferred contact method form out by default",
+            "Replace 'other' with 'push notifications'",
+            "Make 'volunteer with us' banner lead to similar page as donation queue",
+            "Place the 3 list-style section in between 'open roles/roles' and the drawers",
+            "Center the post-it",
+            "Remove 'distort timeline' from volunteer timeline & pull that section upwards"
+        ],
+        "Notifications & Settings": [
+            "Swap bell emoji for bell icon",
+            "Change 'activities' to 'notifications'",
+            "Add a 'mark as read' to notifications/activities elements (resets header icon to outline, removes '3' badge)",
+            "Remove back arrow from notifications page",
+            "Remove back arrow from settings page"
+        ],
+        "Teams & Calendar": [
+            "Redesign 'teams' corner: replace bottom right DD logo with illustration, avatars side by side with hover chat bubble. Include DD logo/Instagram with 'not affiliated' disclaimer",
+            "Calendar view: When clicked, event card slides in underneath (only see one at a time)",
+            "Calendar day (when active) turns into a close button",
+            "When users click the add button either a form or a pop-up appears to submit DD events",
+            "Remove March view & only keep April month"
+        ]
+    };
+
+    const container = document.getElementById('todo-list');
+    let totalTasks = 0;
+
+    // Build the DOM
+    Object.keys(tasksData).forEach((category, catIndex) => {
+        const catDiv = document.createElement('div');
+        catDiv.className = 'category';
+        
+        const catTitle = document.createElement('h2');
+        catTitle.textContent = category;
+        catDiv.appendChild(catTitle);
+
+        tasksData[category].forEach((task, taskIndex) => {
+            totalTasks++;
+            const taskId = `task-${catIndex}-${taskIndex}`;
+            
+            const taskDiv = document.createElement('div');
+            taskDiv.className = 'task';
+            
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = taskId;
+            
+            if (!defaultUncheckedTasks.has(task)) {
+                checkbox.checked = true;
+                taskDiv.classList.add('completed');
+            }
+
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    taskDiv.classList.add('completed');
+                } else {
+                    taskDiv.classList.remove('completed');
+                }
+                updateProgress();
+            });
+
+            const label = document.createElement('label');
+            label.htmlFor = taskId;
+            label.textContent = task;
+
+            taskDiv.appendChild(checkbox);
+            taskDiv.appendChild(label);
+            catDiv.appendChild(taskDiv);
+        });
+
+        container.appendChild(catDiv);
+    });
+
+    function updateProgress() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+        const percentage = totalTasks === 0 ? 0 : Math.round((checked / totalTasks) * 100);
+        
+        document.getElementById('progress-fill').style.width = `${percentage}%`;
+        document.getElementById('progress-text').textContent = `${percentage}% Completed (${checked}/${totalTasks})`;
+    }
+
+    // Initial call
+    updateProgress();
+</script>
+
+</body>
+</html>

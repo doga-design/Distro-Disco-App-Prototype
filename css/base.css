@@ -280,6 +280,16 @@
     display: none;
   }
 
+  /* No button box-shadow inside home hot-item cards */
+  .page-home .hot-items .item-card .btn {
+    box-shadow: var(--btn-shadow-none);
+  }
+
+  /* No button box-shadow inside home event cards */
+  .page-home .section.events .event-card .btn {
+    box-shadow: var(--btn-shadow-none);
+  }
+
   /* Fixed control: scroll long .page content to top (shown via JS) */
   .back-to-top {
     position: absolute;
@@ -524,6 +534,10 @@
     overflow: hidden;
   }
 
+  .page-home .impact-grid {
+    margin-bottom: 8px;
+  }
+
   .stat-cell {
     display: flex;
     flex-direction: column;
@@ -554,6 +568,16 @@
     width: 52px;
     height: 52px;
     object-fit: contain;
+  }
+
+  .page-home .impact-grid .stat-cell-icon {
+    width: 76px;
+    height: 76px;
+  }
+
+  .page-profile .prof-achievements-section .impact-grid .stat-cell-icon {
+    width: 76px;
+    height: 76px;
   }
 
   .stat-cell-sub {
