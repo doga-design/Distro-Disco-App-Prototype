@@ -229,10 +229,7 @@
     .vol-consent-check,
     .settings-row--link,
     .settings-toggle,
-    .settings-appearance-opt,
     .page-settings .settings-toggle,
-    .page-settings .settings-appearance-opt,
-    .prof-edit,
     .prof-forum-post,
     .prof-settings-link,
     .page-activities .activities-item {
@@ -256,7 +253,7 @@
     border: 2px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 2px 8px rgba(10, 10, 10, 0.54);
     pointer-events: none;
-    z-index: 9999;
+    z-index: var(--z-touch-cursor);
     transition:
       width 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
       height 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -302,7 +299,7 @@
     height: 140px;
     background: linear-gradient(to top, rgba(35, 33, 74, 0.88) 0%, transparent 100%);
     pointer-events: none;
-    z-index: 99;
+    z-index: var(--z-nav-scrim);
   }
 
   /* Hide bottom nav + scrim when donate-items sheet is open (mobile) */
@@ -324,7 +321,7 @@
     width: calc(100% - 32px);
     max-width: 356px;
     height: 90px;
-    z-index: 100;
+    z-index: var(--z-bottom-nav);
   }
   .nav-bg-img {
     position: absolute;
@@ -773,12 +770,13 @@
   }
 
   /* Bottom-right team avatars + per-avatar chat bubble */
+  /* TEMP hidden — set display back to block to restore team corner */
   .corner-logo-wrap {
     position: fixed;
     right: 24px;
     bottom: -24px;
     z-index: 9000;
-    display: block;
+    display: none;
     pointer-events: auto;
   }
   .corner-team-avatars {
@@ -1165,9 +1163,10 @@
     }
 
     .app-container {
+      --app-screen-radius: 0;
       width: 100vw;
       height: 100dvh;
-      border-radius: 0;
+      border-radius: var(--app-screen-radius);
       overflow: hidden;
     }
 

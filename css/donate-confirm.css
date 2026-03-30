@@ -6,12 +6,9 @@
     overflow-x: hidden;
     scrollbar-width: none;
     background: var(--bg-color);
-  padding-bottom: 24px !important;
-    z-index: 300; /* above bottom nav (100) */
+    padding-bottom: var(--confirm-page-padding-bottom) !important;
+    z-index: 300; /* below tab bar (--z-bottom-nav) */
   }
-.page-donate-money-confirm {
-  padding-bottom: 24px !important;
-}
   .page-donate-confirm::-webkit-scrollbar { display: none; }
   .page-donate-confirm .dc-surface {
     background: var(--bg-color);

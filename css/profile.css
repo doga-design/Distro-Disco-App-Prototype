@@ -54,12 +54,10 @@
   }
   .page-profile .prof-chip img { width: 20px; height: 20px; object-fit: contain; }
   .page-profile .prof-edit {
-    width: 100%;
-    font-size: 13px;
-    letter-spacing: -0.1px;
-    background: rgba(255,255,255,0.7);
-    border-color: var(--border-color);
-    box-shadow: rgba(0,0,0,0.04) 0px 2px 4px;
+    pointer-events: none;
+    cursor: default;
+    user-select: none;
+    margin-top: 12px;
   }
 
   /* avatar picker bottom sheet */

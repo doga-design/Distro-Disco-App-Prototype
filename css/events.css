@@ -40,15 +40,52 @@
   .cal-scroll-wrap {
     padding: 16px 20px 0px;
   }
-
-  .cal-tent-wrap {
-    margin-top: 16px;
+  .page-events {
+    padding-bottom: 0;
   }
-  .cal-tent-wrap img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
+.page-events .events-toggle-pane-calendar,
+.page-events .events-toggle-pane-detail {
+  padding-bottom: var(--page-padding-bottom);
+}
+.page-events .events-toggle-pane-detail {
+  padding-top: 2px;
+}
+.page-events .events-detail-section {
+  padding: 0;
+  margin-bottom: 0;
+}
+.page-events .events-detail-section .tabs-container {
+  padding-bottom: 12px;
+  justify-content: center;
+}
+.page-events .events-detail-section .events-panel.active {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-x: visible;
+  padding: 4px 0 8px;
+}
+.page-events .events-detail-section .event-card {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  margin-bottom: 0;
+}
+.page-events .events-detail-view-calendar {
+  display: inline-flex;
+  align-self: center;
+  margin: 18px 0 8px 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
 
   /* Segment toggle — exact same design as vol-commit-toggle (One Time / Repeating) */
   .seg-wrap { margin-bottom: 16px; }
@@ -218,10 +255,6 @@
   pointer-events: none;
 }
 
-  /* No button box-shadow inside event cards */
-  .page-events .event-card .btn {
-    box-shadow: var(--btn-shadow-none);
-  }
 .day-cell::before {
   content: '';
   position: absolute;
@@ -402,7 +435,7 @@
   .event-detail-shell {
     position: relative;
     min-height: 100%;
-    padding: 18px 20px var(--page-padding-bottom);
+    padding: 18px 20px 0;
   }
   .event-detail-back {
     width: 36px;
@@ -629,16 +662,11 @@
   }
   .event-detail-cta {
     margin-top: 18px;
+    --btn-padding-block: 16px;
+    --btn-padding-inline: 18px;
   }
   .event-detail-cta .btn {
-    border-radius: 16px;
-    padding: 16px 18px;
     font-size: 13px;
-  }
-
-  /* No box-shadow on secondary CTA inside event-detail page */
-  .page-event-detail .event-detail-cta .btn.btn-secondary {
-    box-shadow: var(--btn-shadow-none);
   }
 
   .detail-theme-distro .event-detail-illustration img { filter: saturate(1.05) hue-rotate(-8deg); }

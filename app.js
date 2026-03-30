@@ -495,6 +495,9 @@
         }
       }
     }
+    if (name === 'events' && typeof window.__ddSetEventsPane === 'function') {
+      window.__ddSetEventsPane(false);
+    }
 
     if (prevPageName === 'home' && name !== 'home' && homeDonationCelebrationController) {
       homeDonationCelebrationController.onHomeHidden();
@@ -1008,6 +1011,7 @@
   };
 
   var lastEventDetailId = null;
+  var eventDetailReturnPage = 'home';
   var volunteerConfirmReturnPage = 'volunteer';
   var VOLUNTEER_CONFIRM_DEFAULTS = {
     eventTitle: 'Free Grocery Pickup',
@@ -1608,19 +1612,27 @@
     profSettingsLink.addEventListener('click', openSettingsPage);
   }
 
+  const profKeepContributingBtn = document.getElementById('prof-keep-contributing-btn');
+  if (profKeepContributingBtn) {
+    profKeepContributingBtn.addEventListener('click', () => openDonateMoneyPage());
+  }
+
   document.querySelectorAll('.event-card .btn[data-event-id]').forEach(btn => {
-    btn.addEventListener('click', () => openEventDetail(btn.dataset.eventId));
+    btn.addEventListener('click', function() {
+      eventDetailReturnPage = 'home';
+      openEventDetail(btn.dataset.eventId);
+    });
   });
   document.querySelectorAll('.event-end-cta').forEach(btn => {
     btn.addEventListener('click', () => showPage('donate-items'));
   });
 
   if (detailBack) {
-    detailBack.addEventListener('click', () => showPage('home'));
+    detailBack.addEventListener('click', () => showPage(eventDetailReturnPage || 'home'));
   }
   const detailBackBtn = document.getElementById('event-detail-back-btn');
   if (detailBackBtn) {
-    detailBackBtn.addEventListener('click', () => showPage('home'));
+    detailBackBtn.addEventListener('click', () => showPage(eventDetailReturnPage || 'home'));
   }
 
   const eventsBackBtn = document.getElementById('events-back-btn');
@@ -1805,6 +1817,7 @@
       if (detailBtn && calCard.contains(detailBtn)) {
         e.preventDefault();
         e.stopPropagation();
+        eventDetailReturnPage = 'events';
         openEventDetail(detailBtn.getAttribute('data-event-id'));
         return;
       }
@@ -1950,6 +1963,10 @@
   }
 
   const forumDetailCommentsByPost = {
+    'post-1': [
+      { author: 'GracelleM', time: '2h', body: 'Count me in for Saturday set-up. I can be there by 8:30 with tape and a couple folding tables. Text me when you lock headcount?', upvotes: 3 },
+      { author: 'RGDfriend123', time: '1h', body: 'Perfect. I\'ll text you once I have numbers.', upvotes: 2 }
+    ],
     'post-2': [
       { author: 'Sam_M', time: '2d', body: 'Honestly it was way less awkward than I pictured. Someone just said hi and gave me a simple job right away.', upvotes: 12 },
       { author: 'AlexK', time: '1d', body: 'Same, I almost bailed on my first shift. Really glad I didn\'t.', upvotes: 5 },
@@ -2107,9 +2124,6 @@
     var commentSeq = 0;
     var likeIconHtml = '<span class="forum-comment-like-icon like-icon" aria-hidden="true"><img class="forum-comment-like-img forum-comment-like-img--off" src="img/icons/icon-heart-outline-sm.svg" alt="" width="20" height="20" decoding="async"><img class="forum-comment-like-img forum-comment-like-img--on" src="img/icons/icon-heart.svg" alt="" width="20" height="20" decoding="async"></span>';
     function getForumCommentPayload(forPostId, mockIndex) {
-      if (forPostId === 'post-1' && mockIndex === 0) {
-        return { author: 'GracelleM', time: '2h', body: 'Count me in for Saturday set-up. I can be there by 8:30 with tape and a couple folding tables. Text me when you lock headcount?', upvotes: 3 };
-      }
       var byPost = forumDetailCommentsByPost[forPostId];
       if (byPost && byPost[mockIndex] !== undefined) return byPost[mockIndex];
       return forumDetailCommentsFallback[mockIndex % forumDetailCommentsFallback.length];
@@ -2123,7 +2137,9 @@
       var nodeClass = 'forum-comment-node' + (node.replies.length ? ' has-replies' : '');
       var bylineClass = 'forum-comment-byline' + (node.replies.length ? ' forum-comment-byline--thread' : '');
       var bylineAttrs = node.replies.length ? ' title="Collapse or expand replies"' : '';
-      var actionsHtml = '<div class="forum-comment-actions"><button type="button" class="forum-comment-like-btn' + likedClass + '" data-comment-like-key="' + commentKey + '" aria-pressed="' + (st.liked ? 'true' : 'false') + '" aria-label="' + (st.liked ? 'Unlike' : 'Like') + '">' + likeIconHtml + '<span class="forum-comment-like-count">' + st.count + '</span></button><button type="button" class="forum-comment-reply-btn"><span class="btn__label">Reply</span></button></div>';
+      var isOwnComment = c.author === 'RGDfriend123' || c.author === 'You';
+      var deleteHtml = isOwnComment ? '<button type="button" class="forum-comment-delete-btn" aria-label="Delete comment"><span class="btn__label">Delete</span></button>' : '';
+      var actionsHtml = '<div class="forum-comment-actions"><button type="button" class="forum-comment-like-btn' + likedClass + '" data-comment-like-key="' + commentKey + '" aria-pressed="' + (st.liked ? 'true' : 'false') + '" aria-label="' + (st.liked ? 'Unlike' : 'Like') + '">' + likeIconHtml + '<span class="forum-comment-like-count">' + st.count + '</span></button><button type="button" class="forum-comment-reply-btn"><span class="btn__label">Reply</span></button>' + deleteHtml + '</div>';
       return '<div class="' + nodeClass + '"><div class="forum-comment-content"><div class="forum-comment-avatar"></div><div class="forum-comment-main"><div class="' + bylineClass + '"' + bylineAttrs + '><span class="username">' + c.author + '</span><span class="dot">·</span><span class="timestamp">' + c.time + '</span></div><div class="forum-comment-body">' + c.body + '</div>' + actionsHtml + '</div></div>' + repliesHtml + '</div>';
     }
     tree.forEach(function(node) { container.insertAdjacentHTML('beforeend', renderComment(node, 0)); });
@@ -2182,6 +2198,37 @@
         try { input.setSelectionRange(input.value.length, input.value.length); } catch (err) {}
       }
     });
+
+    document.addEventListener('click', function forumCommentDeleteClick(e) {
+      var delBtn = e.target.closest && e.target.closest('.forum-comment-delete-btn');
+      if (!delBtn || !delBtn.closest('.page-forum-detail')) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var commentNode = delBtn.closest('.forum-comment-node');
+      if (!commentNode) return;
+      var composer = document.querySelector('.forum-detail-comment-composer');
+      if (composer && commentNode.contains(composer)) restoreForumDetailComposerToDefault();
+      commentNode.remove();
+      var container = document.getElementById('forum-detail-comments');
+      if (container) {
+        container.querySelectorAll('.forum-comment-node.has-replies').forEach(function(node) {
+          var rep = node.querySelector(':scope > .forum-comment-replies');
+          if (!rep || !rep.querySelector('.forum-comment-node')) {
+            node.classList.remove('has-replies');
+            var byline = node.querySelector('.forum-comment-byline--thread');
+            if (byline) {
+              byline.classList.remove('forum-comment-byline--thread');
+              byline.removeAttribute('title');
+            }
+            if (rep) rep.remove();
+          }
+        });
+      }
+      var emptyEl = document.getElementById('forum-detail-empty');
+      if (container && !container.querySelector('.forum-comment-node') && emptyEl) {
+        emptyEl.classList.add('is-visible');
+      }
+    }, true);
 
     const filterRow = document.getElementById('forum-filter-row');
     const forumBoard = document.getElementById('forum-board');
@@ -2308,7 +2355,7 @@
         postEl.setAttribute('data-reply-count', '0');
         postEl.setAttribute('data-cat', cat);
         postEl.setAttribute('style', 'transform:rotate(-0.2deg);');
-        postEl.innerHTML = '<div class="bpost-tack"></div><div class="bpost-byline"><span class="bpost-author bpost-author-own">RGDfriend123</span><div class="bpost-sep"></div><span class="bpost-time">Just now</span><span class="bpost-cat ' + catClass + '">' + catLabel + '</span></div><div class="bpost-title">' + esc(title) + '</div><div class="bpost-body">' + esc(body) + '</div><div class="bpost-rule"></div><div class="bpost-actions"><button type="button" class="bpost-like-btn" data-post-id="post-new" aria-pressed="false" aria-label="Like"><span class="bpost-like-icon like-icon" aria-hidden="true"><img class="bpost-like-img bpost-like-img--off" src="img/icons/icon-heart-outline-sm.svg" alt="" width="22" height="22" decoding="async"><img class="bpost-like-img bpost-like-img--on" src="img/icons/icon-heart.svg" alt="" width="22" height="22" decoding="async"></span><span class="bpost-like-count">0</span></button><div class="bpost-reply-stat"><span class="bpost-reply-num">0</span> replies</div><span class="bpost-reply-hint">Reply</span></div><div class="bpost-reply-area"><div class="bpost-reply-inner"><input class="bpost-reply-input" type="text" placeholder="Write a reply..."><button class="bpost-reply-send"><div class="send-icon-ph"></div></button></div></div>';
+        postEl.innerHTML = '<div class="bpost-tack"></div><div class="bpost-byline"><span class="bpost-author bpost-author-own">RGDfriend123</span><div class="bpost-sep"></div><span class="bpost-time">Just now</span><span class="bpost-cat ' + catClass + '">' + catLabel + '</span></div><div class="bpost-title">' + esc(title) + '</div><div class="bpost-body">' + esc(body) + '</div><div class="bpost-rule"></div><div class="bpost-actions"><button type="button" class="bpost-like-btn" data-post-id="post-new" aria-pressed="false" aria-label="Like"><span class="bpost-like-icon like-icon" aria-hidden="true"><img class="bpost-like-img bpost-like-img--off" src="img/icons/icon-heart-outline-sm.svg" alt="" width="22" height="22" decoding="async"><img class="bpost-like-img bpost-like-img--on" src="img/icons/icon-heart.svg" alt="" width="22" height="22" decoding="async"></span><span class="bpost-like-count">0</span></button><div class="bpost-reply-stat"><span class="bpost-reply-num">0</span> replies</div><span class="bpost-reply-hint">Reply</span></div><div class="bpost-reply-area"><div class="bpost-reply-inner"><input class="bpost-reply-input" type="text" placeholder="Write a reply..."><button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div></div>';
         forumBoard.insertBefore(postEl, forumBoard.firstChild);
         forumPostLikeState['post-new'] = { count: 0, liked: false };
         if (typeof forumPostDetails !== 'undefined') forumPostDetails['post-new'] = { title: title, body: body, author: 'RGDfriend123', time: 'Just now', category: catLabel };
@@ -2360,7 +2407,8 @@
         var localKey = (activePostId || 'post') + '_local_' + Date.now();
         getForumCommentLikeState(localKey, 0);
         var likeIconHtml = '<span class="forum-comment-like-icon like-icon" aria-hidden="true"><img class="forum-comment-like-img forum-comment-like-img--off" src="img/icons/icon-heart-outline-sm.svg" alt="" width="20" height="20" decoding="async"><img class="forum-comment-like-img forum-comment-like-img--on" src="img/icons/icon-heart.svg" alt="" width="20" height="20" decoding="async"></span>';
-        var actionsHtml = '<div class="forum-comment-actions"><button type="button" class="forum-comment-like-btn" data-comment-like-key="' + localKey + '" aria-pressed="false" aria-label="Like">' + likeIconHtml + '<span class="forum-comment-like-count">0</span></button><button type="button" class="forum-comment-reply-btn"><span class="btn__label">Reply</span></button></div>';
+        var deleteHtml = '<button type="button" class="forum-comment-delete-btn" aria-label="Delete comment"><span class="btn__label">Delete</span></button>';
+        var actionsHtml = '<div class="forum-comment-actions"><button type="button" class="forum-comment-like-btn" data-comment-like-key="' + localKey + '" aria-pressed="false" aria-label="Like">' + likeIconHtml + '<span class="forum-comment-like-count">0</span></button><button type="button" class="forum-comment-reply-btn"><span class="btn__label">Reply</span></button>' + deleteHtml + '</div>';
         var wrap = document.createElement('div');
         wrap.className = 'forum-comment-node forum-comment-node--local';
         wrap.innerHTML = '<div class="forum-comment-content"><div class="forum-comment-avatar"></div><div class="forum-comment-main"><div class="forum-comment-byline"><span class="username">You</span><span class="dot">·</span><span class="timestamp">Just now</span></div><div class="forum-comment-body"></div>' + actionsHtml + '</div></div>';
@@ -4450,13 +4498,6 @@
     document.querySelectorAll('.page-settings [data-toggle]').forEach(toggle => {
       toggle.addEventListener('click', () => toggle.classList.toggle('on'));
     });
-
-    document.querySelectorAll('.page-settings #appearance-opts .settings-appearance-opt').forEach(opt => {
-      opt.addEventListener('click', () => {
-        document.querySelectorAll('.page-settings #appearance-opts .settings-appearance-opt').forEach(o => o.classList.remove('active'));
-        opt.classList.add('active');
-      });
-    });
   })();
 
   // Segment toggle for Events page calendar (sliding pill like volunteer toggle)
@@ -4471,6 +4512,85 @@
       seg.classList.toggle('right', opts.indexOf(btn) === 1);
     });
   });
+
+  // Events page: Calendar <-> Events Detail pane toggle
+  (function initEventsPageSegmentToggle() {
+    var eventsPage = document.querySelector('.page-events');
+    if (!eventsPage) return;
+    var calendarBtn = eventsPage.querySelector('#events-toggle-calendar');
+    var detailBtn = eventsPage.querySelector('#events-toggle-detail');
+    var calendarPane = eventsPage.querySelector('.events-toggle-pane-calendar');
+    var detailPane = eventsPage.querySelector('.events-toggle-pane-detail');
+    if (!calendarBtn || !detailBtn || !calendarPane || !detailPane) return;
+
+    function setEventsPane(isDetail) {
+      var seg = calendarBtn.closest('.segment');
+      calendarPane.hidden = !!isDetail;
+      detailPane.hidden = !isDetail;
+      calendarBtn.classList.toggle('active', !isDetail);
+      detailBtn.classList.toggle('active', !!isDetail);
+      if (seg) seg.classList.toggle('right', !!isDetail);
+      calendarBtn.setAttribute('aria-current', isDetail ? 'false' : 'page');
+      detailBtn.setAttribute('aria-current', isDetail ? 'page' : 'false');
+    }
+    window.__ddSetEventsPane = setEventsPane;
+
+    function findCalendarCellForEvent(eventId) {
+      if (!eventId) return null;
+      var cells = Array.from(eventsPage.querySelectorAll('.cal-grid .day-cell[data-event-id="' + eventId + '"]'));
+      if (!cells.length) return null;
+      var preferred = cells.find(function(cell) {
+        return !cell.classList.contains('muted') && !cell.classList.contains('faded');
+      });
+      return preferred || cells[0];
+    }
+
+    function initEventsDetailCalendarLinks() {
+      detailPane.querySelectorAll('.event-card[data-event-id]').forEach(function(card) {
+        var eventId = card.getAttribute('data-event-id');
+        var dayCell = findCalendarCellForEvent(eventId);
+        if (!dayCell) return;
+        if (card.querySelector('.events-detail-view-calendar')) return;
+        var ctaBtn = card.querySelector('.btn[data-event-id]');
+        if (!ctaBtn) return;
+        var viewBtn = document.createElement('button');
+        viewBtn.type = 'button';
+        viewBtn.className = 'events-detail-view-calendar';
+        viewBtn.textContent = 'View on calendar';
+        viewBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var targetCell = findCalendarCellForEvent(eventId);
+          if (!targetCell) return;
+          setEventsPane(false);
+          requestAnimationFrame(function() {
+            targetCell.click();
+            var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            targetCell.scrollIntoView({
+              behavior: prefersReduced ? 'auto' : 'smooth',
+              block: 'center',
+              inline: 'nearest'
+            });
+            requestAnimationFrame(function() {
+              var ph = eventsPage.querySelector('.cal-day-placeholder.is-open');
+              if (ph) {
+                ph.scrollIntoView({
+                  behavior: prefersReduced ? 'auto' : 'smooth',
+                  block: 'nearest',
+                  inline: 'nearest'
+                });
+              }
+            });
+          });
+        });
+        ctaBtn.insertAdjacentElement('afterend', viewBtn);
+      });
+    }
+
+    calendarBtn.addEventListener('click', () => setEventsPane(false));
+    detailBtn.addEventListener('click', () => setEventsPane(true));
+    initEventsDetailCalendarLinks();
+    setEventsPane(false);
+  })();
 
   // Tab Interaction Logic
   function setupTabs(containerSelector) {
@@ -4489,9 +4609,8 @@
   // Setup main content tabs (exclude forum – handled below)
   setupTabs('.tabs-container:not(.forum-tabs)');
 
-  // Events tab panel switching
-  const eventsSection = document.querySelector('.section.events');
-  if (eventsSection) {
+  // Events tab panel switching (home + events-detail toggle pane)
+  document.querySelectorAll('.section.events, .events-detail-section').forEach(eventsSection => {
     eventsSection.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const key = tab.textContent.trim().toLowerCase();
@@ -4500,7 +4619,7 @@
         if (target) target.classList.add('active');
       });
     });
-  }
+  });
 
   // Forum filter tabs: active state + reorder cards by selected sort
   const forumSection = document.querySelector('.section.forum');
@@ -4514,7 +4633,15 @@
         if (!card) return;
         if (e.target.closest('.comment-input-row')) return;
         e.preventDefault();
-        showPage('forums');
+        var postId = card.getAttribute('data-post-id');
+        if (!postId) {
+          showPage('forums');
+          return;
+        }
+        var replyCount = parseInt(card.getAttribute('data-reply-count') || '0', 10);
+        if (!Number.isFinite(replyCount)) replyCount = 0;
+        showPage('forum-detail');
+        openForumPostDetail(postId, replyCount);
       });
     }
     if (forumTabContainer && forumCards) {
@@ -4609,7 +4736,7 @@
     });
   }
 
-  document.querySelectorAll('.events-panel').forEach(initDragScroll);
+  document.querySelectorAll('.section.events .events-panel').forEach(initDragScroll);
 
   // Donate icon micro-interaction (bounce: globe-accent-pop + spark-flick; particles + globePulse via .fired)
   const donateBtn = document.getElementById('donate-btn');
@@ -4648,7 +4775,7 @@
       touchCursor.classList.remove('touch-cursor--down');
     });
 
-    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, textarea, label, .stat-cell-icon, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .donate-back-btn, .settings-row--link, .settings-toggle, .settings-appearance-opt, .prof-edit, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-byline--thread, .forum-back, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .cal-add-chip, .cal-add-cover-trigger, .cal-add-cover-remove, .cal-add-modal-close, .cal-add-modal-footer .btn, .cal-add-status-done-btn, .back-to-top, .logo-home-btn';
+    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, textarea, label, .stat-cell-icon, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .donate-back-btn, .settings-row--link, .settings-toggle, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-delete-btn, .forum-comment-byline--thread, .forum-back, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .cal-add-chip, .cal-add-cover-trigger, .cal-add-cover-remove, .cal-add-modal-close, .cal-add-modal-footer .btn, .cal-add-status-done-btn, .back-to-top, .logo-home-btn';
     document.addEventListener('mouseover', (e) => {
       if (e.target.closest('.cal-add-modal .cal-add-label')) {
         touchCursor.classList.remove('touch-cursor--hover');
@@ -4677,8 +4804,8 @@
   (function initTouchActivePolyfill() {
     var touchActiveSelector = 'button, a, [role="button"], .nav-item, input, textarea, label, ' +
       '.vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, ' +
-      '.settings-row--link, .settings-toggle, .settings-appearance-opt, ' +
-      '.prof-edit, .prof-forum-post, .prof-settings-link, ' +
+      '.settings-row--link, .settings-toggle, ' +
+      '.prof-forum-post, .prof-settings-link, ' +
       '.btn, .icon-btn, .logo-home-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-back-btn, .vol-toggle-opt, .vol-cta-btn, .donate-back-btn, .event-detail-back, .event-detail-share, ' +
       '.forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-detail-comment-post, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-byline--thread, .forum-back, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .cal-add-chip, .cal-add-cover-trigger, .cal-add-cover-remove, .cal-add-modal-close, .cal-add-modal-footer .btn, .cal-add-status-done-btn, .back-to-top, ' +
       '.dm-cta-btn, .dc-make-changes-btn, .dm-switch-to-items, .dm-toggle-switch, .dm-copy-btn, .di-item-btn, .di-switch-to-money, .di-fab, .di-sheet-close, .di-bs-consent-box, .ap-pay-btn, .ap-pay-done-btn, .ap-pay-grabber';

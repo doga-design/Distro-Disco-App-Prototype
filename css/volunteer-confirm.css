@@ -6,7 +6,7 @@
     overflow-x: hidden;
     scrollbar-width: none;
     background: var(--bg-color);
-    padding-bottom: 24px !important;
+    padding-bottom: var(--confirm-page-padding-bottom) !important;
     z-index: 300;
   }
   .page-volunteer-confirm::-webkit-scrollbar {

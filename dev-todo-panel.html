@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TODO</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --line: rgba(15, 23, 42, 0.18);
+    --accent: #334155;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text-main);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  .todo-shell {
+    height: 100%;
+    overflow-y: auto;
+    padding: 14px 14px 22px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(15, 23, 42, 0.2) transparent;
+  }
+
+  .todo-shell::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .todo-shell::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.2);
+    border-radius: 999px;
+  }
+
+  .todo-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  }
+
+  .todo-title {
+    font-size: 13px;
+    line-height: 1.3;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text-main);
+  }
+
+  .todo-progress {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .todo-progress-track {
+    width: 72px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.1);
+    overflow: hidden;
+  }
+
+  .todo-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--accent);
+    transition: width 180ms ease;
+  }
+
+  .todo-progress-text {
+    font-size: 11px;
+    line-height: 1;
+    color: var(--text-muted);
+    min-width: 38px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .todo-group {
+    margin-top: 0;
+  }
+
+  .todo-group + .todo-group {
+    margin-top: 18px;
+  }
+
+  .todo-group-title {
+    margin: 0 0 8px;
+    color: var(--text-main);
+    font-size: 10px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .todo-item {
+    margin: 0;
+    padding: 5px 0;
+  }
+
+  .todo-item:first-of-type {
+    padding-top: 0;
+  }
+
+  .todo-row {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    gap: 8px;
+    align-items: start;
+    cursor: pointer;
+  }
+
+  .todo-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: #fff;
+    margin: 2px 0 0;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .todo-checkbox:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .todo-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 3px;
+    height: 6px;
+    border: solid #fff;
+    border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg);
+  }
+
+  .todo-copy {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0;
+    word-break: break-word;
+    font-weight: 400;
+  }
+
+  .todo-item.done .todo-copy {
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+
+  .marker-highlights-group {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(15, 23, 42, 0.1);
+  }
+
+  .marker-highlights {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .marker-highlights li {
+    margin: 0;
+    padding: 8px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--text-main);
+    background: #fef08a;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .marker-highlight-title {
+    display: block;
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text-main);
+  }
+
+  .marker-highlight-text {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(30, 41, 59, 0.92);
+  }
+</style>
+</head>
+<body>
+  <main class="todo-shell">
+    <header class="todo-head">
+      <h1 class="todo-title">Prototype TODO</h1>
+      <div class="todo-progress">
+        <div class="todo-progress-track" aria-hidden="true">
+          <div class="todo-progress-fill" id="todo-progress-fill"></div>
+        </div>
+        <div class="todo-progress-text" id="todo-progress-text">0 / 0</div>
+      </div>
+    </header>
+
+    <section class="todo-group">
+      <h2 class="todo-group-title">Layout and spacing</h2>
+      <article class="todo-item done">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox" checked>
+          <p class="todo-copy">Fix excess empty space when scrolling down on event detail page</p>
+        </label>
+      </article>
+      <article class="todo-item">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox">
+          <p class="todo-copy">Fix not rounded frame on Apple Pay modal at the bottom</p>
+        </label>
+      </article>
+    </section>
+
+    <section class="todo-group">
+      <h2 class="todo-group-title">Icons and visuals</h2>
+      <article class="todo-item done">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox" checked>
+          <p class="todo-copy">Keep all icons the same color in settings</p>
+        </label>
+      </article>
+      <article class="todo-item done">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox" checked>
+          <p class="todo-copy">Replace Apple Pay modal "DD" icon with the app icon</p>
+        </label>
+      </article>
+      <article class="todo-item done">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox" checked>
+          <p class="todo-copy">Replace placeholder icon shapes on forum posts</p>
+        </label>
+      </article>
+      <article class="todo-item done">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox" checked>
+          <p class="todo-copy">Replace placeholder "square" SVG with "send" icon</p>
+        </label>
+      </article>
+      <article class="todo-item done">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox" checked>
+          <p class="todo-copy">Add accent line back on the "like" icon on comment posts</p>
+        </label>
+      </article>
+    </section>
+
+    <section class="todo-group">
+      <h2 class="todo-group-title">Copy and content</h2>
+      <article class="todo-item">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox">
+          <p class="todo-copy">Add confirmation pop-up copy after item donation with drop-off reminder text</p>
+        </label>
+      </article>
+      <article class="todo-item">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox">
+          <p class="todo-copy">Fix fundraising role card copy to mention shows, merch, or raffles</p>
+        </label>
+      </article>
+      <article class="todo-item done">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox" checked>
+          <p class="todo-copy">Remove eyebrow and "these" word from item donation page</p>
+        </label>
+      </article>
+      <article class="todo-item">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox">
+          <p class="todo-copy">Add "the" in "before the drop-off window" reminder copy</p>
+        </label>
+      </article>
+      <article class="todo-item">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox">
+          <p class="todo-copy">Fix copy for the 2x2 hero grid stats</p>
+        </label>
+      </article>
+    </section>
+
+    <section class="todo-group">
+      <h2 class="todo-group-title">Navigation and bugs</h2>
+      <article class="todo-item done">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox" checked>
+          <p class="todo-copy">On home-page forum post click, navigate to that thread not forum page</p>
+        </label>
+      </article>
+      <article class="todo-item done">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox" checked>
+          <p class="todo-copy">Remove "tap to read" from pinned note on forum page</p>
+        </label>
+      </article>
+      <article class="todo-item">
+        <label class="todo-row">
+          <input class="todo-checkbox" type="checkbox">
+          <p class="todo-copy">Fix transparent background visual bug on top navbar</p>
+        </label>
+      </article>
+    </section>
+
+    <section class="todo-group marker-highlights-group">
+      <h2 class="todo-group-title">Added new (were not in the tasks)</h2>
+      <ul class="marker-highlights">
+        <li>
+          <span class="marker-highlight-title">Calendar and Events detail in one place</span>
+          <p class="marker-highlight-text">You can switch between the month view and a list view. The list matches the upcoming events block on Home (cards in a column, filters across the width). When an event exists on the calendar, there’s a link to jump to it there.</p>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+<script>
+  (function () {
+    const STORAGE_KEY = "dev-todo-panel-checks-v1";
+    const items = Array.from(document.querySelectorAll(".todo-item"));
+    const boxes = Array.from(document.querySelectorAll(".todo-checkbox"));
+    const fill = document.getElementById("todo-progress-fill");
+    const text = document.getElementById("todo-progress-text");
+
+    function loadSaved() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr)) return;
+        boxes.forEach((box, i) => {
+          if (typeof arr[i] === "boolean") box.checked = arr[i];
+        });
+      } catch (e) {}
+    }
+
+    function persist() {
+      try {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(boxes.map((b) => b.checked))
+        );
+      } catch (e) {}
+    }
+
+    function render() {
+      const done = boxes.filter((box) => box.checked).length;
+      const total = boxes.length;
+      const pct = total ? (done / total) * 100 : 0;
+      fill.style.width = pct + "%";
+      text.textContent = done + " / " + total;
+
+      items.forEach((item) => {
+        const checkbox = item.querySelector(".todo-checkbox");
+        item.classList.toggle("done", !!checkbox && checkbox.checked);
+      });
+    }
+
+    loadSaved();
+    render();
+
+    boxes.forEach((box) => {
+      box.addEventListener("change", () => {
+        persist();
+        render();
+      });
+    });
+  })();
+</script>
+</body>
+</html>

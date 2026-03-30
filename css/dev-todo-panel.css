@@ -1,0 +1,28 @@
+/* Dev-only desktop todo sidebar shell */
+.dev-todo-shell {
+  display: none;
+}
+
+@media (pointer: fine) and (min-width: 1080px) {
+  .dev-todo-shell {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(280px, 26vw);
+    z-index: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-right: 1px solid rgba(15, 23, 42, 0.1);
+    background: #f6f7f9;
+  }
+
+  .dev-todo-iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #f6f7f9;
+  }
+}

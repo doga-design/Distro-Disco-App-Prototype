@@ -510,24 +510,27 @@
   }
 
   .cal-add-modal-footer .btn-secondary {
-    box-shadow: none;
+    box-shadow: var(--btn-secondary-shadow);
     background: var(--white);
-    border: 1px solid var(--border-color);
     color: var(--cal-add-navy-deep);
+  }
+  .cal-add-modal-footer .btn-secondary:active,
+  .cal-add-modal-footer .btn-secondary.touch-active {
+    background: var(--navy);
+    color: var(--white);
+    box-shadow: var(--btn-secondary-inset);
   }
 
   .cal-add-modal-footer .btn-primary {
     background: var(--navy);
-    border-color: var(--cal-add-navy-deep);
-    border-width: 1.5px;
+    box-shadow: var(--btn-primary-shadow);
     color: var(--white);
   }
 
   .cal-add-modal-footer .btn-primary:active,
   .cal-add-modal-footer .btn-primary.touch-active {
-    filter: none;
-    background: var(--cal-add-navy-deep);
-    border-color: var(--cal-add-navy-deep);
+    background: var(--orange);
+    box-shadow: var(--btn-shadow-none);
     color: var(--white);
   }
 

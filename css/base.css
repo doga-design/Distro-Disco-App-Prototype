@@ -31,6 +31,9 @@
     --shadow-soft: 0px 8px 24px rgba(35, 33, 74, 0.05);
     --radius-sm: 8px;
     --radius-md: 12px;
+    --btn-radius: var(--radius-md);
+    --btn-padding-block: 14px;
+    --btn-padding-inline: 14px;
     --radius-lg: 16px;
     --radius-xl: 20px;
     
@@ -57,19 +60,50 @@
     --detail-illustration-height: 220px;
     --detail-illustration-opacity: 0.14;
     --shell-scale: 1;
+    /* iPhone mockup “screen” corner — used with clip-path so sheets/modals clip on all engines */
+    --app-screen-radius: 42px;
+
+    /* Top nav — frosted glass tint (blur values stay literal for WebKit var() quirks) */
+    --top-nav-glass-bg: rgba(248, 247, 244, 0.55);
 
     /* Scrollable page content: consistent inset above bottom nav / phone chrome */
-    --page-padding-bottom: 200px;
+    --page-padding-bottom: 150px;
+    /* Donation + money + volunteer confirmation screens: end-of-scroll breathing room */
+    --confirm-page-padding-bottom: 150px;
 
-    /* Buttons: shared shadow for .btn-primary and .btn-secondary */
+    /* Buttons — secondary (light fill); primary (navy) uses darker shadows */
     --btn-shadow:
       rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+      rgba(35, 33, 74, 0.3) 0px 8px 16px -8px;
     --btn-shadow-none: none;
+    /* Button shadows: navy-tinted (matches --navy #23214A); inset uses darker navy */
+    --btn-secondary-shadow:
+      rgba(35, 33, 74, 0.28) 0px 1px 2px,
+      rgba(35, 33, 74, 0.22) 0px 8px 12px -2px,
+      rgba(18, 17, 42, 0.28) 0px -4px 0px inset,
+      rgba(35, 33, 74, 0.1) 0px 0px 0px 1px;
+    --btn-secondary-inset: rgba(18, 17, 42, 0.32) 0px -4px 0px inset;
+    --btn-secondary-shadow-compact:
+      rgba(35, 33, 74, 0.18) 0 1px 1px,
+      rgba(35, 33, 74, 0.12) 0 4px 8px -2px,
+      rgba(18, 17, 42, 0.2) 0 -2px 0 inset,
+      rgba(35, 33, 74, 0.06) 0 0 0 1px;
+    --btn-secondary-inset-compact: rgba(18, 17, 42, 0.22) 0 -2px 0 inset;
+    --btn-primary-shadow:
+      rgba(35, 33, 74, 0.45) 0px 1px 2px,
+      rgba(35, 33, 74, 0.38) 0px 8px 14px -2px,
+      rgba(12, 11, 28, 0.55) 0px -4px 0px inset;
+    --btn-primary-inset: rgba(12, 11, 28, 0.52) 0px -4px 0px inset;
+    --btn-primary-shadow-compact:
+      rgba(35, 33, 74, 0.34) 0px 1px 2px,
+      rgba(35, 33, 74, 0.28) 0px 4px 10px -2px,
+      rgba(12, 11, 28, 0.42) 0px -2px 0px inset;
+    --btn-primary-inset-compact: rgba(12, 11, 28, 0.4) 0px -2px 0px inset;
     /* All .btn label text — Public Sans medium */
     --btn-font-weight: 500;
     /* Compact pill (matches .back-to-top) */
     --btn-compact-padding: 10px 16px;
+    --btn-compact-radius: 9px;
     --btn-compact-font-size: 13px;
     --btn-compact-font-weight: var(--btn-font-weight);
 
@@ -82,6 +116,13 @@
     --cal-add-cover-max-bytes: 5242880;
     --cal-add-navy-deep: #0f1e2e;
     --cal-add-orange-accent: #f97316;
+
+    /* Stacking — phone frame above desktop chrome; bottom nav above all in-app layers (max ~8150) */
+    --z-phone-frame: 10000;
+    --z-touch-cursor: 10001;
+    --z-bottom-nav: 9999;
+    --z-nav-scrim: 9998;
+    --z-back-to-top: 9997;
   }
 
   * {
@@ -129,6 +170,7 @@
   /* ── iPhone Frame ── */
   .phone-frame {
     position: relative;
+    z-index: var(--z-phone-frame);
     background: linear-gradient(160deg, #2a2a32 0%, #18181f 60%, #111116 100%);
     border-radius: 54px;
     padding: 12px;
@@ -139,7 +181,6 @@
     .phone-frame {
       transform: scale(var(--shell-scale, 1));
       transform-origin: center top;
-      will-change: transform;
     }
   }
 
@@ -179,9 +220,15 @@
     background-color: var(--bg-color);
     position: relative;
     overflow: hidden;
-    border-radius: 42px;
+    border-radius: var(--app-screen-radius);
+    isolation: isolate;
   }
 
+  @supports (clip-path: inset(0 round 1px)) {
+    .app-container {
+      clip-path: inset(0 round var(--app-screen-radius));
+    }
+  }
 
   /* Typography */
   h1, h2 {
@@ -212,19 +259,20 @@
   .text-navy { color: var(--navy); }
   .text-orange { color: var(--orange); }
 
-  /* Buttons — only .btn-primary and .btn-secondary; shared --btn-shadow on .btn */
+  /* Buttons — .btn default shadow; primary/secondary override with same stack as secondary */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     width: 100%;
-    padding: 14px;
-    border-radius: var(--radius-md);
+    padding: var(--btn-padding-block) var(--btn-padding-inline);
+    min-height: 48px;
+    border-radius: var(--btn-radius);
     font-size: 14px;
     font-weight: var(--btn-font-weight);
     font-family: 'Public Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    border: 1.5px solid transparent;
+    border: none;
     transition: transform 0.1s, opacity 0.2s, box-shadow 0.1s;
     box-shadow: var(--btn-shadow);
   }
@@ -236,27 +284,42 @@
 
   .btn-primary {
     background-color: var(--navy);
+    border: none;
     color: var(--white);
-    border-color: var(--navy);
+    box-shadow: var(--btn-primary-shadow);
   }
   .btn-secondary {
     background-color: var(--bg-color);
     color: var(--navy);
-    border-color: var(--border-color);
+    box-shadow: var(--btn-secondary-shadow);
   }
 
-  /* Button active (pressed) states */
-  .btn-primary:active,
-  .btn-primary.touch-active {
+  /* Button active (pressed) states — .btn.btn-primary wins over contextual .btn.btn-primary { box-shadow } */
+  .btn.btn-primary:active,
+  .btn.btn-primary.touch-active {
     background-color: var(--orange);
     color: var(--white);
-    border-color: var(--orange);
+    box-shadow: var(--btn-shadow-none);
   }
   .btn-secondary:active,
   .btn-secondary.touch-active {
     background-color: var(--navy);
     color: var(--white);
-    border-color: var(--navy);
+    box-shadow: var(--btn-secondary-inset);
+  }
+  .page-home .hot-items .item-card .btn.btn-primary:active,
+  .page-home .hot-items .item-card .btn.btn-primary.touch-active,
+  .page-donate-items .di-item-card .item-right .btn.btn-primary:active,
+  .page-donate-items .di-item-card .item-right .btn.btn-primary.touch-active {
+    box-shadow: var(--btn-shadow-none);
+  }
+  .page-home .hot-items .item-card .btn.btn-secondary:active,
+  .page-home .hot-items .item-card .btn.btn-secondary.touch-active,
+  .page-donate-items .di-item-card .item-right .btn.btn-secondary.di-item-btn:active,
+  .page-donate-items .di-item-card .item-right .btn.btn-secondary.di-item-btn.touch-active,
+  .back-to-top:active,
+  .back-to-top.touch-active {
+    box-shadow: var(--btn-secondary-inset-compact);
   }
   .btn:disabled {
     opacity: 0.55;
@@ -269,10 +332,12 @@
   }
 
   /* Hot-ticket + donate-items “I have this item” — same compact size as .back-to-top */
-  .page-home .hot-items .item-card .item-right .btn.btn-secondary,
-  .page-donate-items .di-item-card .item-right .btn.btn-secondary.di-item-btn {
+  .page-home .hot-items .item-card .item-right .btn,
+  .page-donate-items .di-item-card .item-right .btn {
     width: auto;
+    min-height: auto;
     padding: var(--btn-compact-padding);
+    border-radius: var(--btn-compact-radius);
     font-size: var(--btn-compact-font-size);
     font-weight: var(--btn-compact-font-weight);
   }
@@ -280,24 +345,24 @@
     display: none;
   }
 
-  /* No button box-shadow inside home hot-item cards */
-  .page-home .hot-items .item-card .btn {
-    box-shadow: var(--btn-shadow-none);
+  .page-home .hot-items .item-card .btn.btn-primary {
+    box-shadow: var(--btn-primary-shadow-compact);
   }
-
-  /* No button box-shadow inside home event cards */
-  .page-home .section.events .event-card .btn {
-    box-shadow: var(--btn-shadow-none);
+  .page-home .hot-items .item-card .btn.btn-secondary {
+    box-shadow: var(--btn-secondary-shadow-compact);
   }
 
   /* Fixed control: scroll long .page content to top (shown via JS) */
   .back-to-top {
     position: absolute;
     left: 50%;
-    z-index: 99;
+    z-index: var(--z-back-to-top);
     width: auto;
     min-width: 0;
+    min-height: auto;
     padding: var(--btn-compact-padding);
+    border-radius: var(--btn-compact-radius);
+    box-shadow: var(--btn-secondary-shadow-compact);
     font-size: var(--btn-compact-font-size);
     font-weight: var(--btn-compact-font-weight);
     bottom: calc(14px + 90px + 10px);
@@ -324,10 +389,25 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(248, 247, 244, 0.55);
-    backdrop-filter: blur(14px) saturate(1.35);
-    -webkit-backdrop-filter: blur(14px) saturate(1.35);
+    background-color: var(--bg-color);
     transition: transform 0.2s ease;
+    isolation: isolate;
+  }
+  @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    @media not (prefers-reduced-transparency: reduce) {
+      .top-nav {
+        background: var(--top-nav-glass-bg);
+        -webkit-backdrop-filter: blur(14px) saturate(1.35);
+        backdrop-filter: blur(14px) saturate(1.35);
+      }
+    }
+  }
+  @media (forced-colors: active) {
+    .top-nav {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
   .top-nav.is-scroll-hidden {
     transform: translateY(-100%);

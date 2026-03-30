@@ -9,6 +9,10 @@
 </head>
 <body>
 
+<div class="dev-todo-shell" aria-hidden="true">
+  <iframe class="dev-todo-iframe" src="dev-todo-panel.html" title="Dev: Prototype TODO list"></iframe>
+</div>
+
 <div class="touch-cursor" id="touch-cursor"></div>
 
 <div class="phone-frame">
@@ -57,17 +61,17 @@
         <div class="stat-cell">
           <span class="stat-cell-label">Active Attendee</span>
           <img src="img/icons/stat-active-attendee.svg" class="stat-cell-icon" alt="Active Attendee">
-          <span class="stat-cell-sub">11 events</span>
+          <span class="stat-cell-sub">helped at 11 events</span>
         </div>
         <div class="stat-cell">
           <span class="stat-cell-label">Super Contributor</span>
           <img src="img/icons/stat-super-contributor.svg" class="stat-cell-icon" alt="Committed Donor">
-          <span class="stat-cell-sub">8 months</span>
+          <span class="stat-cell-sub">contributed 32 items</span>
           </div>
         <div class="stat-cell">
           <span class="stat-cell-label">Sweet Talker</span>
           <img src="img/icons/stat-sweet-talker.svg" class="stat-cell-icon" alt="Helpful Chatterbox">
-          <span class="stat-cell-sub">14 thumbs up</span>
+          <span class="stat-cell-sub">14 interactions</span>
         </div>
       </div>
     </div>
@@ -378,17 +382,17 @@
     </div>
 
     <div class="forum-cards">
-      <div class="card forum-card" data-sort-helpful="3" data-sort-recent="1" data-sort-discussed="3">
+      <div class="card forum-card" data-post-id="post-1" data-reply-count="2" data-sort-helpful="3" data-sort-recent="1" data-sort-discussed="3">
         <div style="margin-bottom: 12px; color: var(--text-muted);">
           <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
         </div>
         <h3 style="margin-bottom: 8px;">This Saturday's set-up crew, let's talk about it!</h3>
-        <p>Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the...</p>
+        <p>Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the group chat.</p>
         
         <div class="forum-meta-row">
           <div class="forum-stat">
             <img src="img/icons/icon-clock.svg" class="forum-meta-icon" alt="Time">
-            5 hours ago
+            1 day ago
           </div>
           <div class="forum-stat">
             <img src="img/icons/icon-heart.svg" class="forum-meta-icon" alt="Likes">
@@ -396,7 +400,7 @@
           </div>
           <div class="forum-stat">
             <img src="img/icons/icon-rewards.svg" class="forum-meta-icon" alt="Comments">
-            0 Comments
+            2 replies
           </div>
         </div>
 
@@ -408,12 +412,12 @@
         </div>
       </div>
 
-      <div class="card forum-card" data-sort-helpful="1" data-sort-recent="2" data-sort-discussed="2">
+      <div class="card forum-card" data-post-id="post-2" data-reply-count="7" data-sort-helpful="1" data-sort-recent="2" data-sort-discussed="2">
       <div style="margin-bottom: 12px; color: var(--text-muted);">
         <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
       </div>
-      <h3 style="margin-bottom: 8px;">What's volunteering like at DD?</h3>
-      <p>I've been wanting to do more intentional volunteering, and not sure where to start. Would love to hear your experien...</p>
+      <h3 style="margin-bottom: 8px;">What's volunteering actually like at DD?</h3>
+      <p>I've been wanting to volunteer more but I'm not sure where to start. If you were new once, what actually made you come back?</p>
       
       <div class="forum-meta-row">
         <div class="forum-stat">
@@ -426,7 +430,7 @@
         </div>
         <div class="forum-stat">
           <img src="img/icons/icon-rewards.svg" class="forum-meta-icon" alt="Comments">
-          17 Comments
+          7 replies
         </div>
       </div>
 
@@ -438,12 +442,12 @@
       </div>
     </div>
 
-      <div class="card forum-card" data-sort-helpful="2" data-sort-recent="3" data-sort-discussed="1">
+      <div class="card forum-card" data-post-id="post-3" data-reply-count="6" data-sort-helpful="2" data-sort-recent="3" data-sort-discussed="1">
       <div style="margin-bottom: 12px; color: var(--text-muted);">
         <img src="img/icons/navbar-bottom-forum.svg" class="forum-topic-icon" alt="Forum topic">
       </div>
-      <h3 style="margin-bottom: 8px;">Online deals for supplies!!</h3>
-      <p>If you have financial capacity this month, I found some discount codes to get some much needed supplies at Canadi...</p>
+      <h3 style="margin-bottom: 8px;">Online deals for supplies this week</h3>
+      <p>Found some discount codes for Canadian Tire. Tents, thermal socks, gloves all on sale. Sharing here if you have financial capacity this month.</p>
       
       <div class="forum-meta-row">
         <div class="forum-stat">
@@ -456,7 +460,7 @@
         </div>
         <div class="forum-stat">
           <img src="img/icons/icon-rewards.svg" class="forum-meta-icon" alt="Comments">
-          6 Comments
+          6 replies
         </div>
       </div>
 
@@ -507,11 +511,12 @@
     <!-- Segment toggle -->
     <div class="seg-wrap">
       <div class="segment">
-        <div class="seg-btn active">Calendar</div>
-        <div class="seg-btn seg-btn-disabled" aria-disabled="true">Events Detail</div>
+        <button type="button" class="seg-btn active" id="events-toggle-calendar">Calendar</button>
+        <button type="button" class="seg-btn" id="events-toggle-detail">Events Detail</button>
       </div>
     </div>
 
+    <div class="events-toggle-pane events-toggle-pane-calendar">
     <!-- Calendar card -->
     <div class="cal-card">
       <div class="cal-title">Event Calendar</div>
@@ -583,8 +588,225 @@
 
     </div><!-- /.cal-card -->
 
-    <div class="cal-tent-wrap">
-      <img src="img/dd-tent.svg" alt="">
+    </div>
+
+    <div class="events-toggle-pane events-toggle-pane-detail" hidden>
+      <section class="section events events-detail-section">
+        <div class="tabs-container">
+          <div class="tab active">All</div>
+          <div class="tab">Distros</div>
+          <div class="tab">Drives</div>
+          <div class="tab">Fundraisers</div>
+        </div>
+
+        <div class="events-panels">
+
+          <div class="events-panel active" data-panel="all">
+            <div class="card event-card" data-event-id="feb-distro-3">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-bus.svg" alt="Distro"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>February Distro #3</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Sat, Feb 25 · 3–5pm</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Crab Park, 101 E Waterfront Rd</div>
+              </div>
+              <p style="margin-bottom: 16px;">Come help pack and hand out essential supplies to our unhoused neighbours.</p>
+              <button class="btn btn-secondary" data-event-id="feb-distro-3"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card" data-event-id="march-distro-1">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-bus.svg" alt="Distro"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>March Distro #1</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Sat, Mar 4 · 2–4pm</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Oppenheimer Park, E Cordova St</div>
+              </div>
+              <p style="margin-bottom: 16px;">First distro of March — bring warm layers, socks, and snacks if you can.</p>
+              <button class="btn btn-secondary" data-event-id="march-distro-1"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card" data-event-id="march-distro-2">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-bus.svg" alt="Distro"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>March Distro #2</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Sat, Mar 18 · 3–5pm</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Thornton Park, Station St</div>
+              </div>
+              <p style="margin-bottom: 16px;">Mid-month run — hygiene kits and food boxes are the focus this time.</p>
+              <button class="btn btn-secondary" data-event-id="march-distro-2"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card" data-event-id="winter-clothing-drive">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-heart.svg" alt="Drive"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>Winter Clothing Drive</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Mon–Fri, Feb 27 – Mar 10</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Drop-off: 309 E Hastings St</div>
+              </div>
+              <p style="margin-bottom: 16px;">Donate clean coats, sweaters, and boots — all sizes welcome.</p>
+              <button class="btn btn-secondary" data-event-id="winter-clothing-drive"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card" data-event-id="spring-gala-night">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-rewards.svg" alt="Fundraiser"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>Spring Gala Night</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Fri, Mar 24 · 6–10pm</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> The Beaumont Studio, E 6th Ave</div>
+              </div>
+              <p style="margin-bottom: 16px;">An evening of good food, live music, and community — all proceeds go to distro supplies.</p>
+              <button class="btn btn-secondary" data-event-id="spring-gala-night"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card" data-event-id="online-fundraiser">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-rewards.svg" alt="Fundraiser"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>Online Fundraiser</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Mar 1–31 · All month</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Online — share the link!</div>
+              </div>
+              <p style="margin-bottom: 16px;">Every dollar raised goes directly to buying tents, sleeping bags, and hygiene kits.</p>
+              <button class="btn btn-secondary" data-event-id="online-fundraiser"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card event-end-card" aria-label="End of events list">
+              <div class="event-end-icon-wrap" aria-hidden="true">
+                <img class="event-end-icon" src="img/icons/icon-heart.svg" alt="">
+              </div>
+              <h3 class="event-end-title">All caught up!</h3>
+              <p class="event-end-copy">You've viewed all current events. New ones are added regularly, so check back soon!</p>
+              <button type="button" class="btn btn-secondary event-end-cta">
+                <span class="btn__label">Browse donation needs</span></button>
+            </div>
+          </div>
+
+          <div class="events-panel" data-panel="distros">
+            <div class="card event-card" data-event-id="feb-distro-3">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-bus.svg" alt="Distro"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>February Distro #3</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Sat, Feb 25 · 3–5pm</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Crab Park, 101 E Waterfront Rd</div>
+              </div>
+              <p style="margin-bottom: 16px;">Come help pack and hand out essential supplies to our unhoused neighbours.</p>
+              <button class="btn btn-secondary" data-event-id="feb-distro-3"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card" data-event-id="march-distro-1">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-bus.svg" alt="Distro"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>March Distro #1</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Sat, Mar 4 · 2–4pm</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Oppenheimer Park, E Cordova St</div>
+              </div>
+              <p style="margin-bottom: 16px;">First distro of March — bring warm layers, socks, and snacks if you can.</p>
+              <button class="btn btn-secondary" data-event-id="march-distro-1"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card" data-event-id="march-distro-2">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-bus.svg" alt="Distro"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>March Distro #2</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Sat, Mar 18 · 3–5pm</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Thornton Park, Station St</div>
+              </div>
+              <p style="margin-bottom: 16px;">Mid-month run — hygiene kits and food boxes are the focus this time.</p>
+              <button class="btn btn-secondary" data-event-id="march-distro-2"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card event-end-card" aria-label="End of events list">
+              <div class="event-end-icon-wrap" aria-hidden="true">
+                <img class="event-end-icon" src="img/icons/icon-heart.svg" alt="">
+              </div>
+              <h3 class="event-end-title">All caught up!</h3>
+              <p class="event-end-copy">You've viewed all current events. New ones are added regularly, so check back soon!</p>
+              <button type="button" class="btn btn-secondary event-end-cta">
+                <span class="btn__label">Browse donation needs</span></button>
+            </div>
+          </div>
+
+          <div class="events-panel" data-panel="drives">
+            <div class="card event-card" data-event-id="winter-clothing-drive">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-heart.svg" alt="Drive"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>Winter Clothing Drive</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Mon–Fri, Feb 27 – Mar 10</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Drop-off: 309 E Hastings St</div>
+              </div>
+              <p style="margin-bottom: 16px;">Donate clean coats, sweaters, and boots — all sizes welcome.</p>
+              <button class="btn btn-secondary" data-event-id="winter-clothing-drive"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card event-end-card" aria-label="End of events list">
+              <div class="event-end-icon-wrap" aria-hidden="true">
+                <img class="event-end-icon" src="img/icons/icon-heart.svg" alt="">
+              </div>
+              <h3 class="event-end-title">All caught up!</h3>
+              <p class="event-end-copy">You've viewed all current events. New ones are added regularly, so check back soon!</p>
+              <button type="button" class="btn btn-secondary event-end-cta">
+                <span class="btn__label">Browse donation needs</span></button>
+            </div>
+          </div>
+
+          <div class="events-panel" data-panel="fundraisers">
+            <div class="card event-card" data-event-id="spring-gala-night">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-rewards.svg" alt="Fundraiser"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>Spring Gala Night</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Fri, Mar 24 · 6–10pm</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> The Beaumont Studio, E 6th Ave</div>
+              </div>
+              <p style="margin-bottom: 16px;">An evening of good food, live music, and community — all proceeds go to distro supplies.</p>
+              <button class="btn btn-secondary" data-event-id="spring-gala-night"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card" data-event-id="online-fundraiser">
+              <div class="card-top">
+                <div class="card-icon"><img src="img/icons/icon-rewards.svg" alt="Fundraiser"></div>
+                <button class="icon-btn"><img src="img/icons/share-icon.svg" alt="Share" class="share-icon"></button>
+              </div>
+              <h3>Online Fundraiser</h3>
+              <div class="event-meta">
+                <div class="meta-row"><img src="img/icons/icon-clock.svg" alt="Time"> Mar 1–31 · All month</div>
+                <div class="meta-row"><img src="img/icons/icon-location.svg" alt="Location"> Online — share the link!</div>
+              </div>
+              <p style="margin-bottom: 16px;">Every dollar raised goes directly to buying tents, sleeping bags, and hygiene kits.</p>
+              <button class="btn btn-secondary" data-event-id="online-fundraiser"><span class="btn__label">View details</span></button>
+            </div>
+            <div class="card event-card event-end-card" aria-label="End of events list">
+              <div class="event-end-icon-wrap" aria-hidden="true">
+                <img class="event-end-icon" src="img/icons/icon-heart.svg" alt="">
+              </div>
+              <h3 class="event-end-title">All caught up!</h3>
+              <p class="event-end-copy">You've viewed all current events. New ones are added regularly, so check back soon!</p>
+              <button type="button" class="btn btn-secondary event-end-cta">
+                <span class="btn__label">Browse donation needs</span></button>
+            </div>
+          </div>
+
+        </div>
+      </section>
     </div>
 
   </div><!-- /.cal-scroll-wrap -->
@@ -841,7 +1063,7 @@
       <div class="ap-pay-state ap-pay-state-default" id="ap-pay-state-default">
         <div class="ap-pay-merchant-row">
           <div class="ap-pay-merchant-icon" aria-hidden="true">
-            <span>DD</span>
+            <img src="img/icons/favicon.svg" alt="" width="44" height="44" decoding="async">
           </div>
           <div class="ap-pay-merchant-meta">
             <p class="ap-pay-merchant-name" id="ap-pay-merchant-name">Distro Disco</p>
@@ -1166,8 +1388,10 @@
       </section>
 
       <section class="dc-section dc-anim" style="--dc-delay:80ms">
-        <div class="vol-section-eyebrow">What you're donating</div>
-        <h3 class="dc-section-title">You are bringing these</h3>
+        <div class="dc-heading-row">
+          <img src="img/icons/icon-box.svg" alt="">
+          <h3 class="dc-heading">You are bringing</h3>
+        </div>
         <div class="dc-item-list" id="dc-item-list"></div>
       </section>
 
@@ -1733,6 +1957,11 @@
     <div class="settings-section-label">Account</div>
     <div class="settings-group">
       <div class="settings-row">
+        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+        <div class="settings-row-text"><div class="settings-row-label">Language</div></div>
+        <div class="settings-row-right"><span class="settings-row-value">English</span><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
+      </div>
+      <div class="settings-row">
         <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
         <div class="settings-row-text"><div class="settings-row-label">Personal information</div><div class="settings-row-sublabel">Name, email, phone</div></div>
         <div class="settings-row-right"><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
@@ -1768,7 +1997,7 @@
       </div>
       <div class="settings-row no-tap">
         <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
-        <div class="settings-row-text"><div class="settings-row-label">Weekly digest</div><div class="settings-row-sublabel">Impact summary every Monday</div></div>
+        <div class="settings-row-text"><div class="settings-row-label">Weekly digest</div><div class="settings-row-sublabel">Weekly update every Monday</div></div>
         <div class="settings-row-right"><div class="settings-toggle" data-toggle></div></div>
       </div>
     </div>
@@ -1784,24 +2013,6 @@
         <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
         <div class="settings-row-text"><div class="settings-row-label">Show activity to community</div></div>
         <div class="settings-row-right"><div class="settings-toggle" data-toggle></div></div>
-      </div>
-    </div>
-
-    <div class="settings-section-label">App preferences</div>
-    <div class="settings-group">
-      <div class="settings-row no-tap" style="flex-wrap:wrap; gap:12px; padding:14px 16px;">
-        <div class="settings-row-icon accent" style="flex-shrink:0;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></div>
-        <div class="settings-row-text" style="flex:1;"><div class="settings-row-label">Appearance</div></div>
-        <div class="settings-appearance-opts" id="appearance-opts">
-          <div class="settings-appearance-opt active" data-appearance="light"><div class="settings-appearance-preview light"></div><div class="settings-appearance-name">Light</div></div>
-          <div class="settings-appearance-opt" data-appearance="dark"><div class="settings-appearance-preview dark"></div><div class="settings-appearance-name">Dark</div></div>
-          <div class="settings-appearance-opt" data-appearance="system"><div class="settings-appearance-preview sys"></div><div class="settings-appearance-name">Auto</div></div>
-        </div>
-      </div>
-      <div class="settings-row">
-        <div class="settings-row-icon accent"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
-        <div class="settings-row-text"><div class="settings-row-label">Language</div></div>
-        <div class="settings-row-right"><span class="settings-row-value">English</span><div class="settings-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div></div>
       </div>
     </div>
 
@@ -1881,7 +2092,7 @@
     </div>
 
     <div class="activities-list" id="activities-list">
-      <div class="activities-item activities-item-unread" data-read="false" data-type="reply" data-nav="forum-detail" data-post-id="post-1" data-reply-count="1">
+      <div class="activities-item activities-item-unread" data-read="false" data-type="reply" data-nav="forum-detail" data-post-id="post-1" data-reply-count="2">
         <span class="activities-item-dot"></span>
         <div class="activities-item-body">
           <span class="activities-item-type" aria-hidden="true">Post activity</span>
@@ -1922,7 +2133,7 @@
           <span class="activities-item-time">2d ago</span>
         </div>
       </div>
-      <div class="activities-item activities-item-read" data-read="true" data-type="like" data-nav="forum-detail" data-post-id="post-1" data-reply-count="1">
+      <div class="activities-item activities-item-read" data-read="true" data-type="like" data-nav="forum-detail" data-post-id="post-1" data-reply-count="2">
         <span class="activities-item-dot activities-item-dot-spacer"></span>
         <div class="activities-item-body">
           <span class="activities-item-type" aria-hidden="true">Post activity</span>
@@ -1978,7 +2189,7 @@
           <div class="prof-handle">@RGDfriend123 · Vancouver, BC</div>
         </div>
       </div>
-      <button type="button" class="btn btn-secondary prof-edit"><span class="btn__label">Edit profile</span></button>
+      <span class="btn btn-secondary prof-edit"><span class="btn__label">Edit profile</span></span>
     </div>
 
     <!-- impact bar -->
@@ -1999,7 +2210,7 @@
         <div class="prof-impact-bar-label">You +12%</div>
       </div>
       <div class="prof-impact-actions">
-        <button type="button" class="btn btn-secondary"><span class="btn__label">Keep contributing</span></button>
+        <button type="button" class="btn btn-secondary" id="prof-keep-contributing-btn"><span class="btn__label">Keep contributing</span></button>
       </div>
     </div>
 
@@ -2026,21 +2237,21 @@
         </div>
         <div class="stat-cell">
           <span class="stat-cell-label">Active Attendee</span>
-          <span class="stat-cell-sub">11 events</span>
+          <span class="stat-cell-sub">helped at 11 events</span>
           <span class="prof-achievements-icon-wrap">
             <img src="img/icons/stat-active-attendee.svg" class="stat-cell-icon" alt="Active Attendee">
           </span>
         </div>
         <div class="stat-cell">
           <span class="stat-cell-label">Super Contributor</span>
-          <span class="stat-cell-sub">8 months</span>
+          <span class="stat-cell-sub">contributed 32 items</span>
           <span class="prof-achievements-icon-wrap">
             <img src="img/icons/stat-super-contributor.svg" class="stat-cell-icon" alt="Committed Donor">
           </span>
         </div>
         <div class="stat-cell">
           <span class="stat-cell-label">Sweet Talker</span>
-          <span class="stat-cell-sub">14 thumbs up</span>
+          <span class="stat-cell-sub">14 interactions</span>
           <span class="prof-achievements-icon-wrap">
             <img src="img/icons/stat-sweet-talker.svg" class="stat-cell-icon" alt="Helpful Chatterbox">
           </span>
@@ -2158,7 +2369,7 @@
       <div class="forum-sticky" id="forum-sticky-note">
         <div class="sticky-eyebrow">Pinned by CaitlinV</div>
         <div class="sticky-title">March distro schedule is live! Check your dates before Saturday.</div>
-        <div class="sticky-meta">2 days ago · tap to read</div>
+        <div class="sticky-meta">2 days ago</div>
       </div>
     </div>
 
@@ -2196,12 +2407,12 @@
         <div class="bpost-reply-area" id="reply-2">
           <div class="bpost-reply-inner">
             <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
-            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+            <button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           </div>
         </div>
       </div>
 
-      <div class="bpost bpost-own" data-post-id="post-1" data-reply-count="1" data-cat="general" style="transform:rotate(-0.5deg);">
+      <div class="bpost bpost-own" data-post-id="post-1" data-reply-count="2" data-cat="general" style="transform:rotate(-0.5deg);">
         <div class="bpost-tack"></div>
         <div class="bpost-byline">
           <span class="bpost-author bpost-author-own">RGDfriend123</span>
@@ -2220,13 +2431,13 @@
             </span>
             <span class="bpost-like-count">1</span>
           </button>
-          <div class="bpost-reply-stat"><span class="bpost-reply-num">1</span> reply</div>
+          <div class="bpost-reply-stat"><span class="bpost-reply-num">2</span> replies</div>
           <span class="bpost-reply-hint">Reply</span>
         </div>
         <div class="bpost-reply-area" id="reply-1">
           <div class="bpost-reply-inner">
             <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
-            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+            <button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           </div>
         </div>
       </div>
@@ -2256,7 +2467,7 @@
         <div class="bpost-reply-area" id="reply-3">
           <div class="bpost-reply-inner">
             <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
-            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+            <button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           </div>
         </div>
       </div>
@@ -2286,7 +2497,7 @@
         <div class="bpost-reply-area" id="reply-4">
           <div class="bpost-reply-inner">
             <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
-            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+            <button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           </div>
         </div>
       </div>
@@ -2316,7 +2527,7 @@
         <div class="bpost-reply-area" id="reply-5">
           <div class="bpost-reply-inner">
             <input class="bpost-reply-input" type="text" placeholder="Write a reply...">
-            <button class="bpost-reply-send"><div class="send-icon-ph"></div></button>
+            <button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           </div>
         </div>
       </div>
@@ -2376,8 +2587,8 @@
       <div class="compose-divider"></div>
 
       <div class="compose-attach-row">
-        <button type="button" class="compose-attach"><div class="attach-ph"></div><span class="btn__label">Add photo</span></button>
-        <button type="button" class="compose-attach"><div class="attach-ph"></div><span class="btn__label">Attach link</span></button>
+        <button type="button" class="compose-attach"><span class="compose-attach-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2v11z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/></svg></span><span class="btn__label">Add photo</span></button>
+        <button type="button" class="compose-attach"><span class="compose-attach-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 0 1 7.07 0l.71.71a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 0 0-7.07 0l-.71.71a5 5 0 0 0 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="btn__label">Attach link</span></button>
       </div>
     </div>
 
