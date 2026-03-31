@@ -4853,3 +4853,16 @@
       }
     });
   });
+
+  // ── "G" key: toggle dev TODO sidebar + team corner ──
+  (function initDevTodoToggle() {
+    var todoShell = document.querySelector('.dev-todo-shell');
+    var cornerWrap = document.querySelector('.corner-logo-wrap');
+    document.addEventListener('keydown', function(e) {
+      if (e.key !== 'g' && e.key !== 'G') return;
+      var tag = document.activeElement ? document.activeElement.tagName : '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      var open = todoShell && todoShell.classList.toggle('is-open');
+      if (cornerWrap) cornerWrap.style.visibility = open ? 'hidden' : '';
+    });
+  })();
