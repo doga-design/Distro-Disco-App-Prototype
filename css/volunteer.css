@@ -1,43 +1,4 @@
 /* ── Volunteer Page ── */
-  .page-volunteer .vol-page-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 20px 20px;
-  }
-
-  .page-volunteer .vol-back-btn {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: transparent;
-    border: 1px solid var(--border-color);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: transform 0.1s, background 0.1s;
-  }
-  .page-volunteer .vol-back-btn:active,
-  .page-volunteer .vol-back-btn.touch-active {
-    transform: scale(0.92);
-    background: var(--input-bg);
-  }
-  .page-volunteer .vol-back-btn svg {
-    width: 16px; height: 16px;
-    stroke: var(--navy); stroke-width: 2; fill: none;
-    stroke-linecap: round; stroke-linejoin: round;
-  }
-  .page-volunteer .vol-page-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: -0.3px;
-  }
-  .page-volunteer .vol-divider {
-    height: 1px;
-    background: var(--border-color);
-    margin: 0 20px;
-  }
-
   /* Timeline */
   .page-volunteer .vol-timeline-section { padding: 18px 20px 12px; }
   .page-volunteer .vol-timeline-month-row {

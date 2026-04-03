@@ -146,8 +146,6 @@
   const detailAddress = document.getElementById('event-detail-address');
   const detailTasks = document.getElementById('event-detail-tasks');
   const detailCta = document.getElementById('event-detail-cta');
-  const detailBack = document.getElementById('event-detail-back');
-  const donateMoneyBackBtn = document.getElementById('donate-money-back-btn');
   const dmSwitchToItems = document.getElementById('dm-switch-to-items');
   const donatePresetButtons = document.querySelectorAll('.page-donate-money .donate-preset-btn');
   const donateCustomInput = document.getElementById('donate-custom-input');
@@ -481,16 +479,16 @@
       };
       var moneySegment = document.querySelector('.page-donate-money .donate-switch-segment');
       var itemsSegment = document.querySelector('.page-donate-items .donate-switch-segment');
-      setDonateSegmentState(moneySegment, false);
-      setDonateSegmentState(itemsSegment, true);
+      setDonateSegmentState(moneySegment, true);
+      setDonateSegmentState(itemsSegment, false);
 
       if (swapTarget === name) {
         var activeSegment = name === 'donate-items' ? itemsSegment : moneySegment;
-        var animateToRight = name === 'donate-items';
+        var endIsRight = name === 'donate-money';
         if (activeSegment) {
-          setDonateSegmentState(activeSegment, !animateToRight);
+          setDonateSegmentState(activeSegment, !endIsRight);
           setTimeout(function() {
-            setDonateSegmentState(activeSegment, animateToRight);
+            setDonateSegmentState(activeSegment, endIsRight);
           }, 40);
         }
       }
@@ -912,13 +910,13 @@
   }
 
   const eventDetails = {
-    'feb-distro-3': {
+    'april-distro-3': {
       category: 'distro',
-      title: 'February Distro #3',
+      title: 'April Distro #3',
       icon: 'img/icons/icon-bus.svg',
       illustration: 'img/icons/icon-bus.svg',
-      datetime: 'Saturday Feb 25, 3-5pm',
-      eventDate: 'Saturday, Feb 25',
+      datetime: 'Saturday Apr 25, 3–5pm',
+      eventDate: 'Saturday, Apr 25',
       locationLabel: 'Crab Park',
       address: '101 E Waterfront Rd',
       tasks: [
@@ -928,29 +926,29 @@
       ],
       cta: 'Volunteer for this distro'
     },
-    'march-distro-1': {
+    'april-distro-1': {
       category: 'distro',
-      title: 'March Distro #1',
+      title: 'April Distro #1',
       icon: 'img/icons/icon-bus.svg',
       illustration: 'img/icons/icon-bus.svg',
-      datetime: 'Saturday Mar 4, 2-4pm',
-      eventDate: 'Saturday, Mar 4',
+      datetime: 'Saturday Apr 11, 2–4pm',
+      eventDate: 'Saturday, Apr 11',
       locationLabel: 'Oppenheimer Park',
       address: 'E Cordova St',
       tasks: [
-        { text: 'Sort warm layers, socks, and snacks into quick-grab bundles.' },
+        { text: 'Sort layers, socks, and snacks into quick-grab bundles.' },
         { text: 'Welcome neighbours at the table and help distribute supplies fairly.' },
         { text: 'Float between stations to restock items and answer questions.' }
       ],
       cta: 'Volunteer for this distro'
     },
-    'march-distro-2': {
+    'april-distro-2': {
       category: 'distro',
-      title: 'March Distro #2',
+      title: 'April Distro #2',
       icon: 'img/icons/icon-bus.svg',
       illustration: 'img/icons/icon-bus.svg',
-      datetime: 'Saturday Mar 18, 3-5pm',
-      eventDate: 'Saturday, Mar 18',
+      datetime: 'Saturday Apr 18, 3–5pm',
+      eventDate: 'Saturday, Apr 18',
       locationLabel: 'Thornton Park',
       address: 'Station St',
       tasks: [
@@ -960,17 +958,17 @@
       ],
       cta: 'Volunteer for this distro'
     },
-    'winter-clothing-drive': {
+    'spring-clothing-drive': {
       category: 'drive',
-      title: 'Winter Clothing Drive',
+      title: 'Spring clothing drive',
       icon: 'img/icons/icon-heart.svg',
       illustration: 'img/icons/icon-heart.svg',
-      datetime: 'Mon-Fri, Feb 27 - Mar 10',
-      eventDate: 'Feb 27 – Mar 10 · Mon–Fri',
-      locationLabel: 'Drop-off Point',
+      datetime: 'Mon–Fri, Apr 7 – Apr 18',
+      eventDate: 'Apr 7 – Apr 18 · Mon–Fri',
+      locationLabel: 'Drop-off point',
       address: '309 E Hastings St',
       tasks: [
-        { text: 'Sort coats, sweaters, and boots by size and condition.' },
+        { text: 'Sort donated clothing by size and condition.' },
         { text: 'Tag damaged items that should not be distributed.', complete: true },
         { text: 'Help load donation bins for transport to the next distro.' }
       ],
@@ -981,8 +979,8 @@
       title: 'Spring Gala Night',
       icon: 'img/icons/icon-rewards.svg',
       illustration: 'img/icons/icon-rewards.svg',
-      datetime: 'Friday Mar 24, 6-10pm',
-      eventDate: 'Friday, Mar 24',
+      datetime: 'Friday Apr 23, 6–10pm',
+      eventDate: 'Friday, Apr 23',
       locationLabel: 'The Beaumont Studio',
       address: 'E 6th Ave',
       tasks: [
@@ -994,11 +992,11 @@
     },
     'online-fundraiser': {
       category: 'fundraiser',
-      title: 'Online Fundraiser',
+      title: 'Online Silent Auction',
       icon: 'img/icons/icon-rewards.svg',
       illustration: 'img/icons/icon-rewards.svg',
-      datetime: 'Mar 1-31, all month',
-      eventDate: 'March 1–31',
+      datetime: 'Apr 1–30, all month',
+      eventDate: 'April 1–30',
       locationLabel: 'Online campaign',
       address: 'Share the fundraiser link with your community',
       tasks: [
@@ -1014,12 +1012,12 @@
   var eventDetailReturnPage = 'home';
   var volunteerConfirmReturnPage = 'volunteer';
   var VOLUNTEER_CONFIRM_DEFAULTS = {
-    eventTitle: 'Free Grocery Pickup',
-    eventDateTime: 'Saturday, March 28 · 10:00 AM – 1:00 PM',
-    eventDate: 'Saturday, March 28',
+    eventTitle: 'Free grocery pickup',
+    eventDateTime: 'Saturday, April 12 · 10:00 AM – 1:00 PM',
+    eventDate: 'Saturday, April 12',
     eventLocation: '123 Spadina Ave, Toronto',
     categoryIcon: 'img/icons/icon-bus.svg',
-    role: 'Community Support Volunteer',
+    role: 'Community support volunteer',
     shift: '10:00 AM – 1:00 PM'
   };
 
@@ -1334,9 +1332,6 @@
     });
   }
 
-  if (donateMoneyBackBtn) {
-    donateMoneyBackBtn.addEventListener('click', () => showPage(donateReturnPage || 'home'));
-  }
   updateDonateUI();
 
   navItems.forEach(item => {
@@ -1560,7 +1555,10 @@
     }
     if (nav === 'event-detail') {
       var eventId = item.getAttribute('data-event-id');
-      if (eventId) openEventDetail(eventId);
+      if (eventId) {
+        eventDetailReturnPage = 'activities';
+        openEventDetail(eventId);
+      }
       return;
     }
     if (nav === 'volunteer' || nav === 'events' || nav === 'forums') {
@@ -1623,22 +1621,18 @@
       openEventDetail(btn.dataset.eventId);
     });
   });
+
+  var detailGoBackBtn = document.getElementById('event-detail-go-back');
+  if (detailGoBackBtn) {
+    detailGoBackBtn.addEventListener('click', function() {
+      var target = eventDetailReturnPage;
+      if (!target || target === 'detail') target = 'home';
+      showPage(target);
+    });
+  }
   document.querySelectorAll('.event-end-cta').forEach(btn => {
     btn.addEventListener('click', () => showPage('donate-items'));
   });
-
-  if (detailBack) {
-    detailBack.addEventListener('click', () => showPage(eventDetailReturnPage || 'home'));
-  }
-  const detailBackBtn = document.getElementById('event-detail-back-btn');
-  if (detailBackBtn) {
-    detailBackBtn.addEventListener('click', () => showPage(eventDetailReturnPage || 'home'));
-  }
-
-  const eventsBackBtn = document.getElementById('events-back-btn');
-  if (eventsBackBtn) {
-    eventsBackBtn.addEventListener('click', () => showPage('home'));
-  }
 
   var CALENDAR_MONTH_INDEX = {
     january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
@@ -1692,11 +1686,44 @@
     }
 
     function getDayType(cell) {
+      if (cell.classList.contains('cal-event-suppressed')) return 'none';
       if (cell.classList.contains('empty')) return 'empty';
       if (cell.classList.contains('fundraiser')) return 'fundraiser';
       if (cell.classList.contains('drive')) return 'drive';
       if (cell.classList.contains('distro')) return 'distro';
       return 'none';
+    }
+
+    function getCellEventTypeClass(cell) {
+      if (cell.classList.contains('fundraiser')) return 'fundraiser';
+      if (cell.classList.contains('drive')) return 'drive';
+      if (cell.classList.contains('distro')) return 'distro';
+      return null;
+    }
+
+    function calendarPanelShowsType(panelKey, type) {
+      if (panelKey === 'all') return true;
+      if (panelKey === 'distros') return type === 'distro';
+      if (panelKey === 'drives') return type === 'drive';
+      if (panelKey === 'fundraisers') return type === 'fundraiser';
+      return true;
+    }
+
+    function applyCalTabFilter(panelKey) {
+      var valid = { all: 1, distros: 1, drives: 1, fundraisers: 1 };
+      if (!valid[panelKey]) panelKey = 'all';
+      calCard.setAttribute('data-cal-panel', panelKey);
+      var et = activeCell ? getCellEventTypeClass(activeCell) : null;
+      if (et && !calendarPanelShowsType(panelKey, et)) {
+        closePlaceholder();
+      }
+      calCard.querySelectorAll('.cal-grid .day-cell').forEach(function(cell) {
+        cell.classList.remove('cal-event-suppressed');
+        if (panelKey === 'all') return;
+        var t = getCellEventTypeClass(cell);
+        if (!t || calendarPanelShowsType(panelKey, t)) return;
+        cell.classList.add('cal-event-suppressed');
+      });
     }
 
     function buildPlaceholderCopy(cell, monthLabel, dayNumber) {
@@ -1709,21 +1736,21 @@
       }
       if (dayType === 'none') {
         return {
-          title: monthLabel + ' ' + dayNumber + ' - No events',
+          title: monthLabel + ' ' + dayNumber + ' — no events',
           copy: 'No event is scheduled for this date.'
         };
       }
 
       var labelMap = {
-        fundraiser: 'Fundraiser day',
-        drive: 'Drive day',
-        distro: 'Distro day'
+        fundraiser: 'Fundraiser',
+        drive: 'Drive',
+        distro: 'Distro'
       };
       var moodSuffix = cell.classList.contains('muted') || cell.classList.contains('faded')
         ? ' This date is outside the active month range.'
         : '';
       return {
-        title: monthLabel + ' ' + dayNumber + ' - ' + labelMap[dayType],
+        title: monthLabel + ' ' + dayNumber + ' — ' + labelMap[dayType],
         copy: 'Event details are not linked for this day yet.' + moodSuffix
       };
     }
@@ -1750,8 +1777,16 @@
       return n < 9;
     }
 
+    function findHomeEventCardForCalendar(eventId) {
+      var esc = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(eventId) : eventId.replace(/"/g, '\\"');
+      var activeSel = '.page-home .section.events .events-panel.active .card.event-card[data-event-id="' + esc + '"]:not(.event-end-card)';
+      var el = document.querySelector(activeSel);
+      if (el) return el;
+      return document.querySelector('.page-home .section.events .card.event-card[data-event-id="' + esc + '"]:not(.event-end-card)');
+    }
+
     function setEventCardPlaceholder(eventId, cell) {
-      var source = document.querySelector('.event-card[data-event-id="' + eventId + '"]');
+      var source = findHomeEventCardForCalendar(eventId);
       if (!source || !eventDetails[eventId]) return false;
       placeholder.classList.add('cal-day-placeholder--event');
       placeholder.innerHTML = '';
@@ -1797,7 +1832,7 @@
       var monthLabel = (grid.getAttribute('data-cal-month') || '').trim();
       monthLabel = monthLabel ? monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1) : 'Selected date';
 
-      var eventId = cell.getAttribute('data-event-id');
+      var eventId = cell.classList.contains('cal-event-suppressed') ? null : cell.getAttribute('data-event-id');
       if (!eventId || !setEventCardPlaceholder(eventId, cell)) {
         setGreyPlaceholder(cell, monthLabel, dayNumber);
       }
@@ -1813,8 +1848,41 @@
     }
 
     calCard.addEventListener('click', function(e) {
+      var calViewBtn = e.target.closest('.cal-day-placeholder .events-detail-view-calendar[data-event-id]');
+      if (calViewBtn && calCard.contains(calViewBtn) && !calViewBtn.disabled) {
+        e.preventDefault();
+        e.stopPropagation();
+        var eventId = calViewBtn.getAttribute('data-event-id');
+        var findCell = window.__ddFindCalendarCellForEvent;
+        var setPane = window.__ddSetEventsPane;
+        if (typeof findCell !== 'function' || typeof setPane !== 'function') return;
+        var targetCell = findCell(eventId);
+        if (!targetCell) return;
+        setPane(false);
+        requestAnimationFrame(function() {
+          targetCell.click();
+          var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          targetCell.scrollIntoView({
+            behavior: prefersReduced ? 'auto' : 'smooth',
+            block: 'center',
+            inline: 'nearest'
+          });
+          requestAnimationFrame(function() {
+            var eventsPage = document.querySelector('.page-events');
+            var ph = eventsPage && eventsPage.querySelector('.cal-day-placeholder.is-open');
+            if (ph) {
+              ph.scrollIntoView({
+                behavior: prefersReduced ? 'auto' : 'smooth',
+                block: 'nearest',
+                inline: 'nearest'
+              });
+            }
+          });
+        });
+        return;
+      }
       var detailBtn = e.target.closest('.cal-day-placeholder .btn[data-event-id]');
-      if (detailBtn && calCard.contains(detailBtn)) {
+      if (detailBtn && calCard.contains(detailBtn) && !detailBtn.classList.contains('events-detail-view-calendar')) {
         e.preventDefault();
         e.stopPropagation();
         eventDetailReturnPage = 'events';
@@ -1830,6 +1898,17 @@
       openForCell(cell);
     });
 
+    var calTabStrip = document.querySelector('.page-events .cal-calendar-tabs');
+    if (calTabStrip) {
+      calTabStrip.querySelectorAll('.tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          var key = tab.textContent.trim().toLowerCase();
+          applyCalTabFilter(key);
+        });
+      });
+      applyCalTabFilter('all');
+    }
+
     window.__ddGetCalendarAddEventPrefillISO = function() {
       return ddCalendarCellToISODate(activeCell);
     };
@@ -1837,7 +1916,7 @@
 
   // ── Forum & Compose Pages ──
   const forumPostDetails = {
-    'post-1': { title: "This Saturday's set-up crew, let's talk about it!", body: "Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the group chat.", author: 'RGDfriend123', time: '1 day ago', category: 'General' },
+    'post-1': { title: "This Saturday's set-up crew, let's talk about it!", body: "Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the group chat.", author: 'Rgdfriend', time: '1 day ago', category: 'General' },
     'post-2': { title: "What's volunteering actually like at DD?", body: "I've been wanting to volunteer more but I'm not sure where to start. If you were new once, what actually made you come back?", author: 'GracelleM', time: '2 days ago', category: 'Question' },
     'post-3': { title: 'Online deals for supplies this week', body: 'Found some discount codes for Canadian Tire. Tents, thermal socks, gloves all on sale. Sharing here if you have financial capacity this month.', author: 'CaitlinV', time: '3 days ago', category: 'General' },
     'post-4': { title: 'Do I need to bring my own bags for the distro?', body: 'First time attending next Saturday. Is there a list of what to bring or does everything get provided on the day?', author: 'DogaCM', time: '5 days ago', category: 'Question' },
@@ -1965,7 +2044,7 @@
   const forumDetailCommentsByPost = {
     'post-1': [
       { author: 'GracelleM', time: '2h', body: 'Count me in for Saturday set-up. I can be there by 8:30 with tape and a couple folding tables. Text me when you lock headcount?', upvotes: 3 },
-      { author: 'RGDfriend123', time: '1h', body: 'Perfect. I\'ll text you once I have numbers.', upvotes: 2 }
+      { author: 'Rgdfriend', time: '1h', body: 'Perfect. I\'ll text you once I have numbers.', upvotes: 2 }
     ],
     'post-2': [
       { author: 'Sam_M', time: '2d', body: 'Honestly it was way less awkward than I pictured. Someone just said hi and gave me a simple job right away.', upvotes: 12 },
@@ -2072,7 +2151,7 @@
     const deleteBtn = document.getElementById('forum-detail-delete');
     if (deleteBtn) {
       deleteBtn.dataset.postId = postId;
-      deleteBtn.style.display = details.author === 'RGDfriend123' ? '' : 'none';
+      deleteBtn.style.display = details.author === 'Rgdfriend' ? '' : 'none';
     }
     if (titleEl) titleEl.textContent = details.title.length > 40 ? details.title.slice(0, 40) + '…' : details.title;
     if (authorEl) authorEl.textContent = details.author;
@@ -2137,7 +2216,7 @@
       var nodeClass = 'forum-comment-node' + (node.replies.length ? ' has-replies' : '');
       var bylineClass = 'forum-comment-byline' + (node.replies.length ? ' forum-comment-byline--thread' : '');
       var bylineAttrs = node.replies.length ? ' title="Collapse or expand replies"' : '';
-      var isOwnComment = c.author === 'RGDfriend123' || c.author === 'You';
+      var isOwnComment = c.author === 'Rgdfriend' || c.author === 'You';
       var deleteHtml = isOwnComment ? '<button type="button" class="forum-comment-delete-btn" aria-label="Delete comment"><span class="btn__label">Delete</span></button>' : '';
       var actionsHtml = '<div class="forum-comment-actions"><button type="button" class="forum-comment-like-btn' + likedClass + '" data-comment-like-key="' + commentKey + '" aria-pressed="' + (st.liked ? 'true' : 'false') + '" aria-label="' + (st.liked ? 'Unlike' : 'Like') + '">' + likeIconHtml + '<span class="forum-comment-like-count">' + st.count + '</span></button><button type="button" class="forum-comment-reply-btn"><span class="btn__label">Reply</span></button>' + deleteHtml + '</div>';
       return '<div class="' + nodeClass + '"><div class="forum-comment-content"><div class="forum-comment-avatar"></div><div class="forum-comment-main"><div class="' + bylineClass + '"' + bylineAttrs + '><span class="username">' + c.author + '</span><span class="dot">·</span><span class="timestamp">' + c.time + '</span></div><div class="forum-comment-body">' + c.body + '</div>' + actionsHtml + '</div></div>' + repliesHtml + '</div>';
@@ -2294,9 +2373,6 @@
       });
     }
 
-    var forumDetailBack = document.getElementById('forum-detail-back');
-    if (forumDetailBack) forumDetailBack.addEventListener('click', function() { showPage('forums'); });
-
     var forumDetailDelete = document.getElementById('forum-detail-delete');
     if (forumDetailDelete) {
       forumDetailDelete.addEventListener('click', function() {
@@ -2310,9 +2386,6 @@
         showPage('forums');
       });
     }
-
-    var forumBackBtn = document.getElementById('forum-back');
-    if (forumBackBtn) forumBackBtn.addEventListener('click', function() { showPage('home'); });
 
     const forumNewPostBtn = document.getElementById('forum-new-post-btn');
     if (forumNewPostBtn) {
@@ -2346,7 +2419,6 @@
         var catBtn = composeCats && composeCats.querySelector('.compose-cat-btn.active');
         var cat = (catBtn && catBtn.dataset.cat) || 'general';
         var catLabel = cat === 'questions' ? 'Question' : 'General';
-        var catClass = cat === 'questions' ? 'question' : 'general';
         if (!forumBoard || !title) return;
         function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
         var postEl = document.createElement('div');
@@ -2355,10 +2427,10 @@
         postEl.setAttribute('data-reply-count', '0');
         postEl.setAttribute('data-cat', cat);
         postEl.setAttribute('style', 'transform:rotate(-0.2deg);');
-        postEl.innerHTML = '<div class="bpost-tack"></div><div class="bpost-byline"><span class="bpost-author bpost-author-own">RGDfriend123</span><div class="bpost-sep"></div><span class="bpost-time">Just now</span><span class="bpost-cat ' + catClass + '">' + catLabel + '</span></div><div class="bpost-title">' + esc(title) + '</div><div class="bpost-body">' + esc(body) + '</div><div class="bpost-rule"></div><div class="bpost-actions"><button type="button" class="bpost-like-btn" data-post-id="post-new" aria-pressed="false" aria-label="Like"><span class="bpost-like-icon like-icon" aria-hidden="true"><img class="bpost-like-img bpost-like-img--off" src="img/icons/icon-heart-outline-sm.svg" alt="" width="22" height="22" decoding="async"><img class="bpost-like-img bpost-like-img--on" src="img/icons/icon-heart.svg" alt="" width="22" height="22" decoding="async"></span><span class="bpost-like-count">0</span></button><div class="bpost-reply-stat"><span class="bpost-reply-num">0</span> replies</div><span class="bpost-reply-hint">Reply</span></div><div class="bpost-reply-area"><div class="bpost-reply-inner"><input class="bpost-reply-input" type="text" placeholder="Write a reply..."><button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div></div>';
+        postEl.innerHTML = '<div class="bpost-tack"></div><div class="bpost-byline"><span class="bpost-author bpost-author-own">Rgdfriend</span><div class="bpost-sep"></div><span class="bpost-time">Just now</span></div><div class="bpost-title">' + esc(title) + '</div><div class="bpost-body">' + esc(body) + '</div><div class="bpost-rule"></div><div class="bpost-actions"><button type="button" class="bpost-like-btn" data-post-id="post-new" aria-pressed="false" aria-label="Like"><span class="bpost-like-icon like-icon" aria-hidden="true"><img class="bpost-like-img bpost-like-img--off" src="img/icons/icon-heart-outline-sm.svg" alt="" width="22" height="22" decoding="async"><img class="bpost-like-img bpost-like-img--on" src="img/icons/icon-heart.svg" alt="" width="22" height="22" decoding="async"></span><span class="bpost-like-count">0</span></button><div class="bpost-reply-stat"><span class="bpost-reply-num">0</span> replies</div><span class="bpost-reply-hint">Reply</span></div><div class="bpost-reply-area"><div class="bpost-reply-inner"><input class="bpost-reply-input" type="text" placeholder="Write a reply..."><button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div></div>';
         forumBoard.insertBefore(postEl, forumBoard.firstChild);
         forumPostLikeState['post-new'] = { count: 0, liked: false };
-        if (typeof forumPostDetails !== 'undefined') forumPostDetails['post-new'] = { title: title, body: body, author: 'RGDfriend123', time: 'Just now', category: catLabel };
+        if (typeof forumPostDetails !== 'undefined') forumPostDetails['post-new'] = { title: title, body: body, author: 'Rgdfriend', time: 'Just now', category: catLabel };
         updateForumPostCount();
         if (composeTitleInput) composeTitleInput.value = '';
         if (composeBodyInput) composeBodyInput.value = '';
@@ -2375,9 +2447,6 @@
         });
       });
     }
-
-    var composeBackBtn = document.getElementById('compose-back');
-    if (composeBackBtn) composeBackBtn.addEventListener('click', () => showPage('forums'));
 
     if (composeSubmitBtn) composeSubmitBtn.disabled = true;
 
@@ -2431,10 +2500,6 @@
 
   // ── Volunteer Page ──
   (function initVolunteerPage() {
-    // Back button
-    const volBack = document.getElementById('vol-back-btn');
-    if (volBack) volBack.addEventListener('click', () => showPage('home'));
-
     // Role card toggle (one active at a time, accordion)
     let volSelectedRole = 'vol-card-1'; // card 1 pre-selected
     document.querySelectorAll('.page-volunteer .vol-role-card:not(.disabled)').forEach(card => {
@@ -3626,12 +3691,11 @@
 
   function initDonateConfirmPage(config) {
     const page = document.querySelector('.page-donate-confirm');
-    const backBtn = document.getElementById('donate-confirm-back-btn');
     const usernameEl = document.getElementById('dc-username');
     const itemList = document.getElementById('dc-item-list');
     const mapWrap = document.getElementById('dc-map-wrap');
     const mapFrame = document.getElementById('dc-map');
-    if (!page || !backBtn || !itemList || !mapWrap || !mapFrame) return null;
+    if (!page || !itemList || !mapWrap || !mapFrame) return null;
 
     const CONDITION_NOTES = {
       '2XL-6XL clothes': 'Clean and in usable condition',
@@ -3726,11 +3790,6 @@
       mapWrap.classList.add('loaded');
     });
 
-    backBtn.addEventListener('click', function() {
-      if (typeof config.onBack === 'function') config.onBack();
-      showPage('donate-items');
-    });
-
     var makeChangesBtn = document.getElementById('dc-make-changes-btn');
     if (makeChangesBtn) {
       makeChangesBtn.addEventListener('click', function() {
@@ -3751,7 +3810,7 @@
       open: function(snapshot) {
         if (!snapshot) return;
         latestSnapshot = snapshot;
-        if (usernameEl) usernameEl.textContent = snapshot.username || 'RGDfriend123';
+        if (usernameEl) usernameEl.textContent = snapshot.username || 'Rgdfriend';
         renderItems(snapshot.items || []);
         renderMap(snapshot.selectedDropoff);
         showPage('donate-confirm');
@@ -3763,14 +3822,13 @@
 
   function initDonateMoneyConfirmPage() {
     const page = document.querySelector('.page-donate-money-confirm');
-    const backBtn = document.getElementById('donate-money-confirm-back-btn');
     const doneBtn = document.getElementById('dcm-done-btn');
     const againBtn = document.getElementById('dcm-donate-again-btn');
     const thankYou = document.getElementById('dcm-thank-you');
     const subline = document.getElementById('dcm-subline');
     const summaryTitle = document.getElementById('dcm-summary-title');
     const summaryAmount = document.getElementById('dcm-summary-amount');
-    if (!page || !backBtn || !doneBtn || !againBtn || !thankYou || !subline || !summaryTitle || !summaryAmount) return null;
+    if (!page || !doneBtn || !againBtn || !thankYou || !subline || !summaryTitle || !summaryAmount) return null;
 
     function animateEntrance() {
       page.classList.remove('is-open', 'is-content-visible');
@@ -3786,10 +3844,6 @@
       return '$' + Number(value || 0).toFixed(2);
     }
 
-    function toMoneyPage() {
-      showPage('donate-money');
-    }
-
     function toDonateItemsPage() {
       showPage('donate-items');
     }
@@ -3798,7 +3852,6 @@
       showPage('home');
     }
 
-    backBtn.addEventListener('click', toMoneyPage);
     againBtn.addEventListener('click', toDonateItemsPage);
     doneBtn.addEventListener('click', toHomePage);
 
@@ -3818,7 +3871,6 @@
 
   function initVolunteerConfirmPage() {
     var page = document.querySelector('.page-volunteer-confirm');
-    var backBtn = document.getElementById('volunteer-confirm-back-btn');
     var doneBtn = document.getElementById('vc-done-btn');
     var secondaryBtn = document.getElementById('vc-secondary-btn');
     var vcEventTitle = document.getElementById('vc-event-title');
@@ -3829,7 +3881,7 @@
     var vcShift = document.getElementById('vc-shift');
     var vcDate = document.getElementById('vc-date');
     var vcImpactCopy = document.getElementById('vc-impact-copy');
-    if (!page || !backBtn || !doneBtn || !secondaryBtn) return null;
+    if (!page || !doneBtn || !secondaryBtn) return null;
 
     function animateEntrance() {
       page.classList.remove('is-open', 'is-content-visible');
@@ -3868,16 +3920,6 @@
       volunteerCommitments.push(vc);
     }
 
-    function returnFromConfirm() {
-      var dest = volunteerConfirmReturnPage;
-      if (dest === 'detail' || dest === 'volunteer' || dest === 'events' || dest === 'home') {
-        showPage(dest);
-      } else {
-        showPage('home');
-      }
-    }
-
-    backBtn.addEventListener('click', returnFromConfirm);
     doneBtn.addEventListener('click', function() {
       var latest = volunteerCommitments && volunteerCommitments.length ? volunteerCommitments[volunteerCommitments.length - 1] : null;
       profileCommitmentNewType = 'volunteer';
@@ -3921,15 +3963,16 @@
   (function initDonateItemsPage() {
     const itemQuantities = new Map();
     let diSheetOpen = false;
-    let editingItemName = null;
     let selectedDropoff = 'private';
-    const confirmUsername = 'RGDfriend123';
+    const DI_SHEET_QTY_MAX = 999;
+    const confirmUsername = 'Rgdfriend';
     const usedPairSuggestions = new Set();
     const pairedItems = new Map();
     const PAIR_PARENT_ITEM = 'Tents';
     const DROP_OFF_LOCATIONS = [
       { id: 'private', mapQuery: 'Private Residence, 436 12th Ave East, Vancouver, BC' },
       { id: 'cross', mapQuery: 'Cross & Crows Books, 2836 Commercial Dr, Vancouver, BC' },
+      { id: 'upcoming-drive', mapQuery: 'Trout Lake Community Centre, Vancouver, BC' },
       { id: 'wildfires', mapQuery: 'Wildfires Bookshop, 712B 12th St, New Westminster, BC' }
     ];
 
@@ -3941,6 +3984,7 @@
     const diSheetClose = document.getElementById('di-sheet-close');
     const diSheetConsent = document.getElementById('di-bs-consent-box');
     const diSheetItems = document.getElementById('di-sheet-items');
+    const diSheetResetItemsBtn = document.getElementById('di-sheet-reset-items-btn');
     const diSheetMiniGrid = document.querySelector('.di-sheet-mini-grid');
     const diPairsRow = diSheetMiniGrid ? diSheetMiniGrid.querySelector('.di-sheet-mini-col-pairs .di-sheet-mini-row') : null;
     const initialPairsMarkup = diPairsRow ? diPairsRow.innerHTML : '';
@@ -3967,8 +4011,8 @@
       'Tarps': 'img/icons/icon-tarps.svg',
       'Tea lights': 'img/icons/icon-tea-lights.svg',
       'Umbrellas': 'img/icons/icon-umbrellas.svg',
-      'Sleeping bags': 'img/icons/icon-sleeping-bags.svg',
-      'Rain jackets': 'img/icons/icon-rain-jackets.svg'
+      'Sleeping bags': 'img/icons/icon-tarps.svg',
+      'Rain jackets': 'img/icons/icon-2xl-6xl-clothes.svg'
     }[name] || 'img/icons/icon-stars.svg');
 
     function getDropoffById(id) {
@@ -4064,10 +4108,61 @@
       document.querySelectorAll('.page-donate-items .di-item-card[data-item]').forEach(function(card) {
         const itemName = card.dataset.item;
         const btn = card.querySelector('.di-item-btn');
+        const icon = card.querySelector('.item-icon[data-icon-active][data-icon-inactive]');
         const active = itemQuantities.has(itemName);
         card.classList.toggle('selected', active);
         if (btn) btn.textContent = active ? 'Added' : 'I have this item';
+        if (icon) {
+          icon.src = active ? icon.dataset.iconActive : icon.dataset.iconInactive;
+        }
       });
+    }
+
+    function jumpDiItemIconForItem(itemName) {
+      if (!itemName || prefersReducedMotionUI()) return;
+      var safe = itemName;
+      if (window.CSS && CSS.escape) {
+        safe = CSS.escape(itemName);
+      } else {
+        safe = itemName.replace(/"/g, '\\"');
+      }
+      var card = document.querySelector('.page-donate-items .di-item-card[data-item="' + safe + '"]');
+      if (!card) return;
+      var icon = card.querySelector('.item-icon');
+      if (!icon) return;
+      icon.classList.remove('di-item-icon-jump');
+      void icon.offsetWidth;
+      icon.classList.add('di-item-icon-jump');
+      icon.addEventListener('animationend', function handleDiItemIconJump() {
+        icon.classList.remove('di-item-icon-jump');
+        icon.removeEventListener('animationend', handleDiItemIconJump);
+      });
+    }
+
+    function commitSheetQtyFromInput(input) {
+      if (!input || !input.dataset.item) return;
+      const itemName = input.dataset.item;
+      if (!itemQuantities.has(itemName)) return;
+      const raw = String(input.value).trim();
+      const nParsed = parseInt(raw, 10);
+      const current = itemQuantities.get(itemName);
+      if (raw === '' || !Number.isFinite(nParsed)) {
+        input.value = String(current);
+        return;
+      }
+      if (nParsed <= 0) {
+        setItemQuantity(itemName, 0);
+        updateDiUI();
+        return;
+      }
+      const n = Math.min(DI_SHEET_QTY_MAX, Math.max(1, nParsed));
+      if (n !== current) {
+        setItemQuantity(itemName, n);
+        updateDiUI();
+        if (itemQuantities.has(itemName)) jumpBadgeForItem(itemName, n);
+      } else {
+        input.value = String(n);
+      }
     }
 
     function renderSheetItems() {
@@ -4106,10 +4201,6 @@
         icon.alt = '';
         icon.src = getItemIconSrc(itemName);
         thumb.appendChild(icon);
-        const count = document.createElement('span');
-        count.className = 'di-sheet-item-count';
-        count.textContent = 'x' + qty;
-        thumb.appendChild(count);
 
         const name = document.createElement('div');
         name.className = 'di-sheet-item-name';
@@ -4120,55 +4211,40 @@
         left.appendChild(main);
         row.appendChild(left);
 
-        if (editingItemName === itemName) {
-          const qtyWrap = document.createElement('div');
-          qtyWrap.className = 'di-sheet-qty';
+        const right = document.createElement('div');
+        right.className = 'di-sheet-item-right';
 
-          const dec = document.createElement('button');
-          dec.className = 'di-sheet-qty-btn';
-          dec.dataset.action = 'dec';
-          dec.dataset.item = itemName;
-          dec.type = 'button';
-          dec.textContent = '-';
+        const qtyWrap = document.createElement('div');
+        qtyWrap.className = 'di-sheet-qty';
 
-          const num = document.createElement('span');
-          num.className = 'di-sheet-qty-num';
-          num.textContent = String(qty);
+        const dec = document.createElement('button');
+        dec.className = 'di-sheet-qty-btn';
+        dec.dataset.action = 'dec';
+        dec.dataset.item = itemName;
+        dec.type = 'button';
+        dec.textContent = '-';
 
-          const inc = document.createElement('button');
-          inc.className = 'di-sheet-qty-btn';
-          inc.dataset.action = 'inc';
-          inc.dataset.item = itemName;
-          inc.type = 'button';
-          inc.textContent = '+';
+        const qtyInput = document.createElement('input');
+        qtyInput.className = 'di-sheet-qty-input';
+        qtyInput.type = 'number';
+        qtyInput.min = '1';
+        qtyInput.max = String(DI_SHEET_QTY_MAX);
+        qtyInput.dataset.item = itemName;
+        qtyInput.value = String(qty);
+        qtyInput.setAttribute('aria-label', 'Quantity for ' + itemName);
 
-          qtyWrap.appendChild(dec);
-          qtyWrap.appendChild(num);
-          qtyWrap.appendChild(inc);
-          const confirm = document.createElement('button');
-          confirm.className = 'btn btn-primary di-sheet-qty-confirm';
-          confirm.type = 'button';
-          confirm.innerHTML = '<span class="btn__label">Update</span>';
-          confirm.addEventListener('click', function() {
-            editingItemName = null;
-            renderSheetItems();
-            updateDiUI();
-          });
-          row.appendChild(qtyWrap);
-          row.appendChild(confirm);
-        } else {
-          const edit = document.createElement('button');
-          edit.className = 'di-sheet-edit';
-          edit.dataset.action = 'edit';
-          edit.dataset.item = itemName;
-          edit.type = 'button';
-          edit.setAttribute('aria-label', 'Edit ' + itemName + ' quantity');
-          const editIcon = document.createElement('img');
-          editIcon.src = 'img/icons/icon-edit.svg';
-          editIcon.alt = '';
-          edit.appendChild(editIcon);
-          left.appendChild(edit);
-        }
+        const inc = document.createElement('button');
+        inc.className = 'di-sheet-qty-btn';
+        inc.dataset.action = 'inc';
+        inc.dataset.item = itemName;
+        inc.type = 'button';
+        inc.textContent = '+';
+
+        qtyWrap.appendChild(dec);
+        qtyWrap.appendChild(qtyInput);
+        qtyWrap.appendChild(inc);
+        right.appendChild(qtyWrap);
+        row.appendChild(right);
 
         diSheetItems.appendChild(row);
       }
@@ -4232,7 +4308,6 @@
     function closeDiSheet() {
       if (!diSheet || !diSheetBackdrop) return;
       diSheetOpen = false;
-      editingItemName = null;
       diSheetBackdrop.classList.remove('is-open');
       diSheet.classList.remove('is-open');
       document.body.style.overflow = '';
@@ -4270,16 +4345,14 @@
       }
       const row = diSheetItems.querySelector('.di-sheet-item-row[data-item="' + safe + '"]');
       if (!row) return;
-      const badge = row.querySelector('.di-sheet-item-count');
-      if (!badge) return;
-      badge.textContent = 'x' + qty;
-      badge.classList.remove('di-badge-jump');
-      // force reflow so animation can restart
-      void badge.offsetWidth;
-      badge.classList.add('di-badge-jump');
-      badge.addEventListener('animationend', function handle() {
-        badge.classList.remove('di-badge-jump');
-        badge.removeEventListener('animationend', handle);
+      const qtyInput = row.querySelector('.di-sheet-qty-input');
+      if (!qtyInput) return;
+      qtyInput.classList.remove('di-badge-jump');
+      void qtyInput.offsetWidth;
+      qtyInput.classList.add('di-badge-jump');
+      qtyInput.addEventListener('animationend', function handle() {
+        qtyInput.classList.remove('di-badge-jump');
+        qtyInput.removeEventListener('animationend', handle);
       });
     }
 
@@ -4287,6 +4360,13 @@
     document.querySelectorAll('.di-bs-location-card').forEach(function(card) {
       card.addEventListener('click', function() {
         selectedDropoff = card.dataset.sheetLocation || selectedDropoff;
+        card.classList.remove('di-badge-jump');
+        void card.offsetWidth;
+        card.classList.add('di-badge-jump');
+        card.addEventListener('animationend', function handleDropoffBounce() {
+          card.classList.remove('di-badge-jump');
+          card.removeEventListener('animationend', handleDropoffBounce);
+        });
         renderDropoffSelection();
         updateSheetDonateState();
       });
@@ -4295,7 +4375,7 @@
     // Tap scale effect on pointerdown so it fires immediately before click (things may disappear on click)
     var diSheetTapTimeout = null;
     var diSheetTapEl = null;
-    var diSheetTappableSelector = 'button, a, [role="button"], .di-sheet-close, .di-sheet-mini-chip, .di-sheet-edit, .di-bs-consent-box, .di-bs-consent, .di-bs-location-card';
+    var diSheetTappableSelector = 'button, a, [role="button"], .di-sheet-close, .di-sheet-mini-chip, .di-bs-consent-box, .di-bs-consent';
     if (diSheet) {
       diSheet.addEventListener('pointerdown', function(e) {
         if (e.target.closest('.di-bs-slide-cta')) return;
@@ -4309,8 +4389,22 @@
       });
     }
 
-    // Inline quantity editor controls (event delegation)
+    // Inline quantity controls (event delegation)
     if (diSheetItems) {
+      diSheetItems.addEventListener('focusout', function(e) {
+        const input = e.target;
+        if (!input || !input.classList || !input.classList.contains('di-sheet-qty-input')) return;
+        if (!diSheetItems.contains(input)) return;
+        commitSheetQtyFromInput(input);
+      });
+      diSheetItems.addEventListener('keydown', function(e) {
+        if (e.key !== 'Enter') return;
+        const input = e.target;
+        if (!input || !input.classList || !input.classList.contains('di-sheet-qty-input')) return;
+        e.preventDefault();
+        commitSheetQtyFromInput(input);
+        input.blur();
+      });
       diSheetItems.addEventListener('click', function(e) {
         const btn = e.target.closest('button[data-action]');
         if (!btn) return;
@@ -4318,16 +4412,9 @@
         const itemName = btn.dataset.item;
         if (!itemName || !itemQuantities.has(itemName)) return;
 
-        if (action === 'edit') {
-          editingItemName = editingItemName === itemName ? null : itemName;
-          renderSheetItems();
-          return;
-        }
-
         if (action === 'inc') {
-          const nextQty = (itemQuantities.get(itemName) || 0) + 1;
+          const nextQty = Math.min(DI_SHEET_QTY_MAX, (itemQuantities.get(itemName) || 0) + 1);
           setItemQuantity(itemName, nextQty);
-          editingItemName = itemName;
           updateDiUI();
           jumpBadgeForItem(itemName, nextQty);
           return;
@@ -4337,7 +4424,6 @@
           const nextQty = (itemQuantities.get(itemName) || 0) - 1;
           setItemQuantity(itemName, nextQty);
           if (!itemQuantities.has(itemName)) {
-            editingItemName = null;
             updateDiUI();
             return;
           }
@@ -4375,6 +4461,7 @@
           chip.remove();
 
           updateDiUI();
+          if (currentQty === 0) jumpDiItemIconForItem(itemName);
 
           const remainingPairChip = diSheetMiniGrid.querySelector('.di-sheet-mini-chip-pair:not(.used)');
           if (!remainingPairChip) {
@@ -4393,21 +4480,33 @@
         const itemName = card.dataset.item;
         if (!itemName) return;
 
+        var diItemJustAdded = false;
         if (itemQuantities.has(itemName)) {
           setItemQuantity(itemName, 0);
-          if (editingItemName === itemName) editingItemName = null;
         } else {
           setItemQuantity(itemName, 1);
+          diItemJustAdded = true;
           btn.style.transform = 'scale(1.12)';
           setTimeout(function() { btn.style.transform = ''; }, 90);
         }
         updateDiUI();
+        if (diItemJustAdded) jumpDiItemIconForItem(itemName);
       });
     });
 
     // FAB and bottom sheet open/close
     if (diFab) diFab.addEventListener('click', openDiSheet);
     if (diSheetClose) diSheetClose.addEventListener('click', closeDiSheet);
+    if (diSheetResetItemsBtn) {
+      diSheetResetItemsBtn.addEventListener('click', function() {
+        itemQuantities.clear();
+        usedPairSuggestions.clear();
+        pairedItems.clear();
+        if (diPairsRow && initialPairsMarkup) diPairsRow.innerHTML = initialPairsMarkup;
+        if (diSheetMiniGrid) diSheetMiniGrid.classList.remove('all-pairs-used');
+        updateDiUI();
+      });
+    }
     if (diChangeMindBtn) {
       diChangeMindBtn.addEventListener('click', function() {
         itemQuantities.clear();
@@ -4428,15 +4527,6 @@
           ? '<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;"><polyline points="20 6 9 17 4 12"/></svg>'
           : '';
         updateSheetDonateState();
-      });
-    }
-
-    // Back button
-    const diBackBtn = document.getElementById('donate-items-back-btn');
-    if (diBackBtn) {
-      diBackBtn.addEventListener('click', function() {
-        closeDiSheet();
-        showPage(donateReturnPage || 'home');
       });
     }
 
@@ -4465,12 +4555,14 @@
 
     function addDonateItemFromHotTicketAndOpen(itemName) {
       if (!itemName) return;
-      if (!itemQuantities.has(itemName) || itemQuantities.get(itemName) < 1) {
+      var diHotTicketJustAdded = !itemQuantities.has(itemName) || itemQuantities.get(itemName) < 1;
+      if (diHotTicketJustAdded) {
         setItemQuantity(itemName, 1);
       }
       donateReturnPage = activePageName || 'home';
       updateDiUI();
       showPage('donate-items');
+      if (diHotTicketJustAdded) jumpDiItemIconForItem(itemName);
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
           scrollDiItemCardIntoView(itemName);
@@ -4540,25 +4632,35 @@
       var cells = Array.from(eventsPage.querySelectorAll('.cal-grid .day-cell[data-event-id="' + eventId + '"]'));
       if (!cells.length) return null;
       var preferred = cells.find(function(cell) {
-        return !cell.classList.contains('muted') && !cell.classList.contains('faded');
+        return !cell.classList.contains('cal-event-suppressed') && !cell.classList.contains('muted') && !cell.classList.contains('faded');
       });
+      if (!preferred) {
+        preferred = cells.find(function(cell) {
+          return !cell.classList.contains('cal-event-suppressed');
+        });
+      }
+      if (!preferred) {
+        preferred = cells.find(function(cell) {
+          return !cell.classList.contains('muted') && !cell.classList.contains('faded');
+        });
+      }
       return preferred || cells[0];
     }
+    window.__ddFindCalendarCellForEvent = findCalendarCellForEvent;
 
     function initEventsDetailCalendarLinks() {
-      detailPane.querySelectorAll('.event-card[data-event-id]').forEach(function(card) {
-        var eventId = card.getAttribute('data-event-id');
+      detailPane.querySelectorAll('.events-detail-view-calendar[data-event-id]').forEach(function(viewBtn) {
+        if (viewBtn.getAttribute('data-dd-cal-bound') === '1') return;
+        viewBtn.setAttribute('data-dd-cal-bound', '1');
+        var eventId = viewBtn.getAttribute('data-event-id');
         var dayCell = findCalendarCellForEvent(eventId);
-        if (!dayCell) return;
-        if (card.querySelector('.events-detail-view-calendar')) return;
-        var ctaBtn = card.querySelector('.btn[data-event-id]');
-        if (!ctaBtn) return;
-        var viewBtn = document.createElement('button');
-        viewBtn.type = 'button';
-        viewBtn.className = 'events-detail-view-calendar';
-        viewBtn.textContent = 'View on calendar';
+        if (!dayCell) {
+          viewBtn.disabled = true;
+          return;
+        }
         viewBtn.addEventListener('click', function(e) {
           e.preventDefault();
+          e.stopPropagation();
           var targetCell = findCalendarCellForEvent(eventId);
           if (!targetCell) return;
           setEventsPane(false);
@@ -4582,7 +4684,6 @@
             });
           });
         });
-        ctaBtn.insertAdjacentElement('afterend', viewBtn);
       });
     }
 
@@ -4736,7 +4837,7 @@
     });
   }
 
-  document.querySelectorAll('.section.events .events-panel').forEach(initDragScroll);
+  document.querySelectorAll('.page-home .section.events .events-panel').forEach(initDragScroll);
 
   // Donate icon micro-interaction (bounce: globe-accent-pop + spark-flick; particles + globePulse via .fired)
   const donateBtn = document.getElementById('donate-btn');
@@ -4775,7 +4876,7 @@
       touchCursor.classList.remove('touch-cursor--down');
     });
 
-    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, textarea, label, .stat-cell-icon, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .donate-back-btn, .settings-row--link, .settings-toggle, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-delete-btn, .forum-comment-byline--thread, .forum-back, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .cal-add-chip, .cal-add-cover-trigger, .cal-add-cover-remove, .cal-add-modal-close, .cal-add-modal-footer .btn, .cal-add-status-done-btn, .back-to-top, .logo-home-btn';
+    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, textarea, label, .stat-cell-icon, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .settings-row--link, .settings-toggle, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-submit, .compose-cat-btn, .compose-attach, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-delete-btn, .forum-comment-byline--thread, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .cal-add-chip, .cal-add-cover-trigger, .cal-add-cover-remove, .cal-add-modal-close, .cal-add-modal-footer .btn, .cal-add-status-done-btn, .back-to-top, .logo-home-btn';
     document.addEventListener('mouseover', (e) => {
       if (e.target.closest('.cal-add-modal .cal-add-label')) {
         touchCursor.classList.remove('touch-cursor--hover');
@@ -4806,8 +4907,8 @@
       '.vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, ' +
       '.settings-row--link, .settings-toggle, ' +
       '.prof-forum-post, .prof-settings-link, ' +
-      '.btn, .icon-btn, .logo-home-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-back-btn, .vol-toggle-opt, .vol-cta-btn, .donate-back-btn, .event-detail-back, .event-detail-share, ' +
-      '.forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-back, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-back, .forum-detail-comment-post, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-byline--thread, .forum-back, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .cal-add-chip, .cal-add-cover-trigger, .cal-add-cover-remove, .cal-add-modal-close, .cal-add-modal-footer .btn, .cal-add-status-done-btn, .back-to-top, ' +
+      '.btn, .icon-btn, .logo-home-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-toggle-opt, .vol-cta-btn, .event-detail-share, ' +
+      '.forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-comment-post, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-byline--thread, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .cal-add-chip, .cal-add-cover-trigger, .cal-add-cover-remove, .cal-add-modal-close, .cal-add-modal-footer .btn, .cal-add-status-done-btn, .back-to-top, ' +
       '.dm-cta-btn, .dc-make-changes-btn, .dm-switch-to-items, .dm-toggle-switch, .dm-copy-btn, .di-item-btn, .di-switch-to-money, .di-fab, .di-sheet-close, .di-bs-consent-box, .ap-pay-btn, .ap-pay-done-btn, .ap-pay-grabber';
     function clearTouchActive() {
       document.querySelectorAll('.touch-active').forEach(function(el) { el.classList.remove('touch-active'); });
@@ -4858,11 +4959,16 @@
   (function initDevTodoToggle() {
     var todoShell = document.querySelector('.dev-todo-shell');
     var cornerWrap = document.querySelector('.corner-logo-wrap');
+    if (todoShell && todoShell.classList.contains('is-open')) {
+      todoShell.setAttribute('aria-hidden', 'false');
+      if (cornerWrap) cornerWrap.style.visibility = 'hidden';
+    }
     document.addEventListener('keydown', function(e) {
       if (e.key !== 'g' && e.key !== 'G') return;
       var tag = document.activeElement ? document.activeElement.tagName : '';
       if (tag === 'INPUT' || tag === 'TEXTAREA') return;
       var open = todoShell && todoShell.classList.toggle('is-open');
+      if (todoShell) todoShell.setAttribute('aria-hidden', open ? 'false' : 'true');
       if (cornerWrap) cornerWrap.style.visibility = open ? 'hidden' : '';
     });
   })();
