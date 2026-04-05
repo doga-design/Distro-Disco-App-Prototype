@@ -914,11 +914,11 @@
   const eventDetails = {
     'april-distro-3': {
       category: 'distro',
-      title: 'April Distro #3',
+      title: 'April distro 3',
       icon: 'img/icons/icon-bus.svg',
       illustration: 'img/icons/icon-bus.svg',
-      datetime: 'Saturday Apr 25, 3–5pm',
-      eventDate: 'Saturday, Apr 25',
+      datetime: 'Saturday Apr 26, 3–5 PM',
+      eventDate: 'Saturday, Apr 26',
       locationLabel: 'Crab Park',
       address: '101 E Waterfront Rd',
       tasks: [
@@ -930,13 +930,13 @@
     },
     'april-distro-1': {
       category: 'distro',
-      title: 'April Distro #1',
+      title: 'April distro 1',
       icon: 'img/icons/icon-bus.svg',
       illustration: 'img/icons/icon-bus.svg',
-      datetime: 'Saturday Apr 11, 2–4pm',
-      eventDate: 'Saturday, Apr 11',
-      locationLabel: 'Oppenheimer Park',
-      address: 'E Cordova St',
+      datetime: 'Saturday Apr 19, 3–6 PM',
+      eventDate: 'Saturday, Apr 19',
+      locationLabel: 'Grandview Park',
+      address: '1657 Charles St',
       tasks: [
         { text: 'Sort layers, socks, and snacks into quick-grab bundles.' },
         { text: 'Welcome neighbours at the table and help distribute supplies fairly.' },
@@ -946,13 +946,13 @@
     },
     'april-distro-2': {
       category: 'distro',
-      title: 'April Distro #2',
+      title: 'April distro 2',
       icon: 'img/icons/icon-bus.svg',
       illustration: 'img/icons/icon-bus.svg',
-      datetime: 'Saturday Apr 18, 3–5pm',
-      eventDate: 'Saturday, Apr 18',
-      locationLabel: 'Thornton Park',
-      address: 'Station St',
+      datetime: 'Saturday Apr 25, 11 AM–2 PM',
+      eventDate: 'Saturday, Apr 25',
+      locationLabel: 'Oppenheimer Park',
+      address: '400 Powell St',
       tasks: [
         { text: 'Prepare hygiene kits and food boxes before service begins.' },
         { text: 'Support set-up and organize the supply table for easy access.' },
@@ -962,13 +962,13 @@
     },
     'spring-clothing-drive': {
       category: 'drive',
-      title: 'Spring clothing drive',
+      title: 'May contribution drive',
       icon: 'img/icons/icon-heart.svg',
       illustration: 'img/icons/icon-heart.svg',
-      datetime: 'Mon–Fri, Apr 7 – Apr 18',
-      eventDate: 'Apr 7 – Apr 18 · Mon–Fri',
-      locationLabel: 'Drop-off point',
-      address: '309 E Hastings St',
+      datetime: 'Sat, May 2, 11 AM–2 PM',
+      eventDate: 'Saturday, May 2',
+      locationLabel: 'McSpadden Park',
+      address: '2125 Victoria Drive',
       tasks: [
         { text: 'Sort donated clothing by size and condition.' },
         { text: 'Tag damaged items that should not be distributed.', complete: true },
@@ -978,13 +978,13 @@
     },
     'spring-gala-night': {
       category: 'fundraiser',
-      title: 'Spring Gala Night',
-      icon: 'img/icons/icon-rewards.svg',
-      illustration: 'img/icons/icon-rewards.svg',
-      datetime: 'Friday Apr 23, 6–10pm',
-      eventDate: 'Friday, Apr 23',
-      locationLabel: 'The Beaumont Studio',
-      address: 'E 6th Ave',
+      title: "Disco's alive! Comedy show",
+      icon: 'img/icons/discoball.svg',
+      illustration: 'img/icons/discoball.svg',
+      datetime: 'Thursday Apr 23, 7 PM',
+      eventDate: 'Thursday, Apr 23',
+      locationLabel: 'Little Mountain Gallery',
+      address: '110 Water St',
       tasks: [
         { text: 'Support guest check-in and guide attendees to the event space.' },
         { text: 'Help run the silent auction and raffle table during the night.' },
@@ -994,9 +994,9 @@
     },
     'online-fundraiser': {
       category: 'fundraiser',
-      title: 'Online Silent Auction',
-      icon: 'img/icons/icon-rewards.svg',
-      illustration: 'img/icons/icon-rewards.svg',
+      title: 'Online silent auction',
+      icon: 'img/icons/discoball.svg',
+      illustration: 'img/icons/discoball.svg',
       datetime: 'Apr 1–30, all month',
       eventDate: 'April 1–30',
       locationLabel: 'Online campaign',
@@ -1294,6 +1294,38 @@
       const raw = donateCustomInput.value.trim();
       if (!raw) { donateState.selectedPreset = null; updateDonateUI(); return; }
       setDonateAmount(raw, 'custom');
+    });
+  }
+
+  if (donateAmountValue) {
+    donateAmountValue.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        donateAmountValue.blur();
+      }
+    });
+    donateAmountValue.addEventListener('focus', function() {
+      var range = document.createRange();
+      range.selectNodeContents(donateAmountValue);
+      var sel = window.getSelection();
+      if (sel) {
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    });
+    donateAmountValue.addEventListener('input', function() {
+      var raw = (donateAmountValue.textContent || '').replace(/\D+/g, '');
+      if (!raw) {
+        donateState.selectedPreset = null;
+        return;
+      }
+      if (donateAmountValue.textContent !== raw) donateAmountValue.textContent = raw;
+      setDonateAmount(raw, 'custom');
+    });
+    donateAmountValue.addEventListener('blur', function() {
+      if (!donateAmountValue.textContent || !donateAmountValue.textContent.trim()) {
+        donateAmountValue.textContent = formatDonateAmount(donateState.amount);
+      }
     });
   }
 
@@ -1764,15 +1796,40 @@
       var wrap = document.createElement('div');
       wrap.className = 'cal-day-placeholder-event-wrap';
       var clone = source.cloneNode(true);
+      var origBtn = clone.querySelector('.btn[data-event-id]');
+      if (origBtn) {
+        var eid = origBtn.getAttribute('data-event-id');
+        var ctaWrap = document.createElement('div');
+        ctaWrap.className = 'cal-placeholder-card-ctas';
+        var primaryBtn = document.createElement('button');
+        primaryBtn.type = 'button';
+        primaryBtn.className = 'btn btn-primary';
+        primaryBtn.setAttribute('data-event-id', eid);
+        primaryBtn.innerHTML = '<span class="btn__label">View details</span>';
+        var volBtnEl = document.createElement('button');
+        volBtnEl.type = 'button';
+        volBtnEl.className = 'btn btn-secondary cal-placeholder-volunteer-btn';
+        volBtnEl.setAttribute('data-event-id', eid);
+        volBtnEl.innerHTML = '<span class="btn__label">Volunteer for this event</span>';
+        ctaWrap.appendChild(primaryBtn);
+        ctaWrap.appendChild(volBtnEl);
+        origBtn.replaceWith(ctaWrap);
+      }
       if (isAprilCalendarPastDay(cell)) {
         wrap.classList.add('cal-day-placeholder-event-wrap--past');
-        var btn = clone.querySelector('.btn[data-event-id]');
-        if (btn) {
-          btn.removeAttribute('data-event-id');
-          btn.disabled = true;
-          btn.setAttribute('aria-disabled', 'true');
-          var label = btn.querySelector('.btn__label');
-          if (label) label.textContent = 'This event is over :(';
+        var primaryPast = clone.querySelector('.cal-placeholder-card-ctas .btn.btn-primary');
+        var volPast = clone.querySelector('.cal-placeholder-volunteer-btn');
+        if (primaryPast) {
+          primaryPast.removeAttribute('data-event-id');
+          primaryPast.disabled = true;
+          primaryPast.setAttribute('aria-disabled', 'true');
+          var pLabel = primaryPast.querySelector('.btn__label');
+          if (pLabel) pLabel.textContent = 'This event is over :(';
+        }
+        if (volPast) {
+          volPast.removeAttribute('data-event-id');
+          volPast.disabled = true;
+          volPast.setAttribute('aria-disabled', 'true');
         }
       }
       wrap.appendChild(clone);
@@ -1819,6 +1876,26 @@
     }
 
     calCard.addEventListener('click', function(e) {
+      var calVolBtn = e.target.closest('.cal-day-placeholder .cal-placeholder-volunteer-btn');
+      if (calVolBtn && calCard.contains(calVolBtn) && !calVolBtn.disabled && calVolBtn.getAttribute('data-event-id')) {
+        e.preventDefault();
+        e.stopPropagation();
+        var vid = calVolBtn.getAttribute('data-event-id');
+        var ev = eventDetails[vid];
+        if (!ev || !window.__openVolunteerConfirm) return;
+        var locParts = [ev.locationLabel, ev.address].filter(Boolean);
+        var loc = locParts.length ? locParts.join(', ') : VOLUNTEER_CONFIRM_DEFAULTS.eventLocation;
+        window.__openVolunteerConfirm({
+          eventTitle: ev.title,
+          eventDateTime: ev.datetime,
+          eventDate: ev.eventDate || VOLUNTEER_CONFIRM_DEFAULTS.eventDate,
+          eventLocation: loc,
+          categoryIcon: ev.icon,
+          role: VOLUNTEER_CONFIRM_DEFAULTS.role,
+          shift: VOLUNTEER_CONFIRM_DEFAULTS.shift
+        }, 'events');
+        return;
+      }
       var detailBtn = e.target.closest('.cal-day-placeholder .btn[data-event-id]');
       if (detailBtn && calCard.contains(detailBtn) && !detailBtn.classList.contains('events-detail-view-calendar')) {
         e.preventDefault();
@@ -3816,7 +3893,7 @@
     var vcShift = document.getElementById('vc-shift');
     var vcDate = document.getElementById('vc-date');
     var vcImpactCopy = document.getElementById('vc-impact-copy');
-    if (!page || !doneBtn || !secondaryBtn) return null;
+    if (!page) return null;
 
     function animateEntrance() {
       page.classList.remove('is-open', 'is-content-visible');
@@ -3855,15 +3932,19 @@
       volunteerCommitments.push(vc);
     }
 
-    doneBtn.addEventListener('click', function() {
-      var latest = volunteerCommitments && volunteerCommitments.length ? volunteerCommitments[volunteerCommitments.length - 1] : null;
-      profileCommitmentNewType = 'volunteer';
-      profileCommitmentNewId = latest && latest.id ? latest.id : null;
-      showPage('profile');
-    });
-    secondaryBtn.addEventListener('click', function() {
-      showPage('events');
-    });
+    if (doneBtn) {
+      doneBtn.addEventListener('click', function() {
+        var latest = volunteerCommitments && volunteerCommitments.length ? volunteerCommitments[volunteerCommitments.length - 1] : null;
+        profileCommitmentNewType = 'volunteer';
+        profileCommitmentNewId = latest && latest.id ? latest.id : null;
+        showPage('profile');
+      });
+    }
+    if (secondaryBtn) {
+      secondaryBtn.addEventListener('click', function() {
+        showPage('events');
+      });
+    }
 
     if (detailCta) {
       detailCta.addEventListener('click', function() {

@@ -1081,6 +1081,9 @@
     -webkit-overflow-scrolling: touch;
   }
   .events-panel.active::-webkit-scrollbar { display: none; }
+  .page-home .section.events .event-card.event-card--calendar-only {
+    display: none;
+  }
   .event-card {
     flex: 0 0 280px;
     margin-bottom: 0;

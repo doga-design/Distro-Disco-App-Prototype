@@ -157,23 +157,11 @@
     font-size: 72px;
     line-height: 0.95;
     letter-spacing: -2px;
-    position: relative;
-    z-index: 0;
+    font-weight: 700;
+    color: var(--orange);
     display: inline-block;
-  }
-  .donate-amount-value::before {
-    content: '';
-    position: absolute;
-    left: -6px;
-    right: -8px;
-    bottom: 6px;
-    height: 0.62em;
-    background: #F5FFAB;
-    border-radius: 10px;
-    transform: rotate(-1.2deg);
-    z-index: -1;
-    clip-path: polygon(0% 30%, 6% 18%, 14% 26%, 24% 16%, 36% 24%, 48% 14%, 60% 22%, 74% 12%, 86% 20%, 94% 12%, 100% 22%, 100% 86%, 94% 96%, 84% 88%, 74% 98%, 62% 90%, 48% 100%, 34% 92%, 22% 100%, 12% 90%, 6% 96%, 0% 88%);
-    opacity: 0.95;
+    cursor: text;
+    outline: none;
   }
 
   .donate-preset-grid {

@@ -280,11 +280,21 @@
   margin: 6px 0 10px;
 }
 .cal-day-placeholder.cal-day-placeholder--event.is-open {
-  max-height: 360px;
+  max-height: 420px;
   overflow: visible;
 }
 .cal-day-placeholder-event-wrap {
   width: 100%;
+}
+.cal-day-placeholder-event-wrap .cal-placeholder-card-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.cal-day-placeholder-event-wrap .cal-placeholder-card-ctas .btn {
+  width: 100%;
+  box-sizing: border-box;
 }
 .cal-day-placeholder-event-wrap .event-card {
   box-sizing: border-box;
