@@ -493,10 +493,6 @@
         }
       }
     }
-    if (name === 'events' && typeof window.__ddSetEventsPane === 'function') {
-      window.__ddSetEventsPane(false);
-    }
-
     if (prevPageName === 'home' && name !== 'home' && homeDonationCelebrationController) {
       homeDonationCelebrationController.onHomeHidden();
     }
@@ -568,6 +564,12 @@
 
     if (name === 'home' && homeDonationCelebrationController) {
       homeDonationCelebrationController.onHomeShown();
+    }
+
+    if (name === 'events' && typeof window.__ddOpenEventsCalendarToday === 'function') {
+      requestAnimationFrame(function() {
+        window.__ddOpenEventsCalendarToday();
+      });
     }
 
     bindBackToTopToActivePage();
@@ -1686,44 +1688,11 @@
     }
 
     function getDayType(cell) {
-      if (cell.classList.contains('cal-event-suppressed')) return 'none';
       if (cell.classList.contains('empty')) return 'empty';
       if (cell.classList.contains('fundraiser')) return 'fundraiser';
       if (cell.classList.contains('drive')) return 'drive';
       if (cell.classList.contains('distro')) return 'distro';
       return 'none';
-    }
-
-    function getCellEventTypeClass(cell) {
-      if (cell.classList.contains('fundraiser')) return 'fundraiser';
-      if (cell.classList.contains('drive')) return 'drive';
-      if (cell.classList.contains('distro')) return 'distro';
-      return null;
-    }
-
-    function calendarPanelShowsType(panelKey, type) {
-      if (panelKey === 'all') return true;
-      if (panelKey === 'distros') return type === 'distro';
-      if (panelKey === 'drives') return type === 'drive';
-      if (panelKey === 'fundraisers') return type === 'fundraiser';
-      return true;
-    }
-
-    function applyCalTabFilter(panelKey) {
-      var valid = { all: 1, distros: 1, drives: 1, fundraisers: 1 };
-      if (!valid[panelKey]) panelKey = 'all';
-      calCard.setAttribute('data-cal-panel', panelKey);
-      var et = activeCell ? getCellEventTypeClass(activeCell) : null;
-      if (et && !calendarPanelShowsType(panelKey, et)) {
-        closePlaceholder();
-      }
-      calCard.querySelectorAll('.cal-grid .day-cell').forEach(function(cell) {
-        cell.classList.remove('cal-event-suppressed');
-        if (panelKey === 'all') return;
-        var t = getCellEventTypeClass(cell);
-        if (!t || calendarPanelShowsType(panelKey, t)) return;
-        cell.classList.add('cal-event-suppressed');
-      });
     }
 
     function buildPlaceholderCopy(cell, monthLabel, dayNumber) {
@@ -1758,8 +1727,10 @@
     function setGreyPlaceholder(cell, monthLabel, dayNumber) {
       placeholder.classList.remove('cal-day-placeholder--event');
       var content = buildPlaceholderCopy(cell, monthLabel, dayNumber);
-      placeholder.innerHTML = '<div class="cal-day-placeholder-inner"><p class="cal-day-placeholder-title"></p><p class="cal-day-placeholder-copy"></p></div>';
-      var titleEl = placeholder.querySelector('.cal-day-placeholder-title');
+      var k = cell.classList.contains('today') ? '<p class="cal-day-placeholder-title">Today</p>' : '';
+      placeholder.innerHTML = '<div class="cal-day-placeholder-inner">' + k + '<p class="cal-day-placeholder-title"></p><p class="cal-day-placeholder-copy"></p></div>';
+      var ts = placeholder.querySelectorAll('.cal-day-placeholder-title');
+      var titleEl = ts[ts.length - 1];
       var copyEl = placeholder.querySelector('.cal-day-placeholder-copy');
       if (titleEl) titleEl.textContent = content.title;
       if (copyEl) copyEl.textContent = content.copy;
@@ -1832,7 +1803,7 @@
       var monthLabel = (grid.getAttribute('data-cal-month') || '').trim();
       monthLabel = monthLabel ? monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1) : 'Selected date';
 
-      var eventId = cell.classList.contains('cal-event-suppressed') ? null : cell.getAttribute('data-event-id');
+      var eventId = cell.getAttribute('data-event-id');
       if (!eventId || !setEventCardPlaceholder(eventId, cell)) {
         setGreyPlaceholder(cell, monthLabel, dayNumber);
       }
@@ -1848,39 +1819,6 @@
     }
 
     calCard.addEventListener('click', function(e) {
-      var calViewBtn = e.target.closest('.cal-day-placeholder .events-detail-view-calendar[data-event-id]');
-      if (calViewBtn && calCard.contains(calViewBtn) && !calViewBtn.disabled) {
-        e.preventDefault();
-        e.stopPropagation();
-        var eventId = calViewBtn.getAttribute('data-event-id');
-        var findCell = window.__ddFindCalendarCellForEvent;
-        var setPane = window.__ddSetEventsPane;
-        if (typeof findCell !== 'function' || typeof setPane !== 'function') return;
-        var targetCell = findCell(eventId);
-        if (!targetCell) return;
-        setPane(false);
-        requestAnimationFrame(function() {
-          targetCell.click();
-          var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          targetCell.scrollIntoView({
-            behavior: prefersReduced ? 'auto' : 'smooth',
-            block: 'center',
-            inline: 'nearest'
-          });
-          requestAnimationFrame(function() {
-            var eventsPage = document.querySelector('.page-events');
-            var ph = eventsPage && eventsPage.querySelector('.cal-day-placeholder.is-open');
-            if (ph) {
-              ph.scrollIntoView({
-                behavior: prefersReduced ? 'auto' : 'smooth',
-                block: 'nearest',
-                inline: 'nearest'
-              });
-            }
-          });
-        });
-        return;
-      }
       var detailBtn = e.target.closest('.cal-day-placeholder .btn[data-event-id]');
       if (detailBtn && calCard.contains(detailBtn) && !detailBtn.classList.contains('events-detail-view-calendar')) {
         e.preventDefault();
@@ -1898,16 +1836,13 @@
       openForCell(cell);
     });
 
-    var calTabStrip = document.querySelector('.page-events .cal-calendar-tabs');
-    if (calTabStrip) {
-      calTabStrip.querySelectorAll('.tab').forEach(function(tab) {
-        tab.addEventListener('click', function() {
-          var key = tab.textContent.trim().toLowerCase();
-          applyCalTabFilter(key);
-        });
-      });
-      applyCalTabFilter('all');
+    function openCalendarTodayIfPresent() {
+      var cell = calCard.querySelector('.cal-grid .day-cell.today');
+      if (!cell || cell.classList.contains('empty') || cell.classList.contains('day-cell-hidden')) return;
+      openForCell(cell);
     }
+
+    window.__ddOpenEventsCalendarToday = openCalendarTodayIfPresent;
 
     window.__ddGetCalendarAddEventPrefillISO = function() {
       return ddCalendarCellToISODate(activeCell);
@@ -4592,7 +4527,7 @@
     });
   })();
 
-  // Segment toggle for Events page calendar (sliding pill like volunteer toggle)
+  // Segment toggle (donate money/items; sliding pill)
   document.querySelectorAll('.seg-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       var seg = btn.closest('.segment');
@@ -4604,94 +4539,6 @@
       seg.classList.toggle('right', opts.indexOf(btn) === 1);
     });
   });
-
-  // Events page: Calendar <-> Events Detail pane toggle
-  (function initEventsPageSegmentToggle() {
-    var eventsPage = document.querySelector('.page-events');
-    if (!eventsPage) return;
-    var calendarBtn = eventsPage.querySelector('#events-toggle-calendar');
-    var detailBtn = eventsPage.querySelector('#events-toggle-detail');
-    var calendarPane = eventsPage.querySelector('.events-toggle-pane-calendar');
-    var detailPane = eventsPage.querySelector('.events-toggle-pane-detail');
-    if (!calendarBtn || !detailBtn || !calendarPane || !detailPane) return;
-
-    function setEventsPane(isDetail) {
-      var seg = calendarBtn.closest('.segment');
-      calendarPane.hidden = !!isDetail;
-      detailPane.hidden = !isDetail;
-      calendarBtn.classList.toggle('active', !isDetail);
-      detailBtn.classList.toggle('active', !!isDetail);
-      if (seg) seg.classList.toggle('right', !!isDetail);
-      calendarBtn.setAttribute('aria-current', isDetail ? 'false' : 'page');
-      detailBtn.setAttribute('aria-current', isDetail ? 'page' : 'false');
-    }
-    window.__ddSetEventsPane = setEventsPane;
-
-    function findCalendarCellForEvent(eventId) {
-      if (!eventId) return null;
-      var cells = Array.from(eventsPage.querySelectorAll('.cal-grid .day-cell[data-event-id="' + eventId + '"]'));
-      if (!cells.length) return null;
-      var preferred = cells.find(function(cell) {
-        return !cell.classList.contains('cal-event-suppressed') && !cell.classList.contains('muted') && !cell.classList.contains('faded');
-      });
-      if (!preferred) {
-        preferred = cells.find(function(cell) {
-          return !cell.classList.contains('cal-event-suppressed');
-        });
-      }
-      if (!preferred) {
-        preferred = cells.find(function(cell) {
-          return !cell.classList.contains('muted') && !cell.classList.contains('faded');
-        });
-      }
-      return preferred || cells[0];
-    }
-    window.__ddFindCalendarCellForEvent = findCalendarCellForEvent;
-
-    function initEventsDetailCalendarLinks() {
-      detailPane.querySelectorAll('.events-detail-view-calendar[data-event-id]').forEach(function(viewBtn) {
-        if (viewBtn.getAttribute('data-dd-cal-bound') === '1') return;
-        viewBtn.setAttribute('data-dd-cal-bound', '1');
-        var eventId = viewBtn.getAttribute('data-event-id');
-        var dayCell = findCalendarCellForEvent(eventId);
-        if (!dayCell) {
-          viewBtn.disabled = true;
-          return;
-        }
-        viewBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          var targetCell = findCalendarCellForEvent(eventId);
-          if (!targetCell) return;
-          setEventsPane(false);
-          requestAnimationFrame(function() {
-            targetCell.click();
-            var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            targetCell.scrollIntoView({
-              behavior: prefersReduced ? 'auto' : 'smooth',
-              block: 'center',
-              inline: 'nearest'
-            });
-            requestAnimationFrame(function() {
-              var ph = eventsPage.querySelector('.cal-day-placeholder.is-open');
-              if (ph) {
-                ph.scrollIntoView({
-                  behavior: prefersReduced ? 'auto' : 'smooth',
-                  block: 'nearest',
-                  inline: 'nearest'
-                });
-              }
-            });
-          });
-        });
-      });
-    }
-
-    calendarBtn.addEventListener('click', () => setEventsPane(false));
-    detailBtn.addEventListener('click', () => setEventsPane(true));
-    initEventsDetailCalendarLinks();
-    setEventsPane(false);
-  })();
 
   // Tab Interaction Logic
   function setupTabs(containerSelector) {
@@ -4710,8 +4557,8 @@
   // Setup main content tabs (exclude forum – handled below)
   setupTabs('.tabs-container:not(.forum-tabs)');
 
-  // Events tab panel switching (home + events-detail toggle pane)
-  document.querySelectorAll('.section.events, .events-detail-section').forEach(eventsSection => {
+  // Events tab panel switching (home upcoming events)
+  document.querySelectorAll('.section.events').forEach(eventsSection => {
     eventsSection.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const key = tab.textContent.trim().toLowerCase();
@@ -4971,4 +4818,206 @@
       if (todoShell) todoShell.setAttribute('aria-hidden', open ? 'false' : 'true');
       if (cornerWrap) cornerWrap.style.visibility = open ? 'hidden' : '';
     });
+  })();
+
+  // ── Retrospective impact drawer ──
+  (function initRetroDrawer() {
+    var drawer   = document.getElementById('retro-drawer');
+    var card     = document.getElementById('retro-card');
+    var tab      = document.getElementById('retro-tab');
+    var closeBtn = document.getElementById('retro-close');
+    var overlay  = document.getElementById('retro-overlay');
+    var mascot   = document.getElementById('retro-mascot');
+    if (!drawer || !card || !tab || !overlay) return;
+
+    var isOpen     = false;
+    var isDragging = false;
+    var startX     = 0;
+    var currentTX  = 0;
+    var countNodes = card.querySelectorAll('.retro-count-num');
+    var countRafId = 0;
+    var mascotTimer = 0;
+    var openSnapEnd = null;
+
+    function clearOpenSnapEndListener() {
+      if (!openSnapEnd) return;
+      card.removeEventListener('transitionend', openSnapEnd);
+      openSnapEnd = null;
+    }
+
+    // App container is 390px fixed; left: 50% puts card left edge at 195px.
+    // REST_TX shifts it so card left edge sits at the right screen edge (card off-screen, tab visible).
+    // OPEN_TX centres the card: translateX(-50%) = -(cardWidth/2).
+    function getRestTX() {
+      var pw = card.closest('.page') ? card.closest('.page').offsetWidth : 390;
+      return pw / 2;
+    }
+    function getOpenTX() {
+      return -(card.offsetWidth / 2); // negative half-width centres it
+    }
+
+    function applyTX(tx, scale) {
+      card.style.transform = 'translateX(' + tx + 'px) scale(' + scale + ')';
+    }
+
+    function formatCount(value, format) {
+      if (format === 'comma') return value.toLocaleString();
+      return String(value);
+    }
+
+    function animateCounts() {
+      if (!countNodes.length) return;
+      if (countRafId) cancelAnimationFrame(countRafId);
+
+      var duration = 1500;
+      var start = 0;
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduceMotion) {
+        countNodes.forEach(function (node) {
+          var to = parseInt(node.getAttribute('data-count-to') || '0', 10) || 0;
+          var format = node.getAttribute('data-format') || 'plain';
+          node.textContent = formatCount(to, format);
+        });
+        return;
+      }
+
+      function step(ts) {
+        if (!start) start = ts;
+        var elapsed = ts - start;
+        var t = Math.min(1, elapsed / duration);
+        var eased = 1 - Math.pow(1 - t, 3);
+
+        countNodes.forEach(function (node) {
+          var to = parseInt(node.getAttribute('data-count-to') || '0', 10) || 0;
+          var format = node.getAttribute('data-format') || 'plain';
+          var current = Math.round(to * eased);
+          node.textContent = formatCount(current, format);
+        });
+
+        if (t < 1) {
+          countRafId = requestAnimationFrame(step);
+        } else {
+          countRafId = 0;
+        }
+      }
+
+      countNodes.forEach(function (node) {
+        node.textContent = '0';
+      });
+      countRafId = requestAnimationFrame(step);
+    }
+
+    function open() {
+      isDragging = false;
+      isOpen = true;
+      card.style.transform = '';
+      clearOpenSnapEndListener();
+      card.classList.remove('is-closing', 'is-dragging');
+      card.classList.add('is-snapping', 'is-open');
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      tab.setAttribute('aria-expanded', 'true');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
+      document.removeEventListener('pointercancel', onPointerUp);
+      animateCounts();
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        requestAnimationFrame(function() {
+          if (!isOpen || !card.classList.contains('is-open')) return;
+          card.classList.remove('is-snapping');
+        });
+      } else {
+        openSnapEnd = function(e) {
+          if (e.target !== card || e.propertyName !== 'transform') return;
+          clearOpenSnapEndListener();
+          if (!isOpen) return;
+          card.classList.remove('is-snapping');
+        };
+        card.addEventListener('transitionend', openSnapEnd);
+      }
+      if (mascot) {
+        if (mascotTimer) clearTimeout(mascotTimer);
+        mascot.classList.remove('is-in');
+        mascot.setAttribute('aria-hidden', 'true');
+        mascotTimer = setTimeout(function() {
+          mascotTimer = 0;
+          if (!isOpen || !mascot) return;
+          drawer.style.setProperty('--retro-card-h', card.offsetHeight + 'px');
+          mascot.classList.add('is-in');
+          mascot.setAttribute('aria-hidden', 'false');
+        }, 470);
+      }
+    }
+
+    function close() {
+      clearOpenSnapEndListener();
+      if (mascotTimer) {
+        clearTimeout(mascotTimer);
+        mascotTimer = 0;
+      }
+      if (mascot) {
+        mascot.classList.remove('is-in');
+        mascot.setAttribute('aria-hidden', 'true');
+      }
+      isOpen = false;
+      card.classList.remove('is-snapping', 'is-open', 'is-dragging');
+      card.classList.add('is-closing');
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      tab.setAttribute('aria-expanded', 'false');
+      drawer.setAttribute('aria-hidden', 'true');
+      card.addEventListener('transitionend', function onDone() {
+        card.removeEventListener('transitionend', onDone);
+        card.classList.remove('is-closing');
+        card.style.transform = '';
+      }, { once: true });
+    }
+
+    function onPointerDown(e) {
+      if (isOpen) return;
+      isDragging = true;
+      startX = e.clientX;
+      currentTX = getRestTX();
+      card.classList.remove('is-snapping', 'is-closing', 'is-open');
+      card.classList.add('is-dragging');
+      card.style.transform = 'translateX(' + currentTX + 'px) scale(0.92)';
+      tab.setPointerCapture(e.pointerId);
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
+      document.addEventListener('pointercancel', onPointerUp);
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      var delta = e.clientX - startX; // negative = pulled left
+      var restTX = getRestTX();
+      var openTX = getOpenTX();
+      currentTX = Math.min(restTX, Math.max(openTX, restTX + delta));
+      var progress = (restTX - currentTX) / (restTX - openTX);
+      var scale = 0.92 + (0.08 * progress);
+      applyTX(currentTX, scale);
+      // Auto-snap once past 40% of the pull distance
+      var pullNeeded = (restTX - openTX) * 0.40;
+      if (restTX - currentTX >= pullNeeded) {
+        open();
+      }
+    }
+
+    function onPointerUp() {
+      if (!isDragging) return;
+      isDragging = false;
+      card.classList.remove('is-dragging');
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
+      document.removeEventListener('pointercancel', onPointerUp);
+      // If not already opened by auto-snap, snap back
+      card.style.transform = '';
+    }
+
+    tab.addEventListener('pointerdown', onPointerDown);
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', close);
   })();

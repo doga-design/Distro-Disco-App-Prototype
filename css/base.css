@@ -68,7 +68,7 @@
 
     /* Scrollable page content: consistent inset above bottom nav / phone chrome */
     --page-padding-bottom: 150px;
-    /* Events (calendar/detail) + Donate (money/items): segment row under top nav — keep in sync */
+    /* Events calendar scroll + Donate (money/items): top padding under nav — keep in sync */
     --seg-strip-padding: 16px 20px 0;
     /* Donation + money + volunteer confirmation screens: end-of-scroll breathing room */
     --confirm-page-padding-bottom: 150px;

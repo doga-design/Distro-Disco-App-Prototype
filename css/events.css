@@ -6,89 +6,13 @@
   .page-events {
     padding-bottom: 0;
   }
-.page-events .events-toggle-pane-calendar,
-.page-events .events-toggle-pane-detail {
-  padding-bottom: var(--page-padding-bottom);
-}
-.page-events .events-toggle-pane-calendar > .cal-calendar-tabs {
-  position: relative;
-  z-index: 2;
-  padding-bottom: 12px;
-  justify-content: center;
-}
-.page-events .events-toggle-pane-calendar .cal-card {
-  position: relative;
-  z-index: 0;
-}
-.page-events .events-toggle-pane-detail {
-  padding-top: 2px;
-}
-.page-events .events-detail-section {
-  padding: 0;
-  margin-bottom: 0;
-}
-.page-events .events-detail-section .tabs-container {
-  position: relative;
-  z-index: 2;
-  padding-bottom: 0;
-  justify-content: center;
-}
-.page-events .events-detail-section .events-panels {
-  position: relative;
-  z-index: 0;
-}
-.page-events .events-detail-section .events-panel.active {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  overflow-x: visible;
-  padding: 4px 0 8px;
-  align-items: stretch;
-}
-.page-events .events-detail-section .event-card.event-end-card {
-  flex: 1 1 auto;
-  width: 100%;
-  min-height: 0;
-  margin-bottom: 0;
-}
-.page-events .events-detail-full-item {
-  width: 100%;
-}
-.page-events .events-detail-full-item .event-detail-shell {
-  padding: 0;
-  min-height: 0;
-}
-.page-events .events-detail-full-item .event-detail-card {
-  max-width: none;
-  width: 100%;
-  box-sizing: border-box;
-}
-.page-events .events-detail-section .event-detail-desc {
-  margin: 0 0 16px;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--text-muted);
-}
-.page-events .events-detail-section .event-detail-cta .btn.events-detail-view-calendar {
-  width: 100%;
-  box-sizing: border-box;
-}
-.page-events .events-detail-view-calendar:not(.btn) {
-  display: inline-flex;
-  align-self: center;
-  margin: 18px 0 8px 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--text-muted);
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
-}
+  .page-events .cal-scroll-wrap {
+    padding-bottom: var(--page-padding-bottom);
+  }
+  .page-events .cal-card {
+    position: relative;
+    z-index: 0;
+  }
 
   /* Segment toggle — exact same design as vol-commit-toggle (One Time / Repeating) */
   .seg-wrap { margin-bottom: 16px; }
@@ -337,22 +261,6 @@
     background: url('../img/icons/calendar-cell-distro.svg') center/cover no-repeat;
   }
   .day-cell.distro .day-num { color: white; }
-  .cal-card .cal-grid .day-cell.cal-event-suppressed {
-    background: #f2f2f2 !important;
-    background-image: none !important;
-  }
-  .cal-card .cal-grid .day-cell.cal-event-suppressed .day-num {
-    color: #1a1a1a;
-  }
-  .cal-card .cal-grid .day-cell.cal-event-suppressed.today {
-    background: white !important;
-  }
-  .cal-card .cal-grid .day-cell.cal-event-suppressed::before {
-    background: var(--navy);
-  }
-  .cal-card .cal-grid .day-cell.cal-event-suppressed.is-selected {
-    box-shadow: inset 0 0 0 2px rgba(35, 33, 74, 0.32);
-  }
   .day-cell.faded { opacity: 0.55; }
   .month-gap { height: 24px; }
 
@@ -661,3 +569,304 @@
   .detail-theme-distro .event-detail-illustration img { filter: saturate(1.05) hue-rotate(-8deg); }
   .detail-theme-drive .event-detail-illustration img { filter: saturate(1.1) hue-rotate(-28deg); }
   .detail-theme-fundraiser .event-detail-illustration img { filter: saturate(1.15) hue-rotate(16deg); }
+
+  /* ── Retrospective impact drawer ── */
+  .retro-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transition: backdrop-filter 300ms ease, -webkit-backdrop-filter 300ms ease, background 300ms ease;
+  }
+  .retro-overlay.is-open {
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.12);
+    -webkit-backdrop-filter: blur(8px) grayscale(1);
+    backdrop-filter: blur(8px) grayscale(1);
+  }
+
+  .retro-drawer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 51;
+    pointer-events: none;
+    --retro-card-h: 440px;
+  }
+  .retro-drawer::before,
+  .retro-drawer::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: calc(120px + var(--retro-card-h, 440px) - 36px);
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.85s ease;
+  }
+  /* Glow only after snap-to-center finishes (.is-snapping dropped in JS) */
+  .retro-drawer:has(.retro-card.is-open:not(.is-snapping):not(.is-dragging):not(.is-closing))::before,
+  .retro-drawer:has(.retro-card.is-open:not(.is-snapping):not(.is-dragging):not(.is-closing))::after {
+    opacity: 1;
+  }
+  .retro-drawer::before {
+    width: min(185%, 620px);
+    height: min(160%, 480px);
+    background: radial-gradient(
+      ellipse 78% 72% at 50% 48%,
+      rgba(255, 255, 130, 0.98) 0%,
+      rgba(245, 255, 171, 0.72) 34%,
+      rgba(245, 255, 171, 0.32) 50%,
+      rgba(245, 255, 171, 0.08) 64%,
+      transparent 78%
+    );
+    filter: blur(22px);
+    -webkit-filter: blur(22px);
+    transform: translate(-50%, -50%);
+    animation: hero-lava-a 8s ease-in-out infinite;
+  }
+  .retro-drawer::after {
+    width: min(175%, 560px);
+    height: min(170%, 520px);
+    background: radial-gradient(
+      ellipse 74% 76% at 48% 52%,
+      rgba(255, 250, 150, 0.95) 0%,
+      rgba(245, 255, 171, 0.68) 36%,
+      rgba(245, 255, 171, 0.28) 52%,
+      rgba(245, 255, 171, 0.07) 66%,
+      transparent 77%
+    );
+    filter: blur(24px) hue-rotate(0deg) saturate(1);
+    -webkit-filter: blur(24px) hue-rotate(0deg) saturate(1);
+    transform: translate(-50%, -44%);
+    animation: hero-lava-b 9.5s ease-in-out infinite;
+    animation-delay: -3s;
+  }
+
+  /* Anchored above card top so more of the mascot clears the card */
+  .retro-mascot {
+    position: absolute;
+    left: 50%;
+    top: calc(100% - 120px - var(--retro-card-h, 440px) - 36px);
+    bottom: auto;
+    z-index: 1;
+    width: 200px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 260px));
+    transition: transform 0.52s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.35s ease;
+  }
+  .retro-mascot.is-in {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  .retro-mascot-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .retro-mascot.is-in .retro-mascot-img {
+    animation: retro-mascot-float 2.4s ease-in-out infinite;
+  }
+  @keyframes retro-mascot-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .retro-drawer::before,
+    .retro-drawer::after {
+      opacity: 0 !important;
+      transition: none !important;
+    }
+    .retro-mascot {
+      transition-duration: 0.01ms;
+    }
+    .retro-mascot.is-in .retro-mascot-img {
+      animation: none;
+    }
+  }
+
+  /* Card + tab move as one unit; tab is a left-edge ear on the card */
+  .retro-card {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    z-index: 2;
+    width: calc(100% - 40px);
+    max-width: 340px;
+    /* resting: card left edge at screen right, tab visible */
+    transform: translateX(195px) scale(0.92);
+    pointer-events: auto;
+    will-change: transform;
+    touch-action: none;
+    overflow: visible;
+  }
+  .retro-card.hero-card {
+    padding: 26px 14px 10px 14px;
+  }
+  .retro-card.hero-card::before,
+  .retro-card.hero-card::after {
+    display: none;
+  }
+  .retro-card .stat-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px 6px;
+    gap: 4px;
+  }
+  .retro-card .stat-cell-icon {
+    display: block;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    margin: 0;
+  }
+  .retro-card .retro-count-num {
+    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
+    font-size: 1.25rem;
+    line-height: 1;
+    margin: 2px 0 0;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+  .retro-card .retro-stat-context {
+    display: block;
+    max-width: 132px;
+    margin: 4px auto 0;
+    text-align: center;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--navy);
+  }
+  .retro-card .retro-stat-caption {
+    display: block;
+    max-width: 132px;
+    margin: -4px auto 0;
+    text-align: center;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--navy);
+  }
+  /* Hide hero-card blobs and gradient when card is collapsed */
+  .retro-card:not(.is-open):not(.is-snapping):not(.is-dragging):not(.is-closing)::before,
+  .retro-card:not(.is-open):not(.is-snapping):not(.is-dragging):not(.is-closing)::after {
+    display: none;
+  }
+  .retro-card:not(.is-open):not(.is-snapping):not(.is-dragging):not(.is-closing) {
+    background-image: none;
+  }
+
+  .retro-card.is-snapping {
+    transition: transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .retro-card.is-closing {
+    transition: transform 360ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .retro-card.is-open {
+    transform: translateX(-50%) scale(1);
+  }
+
+  /* Tab: left ear — behind card face + lava (z-index below ::before/::after and content) */
+  .page-events .retro-card.hero-card > .retro-tab {
+    position: absolute;
+    z-index: -1;
+  }
+  .retro-tab {
+    position: absolute;
+    left: -52px;
+    bottom: 12px;
+    width: 56px;
+    min-height: 68px;
+    padding: 28px 20px 28px 10px;
+    background: var(--bg-color);
+    border: 1.5px solid var(--navy);
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+    cursor: grab;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    transition: opacity 180ms ease, background 100ms ease, border-color 100ms ease, color 100ms ease;
+  }
+  .retro-tab:active {
+    background: #F5FFAB;
+    border-color: #F5FFAB;
+    border-right: none;
+  }
+  .retro-tab:active .retro-tab-label {
+    color: var(--navy);
+  }
+  .retro-card.is-open .retro-tab {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .retro-tab-label {
+    color: var(--navy);
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.35;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .retro-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    font-size: 16px;
+    color: var(--navy);
+  }
+  .retro-row-title {
+    margin: 0px 0 8px;
+    text-align: center;
+    color: var(--navy);
+    font-size: 1.6rem;
+    line-height: 0.95;
+    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(35, 33, 74, 0.05);
+    text-rendering: optimizeLegibility;
+  }
+  .retro-card .retro-grid + .retro-row-title {
+    margin-top: 32px;
+  }
+  .retro-grid {
+    margin: 0 0 8px;
+  }
+  .retro-card .retro-grid .stat-cell:nth-child(even) {
+    border-left: none;
+    position: relative;
+  }
+  .retro-card .retro-grid .stat-cell:nth-child(even)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 68%;
+    max-height: 120px;
+    border-left: 2px solid rgba(35, 33, 74, 0.12);
+    pointer-events: none;
+  }
