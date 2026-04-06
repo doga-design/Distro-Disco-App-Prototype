@@ -7,6 +7,12 @@
     padding-bottom: var(--page-padding-bottom);
   }
   .page-donate-money::-webkit-scrollbar { display: none; }
+  .page-donate-money .page-gutter {
+    padding: 0 20px;
+  }
+  .page-donate-money .page-gutter.page-gutter-top-16 {
+    padding-top: 16px;
+  }
 
   /* ── Donate Money redesign zones ── */
   .page-donate-money .dm-amount-zone {

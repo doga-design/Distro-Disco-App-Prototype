@@ -310,6 +310,13 @@
     transform: translateY(100%);
     transition: opacity 220ms ease, transform 220ms cubic-bezier(0.16,1,0.3,1);
   }
+  body.home-thankyou-modal-open .nav-scrim,
+  body.home-thankyou-modal-open .bottom-nav {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(100%);
+    transition: opacity 220ms ease, transform 220ms cubic-bezier(0.16,1,0.3,1);
+  }
 
   /* Bottom Navigation */
   .bottom-nav {
@@ -775,7 +782,7 @@
     position: fixed;
     right: 24px;
     bottom: -24px;
-    z-index: 9000;
+    z-index: 11001;
     display: block;
     pointer-events: auto;
   }
@@ -1157,8 +1164,7 @@
       box-shadow: none;
     }
 
-    .phone-btn,
-    .dynamic-island {
+    .phone-btn {
       display: none;
     }
 

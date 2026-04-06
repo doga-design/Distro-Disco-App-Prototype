@@ -134,7 +134,7 @@
   })();
 
   // ── Page Router + Event Detail Flow ──
-  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', 'donate-items': 'page-donate-items', 'donate-confirm': 'page-donate-confirm', 'donate-money-confirm': 'page-donate-money-confirm', 'volunteer-confirm': 'page-volunteer-confirm', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail', activities: 'page-activities' };
+  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', 'donate-items': 'page-donate-items', 'donate-money-confirm': 'page-donate-money-confirm', 'volunteer-confirm': 'page-volunteer-confirm', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail', activities: 'page-activities' };
   const navItems = document.querySelectorAll('.bottom-nav .nav-item:not(.center-item)');
   const settingsButtons = document.querySelectorAll('.top-nav-settings');
   const detailPage = document.querySelector('.page-event-detail');
@@ -145,6 +145,7 @@
   const detailLocation = document.getElementById('event-detail-location');
   const detailAddress = document.getElementById('event-detail-address');
   const detailTasks = document.getElementById('event-detail-tasks');
+  const detailBackArrowBtn = document.getElementById('event-detail-back-arrow');
   const detailCta = document.getElementById('event-detail-cta');
   const dmSwitchToItems = document.getElementById('dm-switch-to-items');
   const donatePresetButtons = document.querySelectorAll('.page-donate-money .donate-preset-btn');
@@ -170,6 +171,8 @@
   var donationCardCollapsed = false;
   var donationGetItemIconSrc = null;
   var donationLastConfirmedItems = [];
+  var donationLastConfirmedSnapshot = null;
+  var restoreDonateItemsFromSnapshot = null;
   var volunteerCommitments = [];
   var monthlyItemCommitmentActive = true;
   var profileCommitmentNewType = null;
@@ -467,7 +470,7 @@
     var topNavOnNewPage = target.querySelector('.top-nav');
     if (topNavOnNewPage) topNavOnNewPage.classList.remove('is-scroll-hidden');
     activePageName = name;
-    document.body.classList.toggle('is-fullscreen-confirm', name === 'donate-confirm' || name === 'donate-money-confirm' || name === 'volunteer-confirm');
+    document.body.classList.toggle('is-fullscreen-confirm', name === 'donate-money-confirm' || name === 'volunteer-confirm');
     if (name === 'donate-money' || name === 'donate-items') {
       var setDonateSegmentState = function(segment, isRight) {
         if (!segment) return;
@@ -838,11 +841,11 @@
     var hasAny = false;
 
     if (monthlyItemCommitmentActive) {
-      appendRow('img/icons/icon-gift.svg', 'Monthly item donation', 'Next: Monthly drive', '', 'monthly-item', 'monthly-item', false);
+      appendRow('img/icons/icon-gift.svg', 'Monthly item contribution', 'Next: Monthly drive', '', 'monthly-item', 'monthly-item', false);
       hasAny = true;
     }
 
-    // One-time item donation (pending drop-offs)
+    // One-time item contribution (pending drop-offs)
     var pendingCount = 0;
     var firstPendingName = '';
     (donationGroups || []).forEach(function(group) {
@@ -857,7 +860,7 @@
     if (pendingCount > 0) {
       var iconResolver = typeof donationGetItemIconSrc === 'function' ? donationGetItemIconSrc : null;
       var iconSrc = (iconResolver && firstPendingName) ? iconResolver(firstPendingName) : 'img/icons/icon-stars.svg';
-      appendRow(iconSrc, 'One-time item donation', pendingCount + ' item' + (pendingCount === 1 ? '' : 's') + ' pending drop-off', '', 'item-donation', 'item-donation', false);
+      appendRow(iconSrc, 'One-time item contribution', pendingCount + ' item' + (pendingCount === 1 ? '' : 's') + ' pending drop-off', '', 'item-donation', 'item-donation', false);
       hasAny = true;
     }
 
@@ -970,9 +973,9 @@
       locationLabel: 'McSpadden Park',
       address: '2125 Victoria Drive',
       tasks: [
-        { text: 'Sort donated clothing by size and condition.' },
+        { text: 'Sort contributed clothing by size and condition.' },
         { text: 'Tag damaged items that should not be distributed.', complete: true },
-        { text: 'Help load donation bins for transport to the next distro.' }
+        { text: 'Help load contribution bins for transport to the next distro.' }
       ],
       cta: 'Volunteer for this drive'
     },
@@ -988,7 +991,7 @@
       tasks: [
         { text: 'Support guest check-in and guide attendees to the event space.' },
         { text: 'Help run the silent auction and raffle table during the night.' },
-        { text: 'Assist with post-event pack down and donation counting.' }
+        { text: 'Assist with post-event pack down and contribution counting.' }
       ],
       cta: 'Volunteer for this fundraiser'
     },
@@ -1003,7 +1006,7 @@
       address: 'Share the fundraiser link with your community',
       tasks: [
         { text: 'Share the campaign across your channels and personal networks.' },
-        { text: 'Invite friends to donate or sponsor essential item bundles.' },
+        { text: 'Invite friends to contribute or sponsor essential item bundles.' },
         { text: 'Help amplify weekly campaign updates and progress milestones.' }
       ],
       cta: 'Support this fundraiser'
@@ -1114,8 +1117,8 @@
 
     if (donateMoneyCta) {
       donateMoneyCta.textContent = dmIsMonthly
-        ? `Donate $${formatDonateAmount(donateState.amount)} / month`
-        : `Donate $${formatDonateAmount(donateState.amount)}`;
+        ? `Contribute $${formatDonateAmount(donateState.amount)} / month`
+        : `Contribute $${formatDonateAmount(donateState.amount)}`;
     }
   }
 
@@ -1181,7 +1184,7 @@
     var amountText = formatAppleAmount(apPayCurrentAmount);
     var monthlySuffix = dmIsMonthly ? ' / month' : '';
     if (apPayMerchantName) apPayMerchantName.textContent = APPLE_PAY_MERCHANT;
-    if (apPayAmountLabel) apPayAmountLabel.textContent = dmIsMonthly ? 'Monthly donation' : 'Donation amount';
+    if (apPayAmountLabel) apPayAmountLabel.textContent = dmIsMonthly ? 'Monthly contribution' : 'Contribution amount';
     if (apPayAmountLine) apPayAmountLine.textContent = amountText + ' CAD';
     if (apPaySecondaryLabel) apPaySecondaryLabel.textContent = dmIsMonthly ? 'Billing' : 'Processing fee';
     if (apPaySecondaryLine) apPaySecondaryLine.textContent = dmIsMonthly ? 'Renews monthly' : '$0.00';
@@ -1656,13 +1659,18 @@
     });
   });
 
+  function goBackFromEventDetail() {
+    var target = eventDetailReturnPage;
+    if (!target || target === 'detail') target = 'home';
+    showPage(target);
+  }
+
   var detailGoBackBtn = document.getElementById('event-detail-go-back');
   if (detailGoBackBtn) {
-    detailGoBackBtn.addEventListener('click', function() {
-      var target = eventDetailReturnPage;
-      if (!target || target === 'detail') target = 'home';
-      showPage(target);
-    });
+    detailGoBackBtn.addEventListener('click', goBackFromEventDetail);
+  }
+  if (detailBackArrowBtn) {
+    detailBackArrowBtn.addEventListener('click', goBackFromEventDetail);
   }
   document.querySelectorAll('.event-end-cta').forEach(btn => {
     btn.addEventListener('click', () => showPage('donate-items'));
@@ -2645,235 +2653,100 @@
     const track = root.querySelector('.di-bs-slide-track');
     const thumb = root.querySelector('.di-bs-slide-thumb');
     const fill = root.querySelector('.di-bs-slide-fill');
-    const successCircle = root.querySelector('.di-bs-slide-success-circle');
-    const glow = root.querySelector('.di-bs-slide-glow');
-    const label = root.querySelector('.di-bs-slide-label');
-    const done = root.querySelector('.di-bs-slide-done');
-    if (!track || !thumb || !fill || !glow || !label || !done) return null;
+    if (!track || !thumb || !fill) return null;
 
-    const THUMB_W = 50;
-    const THUMB_PAD = 6;
-    const SNAP_AT = 0.82;
-    const SPRING_K = 220;
-    const SPRING_D = 26;
-    const SPARK_COLORS = [
-      'color-mix(in srgb, var(--orange) 85%, var(--navy))',
-      'color-mix(in srgb, var(--orange) 70%, var(--navy))',
-      'color-mix(in srgb, var(--orange) 55%, var(--navy))',
-      'color-mix(in srgb, var(--orange) 85%, white)'
-    ];
+    const TRACK_PAD = 5;
+    const SNAP_AT = 0.98;
 
     let enabled = false;
     let confirmed = false;
     let dragging = false;
     let pos = 0;
-    let vel = 0;
-    let springRAF = null;
+    let rafId = null;
     let dragStartPageX = 0;
     let dragStartPos = 0;
-    let velPageX = 0;
-    let velT = 0;
-    let velX = 0;
 
+    function thumbW() { return thumb.offsetWidth; }
     function trackW() { return track.offsetWidth; }
-    function maxPos() { return trackW() - THUMB_W - THUMB_PAD * 2; }
+    function maxPos() { return Math.max(0, trackW() - thumbW() - TRACK_PAD * 2); }
 
-    function baseTrackBg() {
-      return 'var(--input-bg)';
+    function clamp(value) {
+      return Math.max(0, Math.min(value, maxPos()));
     }
 
     function render(rawPos) {
-      const m = maxPos();
-      const cPos = Math.max(0, Math.min(rawPos, m));
-      const p = m > 0 ? cPos / m : 0;
-      thumb.style.left = (cPos + THUMB_PAD) + 'px';
-
-      let fillW = cPos + THUMB_W + THUMB_PAD;
-      if (p > 0.95) {
-        const ov = (p - 0.95) / 0.05;
-        fillW = fillW + (trackW() - fillW) * ov;
-      }
-      fill.style.width = fillW + 'px';
-      fill.style.background = 'color-mix(in srgb, var(--orange) ' + Math.round(p * 100) + '%, var(--navy))';
-      thumb.style.background = 'transparent';
-      thumb.style.color = 'color-mix(in srgb, var(--orange) ' + Math.round(p * 100) + '%, var(--navy))';
-      track.style.background = baseTrackBg();
-
-      const cx = cPos + THUMB_PAD + THUMB_W / 2;
-      label.style.opacity = String(Math.max(0, 1 - p * 2.8));
-
-      if (dragging && p > 0.35 && Math.random() < (p - 0.35) * 0.55) {
-        spawnSpark(cx, p);
-      }
+      const cPos = clamp(rawPos);
+      pos = cPos;
+      const knobLeft = TRACK_PAD + cPos;
+      const revealed = cPos <= 0 ? 0 : (TRACK_PAD + cPos + thumbW() / 2);
+      thumb.style.left = knobLeft + 'px';
+      fill.style.width = Math.max(0, Math.min(trackW() - TRACK_PAD, revealed)) + 'px';
     }
 
-    function showConfirmed() {
-      label.style.opacity = '0';
-      thumb.style.opacity = '0';
-      thumb.style.transition = 'opacity .12s ease';
-      glow.style.opacity = '0';
-      fill.style.transition = 'width .15s cubic-bezier(.22,1,.36,1)';
-      fill.style.width = trackW() + 'px';
-      thumb.style.background = 'transparent';
-      thumb.style.color = 'var(--orange)';
-      track.style.transition = 'background .15s ease';
-      track.style.background = 'var(--input-bg)';
-      done.style.transition = 'opacity .12s ease';
-      done.style.opacity = '1';
-
-      if (successCircle) {
-        successCircle.classList.remove('is-expanded');
-        successCircle.style.opacity = '1';
-        void successCircle.offsetWidth;
-        successCircle.classList.add('is-expanded');
-        successCircle.addEventListener('transitionend', function onEnd() {
-          successCircle.removeEventListener('transitionend', onEnd);
-          fill.style.background = '#28A745';
-          successCircle.style.opacity = '0';
-          if (typeof config.onConfirm === 'function') config.onConfirm();
-        }, { once: true });
-      } else {
-        fill.style.background = '#28A745';
-        setTimeout(function() { if (typeof config.onConfirm === 'function') config.onConfirm(); }, 200);
+    function animateTo(target, onDone) {
+      const start = pos;
+      const end = clamp(target);
+      const delta = end - start;
+      if (Math.abs(delta) < 0.5) {
+        render(end);
+        if (onDone) onDone();
+        return;
       }
-    }
-
-    function springTo(target, onDone) {
-      if (springRAF) cancelAnimationFrame(springRAF);
-      const dt = 1 / 60;
-      (function tick() {
-        const force = -SPRING_K * (pos - target) - SPRING_D * vel;
-        vel += force * dt;
-        pos += vel * dt;
-        render(pos);
-        const settled = Math.abs(pos - target) < 0.08 && Math.abs(vel) < 0.08;
-        if (settled) {
-          pos = target;
-          vel = 0;
-          render(pos);
-          if (onDone) onDone();
+      if (rafId) cancelAnimationFrame(rafId);
+      const duration = 220;
+      let t0 = null;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        const t = Math.min(1, (ts - t0) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        render(start + delta * eased);
+        if (t < 1) {
+          rafId = requestAnimationFrame(step);
         } else {
-          springRAF = requestAnimationFrame(tick);
+          rafId = null;
+          if (onDone) onDone();
         }
-      })();
+      }
+      rafId = requestAnimationFrame(step);
     }
 
     function confirm() {
+      if (confirmed) return;
       confirmed = true;
       dragging = false;
-      showConfirmed();
-      vel = Math.max(vel, 6);
-      springTo(maxPos(), null);
+      animateTo(maxPos(), function() {
+        if (typeof config.onConfirm === 'function') config.onConfirm();
+      });
     }
 
     function snapBack() {
-      vel = Math.min(vel, 0);
-      springTo(0, null);
+      animateTo(0, null);
     }
 
     function onDown(pageX) {
       if (!enabled || confirmed) return;
-      if (springRAF) {
-        cancelAnimationFrame(springRAF);
-        springRAF = null;
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
       }
       dragging = true;
       dragStartPageX = pageX;
       dragStartPos = pos;
-      velPageX = pageX;
-      velT = performance.now();
-      velX = 0;
-      thumb.style.transition = 'transform .1s cubic-bezier(.34,1.56,.64,1)';
-      thumb.style.transform = 'scale(0.92)';
     }
 
     function onMove(pageX) {
       if (!enabled || !dragging || confirmed) return;
-      const now = performance.now();
-      const dt = Math.max(4, now - velT);
-      velX = (pageX - velPageX) / dt * 16;
-      velPageX = pageX;
-      velT = now;
-      let raw = dragStartPos + (pageX - dragStartPageX);
-      const m = maxPos();
-      if (raw < 0) raw = raw * 0.18;
-      if (raw > m) raw = m + (raw - m) * 0.14;
-      pos = raw;
-      vel = velX;
-      render(pos);
+      render(dragStartPos + (pageX - dragStartPageX));
     }
 
     function onUp() {
       if (!dragging) return;
       dragging = false;
-      thumb.style.transition = 'transform .35s cubic-bezier(.34,1.56,.64,1)';
-      thumb.style.transform = 'scale(1)';
       if (confirmed || !enabled) return;
       const m = maxPos();
       const p = m > 0 ? Math.max(0, Math.min(pos, m)) / m : 0;
-      vel = velX * 0.55;
-      if (p >= SNAP_AT || (p > 0.55 && vel > 7)) confirm();
+      if (p >= SNAP_AT) confirm();
       else snapBack();
-    }
-
-    function spawnSpark(cx, p) {
-      const s = document.createElement('div');
-      s.className = 'di-bs-slide-spark';
-      const size = 1.5 + Math.random() * 4 * p;
-      s.style.width = size + 'px';
-      s.style.height = size + 'px';
-      s.style.background = SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)];
-      const sx = cx - THUMB_W * 0.3 - Math.random() * 12;
-      s.style.left = sx + 'px';
-      s.style.top = (10 + Math.random() * 44) + 'px';
-      track.appendChild(s);
-      let vx = -0.8 - Math.random() * 3.5 * p;
-      let vy = (Math.random() - 0.52) * 4 * p;
-      let life = 0;
-      const max = 14 + Math.random() * 18;
-      (function tick() {
-        life += 1;
-        vx *= 0.93;
-        vy += 0.18;
-        s.style.left = (parseFloat(s.style.left) + vx) + 'px';
-        s.style.top = (parseFloat(s.style.top) + vy) + 'px';
-        s.style.opacity = String(Math.max(0, 1 - life / max));
-        if (life < max) requestAnimationFrame(tick);
-        else if (s.parentNode) s.parentNode.removeChild(s);
-      })();
-    }
-
-    function burstSparks() {
-      const w = trackW();
-      for (let i = 0; i < 36; i += 1) {
-        (function burstOne() {
-          const s = document.createElement('div');
-          s.className = 'di-bs-slide-spark';
-          const sz = 3 + Math.random() * 8;
-          s.style.width = sz + 'px';
-          s.style.height = sz + 'px';
-          s.style.background = SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)];
-          s.style.left = (w * 0.25 + Math.random() * w * 0.6) + 'px';
-          s.style.top = (8 + Math.random() * 48) + 'px';
-          track.appendChild(s);
-          const angle = Math.random() * Math.PI * 2;
-          const spd = 2.5 + Math.random() * 6.5;
-          let vx = Math.cos(angle) * spd;
-          let vy = Math.sin(angle) * spd - 3.5;
-          let life = 0;
-          const max = 28 + Math.random() * 22;
-          (function tick() {
-            life += 1;
-            vy += 0.2;
-            vx *= 0.97;
-            s.style.left = (parseFloat(s.style.left) + vx) + 'px';
-            s.style.top = (parseFloat(s.style.top) + vy) + 'px';
-            s.style.opacity = String(Math.max(0, 1 - life / max));
-            if (life < max) requestAnimationFrame(tick);
-            else if (s.parentNode) s.parentNode.removeChild(s);
-          })();
-        })();
-      }
     }
 
     track.addEventListener('touchstart', function(e) {
@@ -2895,7 +2768,6 @@
     });
     window.addEventListener('mouseup', onUp);
 
-    thumb.style.left = THUMB_PAD + 'px';
     render(0);
 
     return {
@@ -2904,43 +2776,25 @@
         root.classList.toggle('is-disabled', !enabled);
         if (!enabled && !confirmed && !dragging) {
           pos = 0;
-          vel = 0;
           render(0);
         }
       },
       setLabel: function(text) {
-        label.textContent = text;
+        return text;
       },
       reset: function() {
         confirmed = false;
         dragging = false;
         pos = 0;
-        vel = 0;
-        if (springRAF) {
-          cancelAnimationFrame(springRAF);
-          springRAF = null;
-        }
-        fill.style.transition = '';
-        fill.style.width = '0px';
-        fill.style.background = 'color-mix(in srgb, var(--orange) 0%, var(--navy))';
-        track.style.transition = '';
-        track.style.background = baseTrackBg();
-        thumb.style.transition = '';
-        thumb.style.opacity = '1';
-        thumb.style.transform = 'scale(1)';
-        thumb.style.color = 'var(--orange)';
-        label.style.opacity = '1';
-        done.style.opacity = '0';
-        if (successCircle) {
-          successCircle.classList.remove('is-expanded');
-          successCircle.style.opacity = '0';
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
         }
         render(0);
       },
       isConfirmed: function() {
         return confirmed;
-      },
-      burstSparks: burstSparks
+      }
     };
   }
 
@@ -3247,6 +3101,7 @@
       if (modalBackdropEl && modalBackdropEl.parentNode) modalBackdropEl.parentNode.removeChild(modalBackdropEl);
       modalEl = null;
       modalBackdropEl = null;
+      document.body.classList.remove('home-thankyou-modal-open');
     }
 
     function triggerHeaderCountPop() {
@@ -3271,7 +3126,7 @@
       if (donationCardCollapsed) {
         headerText.textContent = getTotalPendingItems() + ' items pending drop-off';
       } else {
-        headerText.textContent = 'Currently donating';
+        headerText.textContent = 'Currently contributing';
       }
     }
 
@@ -3307,7 +3162,6 @@
       });
       if (!controller) return;
       controller.setEnabled(true);
-      controller.setLabel('Slide to confirm drop-off');
       groupSliderControllers.set(groupId, controller);
     }
 
@@ -3349,14 +3203,8 @@
           '<div class="di-bs-slide-cta" id="' + sliderRootId + '" aria-label="Slide to confirm drop-off">' +
             '<div class="di-bs-slide-track">' +
               '<div class="di-bs-slide-fill"></div>' +
-              '<div class="di-bs-slide-success-circle" aria-hidden="true"></div>' +
-              '<div class="di-bs-slide-glow"></div>' +
-              '<div class="di-bs-slide-label">Slide to confirm drop-off</div>' +
-              '<div class="di-bs-slide-done">Confirmed ✓</div>' +
               '<div class="di-bs-slide-thumb" aria-hidden="true">' +
-                '<svg class="di-bs-slide-icon" viewBox="0 0 24 24" aria-hidden="true">' +
-                  '<polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></polyline>' +
-                '</svg>' +
+                '<img class="di-bs-slide-icon" src="img/icons/double-chevron.svg" alt="">' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -3559,7 +3407,7 @@
           '<button type="button" class="donation-card-header" aria-expanded="true">' +
             '<div class="donation-card-left">' +
               '<span class="donation-card-dot" aria-hidden="true"></span>' +
-              '<span class="donation-card-header-text">Currently donating</span>' +
+              '<span class="donation-card-header-text">Currently contributing</span>' +
             '</div>' +
             '<span class="donation-card-chevron" aria-hidden="true">⌃</span>' +
           '</button>' +
@@ -3613,6 +3461,18 @@
 
     function renderThankYouModal() {
       if (modalEl || !hasActiveDonation()) return;
+      var snapshot = donationLastConfirmedSnapshot || null;
+      var entries = snapshot && Array.isArray(snapshot.items) ? snapshot.items : [];
+      var selectedDropoff = snapshot && snapshot.selectedDropoff ? snapshot.selectedDropoff : null;
+      function getDropoffLabel(dropoff) {
+        var id = dropoff && dropoff.id ? dropoff.id : '';
+        if (id === 'upcoming-drive') return 'Upcoming drive - Trout Lake Community Centre';
+        if (id === 'private') return 'Private residence drop-off';
+        if (id === 'cross') return 'Cross & Crows Books';
+        if (id === 'wildfires') return 'Wildfires Bookshop';
+        if (dropoff && dropoff.mapQuery) return dropoff.mapQuery;
+        return 'Drop-off location pending';
+      }
       modalBackdropEl = document.createElement('div');
       modalBackdropEl.className = 'donation-modal-backdrop';
 
@@ -3620,26 +3480,119 @@
       modalEl.className = 'donation-modal';
       modalEl.innerHTML = '' +
         '<button type="button" class="donation-modal-close" aria-label="Close">×</button>' +
-        '<div class="donation-modal-media">' +
-          '<img src="img/dd-together.svg" alt="Donation appreciation image">' +
-        '</div>' +
         '<div class="donation-modal-copy">' +
-          '<h3 class="donation-modal-title">Thank you, <span></span>!</h3>' +
-          '<p class="donation-modal-body">We\'ve noted your items. Drop them off when you\'re ready and someone stays warm. You can track, update, or cancel your donation any time from your home page.</p>' +
-          '<button type="button" class="btn btn-primary donation-modal-cta"><span class="btn__label">Got it</span></button>' +
+          '<img src="img/hearthands.gif" alt="" class="donation-modal-hero-image">' +
+          '<h3 class="donation-modal-title">Thank you, <span></span>.</h3>' +
+          '<p class="donation-modal-kicker">Your contribution is queued for drop-off. This helps us keep essentials moving through the community.</p>' +
+          '<div class="donation-modal-hero-divider"></div>' +
+          '<div class="donation-modal-queue-content">' +
+            '<div class="donation-modal-queue-section">' +
+              '<p class="donation-modal-queue-label">You are bringing</p>' +
+              '<div class="donation-modal-queue-list" id="dc-modal-item-list"></div>' +
+            '</div>' +
+            '<div class="donation-modal-queue-section">' +
+              '<p class="donation-modal-queue-label">Drop-off</p>' +
+              '<p class="donation-modal-queue-dropoff" id="dc-modal-dropoff"></p>' +
+              '<div class="donation-modal-map-wrap hidden" id="dc-modal-map-wrap" aria-hidden="true">' +
+                '<iframe id="dc-modal-map" class="donation-modal-map-frame" title="Drop-off location map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="" allow="fullscreen"></iframe>' +
+              '</div>' +
+              '<p class="donation-modal-queue-note">We\'ll remind you before your drop-off window.</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="donation-modal-queue-actions">' +
+            '<button type="button" class="btn btn-primary donation-modal-cta" id="dc-modal-confirm-btn"><span class="btn__label">Go back home</span></button>' +
+            '<button type="button" class="btn btn-secondary donation-modal-cta donation-modal-cta-secondary" id="dc-modal-make-changes-btn"><span class="btn__label">Make changes</span></button>' +
+          '</div>' +
         '</div>';
 
       var titleName = modalEl.querySelector('.donation-modal-title span');
       if (titleName) titleName.textContent = getDisplayUsername();
+      var listEl = modalEl.querySelector('#dc-modal-item-list');
+      var dropoffEl = modalEl.querySelector('#dc-modal-dropoff');
+      var mapWrapEl = modalEl.querySelector('#dc-modal-map-wrap');
+      var mapFrameEl = modalEl.querySelector('#dc-modal-map');
+      if (listEl) {
+        listEl.innerHTML = '';
+        if (!entries.length) {
+          var empty = document.createElement('div');
+          empty.className = 'di-sheet-empty';
+          empty.textContent = 'No items added.';
+          listEl.appendChild(empty);
+        } else {
+          entries.forEach(function(entry) {
+            var row = document.createElement('div');
+            row.className = 'di-sheet-item-row';
+
+            var left = document.createElement('div');
+            left.className = 'di-sheet-item-left';
+
+            var main = document.createElement('div');
+            main.className = 'di-sheet-item-main';
+
+            var thumb = document.createElement('div');
+            thumb.className = 'di-sheet-item-thumb';
+            var icon = document.createElement('img');
+            icon.src = typeof donationGetItemIconSrc === 'function' ? donationGetItemIconSrc(entry.itemName) : 'img/icons/icon-stars.svg';
+            icon.alt = '';
+            thumb.appendChild(icon);
+
+            var name = document.createElement('span');
+            name.className = 'di-sheet-item-name';
+            name.textContent = entry.itemName;
+
+            main.appendChild(thumb);
+            main.appendChild(name);
+            left.appendChild(main);
+
+            var right = document.createElement('div');
+            right.className = 'di-sheet-item-right';
+            var qtyBadge = document.createElement('span');
+            qtyBadge.className = 'donation-card-qty';
+            qtyBadge.textContent = '×' + String(entry.qty);
+            right.appendChild(qtyBadge);
+
+            row.appendChild(left);
+            row.appendChild(right);
+            listEl.appendChild(row);
+          });
+        }
+      }
+      if (dropoffEl) dropoffEl.textContent = getDropoffLabel(selectedDropoff);
+      if (mapWrapEl && mapFrameEl) {
+        if (selectedDropoff && selectedDropoff.mapQuery) {
+          mapWrapEl.classList.remove('hidden');
+          mapWrapEl.setAttribute('aria-hidden', 'false');
+          mapFrameEl.src = 'https://www.google.com/maps?q=' + encodeURIComponent(selectedDropoff.mapQuery) + '&output=embed';
+        } else {
+          mapWrapEl.classList.add('hidden');
+          mapWrapEl.setAttribute('aria-hidden', 'true');
+          mapFrameEl.removeAttribute('src');
+        }
+      }
 
       appContainer.appendChild(modalBackdropEl);
       appContainer.appendChild(modalEl);
+      document.body.classList.add('home-thankyou-modal-open');
 
       modalBackdropEl.addEventListener('click', dismissModalAndContinue);
       var closeBtn = modalEl.querySelector('.donation-modal-close');
-      var ctaBtn = modalEl.querySelector('.donation-modal-cta');
+      var confirmBtn = modalEl.querySelector('#dc-modal-confirm-btn');
+      var makeChangesBtn = modalEl.querySelector('#dc-modal-make-changes-btn');
       if (closeBtn) closeBtn.addEventListener('click', dismissModalAndContinue);
-      if (ctaBtn) ctaBtn.addEventListener('click', dismissModalAndContinue);
+      if (confirmBtn) confirmBtn.addEventListener('click', dismissModalAndContinue);
+      if (makeChangesBtn) {
+        makeChangesBtn.addEventListener('click', function() {
+          var snapshotForEdit = donationLastConfirmedSnapshot;
+          dismissModalAndContinue();
+          setTimeout(function() {
+            if (typeof restoreDonateItemsFromSnapshot === 'function') {
+              restoreDonateItemsFromSnapshot(snapshotForEdit);
+            } else {
+              showPage('donate-items');
+            }
+          }, 220);
+        });
+      }
 
       if (prefersReducedMotion()) {
         modalBackdropEl.classList.add('is-visible');
@@ -3701,137 +3654,6 @@
     };
   })();
 
-  function initDonateConfirmPage(config) {
-    const page = document.querySelector('.page-donate-confirm');
-    const usernameEl = document.getElementById('dc-username');
-    const itemList = document.getElementById('dc-item-list');
-    const mapWrap = document.getElementById('dc-map-wrap');
-    const mapFrame = document.getElementById('dc-map');
-    if (!page || !itemList || !mapWrap || !mapFrame) return null;
-
-    const CONDITION_NOTES = {
-      '2XL-6XL clothes': 'Clean and in usable condition',
-      'Tarps': '12x12 or larger',
-      'Sleeping bags': '-5C rated or lower'
-    };
-
-    function animateEntrance() {
-      page.classList.remove('is-open', 'is-content-visible');
-      requestAnimationFrame(function() {
-        requestAnimationFrame(function() {
-          page.classList.add('is-open');
-          setTimeout(function() { page.classList.add('is-content-visible'); }, 320);
-        });
-      });
-    }
-
-    function renderItems(entries) {
-      itemList.innerHTML = '';
-      if (!entries || !entries.length) {
-        const empty = document.createElement('div');
-        empty.className = 'di-sheet-empty';
-        empty.textContent = 'No items to confirm.';
-        itemList.appendChild(empty);
-        return;
-      }
-
-      entries.forEach(function(entry) {
-        const itemName = entry.itemName;
-        const qty = entry.qty;
-        const card = document.createElement('div');
-        card.className = 'item-card dc-item-card';
-
-        const left = document.createElement('div');
-        left.className = 'item-left';
-        const textWrap = document.createElement('div');
-        const title = document.createElement('h4');
-        title.textContent = itemName;
-        textWrap.appendChild(title);
-        if (CONDITION_NOTES[itemName]) {
-          const note = document.createElement('span');
-          note.className = 'dc-item-note';
-          note.textContent = CONDITION_NOTES[itemName];
-          textWrap.appendChild(note);
-        }
-        left.appendChild(textWrap);
-
-        const right = document.createElement('div');
-        right.className = 'item-right dc-item-right';
-        const iconSrc = config.getItemIconSrc(itemName);
-        if (iconSrc) {
-          const icon = document.createElement('img');
-          icon.src = iconSrc;
-          icon.alt = '';
-          right.appendChild(icon);
-        } else {
-          const fallback = document.createElement('span');
-          fallback.className = 'dc-item-fallback';
-          fallback.textContent = '📦';
-          right.appendChild(fallback);
-        }
-        const qtyBadge = document.createElement('span');
-        qtyBadge.className = 'dc-qty-badge';
-        qtyBadge.textContent = 'x' + qty;
-        right.appendChild(qtyBadge);
-
-        card.appendChild(left);
-        card.appendChild(right);
-        itemList.appendChild(card);
-      });
-    }
-
-    var latestSnapshot = null;
-
-    function renderMap(selectedDropoffRef) {
-      const location = typeof selectedDropoffRef === 'string'
-        ? config.getDropoffById(selectedDropoffRef)
-        : selectedDropoffRef;
-      if (!location || !location.mapQuery) {
-        mapWrap.classList.add('hidden');
-        mapWrap.setAttribute('aria-hidden', 'true');
-        mapFrame.removeAttribute('src');
-        return;
-      }
-      mapWrap.classList.remove('hidden');
-      mapWrap.classList.remove('loaded');
-      mapWrap.setAttribute('aria-hidden', 'false');
-      mapFrame.src = 'https://www.google.com/maps?q=' + encodeURIComponent(location.mapQuery) + '&output=embed';
-    }
-
-    mapFrame.addEventListener('load', function() {
-      mapWrap.classList.add('loaded');
-    });
-
-    var makeChangesBtn = document.getElementById('dc-make-changes-btn');
-    if (makeChangesBtn) {
-      makeChangesBtn.addEventListener('click', function() {
-        if (typeof config.onBack === 'function') config.onBack();
-        showPage('donate-items');
-      });
-    }
-
-    var confirmBtn = document.getElementById('dc-confirm-btn');
-    if (confirmBtn) {
-      confirmBtn.addEventListener('click', function() {
-        if (typeof config.onConfirm === 'function') config.onConfirm(latestSnapshot);
-        showPage('home');
-      });
-    }
-
-    return {
-      open: function(snapshot) {
-        if (!snapshot) return;
-        latestSnapshot = snapshot;
-        if (usernameEl) usernameEl.textContent = snapshot.username || 'Rgdfriend';
-        renderItems(snapshot.items || []);
-        renderMap(snapshot.selectedDropoff);
-        showPage('donate-confirm');
-        animateEntrance();
-        setTimeout(function() { startIconRain(snapshot.items || [], config.getItemIconSrc, page); }, 300);
-      }
-    };
-  }
-
   function initDonateMoneyConfirmPage() {
     const page = document.querySelector('.page-donate-money-confirm');
     const doneBtn = document.getElementById('dcm-done-btn');
@@ -3871,9 +3693,9 @@
       open: function(snapshot) {
         var amount = snapshot && snapshot.amount != null ? snapshot.amount : donateState.amount;
         var isMonthly = !!(snapshot && snapshot.isMonthly);
-        thankYou.textContent = isMonthly ? 'Your monthly donation is active.' : 'Your donation was sent.';
-        subline.textContent = isMonthly ? 'Your subscription is now set. You can update it anytime in Donate Money.' : 'Thank you for supporting mutual aid.';
-        summaryTitle.textContent = isMonthly ? 'Monthly donation' : 'One-time donation';
+        thankYou.textContent = isMonthly ? 'Your monthly contribution is active.' : 'Your contribution was sent.';
+        subline.textContent = isMonthly ? 'Your subscription is now set. You can update it anytime in Contribute Money.' : 'Thank you for supporting mutual aid.';
+        summaryTitle.textContent = isMonthly ? 'Monthly contribution' : 'One-time contribution';
         summaryAmount.textContent = formatAmount(amount);
         showPage('donate-money-confirm');
         animateEntrance();
@@ -3979,16 +3801,15 @@
   (function initDonateItemsPage() {
     const itemQuantities = new Map();
     let diSheetOpen = false;
-    let selectedDropoff = 'private';
+    let selectedDropoff = 'upcoming-drive';
     const DI_SHEET_QTY_MAX = 999;
     const confirmUsername = 'Rgdfriend';
-    const usedPairSuggestions = new Set();
-    const pairedItems = new Map();
-    const PAIR_PARENT_ITEM = 'Tents';
+    const CLOTHING_ITEM_NAMES = new Set(['2XL-6XL clothes', 'Socks', 'Rain jackets']);
+    const BOOKSTORE_DROPOFF_IDS = new Set(['cross', 'wildfires']);
     const DROP_OFF_LOCATIONS = [
+      { id: 'upcoming-drive', mapQuery: 'Trout Lake Community Centre, Vancouver, BC' },
       { id: 'private', mapQuery: 'Private Residence, 436 12th Ave East, Vancouver, BC' },
       { id: 'cross', mapQuery: 'Cross & Crows Books, 2836 Commercial Dr, Vancouver, BC' },
-      { id: 'upcoming-drive', mapQuery: 'Trout Lake Community Centre, Vancouver, BC' },
       { id: 'wildfires', mapQuery: 'Wildfires Bookshop, 712B 12th St, New Westminster, BC' }
     ];
 
@@ -4001,22 +3822,9 @@
     const diSheetConsent = document.getElementById('di-bs-consent-box');
     const diSheetItems = document.getElementById('di-sheet-items');
     const diSheetResetItemsBtn = document.getElementById('di-sheet-reset-items-btn');
-    const diSheetMiniGrid = document.querySelector('.di-sheet-mini-grid');
-    const diPairsRow = diSheetMiniGrid ? diSheetMiniGrid.querySelector('.di-sheet-mini-col-pairs .di-sheet-mini-row') : null;
-    const initialPairsMarkup = diPairsRow ? diPairsRow.innerHTML : '';
-    let shouldOpenConfirmAfterSheetClose = false;
-    const diChangeMindBtn = document.getElementById('di-change-mind-btn');
-    let donateConfirmController = null;
-    const diSlideController = initSlideConfirmCTA({
-      rootId: 'di-bs-slide-cta',
-      onConfirm: function() {
-        if (diSheet && diSheet.classList.contains('is-open')) {
-          shouldOpenConfirmAfterSheetClose = true;
-          if (diSlideController && diSlideController.reset) diSlideController.reset();
-          openDonateConfirm();
-        }
-      }
-    });
+    const diSheetAddMoreLink = document.getElementById('di-sheet-add-more-link');
+    const diConfirmBtn = document.getElementById('di-confirm-btn');
+    const diDropoffSection = document.querySelector('.di-sheet-body-dropoff .di-sheet-section');
 
     const getItemIconSrc = (name) => ({
       '2XL-6XL clothes': 'img/icons/icon-2xl-6xl-clothes.svg',
@@ -4048,16 +3856,10 @@
     }
 
     function resetDonateItemsUIForNextRun() {
-      shouldOpenConfirmAfterSheetClose = false;
-      if (diSlideController && diSlideController.reset) diSlideController.reset();
       if (diSheetConsent) {
         diSheetConsent.classList.remove('checked');
         diSheetConsent.innerHTML = '';
       }
-      if (diSheetMiniGrid) diSheetMiniGrid.classList.remove('all-pairs-used');
-      if (diPairsRow && initialPairsMarkup) diPairsRow.innerHTML = initialPairsMarkup;
-      usedPairSuggestions.clear();
-      pairedItems.clear();
       if (diSheetBackdrop) diSheetBackdrop.classList.remove('is-open');
       if (diSheet) diSheet.classList.remove('is-open');
       diSheetOpen = false;
@@ -4069,50 +3871,88 @@
     donateMoneyConfirmController = initDonateMoneyConfirmPage();
     volunteerConfirmController = initVolunteerConfirmPage();
 
-    donateConfirmController = initDonateConfirmPage({
-      getItemIconSrc: getItemIconSrc,
-      getDropoffById: getDropoffById,
-      onBack: resetDonateItemsUIForNextRun,
-      onConfirm: function(snapshot) {
-        if (!snapshot || !snapshot.items || !snapshot.items.length) return;
-        var session = {
-          id: String(Date.now()) + '-' + Math.random().toString(36).slice(2),
-          confirmedAt: Date.now(),
-          dropoff: snapshot.selectedDropoff || getDropoffById(selectedDropoff),
-          items: snapshot.items.map(function(entry) {
-            return { itemName: entry.itemName, qty: entry.qty };
-          })
-        };
-        if (!mergeDonationGroupSession(session)) return;
-        donationGetItemIconSrc = getItemIconSrc;
-        donationLastConfirmedItems = session.items.map(function(entry) {
+    function commitDonationSnapshot(snapshot) {
+      if (!snapshot || !snapshot.items || !snapshot.items.length) return false;
+      var session = {
+        id: String(Date.now()) + '-' + Math.random().toString(36).slice(2),
+        confirmedAt: Date.now(),
+        dropoff: snapshot.selectedDropoff || getDropoffById(selectedDropoff),
+        items: snapshot.items.map(function(entry) {
           return { itemName: entry.itemName, qty: entry.qty };
-        });
-        donationJustConfirmed = true;
-        pendingHomeCelebrations += 1;
-      }
-    });
-
-    // After a donation is committed, start fresh next time user donates
-    var dcCommitBtn = document.getElementById('dc-confirm-btn');
-    if (dcCommitBtn) {
-      dcCommitBtn.addEventListener('click', function() {
-        itemQuantities.clear();
-        selectedDropoff = 'private';
-        updateDiUI();
+        })
+      };
+      if (!mergeDonationGroupSession(session)) return false;
+      donationGetItemIconSrc = getItemIconSrc;
+      donationLastConfirmedItems = session.items.map(function(entry) {
+        return { itemName: entry.itemName, qty: entry.qty };
       });
+      donationLastConfirmedSnapshot = {
+        username: snapshot.username || confirmUsername,
+        selectedDropoff: session.dropoff,
+        items: donationLastConfirmedItems.map(function(entry) {
+          return { itemName: entry.itemName, qty: entry.qty };
+        })
+      };
+      donationJustConfirmed = true;
+      pendingHomeCelebrations += 1;
+      return true;
     }
 
     function openDonateConfirm() {
-      if (!donateConfirmController) return;
       const snapshot = getDonateConfirmSnapshot();
-      donateConfirmController.open(snapshot);
+      if (!commitDonationSnapshot(snapshot)) return;
+      itemQuantities.clear();
+      selectedDropoff = 'upcoming-drive';
+      resetDonateItemsUIForNextRun();
+      showPage('home');
+      updateDiUI();
     }
+
+    function resetDrawerStateCompletely() {
+      itemQuantities.clear();
+      selectedDropoff = 'upcoming-drive';
+      if (diSheetConsent) {
+        diSheetConsent.classList.remove('checked');
+        diSheetConsent.innerHTML = '';
+      }
+      resetDonateItemsUIForNextRun();
+      updateDiUI();
+    }
+
+    restoreDonateItemsFromSnapshot = function(snapshot) {
+      itemQuantities.clear();
+      if (snapshot && Array.isArray(snapshot.items)) {
+        snapshot.items.forEach(function(entry) {
+          var name = entry && entry.itemName;
+          var qty = entry && Number(entry.qty);
+          if (!name || !Number.isFinite(qty) || qty <= 0) return;
+          itemQuantities.set(name, Math.max(1, Math.floor(qty)));
+        });
+      }
+      selectedDropoff = snapshot && snapshot.selectedDropoff && snapshot.selectedDropoff.id
+        ? snapshot.selectedDropoff.id
+        : 'upcoming-drive';
+      showPage('donate-items');
+      updateDiUI();
+      openDiSheet();
+    };
 
     function getTotalItemCount() {
       let total = 0;
       itemQuantities.forEach(function(qty) { total += qty; });
       return total;
+    }
+
+    function hasClothingInCart() {
+      var has = false;
+      itemQuantities.forEach(function(qty, itemName) {
+        if (!has && qty > 0 && CLOTHING_ITEM_NAMES.has(itemName)) has = true;
+      });
+      return has;
+    }
+
+    function isBookstoreDropoff(id) {
+      return BOOKSTORE_DROPOFF_IDS.has(id);
     }
 
     function setItemQuantity(itemName, qty) {
@@ -4127,7 +3967,7 @@
         const icon = card.querySelector('.item-icon[data-icon-active][data-icon-inactive]');
         const active = itemQuantities.has(itemName);
         card.classList.toggle('selected', active);
-        if (btn) btn.textContent = active ? 'Added' : 'I have this item';
+        if (btn) btn.textContent = active ? 'Added' : 'I have this';
         if (icon) {
           icon.src = active ? icon.dataset.iconActive : icon.dataset.iconInactive;
         }
@@ -4194,12 +4034,8 @@
       }
 
       const entries = Array.from(itemQuantities.entries());
-      const rendered = new Set();
 
       function appendRow(itemName, qty, isPaired) {
-        if (rendered.has(itemName)) return;
-        rendered.add(itemName);
-
         const row = document.createElement('div');
         row.className = 'di-sheet-item-row';
         if (isPaired) row.classList.add('is-paired');
@@ -4265,47 +4101,42 @@
         diSheetItems.appendChild(row);
       }
 
-      // Render the primary parent item first with any paired suggestions directly below.
       entries.forEach(function(entry) {
         const itemName = entry[0];
         const qty = entry[1];
-        if (itemName === PAIR_PARENT_ITEM) {
-          appendRow(itemName, qty, false);
-          entries.forEach(function(innerEntry) {
-            const childName = innerEntry[0];
-            const childQty = innerEntry[1];
-            if (pairedItems.get(childName) === PAIR_PARENT_ITEM) {
-              appendRow(childName, childQty, true);
-            }
-          });
-        }
-      });
-
-      // Render any remaining items that are not yet rendered.
-      entries.forEach(function(entry) {
-        const itemName = entry[0];
-        const qty = entry[1];
-        if (!rendered.has(itemName)) {
-          const isPaired = pairedItems.has(itemName);
-          appendRow(itemName, qty, isPaired);
-        }
+        appendRow(itemName, qty, false);
       });
     }
 
     function renderDropoffSelection() {
+      const clothingInCart = hasClothingInCart();
+      let hasBlocked = false;
+      if (clothingInCart && isBookstoreDropoff(selectedDropoff)) {
+        selectedDropoff = 'upcoming-drive';
+      }
       document.querySelectorAll('.di-bs-location-card').forEach(function(card) {
-        const isSelected = card.dataset.sheetLocation === selectedDropoff;
+        const id = card.dataset.sheetLocation;
+        const isBlocked = clothingInCart && isBookstoreDropoff(id);
+        if (isBlocked) hasBlocked = true;
+        const isSelected = !isBlocked && id === selectedDropoff;
+        card.classList.toggle('is-clothing-blocked', isBlocked);
         card.classList.toggle('is-selected', isSelected);
-        card.classList.toggle('is-muted', !isSelected);
+        card.classList.toggle('is-muted', !isSelected && !isBlocked);
+        card.setAttribute('aria-disabled', isBlocked ? 'true' : 'false');
       });
+      if (diDropoffSection) {
+        diDropoffSection.classList.toggle('has-blocked-dropoffs', hasBlocked);
+      }
     }
 
     function updateSheetDonateState() {
-      if (!diSlideController || !diSheetConsent) return;
+      if (!diConfirmBtn || !diSheetConsent) return;
       const enabled = diSheetConsent.classList.contains('checked') && getTotalItemCount() > 0 && !!selectedDropoff;
       const count = getTotalItemCount();
-      diSlideController.setEnabled(enabled);
-      diSlideController.setLabel('Slide to donate ' + count + ' item' + (count === 1 ? '' : 's'));
+      diConfirmBtn.disabled = !enabled;
+      diConfirmBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+      const label = diConfirmBtn.querySelector('.btn__label');
+      if (label) label.textContent = 'Confirm contribution (' + count + ' item' + (count === 1 ? '' : 's') + ')';
     }
 
     function openDiSheet() {
@@ -4332,6 +4163,7 @@
 
     function updateDiUI() {
       const count = getTotalItemCount();
+      const hasResettableQty = Array.from(itemQuantities.values()).some(function(qty) { return qty > 1; });
       if (diFab && diFabCount) {
         diFab.classList.toggle('visible', count > 0);
         diFabCount.textContent = String(count);
@@ -4348,6 +4180,12 @@
       syncPageCardsFromState();
       renderSheetItems();
       renderDropoffSelection();
+      if (diSheetResetItemsBtn) {
+        diSheetResetItemsBtn.hidden = !hasResettableQty;
+      }
+      if (diSheetAddMoreLink) {
+        diSheetAddMoreLink.hidden = count === 0;
+      }
       updateSheetDonateState();
     }
 
@@ -4375,6 +4213,7 @@
     // Drop-off selection (single select persisted)
     document.querySelectorAll('.di-bs-location-card').forEach(function(card) {
       card.addEventListener('click', function() {
+        if (card.classList.contains('is-clothing-blocked')) return;
         selectedDropoff = card.dataset.sheetLocation || selectedDropoff;
         card.classList.remove('di-badge-jump');
         void card.offsetWidth;
@@ -4391,10 +4230,9 @@
     // Tap scale effect on pointerdown so it fires immediately before click (things may disappear on click)
     var diSheetTapTimeout = null;
     var diSheetTapEl = null;
-    var diSheetTappableSelector = 'button, a, [role="button"], .di-sheet-close, .di-sheet-mini-chip, .di-bs-consent-box, .di-bs-consent';
+    var diSheetTappableSelector = 'button, a, [role="button"], .di-sheet-close, .di-bs-consent-box, .di-bs-consent';
     if (diSheet) {
       diSheet.addEventListener('pointerdown', function(e) {
-        if (e.target.closest('.di-bs-slide-cta')) return;
         var el = e.target.closest(diSheetTappableSelector);
         if (!el || !diSheet.contains(el)) return;
         if (el.classList.contains('di-bs-consent') || el.closest('.di-bs-consent') === el) el = el.querySelector('.di-bs-consent-box') || el;
@@ -4449,44 +4287,6 @@
       });
     }
 
-    // \"Pairs well with\" and \"Donate more\" mini-grid interactions
-    if (diSheetMiniGrid) {
-      diSheetMiniGrid.addEventListener('click', function(e) {
-        const plus = e.target.closest('.di-sheet-mini-plus-badge');
-        if (!plus) return;
-
-        // Donate more button: close sheet without changing state
-        if (plus.dataset.donateMore === 'true') {
-          closeDiSheet();
-          return;
-        }
-
-        // Pairs well with suggestions
-        if (plus.dataset.pairPlus === 'true') {
-          const chip = plus.closest('.di-sheet-mini-chip');
-          if (!chip) return;
-          const itemName = chip.dataset.item;
-          if (!itemName) return;
-
-          const currentQty = itemQuantities.get(itemName) || 0;
-          setItemQuantity(itemName, currentQty + 1);
-          usedPairSuggestions.add(itemName);
-          pairedItems.set(itemName, PAIR_PARENT_ITEM);
-          chip.classList.add('used');
-          // Remove the chip from the UI immediately so its icon disappears.
-          chip.remove();
-
-          updateDiUI();
-          if (currentQty === 0) jumpDiItemIconForItem(itemName);
-
-          const remainingPairChip = diSheetMiniGrid.querySelector('.di-sheet-mini-chip-pair:not(.used)');
-          if (!remainingPairChip) {
-            diSheetMiniGrid.classList.add('all-pairs-used');
-          }
-        }
-      });
-    }
-
     // Item selection buttons
     document.querySelectorAll('.page-donate-items .di-item-btn').forEach(function(btn) {
       btn.addEventListener('click', function(e) {
@@ -4512,22 +4312,30 @@
 
     // FAB and bottom sheet open/close
     if (diFab) diFab.addEventListener('click', openDiSheet);
-    if (diSheetClose) diSheetClose.addEventListener('click', closeDiSheet);
+    if (diSheetClose) {
+      diSheetClose.addEventListener('click', function() {
+        resetDrawerStateCompletely();
+      });
+    }
+    if (diSheetAddMoreLink) {
+      diSheetAddMoreLink.addEventListener('click', function() {
+        closeDiSheet();
+      });
+    }
     if (diSheetResetItemsBtn) {
       diSheetResetItemsBtn.addEventListener('click', function() {
-        itemQuantities.clear();
-        usedPairSuggestions.clear();
-        pairedItems.clear();
-        if (diPairsRow && initialPairsMarkup) diPairsRow.innerHTML = initialPairsMarkup;
-        if (diSheetMiniGrid) diSheetMiniGrid.classList.remove('all-pairs-used');
+        itemQuantities.forEach(function(_, itemName) {
+          itemQuantities.set(itemName, 1);
+        });
         updateDiUI();
       });
     }
-    if (diChangeMindBtn) {
-      diChangeMindBtn.addEventListener('click', function() {
-        itemQuantities.clear();
-        selectedDropoff = 'private';
-        updateDiUI();
+    if (diConfirmBtn) {
+      diConfirmBtn.addEventListener('click', function() {
+        if (diConfirmBtn.disabled) return;
+        if (diSheet && diSheet.classList.contains('is-open')) {
+          openDonateConfirm();
+        }
       });
     }
     if (diSheetBackdrop) diSheetBackdrop.addEventListener('click', closeDiSheet);
@@ -4804,21 +4612,13 @@
       touchCursor.classList.remove('touch-cursor--down');
     });
 
-    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, textarea, label, .stat-cell-icon, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .settings-row--link, .settings-toggle, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-submit, .compose-cat-btn, .compose-attach, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-delete-btn, .forum-comment-byline--thread, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .cal-add-chip, .cal-add-cover-trigger, .cal-add-cover-remove, .cal-add-modal-close, .cal-add-modal-footer .btn, .cal-add-status-done-btn, .back-to-top, .logo-home-btn';
+    const interactiveSelector = 'button, a, [role="button"], .tab, .nav-item, input, textarea, label, .stat-cell-icon, .vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, .settings-row--link, .settings-toggle, .prof-forum-post, .prof-settings-link, .forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-submit, .compose-cat-btn, .compose-attach, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-delete-btn, .forum-comment-byline--thread, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .back-to-top, .logo-home-btn';
     document.addEventListener('mouseover', (e) => {
-      if (e.target.closest('.cal-add-modal .cal-add-label')) {
-        touchCursor.classList.remove('touch-cursor--hover');
-        return;
-      }
       if (e.target.closest(interactiveSelector) && !e.target.closest('.bottom-nav')) {
         touchCursor.classList.add('touch-cursor--hover');
       }
     });
     document.addEventListener('mouseout', (e) => {
-      if (e.target.closest('.cal-add-modal .cal-add-label')) {
-        touchCursor.classList.remove('touch-cursor--hover');
-        return;
-      }
       if (e.target.closest(interactiveSelector)) {
         touchCursor.classList.remove('touch-cursor--hover');
       }
@@ -4836,8 +4636,8 @@
       '.settings-row--link, .settings-toggle, ' +
       '.prof-forum-post, .prof-settings-link, ' +
       '.btn, .icon-btn, .logo-home-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-toggle-opt, .vol-cta-btn, .event-detail-share, ' +
-      '.forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-comment-post, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-byline--thread, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .cal-add-chip, .cal-add-cover-trigger, .cal-add-cover-remove, .cal-add-modal-close, .cal-add-modal-footer .btn, .cal-add-status-done-btn, .back-to-top, ' +
-      '.dm-cta-btn, .dc-make-changes-btn, .dm-switch-to-items, .dm-toggle-switch, .dm-copy-btn, .di-item-btn, .di-switch-to-money, .di-fab, .di-sheet-close, .di-bs-consent-box, .ap-pay-btn, .ap-pay-done-btn, .ap-pay-grabber';
+      '.forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-comment-post, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-byline--thread, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .back-to-top, ' +
+      '.dm-cta-btn, .dm-switch-to-items, .dm-toggle-switch, .dm-copy-btn, .di-item-btn, .di-switch-to-money, .di-fab, .di-sheet-close, .di-bs-consent-box, .ap-pay-btn, .ap-pay-done-btn, .ap-pay-grabber';
     function clearTouchActive() {
       document.querySelectorAll('.touch-active').forEach(function(el) { el.classList.remove('touch-active'); });
     }
@@ -4942,8 +4742,8 @@
     }
 
     function formatCount(value, format) {
-      if (format === 'comma') return value.toLocaleString();
-      return String(value);
+      if (format === 'comma') return value.toLocaleString() + 'x';
+      return String(value) + 'x';
     }
 
     function animateCounts() {
@@ -5087,14 +4887,21 @@
       }
     }
 
-    function onPointerUp() {
+    function onPointerUp(e) {
       if (!isDragging) return;
       isDragging = false;
       card.classList.remove('is-dragging');
       document.removeEventListener('pointermove', onPointerMove);
       document.removeEventListener('pointerup', onPointerUp);
       document.removeEventListener('pointercancel', onPointerUp);
-      // If not already opened by auto-snap, snap back
+      if (!isOpen && e && e.type === 'pointerup') {
+        var delta = typeof e.clientX === 'number' ? Math.abs(e.clientX - startX) : 999;
+        if (delta <= 8) {
+          open();
+          return;
+        }
+      }
+      // If not already opened by auto-snap, snap back.
       card.style.transform = '';
     }
 

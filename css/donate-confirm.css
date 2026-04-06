@@ -231,6 +231,104 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
     box-sizing: border-box;
   }
+  .donation-modal .dc-heading-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .donation-modal .dc-heading-row img {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+  .donation-modal .dc-heading {
+    margin: 0;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .donation-modal .dc-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .donation-modal .dc-item-card {
+    margin: 0;
+    pointer-events: none;
+  }
+  .donation-modal .dc-item-right {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .donation-modal .dc-item-right img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: block;
+  }
+  .donation-modal .dc-qty-badge {
+    position: absolute;
+    right: -6px;
+    top: -2px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+  }
+  .donation-modal .dc-map-wrap {
+    padding-bottom: 65%;
+    margin-bottom: 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    box-sizing: border-box;
+  }
+  .donation-modal .dc-reminder-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 20px 0 16px;
+  }
+  .donation-modal .dc-reminder {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .donation-modal .dc-reminder-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+  .donation-modal .dc-reminder-title {
+    margin: 0;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+  .donation-modal .dc-reminder-copy {
+    margin: 2px 0 0;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--text-muted);
+    opacity: 0.9;
+  }
   .page-donate-confirm .dc-anim {
     opacity: 0;
     transform: translateY(12px);
