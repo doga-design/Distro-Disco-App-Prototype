@@ -369,6 +369,15 @@
     justify-content: center;
     padding-top: 10px;
   }
+  .event-detail-stack {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 370px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
   .event-detail-illustration {
     position: absolute;
     top: var(--detail-illustration-top);
@@ -390,7 +399,6 @@
   }
   .event-detail-card {
     position: relative;
-    z-index: 1;
     width: 100%;
     max-width: 370px;
     background: rgba(255, 255, 255, 0.95);
@@ -418,9 +426,16 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    line-height: 1;
+    line-height: 0;
     flex: 0 0 32px;
+    padding: 0;
+    align-self: flex-start;
+  }
+  .event-detail-back-arrow-icon {
+    width: 15px;
+    height: auto;
+    display: block;
+    object-fit: contain;
   }
   .event-detail-icon {
     width: 64px;

@@ -654,46 +654,50 @@
         <img id="event-detail-illustration" src="img/icons/icon-bus.svg" alt="">
       </div>
 
-      <article class="event-detail-card">
-        <div class="event-detail-card-top">
-          <button type="button" class="event-detail-back-arrow" id="event-detail-back-arrow" aria-label="Back to previous page"><span aria-hidden="true"><-</span></button>
-          <img id="event-detail-icon" class="event-detail-icon" src="img/icons/icon-bus.svg" alt="">
-          <button class="event-detail-share icon-btn" aria-label="Share event">
-            <img src="img/icons/share-icon.svg" alt="Share" class="share-icon">
-          </button>
-        </div>
+      <div class="event-detail-stack">
+        <button type="button" class="event-detail-back-arrow" id="event-detail-back-arrow" aria-label="Back to previous page">
+          <img src="img/icons/arrow-left.svg" alt="" class="event-detail-back-arrow-icon" width="25" height="23" aria-hidden="true">
+        </button>
+        <article class="event-detail-card">
+          <div class="event-detail-card-top">
+            <img id="event-detail-icon" class="event-detail-icon" src="img/icons/icon-bus.svg" alt="">
+            <button class="event-detail-share icon-btn" aria-label="Share event">
+              <img src="img/icons/share-icon.svg" alt="Share" class="share-icon">
+            </button>
+          </div>
 
-        <h2 id="event-detail-title" class="event-detail-title">April distro 1</h2>
+          <h2 id="event-detail-title" class="event-detail-title">April distro 1</h2>
 
-        <div class="event-detail-meta">
-          <div class="event-detail-meta-row">
-            <img src="img/icons/icon-clock.svg" alt="">
-            <div>
-              <div id="event-detail-datetime" class="event-detail-meta-main">Saturday, Apr 19, 3–6 PM</div>
+          <div class="event-detail-meta">
+            <div class="event-detail-meta-row">
+              <img src="img/icons/icon-clock.svg" alt="">
+              <div>
+                <div id="event-detail-datetime" class="event-detail-meta-main">Saturday, Apr 19, 3–6 PM</div>
+              </div>
+            </div>
+            <div class="event-detail-meta-row">
+              <img src="img/icons/icon-location.svg" alt="">
+              <div>
+                <div id="event-detail-location" class="event-detail-meta-main">Grandview Park</div>
+                <div id="event-detail-address" class="event-detail-meta-sub">1657 Charles St</div>
+              </div>
             </div>
           </div>
-          <div class="event-detail-meta-row">
-            <img src="img/icons/icon-location.svg" alt="">
-            <div>
-              <div id="event-detail-location" class="event-detail-meta-main">Grandview Park</div>
-              <div id="event-detail-address" class="event-detail-meta-sub">1657 Charles St</div>
+
+          <div class="event-detail-map-wrap hidden" id="event-detail-map-wrap" aria-hidden="true">
+            <div class="event-detail-map-loading" id="event-detail-map-loading" aria-live="polite">
+              <span class="event-detail-map-loading-spinner"></span>
+              <span class="event-detail-map-loading-text">Map loading</span>
             </div>
+            <iframe id="event-detail-map" class="event-detail-map" title="Event location map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="" allow="fullscreen"></iframe>
           </div>
-        </div>
 
-        <div class="event-detail-map-wrap hidden" id="event-detail-map-wrap" aria-hidden="true">
-          <div class="event-detail-map-loading" id="event-detail-map-loading" aria-live="polite">
-            <span class="event-detail-map-loading-spinner"></span>
-            <span class="event-detail-map-loading-text">Map loading</span>
+          <div class="event-detail-cta">
+            <button id="event-detail-cta" class="btn btn-primary"><span class="btn__label">Volunteer for this drive</span></button>
+            <button type="button" id="event-detail-go-back" class="btn btn-secondary"><span class="btn__label">Go back</span></button>
           </div>
-          <iframe id="event-detail-map" class="event-detail-map" title="Event location map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="" allow="fullscreen"></iframe>
-        </div>
-
-        <div class="event-detail-cta">
-          <button id="event-detail-cta" class="btn btn-primary"><span class="btn__label">Volunteer for this drive</span></button>
-          <button type="button" id="event-detail-go-back" class="btn btn-secondary"><span class="btn__label">Go back</span></button>
-        </div>
-      </article>
+        </article>
+      </div>
     </div>
   </div>
   </div><!-- /.page.page-event-detail -->
