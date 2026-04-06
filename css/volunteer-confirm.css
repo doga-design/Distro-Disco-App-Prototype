@@ -75,7 +75,7 @@
     color: var(--text-muted);
   }
   .page-volunteer-confirm .vol-timeline-section-compact .vol-tl-static-line {
-    margin: 0 -8px calc(-9px - 8px - 1px);
+    margin: 0 -8px calc(-10px - 11px - 1px);
     opacity: 0.65;
   }
   .page-volunteer-confirm .vol-timeline-section-compact .vol-timeline-track-wrap {

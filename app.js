@@ -1316,6 +1316,11 @@
     var avatarWrap = document.getElementById('prof-avatar-wrap');
 
     var selectedIdx = CURRENT_AVATAR_IDX;
+    var isAvatarStripDragging = false;
+    var avatarStripDragStartX = 0;
+    var avatarStripDragStartScrollLeft = 0;
+    var avatarStripMoved = false;
+    var suppressAvatarStripClick = false;
 
     // Build avatar options
     if (scroll) {
@@ -1337,6 +1342,41 @@
         });
         scroll.appendChild(el);
       });
+    }
+
+    // Desktop: allow horizontal drag scrolling in avatar strip.
+    if (scroll && window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+      scroll.addEventListener('mousedown', function(e) {
+        if (e.button !== 0) return;
+        isAvatarStripDragging = true;
+        avatarStripMoved = false;
+        avatarStripDragStartX = e.clientX;
+        avatarStripDragStartScrollLeft = scroll.scrollLeft;
+        e.preventDefault();
+      });
+
+      window.addEventListener('mousemove', function(e) {
+        if (!isAvatarStripDragging) return;
+        var dx = e.clientX - avatarStripDragStartX;
+        if (Math.abs(dx) > 3) avatarStripMoved = true;
+        scroll.scrollLeft = avatarStripDragStartScrollLeft - dx;
+      });
+
+      window.addEventListener('mouseup', function() {
+        if (!isAvatarStripDragging) return;
+        isAvatarStripDragging = false;
+        if (avatarStripMoved) {
+          suppressAvatarStripClick = true;
+          setTimeout(function() { suppressAvatarStripClick = false; }, 120);
+        }
+      });
+
+      scroll.addEventListener('click', function(e) {
+        if (!suppressAvatarStripClick) return;
+        e.preventDefault();
+        e.stopPropagation();
+        suppressAvatarStripClick = false;
+      }, true);
     }
     // Apply default avatar to profile on start
     if (avatarDisplay && AVATARS[CURRENT_AVATAR_IDX]) {
