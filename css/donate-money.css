@@ -13,10 +13,20 @@
   .page-donate-money .page-gutter.page-gutter-top-16 {
     padding-top: 16px;
   }
+  .page-donate-money .dm-money-panel {
+    margin: 0 20px;
+    padding: 0 0 20px;
+    background: #FFEDD6;
+    border-radius: var(--radius-xl);
+  }
+  .page-donate-money .dm-money-panel .page-gutter {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 
   /* ── Donate Money redesign zones ── */
   .page-donate-money .dm-amount-zone {
-    padding: 28px 20px 0;
+    padding: 24px 20px 0;
   }
   .page-donate-money .dm-impact-line {
   line-height: 1.4;
@@ -59,7 +69,6 @@
     position: relative;
     flex-shrink: 0;
     transition: background 0.2s;
-    cursor: pointer;
   }
   .page-donate-money .dm-toggle-switch::after {
     content: '';
@@ -75,9 +84,12 @@
   }
   .page-donate-money .dm-toggle-switch.on { background: var(--navy); }
   .page-donate-money .dm-toggle-switch.on::after { left: 19px; }
-  @media (hover: hover) and (pointer: fine) {
-    .page-donate-money .dm-toggle-switch,
-    .page-donate-money .dm-freq-row { cursor: default; }
+  @media (pointer: fine) {
+    .page-donate-money .dm-freq-row,
+    .page-donate-money .dm-freq-label,
+    .page-donate-money .dm-toggle-switch {
+      cursor: none !important;
+    }
   }
   .page-donate-money .dm-bus-callout {
     font-family: 'Public Sans', system-ui, sans-serif;
@@ -148,15 +160,17 @@
 
   .donate-amount-display {
     display: flex;
-    align-items: baseline;
-    gap: 4px;
-    color: var(--navy);
+    align-items: center;
+    gap: 2px;
     margin-bottom: 18px;
   }
   .donate-amount-currency {
     font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
-    font-size: 34px;
-    line-height: 1;
+    font-size: 72px;
+    line-height: 0.95;
+    font-weight: 700;
+    letter-spacing: -2px;
+    color: var(--orange);
   }
   .donate-amount-value {
     font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
@@ -223,13 +237,7 @@
     padding-left: 55px;
   }
   .donate-feed-timeline::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    border-left: 1px dashed var(--border-color);
+    content: none;
   }
   .donate-feed-entry {
     display: flex;
@@ -292,255 +300,3 @@
     margin-top: 4px;
   }
 
-  /* Apple-style payment drawer */
-  .ap-pay-scrim {
-    position: absolute;
-    inset: 0;
-    z-index: 260;
-    background: rgba(0, 0, 0, 0);
-    -webkit-backdrop-filter: blur(0px);
-    backdrop-filter: blur(0px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 320ms cubic-bezier(0.32, 0.72, 0, 1), background 320ms cubic-bezier(0.32, 0.72, 0, 1), -webkit-backdrop-filter 320ms cubic-bezier(0.32, 0.72, 0, 1), backdrop-filter 320ms cubic-bezier(0.32, 0.72, 0, 1);
-  }
-  .ap-pay-scrim.is-open {
-    opacity: 1;
-    pointer-events: auto;
-    background: rgba(0, 0, 0, 0.26);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-  }
-  .ap-pay-drawer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 261;
-    pointer-events: none;
-    transform: translateY(104%);
-    transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1);
-  }
-  .ap-pay-drawer.is-open {
-    pointer-events: auto;
-    transform: translateY(0);
-  }
-  .ap-pay-sheet {
-    min-height: 510px;
-    background: rgba(255, 255, 255, 0.94);
-    -webkit-backdrop-filter: saturate(160%) blur(24px);
-    backdrop-filter: saturate(160%) blur(24px);
-    border-top: 0.5px solid rgba(0, 0, 0, 0.14);
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    padding: 10px 24px 24px;
-  }
-  .ap-pay-grabber-wrap {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 14px;
-  }
-  .ap-pay-grabber {
-    width: 36px;
-    height: 5px;
-    border: 0;
-    border-radius: 999px;
-    background: rgba(60, 60, 67, 0.32);
-    padding: 0;
-    cursor: pointer;
-  }
-  .ap-pay-state {
-    display: none;
-  }
-  .ap-pay-state.is-visible {
-    display: block;
-  }
-  .ap-pay-merchant-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-  .ap-pay-merchant-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: #fff9f1;
-  }
-
-  .ap-pay-merchant-icon img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .ap-pay-merchant-name {
-    margin: 0;
-    color: #111;
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-  .ap-pay-merchant-sub {
-    margin: 2px 0 0;
-    color: rgba(60, 60, 67, 0.6);
-    font-size: 13px;
-    font-weight: 500;
-  }
-  .ap-pay-summary {
-    border-radius: 16px;
-    border: 0.5px solid rgba(60, 60, 67, 0.16);
-    background: rgba(255, 255, 255, 0.95);
-    overflow: hidden;
-    margin-bottom: 14px;
-  }
-  .ap-pay-summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 13px 14px;
-    border-bottom: 0.5px solid rgba(60, 60, 67, 0.12);
-    color: rgba(60, 60, 67, 0.78);
-    font-size: 15px;
-  }
-  .ap-pay-summary-row strong {
-    color: #111;
-    font-weight: 600;
-  }
-  .ap-pay-summary-row-total span,
-  .ap-pay-summary-row-total strong {
-    color: #111;
-    font-weight: 700;
-  }
-  .ap-pay-summary-row:last-child {
-    border-bottom: 0;
-  }
-  .ap-pay-card-row {
-    border-radius: 16px;
-    border: 0.5px solid rgba(60, 60, 67, 0.16);
-    background: rgba(255, 255, 255, 0.95);
-    padding: 12px 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .ap-pay-card-chip {
-    width: 36px;
-    height: 24px;
-    border-radius: 6px;
-    background: linear-gradient(135deg, #2f6fff 0%, #1550ca 100%);
-  }
-  .ap-pay-card-title {
-    margin: 0;
-    color: #111;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .ap-pay-card-sub {
-    margin: 1px 0 0;
-    color: rgba(60, 60, 67, 0.55);
-    font-size: 12px;
-  }
-  .ap-pay-btn {
-    width: 100%;
-    height: 54px;
-    border: 0;
-    border-radius: var(--btn-radius);
-    background: #000;
-    color: #fff;
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    cursor: pointer;
-    transition: transform 120ms ease, opacity 120ms ease;
-  }
-  .ap-pay-btn:active,
-  .ap-pay-btn.touch-active {
-    transform: scale(0.98);
-  }
-  .ap-pay-state-processing,
-  .ap-pay-state-success {
-    text-align: center;
-    padding-top: 24px;
-  }
-  .ap-pay-spinner-wrap {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 18px;
-  }
-  .ap-pay-spinner {
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    border: 3px solid rgba(0, 0, 0, 0.12);
-    border-top-color: #000;
-    animation: ap-pay-spin 900ms linear infinite;
-    display: inline-block;
-  }
-  @keyframes ap-pay-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  .ap-pay-processing-title {
-    margin: 0 0 6px;
-    color: #111;
-    font-size: 20px;
-    font-weight: 600;
-  }
-  .ap-pay-processing-sub {
-    margin: 0;
-    color: rgba(60, 60, 67, 0.65);
-    font-size: 14px;
-  }
-  .ap-pay-success-ring {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    border: 2px solid rgba(52, 199, 89, 0.7);
-    background: rgba(52, 199, 89, 0.1);
-    margin: 0 auto 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: scale(0.72);
-    opacity: 0;
-    transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 260ms ease;
-  }
-  .ap-pay-success-ring svg {
-    width: 34px;
-    height: 34px;
-    stroke: #34c759;
-    stroke-width: 2.2;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .ap-pay-state-success.is-animating .ap-pay-success-ring {
-    transform: scale(1);
-    opacity: 1;
-  }
-  .ap-pay-success-title {
-    margin: 0 0 6px;
-    color: #111;
-    font-size: 20px;
-    font-weight: 600;
-  }
-  .ap-pay-success-sub {
-    margin: 0 0 22px;
-    color: rgba(60, 60, 67, 0.65);
-    font-size: 14px;
-  }
-  .ap-pay-done-btn {
-    width: 100%;
-    height: 50px;
-    border-radius: var(--btn-radius);
-    border: 0.5px solid rgba(60, 60, 67, 0.18);
-    background: rgba(255, 255, 255, 0.95);
-    color: #111;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-  }

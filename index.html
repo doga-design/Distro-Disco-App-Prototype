@@ -18,9 +18,14 @@
 <div class="phone-frame">
   <div class="phone-btn phone-btn-vol-up"></div>
   <div class="phone-btn phone-btn-vol-down"></div>
-  <div class="phone-btn phone-btn-power"></div>
+  <button type="button" class="phone-btn phone-btn-power" id="phone-lock-btn" aria-label="Lock screen"></button>
 
 <div class="app-container">
+
+  <!-- ── Lock screen overlay (desktop only) ── -->
+  <div class="lock-screen" id="lock-screen" aria-hidden="true">
+    <img class="lock-screen-wallpaper" src="img/lock-screen-wallpaper.png" alt="" aria-hidden="true">
+  </div>
 
   <div class="screen-content">
   <!-- ── Home Page ── -->
@@ -731,48 +736,50 @@
       </div>
     </div>
 
-    <!-- Zone 1: Amount -->
-    <div class="dm-amount-zone">
-      <div class="donate-amount-display">
-        <span class="donate-amount-currency">$</span>
-        <span class="donate-amount-value" id="donate-amount-value" contenteditable="true" role="textbox" aria-label="Contribution amount" spellcheck="false">25</span>
+    <div class="dm-money-panel">
+      <!-- Zone 1: Amount -->
+      <div class="dm-amount-zone">
+        <div class="donate-amount-display">
+          <span class="donate-amount-currency">$</span>
+          <span class="donate-amount-value" id="donate-amount-value" contenteditable="true" role="textbox" aria-label="Contribution amount" spellcheck="false">20</span>
+        </div>
+        <div class="donate-preset-grid">
+          <button type="button" class="btn btn-secondary donate-preset-btn" data-amount="10">$10</button>
+          <button type="button" class="btn btn-secondary donate-preset-btn active" data-amount="20">$20</button>
+          <button type="button" class="btn btn-secondary donate-preset-btn" data-amount="50">$50</button>
+          <button type="button" class="btn btn-secondary donate-preset-btn" data-amount="100">$100</button>
+        </div>
+        <input id="donate-custom-input" class="donate-custom-input" type="number" min="1" step="1" inputmode="numeric" placeholder="Other amount">
       </div>
-      <div class="donate-preset-grid">
-        <button type="button" class="btn btn-secondary donate-preset-btn" data-amount="12">$12</button>
-        <button type="button" class="btn btn-secondary donate-preset-btn active" data-amount="25">$25</button>
-        <button type="button" class="btn btn-secondary donate-preset-btn" data-amount="50">$50</button>
-        <button type="button" class="btn btn-secondary donate-preset-btn" data-amount="75">$75</button>
+
+      <!-- Zone 2: Impact statement -->
+      <div class="page-gutter page-gutter-top-16">
+        <p class="dm-impact-line" id="dm-impact-line">A headlamp. Light when there's none.</p>
       </div>
-      <input id="donate-custom-input" class="donate-custom-input" type="number" min="1" step="1" inputmode="numeric" placeholder="Other amount">
-    </div>
 
-    <!-- Zone 2: Impact statement -->
-    <div class="page-gutter page-gutter-top-16">
-      <p class="dm-impact-line" id="dm-impact-line">A headlamp. Light when there's none.</p>
-    </div>
-
-    <!-- Zone 3: Frequency nudge -->
-    <div class="page-gutter">
-      <div class="dm-freq-row">
-        <div class="dm-toggle-switch" id="dm-monthly-toggle" role="switch" aria-checked="false"></div>
-        <span class="dm-freq-label">Make it monthly?</span>
+      <!-- Zone 3: Frequency nudge -->
+      <div class="page-gutter">
+        <div class="dm-freq-row">
+          <div class="dm-toggle-switch" id="dm-monthly-toggle" role="switch" aria-checked="false"></div>
+          <span class="dm-freq-label">Make it monthly?</span>
+        </div>
       </div>
-    </div>
 
-    <!-- Zone 4: Bus callout -->
-    <p class="dm-bus-callout">Contributions also keep our bus running — insurance, gas, and maintenance.</p>
+      <!-- Zone 4: Bus callout -->
+      <p class="dm-bus-callout">Contributions also keep our bus running — insurance, gas, and maintenance.</p>
 
-    <!-- Zone 5: CTA + payment info -->
-    <div class="dm-cta-zone">
-      <button type="button" class="btn btn-primary dm-cta-btn" id="donate-money-cta"><span class="btn__label">Contribute $25</span></button>
-      <div class="dm-payment-info">
-        <div class="dm-copy-row">
-          <span>E-transfer or PayPal:</span>
-          <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2b4f42585f59444f425848446b4c464a424705484446">[email&#160;protected]</a></strong>
-          <button class="dm-copy-btn" id="dm-copy-email" aria-label="Copy email address">
-            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          </button>
-          <span class="dm-copy-confirm" id="dm-copy-confirm">Copied</span>
+      <!-- Zone 5: CTA + payment info -->
+      <div class="dm-cta-zone">
+        <button type="button" class="btn btn-primary dm-cta-btn" id="donate-money-cta"><span class="btn__label">Contribute $20</span></button>
+        <div class="dm-payment-info">
+          <div class="dm-copy-row">
+            <span>e-transfer:</span>
+            <strong><a href="mailto:distrodisco1312@gmail.com">distrodisco1312@gmail.com</a></strong>
+            <button class="dm-copy-btn" id="dm-copy-email" aria-label="Copy email address">
+              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+            <span class="dm-copy-confirm" id="dm-copy-confirm">Copied</span>
+          </div>
         </div>
       </div>
     </div>
@@ -852,70 +859,6 @@
     </div>
   </div><!-- /.page.page-donate-money -->
 
-  <div class="ap-pay-scrim" id="ap-pay-scrim" aria-hidden="true"></div>
-  <div class="ap-pay-drawer" id="ap-pay-drawer" aria-hidden="true" role="dialog" aria-label="Apple Pay">
-    <div class="ap-pay-sheet">
-      <div class="ap-pay-grabber-wrap">
-        <button type="button" class="ap-pay-grabber" id="ap-pay-grabber" aria-label="Dismiss Apple Pay"></button>
-      </div>
-
-      <div class="ap-pay-state ap-pay-state-default" id="ap-pay-state-default">
-        <div class="ap-pay-merchant-row">
-          <div class="ap-pay-merchant-icon" aria-hidden="true">
-            <img src="img/icons/favicon.svg" alt="" width="44" height="44" decoding="async">
-          </div>
-          <div class="ap-pay-merchant-meta">
-            <p class="ap-pay-merchant-name" id="ap-pay-merchant-name">Distro Disco</p>
-            <p class="ap-pay-merchant-sub">Wallet Pay</p>
-          </div>
-        </div>
-
-        <div class="ap-pay-summary">
-          <div class="ap-pay-summary-row">
-            <span id="ap-pay-amount-label">Contribution amount</span>
-            <strong id="ap-pay-amount-line">$25.00 CAD</strong>
-          </div>
-          <div class="ap-pay-summary-row">
-            <span id="ap-pay-secondary-label">Processing fee</span>
-            <span id="ap-pay-secondary-line">$0.00</span>
-          </div>
-          <div class="ap-pay-summary-row ap-pay-summary-row-total">
-            <span id="ap-pay-total-label">Total</span>
-            <strong id="ap-pay-total-line">$25.00 CAD</strong>
-          </div>
-        </div>
-
-        <div class="ap-pay-card-row">
-          <div class="ap-pay-card-chip" aria-hidden="true"></div>
-          <div class="ap-pay-card-meta">
-            <p class="ap-pay-card-title" id="ap-pay-card-line">Visa ···· 4242</p>
-            <p class="ap-pay-card-sub">Wallet Pay</p>
-          </div>
-        </div>
-
-        <button type="button" class="ap-pay-btn" id="ap-pay-btn">
-          <span id="ap-pay-btn-label">Pay $25.00</span>
-        </button>
-      </div>
-
-      <div class="ap-pay-state ap-pay-state-processing" id="ap-pay-state-processing" aria-live="polite">
-        <div class="ap-pay-spinner-wrap">
-          <span class="ap-pay-spinner" aria-hidden="true"></span>
-        </div>
-        <p class="ap-pay-processing-title">Processing</p>
-        <p class="ap-pay-processing-sub">Authorizing your contribution...</p>
-      </div>
-
-      <div class="ap-pay-state ap-pay-state-success" id="ap-pay-state-success" aria-live="polite">
-        <div class="ap-pay-success-ring" id="ap-pay-success-ring" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M5 12.5L10 17L19 8"></path></svg>
-        </div>
-        <p class="ap-pay-success-title" id="ap-pay-success-title">Contribution sent</p>
-        <p class="ap-pay-success-sub" id="ap-pay-success-sub">$25.00 to Distro Disco</p>
-        <button type="button" class="ap-pay-done-btn" id="ap-pay-done-btn">Done</button>
-      </div>
-    </div>
-  </div>
 
   <!-- ── Donate Items Page ── -->
   <div class="page page-donate-items">
@@ -1119,8 +1062,8 @@
                 <div class="di-bs-card-media" aria-hidden="true"></div>
                 <span class="di-bs-distance">2.3 mi away</span>
                 <div class="di-bs-loc-text">
-                  <div class="di-bs-loc-name">Private Residence</div>
-                  <div class="di-bs-loc-meta">436 12th Ave East<br>Open: 10:00 AM - 10:00 PM</div>
+                  <div class="di-bs-loc-name">Spartacus Books</div>
+                  <div class="di-bs-loc-meta">3378 Findlay St<br>Open: Daily, 11:00 AM - 7:00 PM</div>
                 </div>
                 <span class="di-bs-loc-check">✓</span>
               </div>
@@ -1152,8 +1095,27 @@
             <div class="di-bs-footer">
               <label class="di-bs-consent">
                 <button class="di-bs-consent-box" id="di-bs-consent-box" type="button" aria-label="Confirm contribution item condition"></button>
-                <span>I confirm these items are in good, usable condition by <span class="di-bs-standards">DD’s Standards</span></span>
+                <span>I confirm these items are in good, usable condition by <button type="button" class="di-bs-standards" id="di-bs-standards-toggle" aria-expanded="false" aria-controls="di-bs-standards-panel">DD’s Standards</button></span>
               </label>
+
+              <div class="di-bs-standards-panel" id="di-bs-standards-panel" role="region" aria-labelledby="di-bs-standards-toggle" aria-hidden="true">
+                <div class="di-bs-standards-inner">
+                  <h4 class="di-bs-standards-title">DD's Standards</h4>
+                  <div class="di-bs-standards-section">
+                    <h5 class="di-bs-standards-subhead">Condition</h5>
+                    <p class="di-bs-standards-p">Clean, dry, and functional. No mold, stains, tears, pests, or heavy wear. Clothing must be weather-appropriate. Hygiene, menstrual, and first-aid items must be new and unopened.</p>
+                  </div>
+                  <div class="di-bs-standards-section">
+                    <h5 class="di-bs-standards-subhead">Packaging</h5>
+                    <p class="di-bs-standards-p">Bag or box your donations. Seal and label if you can (e.g. &ldquo;Clothing &ndash; M/L&rdquo;). Keep categories separate.</p>
+                  </div>
+                  <div class="di-bs-standards-section">
+                    <h5 class="di-bs-standards-subhead">We can&rsquo;t take</h5>
+                    <p class="di-bs-standards-p">Used underwear, damaged footwear, expired food or medicine, electronics, furniture, appliances, liquid chemicals, or anything broken. Not sure? Reach out before you drop off.</p>
+                  </div>
+                  <p class="di-bs-standards-foot">Only donate what you&rsquo;d be happy to receive yourself.</p>
+                </div>
+              </div>
 
               <button type="button" class="btn btn-primary di-bs-confirm-btn" id="di-confirm-btn"><span class="btn__label">Confirm contribution</span></button>
             </div>
@@ -1164,58 +1126,6 @@
 
   </div><!-- /.page.page-donate-items -->
 
-  <div class="page page-donate-confirm page-donate-money-confirm">
-    <div class="dc-surface">
-      <section class="dc-hero">
-        <div class="dc-hero-img-wrap dc-anim" style="--dc-delay:0ms">
-          <img src="img/hearthands.gif" alt="" class="dc-hero-img">
-        </div>
-        <h2 class="dc-thank-you dc-anim" id="dcm-thank-you" style="--dc-delay:120ms">Your contribution was sent.</h2>
-        <p class="dc-subline dc-anim" id="dcm-subline" style="--dc-delay:220ms">Thank you for supporting mutual aid.</p>
-      </section>
-
-      <section class="dc-section dc-anim dcm-summary-section" style="--dc-delay:300ms">
-        <h3 class="dc-section-title dcm-summary-heading">Payment summary</h3>
-        <div class="dc-item-list">
-          <div class="item-card dc-item-card">
-            <div class="item-left">
-              <h4 id="dcm-summary-title">One-time contribution</h4>
-            </div>
-            <div class="item-right dc-item-right">
-              <span class="dc-item-fallback" id="dcm-summary-amount">$25.00</span>
-            </div>
-          </div>
-          <div class="item-card dc-item-card dcm-recipient-card">
-            <div class="item-left">
-              <h4>Recipient</h4>
-            </div>
-            <div class="item-right dc-item-right">
-              <span class="dc-item-note dcm-recipient-value">Distro Disco</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="dc-section dc-anim dcm-impact-section" style="--dc-delay:380ms">
-        <div class="dcm-impact-card">
-          <div class="dcm-impact-icon" aria-hidden="true">
-            <img src="img/icons/icon-heart.svg" alt="">
-          </div>
-          <div class="dcm-impact-text">
-            <p class="dcm-impact-copy">100% of your contribution goes directly to Distro Disco's community mutual aid operations.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="dc-section dc-anim" style="--dc-delay:460ms">
-        <div class="dc-make-changes-wrap">
-          <button type="button" class="btn btn-primary dc-confirm-btn" id="dcm-done-btn"><span class="btn__label">Done</span></button>
-          <button type="button" class="btn btn-secondary dc-make-changes-btn" id="dcm-donate-again-btn"><span class="btn__label">I have more to contribute</span></button>
-        </div>
-      </section>
-      <p class="dc-anim dcm-footer-note" style="--dc-delay:540ms">A receipt was sent to your email.<br>Distro Disco</p>
-    </div>
-  </div><!-- /.page.page-donate-money-confirm -->
 
   <!-- ── Volunteer Confirm Page ── -->
   <div class="page page-donate-confirm page-volunteer-confirm" id="page-volunteer-confirm">
@@ -1226,12 +1136,43 @@
         </div>
         <h2 class="dc-thank-you dc-anim" style="--dc-delay:120ms">You're in. Thank you.</h2>
         <p class="dc-subline dc-anim" style="--dc-delay:220ms">Distro Disco will be in touch shortly.</p>
+        <div class="vol-timeline-section vol-timeline-section-compact dc-anim" style="--dc-delay:300ms">
+          <div class="vol-timeline-month-row">
+          </div>
+
+          <div class="vol-tl-static-line"></div>
+
+          <div class="vol-timeline-track-wrap">
+            <div class="vol-timeline-track">
+              <div class="vol-tl-node active">
+                <div class="vol-tl-dot active"></div>
+                <div class="vol-tl-label">Request sent</div>
+                <div class="vol-tl-date">Now</div>
+              </div>
+              <div class="vol-tl-node">
+                <div class="vol-tl-dot"></div>
+                <div class="vol-tl-label">Coordinator review</div>
+                <div class="vol-tl-date">Next</div>
+              </div>
+              <div class="vol-tl-node">
+                <div class="vol-tl-dot"></div>
+                <div class="vol-tl-label">Team match</div>
+                <div class="vol-tl-date">Soon</div>
+              </div>
+              <div class="vol-tl-node">
+                <div class="vol-tl-dot"></div>
+                <div class="vol-tl-label">Welcome message</div>
+                <div class="vol-tl-date">After match</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section class="dc-section dc-anim" style="--dc-delay:460ms">
         <div class="dc-make-changes-wrap">
           <button type="button" class="btn btn-primary dc-confirm-btn" id="vc-done-btn"><span class="btn__label">Done</span></button>
-          <button type="button" class="btn btn-secondary dc-make-changes-btn" id="vc-secondary-btn"><span class="btn__label">Cancel my volunteer spot</span></button>
+          <button type="button" class="btn btn-secondary dc-make-changes-btn" id="vc-secondary-btn"><span class="btn__label">I changed my mind</span></button>
         </div>
       </section>
     </div>
@@ -1260,46 +1201,6 @@
     </div>
   </header>
 
-    <!-- Timeline -->
-    <div class="vol-timeline-section">
-      <div class="vol-timeline-month-row">
-        <span class="vol-timeline-month">April 2026</span>
-        <a href="#" class="vol-timeline-view-link">View events</a>
-      </div>
-
-      <div class="vol-tl-static-line"></div>
-
-      <div class="vol-timeline-track-wrap">
-        <div class="vol-timeline-track">
-          <div class="vol-tl-node">
-            <div class="vol-tl-dot"></div>
-            <div class="vol-tl-label">Monthly drive</div>
-            <div class="vol-tl-date">Sat, Apr 2</div>
-          </div>
-          <div class="vol-tl-node active">
-            <div class="vol-tl-dot active"></div>
-            <div class="vol-tl-label">Distro Prep</div>
-            <div class="vol-tl-date">Sat, Apr 7</div>
-          </div>
-          <div class="vol-tl-node">
-            <div class="vol-tl-dot"></div>
-            <div class="vol-tl-label">Distro 1</div>
-            <div class="vol-tl-date">Sat, Apr 14</div>
-          </div>
-          <div class="vol-tl-node">
-            <div class="vol-tl-dot"></div>
-            <div class="vol-tl-label">Distro 2</div>
-            <div class="vol-tl-date">Sat, Apr 21</div>
-          </div>
-          <div class="vol-tl-node">
-            <div class="vol-tl-dot"></div>
-            <div class="vol-tl-label">Distro 3</div>
-            <div class="vol-tl-date">Sat, Apr 28</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="vol-divider"></div>
 
     <!-- Open Roles -->
@@ -1307,47 +1208,19 @@
       <div class="vol-section-eyebrow"></div>
       <h2 class="vol-section-heading">Roles we need help with right now</h2>
 
-      <!-- Card 1: General Distro Volunteer (active + expanded) -->
+      <!-- Card 1: General Distro Volunteer -->
       <div class="vol-role-card active" id="vol-card-1">
         <div class="vol-role-card-header">
           <div class="vol-role-icon-ph">
             <img src="img/icons/icon-hand-outline.svg" alt="Helping hands icon">
           </div>
-          <span class="vol-role-card-title">General Distro Volunteer</span>
+          <div class="vol-role-card-copy">
+            <span class="vol-role-card-title">General Distro Volunteer</span>
+            <span class="vol-role-card-desc">On-site distro support from setup to wrap-up.</span>
+            <span class="vol-role-card-time">Most Saturdays, around 3 hours</span>
+          </div>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-        </div>
-        <div class="vol-role-card-body">
-          <div class="vol-role-tasks">
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Set up tables, organize inventory, and help neighbours find what they need</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Go in and out of the bus to restock items throughout the distro</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Stay for take-down and do a quick inventory count at the end</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Available most Saturdays at Grandview Park, Oppenheimer Park, or near Trillium Park — shifts run about 3 hours</span>
-            </div>
-          </div>
-          <div class="vol-commit-toggle" id="vol-toggle-1">
-            <button type="button" class="vol-toggle-opt active">One time</button>
-            <button type="button" class="vol-toggle-opt">Repeating</button>
           </div>
         </div>
       </div>
@@ -1358,35 +1231,13 @@
           <div class="vol-role-icon-ph">
             <img src="img/icons/icon-box-outline.svg" alt="Car icon">
           </div>
-          <span class="vol-role-card-title">Supply Runner</span>
+          <div class="vol-role-card-copy">
+            <span class="vol-role-card-title">Supply Runner</span>
+            <span class="vol-role-card-desc">Pickup and transport supplies across partner locations.</span>
+            <span class="vol-role-card-time">At least 2 times per month</span>
+          </div>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-        </div>
-        <div class="vol-role-card-body">
-          <div class="vol-role-tasks">
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Do regular supply runs to stores around Vancouver (reimbursement provided)</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Pick up contributed items from our drop-off spots — Cross &amp; Crows, Wildfires Bookshop, and the private residence on 12th Ave East</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Requires regular access to a vehicle and availability at least 2x per month</span>
-            </div>
-          </div>
-          <div class="vol-commit-toggle" id="vol-toggle-2">
-            <button type="button" class="vol-toggle-opt active">One time</button>
-            <button type="button" class="vol-toggle-opt">Repeating</button>
           </div>
         </div>
       </div>
@@ -1397,35 +1248,13 @@
           <div class="vol-role-icon-ph">
             <img src="img/icons/icon-wallet-outline.svg" alt="Wallet icon">
           </div>
-          <span class="vol-role-card-title">Fundraising Team</span>
+          <div class="vol-role-card-copy">
+            <span class="vol-role-card-title">Fundraising Team</span>
+            <span class="vol-role-card-desc">Plan and run fundraising campaigns with the team.</span>
+            <span class="vol-role-card-time">Usually 1 to 3 hours per week</span>
+          </div>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-        </div>
-        <div class="vol-role-card-body">
-          <div class="vol-role-tasks">
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Brainstorm and execute fundraising ideas — past initiatives include talent shows, merch sales, online raffles, and social media callouts</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Work mostly remotely through Discord and occasional online meetings</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Ramp up hours when an event or initiative is approaching — otherwise 1–3 hours per week</span>
-            </div>
-          </div>
-          <div class="vol-commit-toggle" id="vol-toggle-3">
-            <button type="button" class="vol-toggle-opt active">One time</button>
-            <button type="button" class="vol-toggle-opt">Repeating</button>
           </div>
         </div>
       </div>
@@ -1436,35 +1265,13 @@
           <div class="vol-role-icon-ph">
             <img src="img/icons/icon-food-outline.svg" alt="Food box icon">
           </div>
-          <span class="vol-role-card-title">Food Partner</span>
+          <div class="vol-role-card-copy">
+            <span class="vol-role-card-title">Food Partner</span>
+            <span class="vol-role-card-desc">Prepare and serve food during distro days.</span>
+            <span class="vol-role-card-time">About one distro each month</span>
+          </div>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-        </div>
-        <div class="vol-role-card-body">
-          <div class="vol-role-tasks">
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Prep and serve food at one distro per month — either Trillium Park (2nd Saturday) or Oppenheimer Park (4th Saturday)</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Food can be self-funded or you can run a callout for dedicated food funds — current partners spend around $100/month</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Examples: soup, pizza, sandwiches, fruit — whatever you can make work</span>
-            </div>
-          </div>
-          <div class="vol-commit-toggle" id="vol-toggle-5">
-            <button type="button" class="vol-toggle-opt active">One time</button>
-            <button type="button" class="vol-toggle-opt">Repeating</button>
           </div>
         </div>
       </div>
@@ -1475,41 +1282,13 @@
           <div class="vol-role-icon-ph">
             <img src="img/icons/icon-chat-outline.svg" alt="Clock icon">
           </div>
-          <span class="vol-role-card-title">Volunteer Coordinator</span>
+          <div class="vol-role-card-copy">
+            <span class="vol-role-card-title">Volunteer Coordinator</span>
+            <span class="vol-role-card-desc">Coordinate scheduling, onboarding, and volunteer comms.</span>
+            <span class="vol-role-card-time">Usually 1 to 3 hours per week</span>
+          </div>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-        </div>
-        <div class="vol-role-card-body">
-          <div class="vol-role-tasks">
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Check the volunteer schedule regularly and send callouts via email or Discord to fill open shifts</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Plan quarterly volunteer meetings and coordinate new volunteer onboarding as needed</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Work is mostly remote and async — 1 to 3 hours per week, more when organizing events</span>
-            </div>
-            <div class="vol-role-task">
-              <div class="vol-task-star">
-                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.1L15 7.2l-3 2.9.7 4.1L9 12.1l-3.7 2.1.7-4.1-3-2.9 4.2-.1z" fill="var(--orange)"/></svg>
-              </div>
-              <span>Only apply if you can commit consistently — the team depends on this role staying active</span>
-            </div>
-          </div>
-          <div class="vol-commit-toggle" id="vol-toggle-6">
-            <button type="button" class="vol-toggle-opt active">One time</button>
-            <button type="button" class="vol-toggle-opt">Repeating</button>
           </div>
         </div>
       </div>
@@ -1520,7 +1299,11 @@
           <div class="vol-role-icon-ph">
             <img src="img/icons/icon-bus-outline.svg" alt="Bus icon">
           </div>
-          <span class="vol-role-card-title">Bus Driver</span>
+          <div class="vol-role-card-copy">
+            <span class="vol-role-card-title">Bus Driver</span>
+            <span class="vol-role-card-desc">Currently filled. Check back for openings.</span>
+            <span class="vol-role-card-time">High-consistency route role</span>
+          </div>
           <div class="vol-role-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
@@ -1609,8 +1392,20 @@
     <!-- Footer consent + CTA -->
     <div class="vol-footer-section">
       <div class="vol-consent-row">
-        <div class="vol-consent-check" id="vol-consent-check"></div>
-        <span class="vol-consent-text">I understand this helps real people access essential goods, and I am committed to showing up.</span>
+        <label class="di-bs-consent vol-consent-label">
+          <button class="vol-consent-check di-bs-consent-box" id="vol-consent-check" type="button" aria-label="Confirm volunteer oath"></button>
+          <span class="vol-consent-text">I agree to Distro Disco's <button type="button" class="di-bs-standards" id="vol-oath-toggle" aria-expanded="false" aria-controls="vol-oath-panel">Volunteer Oath</button>.</span>
+        </label>
+        <div class="di-bs-standards-panel vol-oath-panel" id="vol-oath-panel" role="region" aria-labelledby="vol-oath-toggle" aria-hidden="true">
+          <div class="di-bs-standards-inner">
+            <h4 class="di-bs-standards-title">Volunteer Oath</h4>
+            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that volunteering with Distro Disco may involve physical activity including lifting, carrying, and standing for extended periods.</p>
+            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that my commitment requires responding to callouts in a timely manner and showing up to events I have confirmed.</p>
+            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that DD will contact me via <span id="vol-oath-channel">phone</span> for scheduling, updates, and event information.</p>
+            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that donations I handle must be treated with care and distributed with respect for the people receiving them.</p>
+            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that I represent Distro Disco's values in the community and will conduct myself accordingly.</p>
+          </div>
+        </div>
       </div>
       <button type="button" class="btn btn-primary vol-cta-btn" id="vol-cta-btn"><span class="btn__label">Volunteer with us</span></button>
     </div>
@@ -1881,6 +1676,11 @@
       </div>
       <span class="btn btn-secondary prof-edit"><span class="btn__label">Edit profile</span></span>
     </div>
+    <div class="avatar-sheet" id="avatar-sheet" role="group" aria-label="Choose avatar">
+      <div class="avatar-sheet-label">Choose your avatar</div>
+      <div class="avatar-sheet-scroll" id="avatar-sheet-scroll"></div>
+      <button type="button" class="btn btn-primary avatar-sheet-save" id="avatar-sheet-save" disabled><span class="btn__label">Save avatar</span></button>
+    </div>
 
     <!-- impact bar -->
     <div class="prof-impact-card">
@@ -2064,6 +1864,7 @@
       <div class="bpost" data-post-id="post-2" data-reply-count="7" data-cat="questions" style="transform:rotate(0.4deg);">
         <div class="bpost-tack"></div>
         <div class="bpost-byline">
+          <div class="bpost-avatar" aria-hidden="true"><img class="forum-avatar-img" src="img/avatars/avatar-flowers.png" alt="" width="32" height="32" decoding="async"></div>
           <span class="bpost-author">GracelleM</span>
           <div class="bpost-sep"></div>
           <span class="bpost-time">2 days ago</span>
@@ -2093,6 +1894,7 @@
       <div class="bpost bpost-own" data-post-id="post-1" data-reply-count="2" data-cat="general" style="transform:rotate(-0.5deg);">
         <div class="bpost-tack"></div>
         <div class="bpost-byline">
+          <div class="bpost-avatar" aria-hidden="true"><img class="forum-avatar-img" src="img/avatars/avatar-cool-disco.png" alt="" width="32" height="32" decoding="async"></div>
           <span class="bpost-author bpost-author-own">Rgdfriend</span>
           <div class="bpost-sep"></div>
           <span class="bpost-time">1 day ago</span>
@@ -2122,6 +1924,7 @@
       <div class="bpost" data-post-id="post-3" data-reply-count="6" data-cat="general" style="transform:rotate(-0.3deg);">
         <div class="bpost-tack"></div>
         <div class="bpost-byline">
+          <div class="bpost-avatar" aria-hidden="true"><img class="forum-avatar-img" src="img/avatars/avatar-toque.png" alt="" width="32" height="32" decoding="async"></div>
           <span class="bpost-author">CaitlinV</span>
           <div class="bpost-sep"></div>
           <span class="bpost-time">3 days ago</span>
@@ -2151,6 +1954,7 @@
       <div class="bpost" data-post-id="post-4" data-reply-count="8" data-cat="questions" style="transform:rotate(0.6deg);">
         <div class="bpost-tack"></div>
         <div class="bpost-byline">
+          <div class="bpost-avatar" aria-hidden="true"><img class="forum-avatar-img" src="img/avatars/avatar-cowboy.png" alt="" width="32" height="32" decoding="async"></div>
           <span class="bpost-author">DogaCM</span>
           <div class="bpost-sep"></div>
           <span class="bpost-time">5 days ago</span>
@@ -2180,6 +1984,7 @@
       <div class="bpost" data-post-id="post-5" data-reply-count="4" data-cat="general" style="transform:rotate(-0.4deg);">
         <div class="bpost-tack"></div>
         <div class="bpost-byline">
+          <div class="bpost-avatar" aria-hidden="true"><img class="forum-avatar-img" src="img/avatars/avatar-ribbon.png" alt="" width="32" height="32" decoding="async"></div>
           <span class="bpost-author">JiWoo_DD</span>
           <div class="bpost-sep"></div>
           <span class="bpost-time">1 week ago</span>
@@ -2237,7 +2042,7 @@
 
     <div class="compose-inner">
       <div class="compose-author-row">
-        <div class="compose-av">P</div>
+        <div class="compose-av" aria-hidden="true"><img class="forum-avatar-img" src="img/avatars/avatar-cool-disco.png" alt="" width="36" height="36" decoding="async"></div>
         <div>
           <div class="compose-author-name">Rgdfriend</div>
           <div class="compose-author-dest">Posting to the community board</div>
@@ -2363,17 +2168,20 @@
 
       <div class="nav-item">
         <span class="icon-wrap">
-          <svg class="icon-calendar nav-icon" width="38" height="38" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg class="icon-calendar nav-icon" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <g class="cal-header">
-              <path d="M36.1947 15.1265C35.9146 14.243 35.3784 13.3911 34.5515 12.9445C33.6459 12.4565 32.8023 12.4213 31.7966 12.577C31.3974 12.6379 30.9983 12.6951 30.5991 12.7523C24.1837 13.5907 17.7004 13.7757 11.2493 13.3011C9.37973 13.1636 7.59239 15.079 7.67461 16.9518C7.76636 19.0474 9.24747 20.4553 11.2493 20.6026C18.7573 21.1563 26.2582 20.7644 33.6971 19.6181C34.5229 19.4903 35.4321 18.6409 35.8336 17.94C36.2816 17.1575 36.4723 16.0039 36.1935 15.1265H36.1947Z" fill="#FF7534"/>
+              <path d="M8.2609 6.89693L23.4709 6.12068C23.854 6.11193 25.5978 6.90505 25.7284 7.26568L26.7715 9.6413C26.9746 10.2026 27.5728 11.8076 26.9765 11.8426L4.41965 13.5301C3.7534 13.5688 4.32715 11.2744 4.5959 10.6638L5.41777 8.16005C5.55715 7.84318 7.91465 6.90443 8.2609 6.8963V6.89693Z" fill="#FF7534"/>
             </g>
-            <path d="M39.5294 34.7647L38.3247 17.0817C38.3044 13.5977 35.5221 10.7696 32.1059 10.7696C32.0869 10.7696 32.0678 10.7696 32.0487 10.7708L30.3365 10.8669L30.2542 9.07318C30.234 8.63388 29.9516 8.25177 29.5429 8.11304C29.1342 7.97309 28.6838 8.10452 28.4097 8.44404L27.497 9.56969C27.3301 9.77534 27.2455 10.037 27.2587 10.3035L27.2956 11.0373L18.5257 11.5314C18.5293 10.7051 18.5328 9.85931 18.5376 9.17176C18.5412 8.69838 18.2385 8.27976 17.7941 8.14468L16.6871 7.80638C16.3713 7.71024 16.0294 7.77109 15.7648 7.97188C15.5003 8.17267 15.3442 8.48907 15.3442 8.82615V11.7115L13.2328 11.8307C10.4767 11.8478 8.23893 14.1356 8.22701 16.9515L7.4668 35.9865C7.4668 36.0011 7.4668 36.0157 7.4668 36.0303C7.4668 38.3522 9.31729 40.242 11.6027 40.242L34.4998 39.9841C37.2737 39.9804 39.5306 37.6743 39.5306 34.8401C39.5306 34.8158 39.5306 34.7903 39.5282 34.7659L39.5294 34.7647ZM10.3146 16.9722C10.3146 15.3099 11.6385 13.9579 13.2661 13.9579C13.2852 13.9579 13.3043 13.9579 13.3233 13.9567L15.3466 13.8423V15.2624C15.3466 15.7845 15.7184 16.2299 16.2224 16.3138C16.4297 16.3479 16.6192 16.3625 16.7896 16.3625C17.5033 16.3625 17.9073 16.1033 18.1003 15.9244C18.403 15.6445 18.5614 15.2417 18.5352 14.8195C18.5281 14.6941 18.5233 14.2597 18.5221 13.6646L27.404 13.1645L27.4767 14.5992C27.5053 15.1651 27.9629 15.6092 28.5181 15.6092H29.4619C29.7466 15.6092 30.0195 15.49 30.2161 15.2795C30.4127 15.0689 30.5164 14.7854 30.5033 14.4945L30.4342 12.9941L32.1333 12.8979C34.3997 12.9126 36.2395 14.8012 36.2395 17.1194C36.2395 17.1438 36.2395 17.1693 36.2418 17.1937V17.1961C33.2415 17.1328 26.5818 17.6366 18.4161 18.2889C15.1631 18.5481 11.8243 18.8146 10.2396 18.8913L10.3146 17.016C10.3146 17.0014 10.3146 16.9868 10.3146 16.9722ZM34.4962 37.852C34.4962 37.852 34.4891 37.852 34.4843 37.852L11.5932 38.11C10.4755 38.11 9.56514 37.1864 9.55441 36.0473L10.1538 21.0294C10.6232 21.0099 11.2309 20.9697 12.0329 20.915C13.7237 20.7994 16.0818 20.6108 18.5793 20.4124C24.6265 19.9293 33.4429 19.2259 36.3884 19.322L37.4477 34.873C37.4298 36.5195 36.1132 37.8532 34.4962 37.8532V37.852Z" fill="#292966"/>
-            <path d="M17.4101 21.7656L12.4246 22.1855C11.8836 22.2305 11.4678 22.6929 11.4678 23.2466V26.817C11.4678 27.4048 11.9349 27.8818 12.5104 27.8818H17.4959C18.0714 27.8818 18.5385 27.4048 18.5385 26.817V22.8268C18.5385 22.5286 18.417 22.2451 18.2025 22.0431C17.988 21.8411 17.7008 21.7401 17.4101 21.7656ZM16.4521 25.7522H13.5518V24.2274L16.4521 23.9828V25.7522Z" fill="#292966"/>
-            <path d="M20.9152 27.882H25.2799C25.8352 27.882 26.2928 27.4378 26.3214 26.8719L26.5609 22.1284C26.5763 21.8217 26.4608 21.5224 26.2451 21.3094C26.0294 21.0952 25.7327 20.9869 25.4336 21.0125L20.8306 21.4031C20.2897 21.4493 19.875 21.9106 19.875 22.4643V26.8172C19.875 27.4049 20.3421 27.882 20.9176 27.882H20.9152ZM21.9579 23.4439L24.416 23.2346L24.2897 25.7511H21.959V23.4439H21.9579Z" fill="#292966"/>
-            <path d="M28.8807 27.8819H34.7754C35.0661 27.8819 35.3426 27.7578 35.5404 27.54C35.7382 27.3222 35.8371 27.0301 35.8144 26.7344L35.3878 21.0916C35.3664 20.808 35.2341 20.5452 35.022 20.3614C34.8099 20.1777 34.5335 20.0876 34.2559 20.1132L28.7878 20.6097C28.2504 20.6583 27.8369 21.1183 27.8369 21.6708V26.8171C27.8369 27.4049 28.304 27.8819 28.8795 27.8819H28.8807ZM29.9233 22.6443L33.3908 22.3292L33.6494 25.7511H29.9233V22.6443Z" fill="#292966"/>
-            <path d="M34.7747 29.0645H28.2998C28.0055 29.0645 27.7243 29.191 27.5277 29.4149C27.3299 29.6376 27.2333 29.9358 27.2631 30.2351L27.7958 35.7319C27.8232 36.0143 27.959 36.2735 28.1735 36.4523C28.3606 36.6081 28.5941 36.6921 28.8324 36.6921C28.8682 36.6921 28.9039 36.6896 28.9397 36.686L34.8832 36.0593C35.4146 36.0033 35.8185 35.5457 35.8185 35.0006V30.1305C35.8185 29.5427 35.3515 29.0657 34.7759 29.0657L34.7747 29.0645ZM33.7321 34.0392L29.7666 34.4566L29.4508 31.1941H33.7333V34.0392H33.7321Z" fill="#292966"/>
-            <path d="M26.1123 30.0416C26.0659 29.4624 25.5738 29.0279 25.0042 29.0669L20.1092 29.3967C19.5611 29.4332 19.1357 29.898 19.1357 30.459V35.6261C19.1357 36.2138 19.6028 36.6909 20.1784 36.6909H25.5189C25.8109 36.6909 26.0885 36.5667 26.2863 36.3477C26.4841 36.1286 26.5818 35.8354 26.558 35.5384L26.1135 30.0416H26.1123ZM21.221 34.5613V31.4557L24.1189 31.261L24.3858 34.5613H21.2198H21.221Z" fill="#292966"/>
-            <path d="M16.9422 29.0645H12.6514C12.1057 29.0645 11.6517 29.494 11.6112 30.0502L11.2489 35.02C11.2275 35.3157 11.3276 35.6066 11.5242 35.8232C11.722 36.0398 11.9984 36.1639 12.288 36.1639H16.941C17.5166 36.1639 17.9837 35.6869 17.9837 35.0991V30.1293C17.9837 29.5415 17.5166 29.0645 16.941 29.0645H16.9422ZM15.8996 34.0343H13.4128L13.6202 31.1941H15.9008V34.0343H15.8996Z" fill="#292966"/>
+            <path d="M24.2177 28.4191H7.66585C5.41022 28.4191 3.62272 26.4554 3.76585 24.1335L4.59522 10.6635C4.72022 8.63414 6.2921 7.01852 8.26022 6.89664L22.6458 6.00352C24.7465 5.87289 26.5696 7.48102 26.7708 9.64102L28.1077 24.0041C28.3277 26.371 26.5233 28.4191 24.2177 28.4191Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+            <path d="M26.9045 10.6724L4.54883 12.1599" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+            <path d="M11.1438 18.7482H8.8238C8.41442 18.7482 8.08442 18.412 8.09192 18.0026L8.25942 15.7251C8.26692 15.3314 8.5838 15.0145 8.97755 15.007L11.13 14.9645C11.5394 14.957 11.8757 15.287 11.8757 15.6964V18.0164C11.8757 18.4207 11.5482 18.7482 11.1438 18.7482Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path d="M11.1295 25.3474H8.48383C8.05321 25.3474 7.71571 24.9774 7.75508 24.5492L7.96696 22.2286C8.00196 21.8461 8.32633 21.5561 8.71008 21.5636L11.1013 21.6061C11.4945 21.6136 11.812 21.9311 11.8188 22.3242L11.8613 24.6024C11.8688 25.0117 11.5388 25.348 11.1295 25.348V25.3474Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path d="M17.1213 18.748H14.8569C14.4525 18.748 14.125 18.4206 14.125 18.0162V15.5862C14.125 15.1924 14.4362 14.8693 14.83 14.8549L17.0944 14.7705C17.5087 14.7549 17.8538 15.0868 17.8538 15.5018V18.0155C17.8538 18.4199 17.5262 18.7474 17.1219 18.7474L17.1213 18.748Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path d="M17.1213 25.3474H14.8569C14.4525 25.3474 14.125 25.0199 14.125 24.6155V22.3374C14.125 21.9386 14.4444 21.613 14.8431 21.6055L17.1075 21.5636C17.5169 21.5561 17.8531 21.8861 17.8531 22.2955V24.6155C17.8531 25.0199 17.5256 25.3474 17.1213 25.3474Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path d="M23.3166 18.7482H20.8354C20.431 18.7482 20.1035 18.4207 20.1035 18.0163V15.4657C20.1035 15.0932 20.3829 14.7807 20.7529 14.7382L23.0104 14.4813C23.4216 14.4345 23.7898 14.7376 23.8229 15.1507L24.0466 17.9582C24.0804 18.3838 23.7441 18.7482 23.3173 18.7482H23.3166Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path d="M23.5204 25.3473H20.8354C20.431 25.3473 20.1035 25.0198 20.1035 24.6154V22.2311C20.1035 21.8473 20.4004 21.5286 20.7829 21.5011L23.2498 21.3242C23.6491 21.2954 23.9973 21.5929 24.0316 21.9923L24.2498 24.5536C24.286 24.9804 23.9491 25.3473 23.5204 25.3473Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+            <path d="M20.4443 4.63477L20.2979 7.60547H20.2207L20.0732 4.63477H20.4443Z" fill="#292966" stroke="#292966" stroke-width="1.5"/>
+            <path d="M11.4658 8.02979L11.2314 8.04053L11.502 5.23193H11.5459L11.4658 8.02979Z" fill="#292966" stroke="#292966" stroke-width="1.5"/>
           </svg>
         </span>
         <span>Events</span>
@@ -2407,16 +2215,21 @@
 
       <div class="nav-item">
         <span class="icon-wrap">
-          <svg class="icon-items nav-icon" width="38" height="38" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg class="icon-items nav-icon" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <g class="items-bag-main">
-              <path d="M44.0503 14.9512C43.1197 14.1201 42.0211 13.9533 40.789 13.8207C38.6013 13.5846 36.4124 13.3631 34.2235 13.1344C32.7543 12.981 31.2804 12.919 29.9506 13.6418C29.7266 13.7635 29.518 13.8986 29.3214 14.0446C28.6959 13.0224 27.4614 12.2764 26.1709 12.3288C24.1751 12.4103 22.6701 13.7526 22.5962 15.5706C22.514 17.5931 22.5617 19.6169 22.7523 21.6333C22.7988 22.1286 22.8536 22.6226 22.9168 23.1167C23.005 23.8043 23.0335 24.5429 23.2361 25.2074C23.5352 26.187 24.2644 26.9768 25.2082 27.5025C25.8564 27.8639 26.6035 27.9698 27.3303 28.1048C29.7194 28.5478 32.1252 28.8898 34.5429 29.1818C37.2703 29.5116 41.0214 30.3598 42.6824 27.6753C43.2925 26.6908 43.4498 25.5286 43.7107 24.4407C43.955 23.4209 44.1993 22.4 44.4435 21.3802C44.6997 20.3117 45.0095 19.2408 45.1704 18.1578C45.3432 16.9944 44.9952 15.797 44.0515 14.9524L44.0503 14.9512Z" fill="#FF7534"/>
+              <path d="M14.5911 9.84992L13.8149 16.7774C13.6867 17.9205 14.338 18.993 15.3411 19.2912L24.5367 22.0237C25.5174 22.3149 26.5442 21.7793 26.9667 20.7555L29.683 14.1768C30.2255 12.8637 29.5586 11.3268 28.2949 10.9768L17.1592 7.89554C15.948 7.56054 14.7449 8.47554 14.5911 9.84992Z" fill="#FF7534"/>
             </g>
             <g class="items-bag-secondary">
-              <path d="M10.7844 23.4758C8.98986 23.0584 6.80215 24.0283 6.38748 26.0253C5.94422 28.1622 5.36393 30.2626 4.65138 32.3216C4.027 34.1238 5.35797 36.3958 7.1477 36.812C9.14953 37.2781 10.8761 36.1926 11.5446 34.2626C12.2583 32.2035 12.8374 30.1031 13.2807 27.9662C13.6679 26.1031 12.7433 23.931 10.7844 23.4758Z" fill="#FF7534"/>
-              <path d="M31.2073 37.0356C28.4715 36.7107 25.0672 36.3067 23.8387 35.6057C22.7734 34.9973 21.962 34.126 21.3889 33.3423C21.825 33.4055 22.2956 33.4664 22.7758 33.5151C25.7988 33.8217 27.3324 33.4907 27.9019 32.4101C28.145 31.9489 28.1534 31.4122 27.9246 30.8975C26.9403 28.673 20.6918 26.3085 18.4826 25.7852C16.6357 25.3483 14.8877 25.0453 13.8701 24.8847C13.8689 24.4454 13.6008 24.0402 13.1802 23.8856L7.98258 21.9787C7.72044 21.8826 7.43089 21.8972 7.17947 22.0213C6.92805 22.1442 6.73501 22.3657 6.64446 22.6358L2.88388 33.8193C2.78737 34.1065 2.81477 34.4217 2.96014 34.6857C3.10551 34.9498 3.35455 35.1384 3.6441 35.2041C9.72703 36.5829 10.1048 36.5829 10.2287 36.5829C10.2751 36.5829 10.3204 36.5793 10.3633 36.5744C11.9493 38.6383 15.6181 43.192 17.8297 44.174C19.1142 44.7448 21.9227 44.8957 24.5405 44.8957H26.3422C29.6214 44.7971 33.115 44.5172 34.2971 44.2349C35.8532 43.8637 37.2462 42.7381 37.8455 41.369C38.2375 40.4734 38.2399 39.5777 37.8503 38.8476C37.3117 37.8388 35.7853 37.5783 31.2049 37.0344L31.2073 37.0356ZM8.27332 24.3493L11.618 25.5759C10.8638 29.1451 10.0202 32.8458 9.59 34.328C8.61053 34.1296 6.82915 33.7402 5.23603 33.3836L8.27332 24.3505V24.3493ZM35.945 40.5002C35.6721 41.122 34.8928 41.9069 33.824 42.1625C32.9113 42.3803 29.7751 42.665 26.2969 42.7466C21.7749 42.8512 19.3894 42.5446 18.6637 42.2233C17.0825 41.5211 13.6532 37.4542 11.6335 34.7721C11.6871 34.5835 11.7443 34.3718 11.8075 34.1345C12.0422 33.2413 12.3401 31.9988 12.6916 30.4436C12.9728 29.2011 13.2445 27.9525 13.4542 26.9754C14.4218 27.1263 16.1853 27.4268 18.0132 27.8601C19.3203 28.1692 21.2935 28.9103 22.9224 29.7025C24.4833 30.4618 25.3186 31.0569 25.719 31.422C25.259 31.5023 24.3523 31.5558 22.64 31.3599C21.0385 31.1762 19.5824 30.8671 19.5681 30.8634C19.1916 30.7831 18.802 30.9206 18.5541 31.2224C18.3075 31.5242 18.2431 31.9404 18.3873 32.3042C18.4421 32.443 19.7683 35.7213 22.8223 37.4652C24.4142 38.3742 27.7458 38.7697 30.9678 39.1518C32.7242 39.3599 35.3266 39.669 36.0558 39.9927C36.0677 40.1253 36.0296 40.3079 35.945 40.5002Z" fill="#292966"/>
+              <path d="M5.94828 24.4275L2.97266 23.6863L4.59391 18.2231L7.22828 19.0444L5.94828 24.4275Z" fill="#FF7534"/>
             </g>
+            <path d="M21.3935 4.4182C21.996 5.51695 22.126 7.3382 21.3028 7.78945C20.4791 8.24133 19.0141 7.15195 18.4116 6.0532C17.8091 4.95445 18.0572 3.8232 18.881 3.37133C19.7047 2.91945 20.7916 3.31883 21.3941 4.41758L21.3935 4.4182Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+            <path d="M25.312 7.92569C24.2132 8.52819 22.392 8.65819 21.9407 7.83507C21.4889 7.01132 22.5782 5.54632 23.677 4.94382C24.7757 4.34132 25.907 4.58944 26.3589 5.41319C26.8107 6.23694 26.4114 7.32382 25.3126 7.92632L25.312 7.92569Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+            <path d="M24.8846 20.5612L13.3752 17.6312C12.7571 17.4999 12.3627 16.8924 12.494 16.2743L13.8677 7.38057C13.999 6.76245 14.6065 6.36807 15.2246 6.49932L27.9021 9.60495C28.5202 9.7362 28.9146 10.3437 28.7833 10.9618L26.2421 19.6799C26.1108 20.2981 25.5033 20.6924 24.8852 20.5612H24.8846Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+            <path d="M13.1445 12.1729L27.8614 15.301" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+            <path d="M21.6627 8.27881L18.9277 19.0444" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+            <path d="M5.40885 24.412L3.65323 24.0388C3.25823 23.9551 3.01885 23.5482 3.13135 23.1532L4.38948 18.7476C4.50323 18.3482 4.92885 18.1313 5.3101 18.2788L6.70885 18.8188C7.02823 18.9426 7.21073 19.2845 7.13823 19.6251L6.2376 23.8632C6.15635 24.2457 5.78573 24.4913 5.40948 24.4113L5.40885 24.412Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
             <g class="items-accent">
-              <path d="M43.956 11.7165C43.7463 11.4379 43.4174 11.2833 43.0742 11.3016C41.6896 11.377 40.137 11.3016 38.4665 11.1154C39.3268 10.6955 40.0143 10.165 40.3908 9.52974C40.8496 8.75578 40.8413 7.89543 40.3706 7.10808C39.776 6.11508 38.4486 5.74149 36.728 6.08222C35.6103 6.3037 34.4592 6.81602 33.5358 7.49749C33.2832 6.56412 32.7684 5.12694 31.8199 4.13151C30.844 3.10686 29.6096 2.83062 28.4335 3.37702C27.3027 3.90151 26.732 4.93467 26.8654 6.21122C26.9643 7.15919 27.4457 8.18262 28.1118 9.11356C26.614 8.74362 25.1007 8.34934 23.5946 7.94654C23.0834 7.80903 22.5531 8.08526 22.3601 8.58785C21.5105 10.7978 20.8135 13.0101 20.2665 15.2127C20.2534 15.2517 20.2427 15.2906 20.2332 15.3308C20.2296 15.3478 20.2272 15.3636 20.2248 15.3807C19.6076 17.9033 19.1894 20.4126 18.9785 22.889C18.9522 23.2006 19.0607 23.5072 19.2764 23.7299C19.4896 23.9502 19.784 24.0646 20.0866 24.0439C20.0926 24.0439 20.0985 24.0439 20.1045 24.0439C21.5892 24.0439 37.437 27.3028 39.297 27.8601C39.4543 27.9514 39.6318 28.0001 39.8129 28.0001C39.8809 28.0001 39.9488 27.9928 40.0155 27.9794C40.5219 27.8772 40.8758 27.4196 40.8663 26.9073C41.3727 22.6846 42.4677 17.9033 44.1228 12.6937C44.2289 12.3603 44.1669 11.994 43.9572 11.7165H43.956ZM40.2562 18.7418L32.1941 16.9298L33.0901 12.4114C36.2049 13.0259 39.1433 13.4324 41.6968 13.4592C41.1475 15.2736 40.6673 17.0357 40.2562 18.7406V18.7418ZM36.436 8.35785C37.0306 8.1595 37.5287 8.09257 37.8981 8.09257C38.2675 8.09257 38.5237 8.16315 38.5975 8.22886C38.6607 8.33717 38.65 8.35542 38.6071 8.42843C38.171 9.16467 36.1096 9.92889 33.8861 10.0895C33.8861 10.0786 33.8861 10.0676 33.8861 10.0554C34.5248 9.23403 35.5507 8.65235 36.436 8.35664V8.35785ZM29.295 5.31678C29.3951 5.27054 29.5035 5.22916 29.6298 5.22916C29.8062 5.22916 30.0159 5.30948 30.2781 5.5699C31.1527 6.43513 31.6662 8.26537 31.7854 9.44456C31.7377 9.53096 31.6924 9.61979 31.6507 9.70863C30.4782 8.90425 29.0615 7.15919 28.9387 5.98487C28.8958 5.57964 29.0257 5.44212 29.295 5.31678ZM23.9699 10.2489C26.3459 10.8769 28.7314 11.478 31.0466 11.9855L30.1565 16.4722L22.5377 14.76C22.9416 13.2596 23.4182 11.7543 23.9687 10.2489H23.9699ZM22.0289 16.8264L29.7442 18.5605L28.7814 23.4135C25.8705 22.8306 22.8487 22.2575 21.1578 22.025C21.3461 20.3067 21.6368 18.5714 22.0289 16.8264ZM38.9348 25.5772C38.4641 25.464 37.8612 25.3265 37.1379 25.1659C35.4101 24.7813 33.1187 24.2958 30.8274 23.8273L31.7806 19.018L39.7843 20.8166C39.4328 22.4643 39.148 24.0536 38.9359 25.5772H38.9348Z" fill="#292966"/>
+              <path d="M7.11492 19.7285C7.11492 19.7285 9.02117 19.7841 11.2112 19.8535C13.6443 19.931 15.043 21.2323 15.6205 21.7029C15.8837 21.9173 16.0724 22.1935 16.1437 22.4948C16.2399 22.9004 15.8705 23.2979 14.9618 23.0798C13.9299 22.8316 12.788 22.321 11.803 22.3673C10.733 22.4173 13.0605 25.3173 14.9149 25.4879C14.9149 25.4879 18.1868 26.2866 19.9299 26.0854C20.2593 26.0473 21.8212 25.7723 22.1449 25.8666C22.618 26.0054 23.0812 26.3004 22.6424 26.9191C22.4155 27.2391 20.9049 28.2916 20.5005 28.4304C19.283 28.8479 13.6468 28.8779 11.1687 28.5798C10.8493 28.541 10.5462 28.4191 10.298 28.2298C9.7018 27.7748 8.3593 26.8116 6.13867 24.3173L7.1143 19.7285H7.11492Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
             </g>
           </svg>
         </span>
@@ -2425,18 +2238,19 @@
 
       <div class="nav-item">
         <span class="icon-wrap">
-          <svg class="icon-forum nav-icon" width="38" height="38" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg class="icon-forum nav-icon" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <g class="forum-bubble-left">
-              <path d="M33.0634 23.4036C32.8847 22.2743 32.3223 21.2692 31.5692 20.4356C31.0413 18.7185 29.8021 17.3556 28.0076 16.8055C27.817 16.7471 27.6227 16.7106 27.4261 16.6936C26.8435 16.1216 26.0594 15.7651 25.161 15.7504C23.7502 15.7285 22.3405 15.7237 20.9297 15.7407C19.4319 15.759 17.7661 15.6409 16.3243 16.0961C15.3616 16.4003 14.5334 16.943 13.8149 17.6574C13.4241 18.0456 13.0988 18.4982 12.6937 18.8731C12.3398 19.2004 11.9394 19.4693 11.6248 19.8393C10.7824 20.8262 10.2986 21.9567 10.2998 23.2783C10.3022 25.2387 11.6868 26.7842 12.845 28.1958C13.7398 29.2874 14.7753 30.2731 15.9657 31.0264C18.4668 32.6084 21.423 32.8639 24.2673 32.4185C25.615 32.208 26.8625 31.731 28.1018 31.1615C29.2707 30.6248 30.4325 29.8788 31.3237 28.9345C32.7703 27.4012 33.3982 25.5065 33.0646 23.4024L33.0634 23.4036Z" fill="#FF7534"/>
+              <path d="M12.3422 20.5863C11.1097 20.2082 9.89218 19.7538 8.6953 19.2257C7.6778 18.777 6.61093 18.2107 6.0278 17.0863C5.18155 15.4551 5.65405 13.317 6.15155 11.4795C6.68343 9.51508 7.31905 7.38633 8.76218 6.33258C9.32905 5.91883 9.97655 5.71008 10.6159 5.51445C12.5953 4.90758 14.6409 4.3707 16.6609 4.71883C18.6809 5.06695 20.6947 6.46883 21.5003 8.78508C22.4328 11.4663 21.4922 14.7201 19.7741 16.722C18.0559 18.7238 15.7184 19.692 13.4122 20.3151L12.3416 20.5857L12.3422 20.5863Z" fill="#FF7534"/>
+              <path d="M12.3745 3.19385C7.30195 3.19385 3.18945 7.06822 3.18945 11.8482C3.18945 14.1282 4.1257 16.202 5.65508 17.7476L5.4982 20.6476C5.4607 21.3451 6.10758 21.7107 6.64508 21.2957L8.63883 19.7557C9.78008 20.2351 11.0445 20.502 12.3751 20.502C17.4476 20.502 21.5601 16.6276 21.5601 11.8476C21.5601 7.0676 17.4476 3.19385 12.3745 3.19385Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
             </g>
+            <path class="forum-dot-1" d="M9.57227 11.8428C9.57227 12.3603 9.15227 12.7803 8.63477 12.7803C8.11727 12.7803 7.63477 12.3603 7.63477 11.8428C7.63477 11.3253 8.05477 10.9053 8.57227 10.9053C9.08977 10.9053 9.57227 11.3253 9.57227 11.8428Z" fill="#292966"/>
+            <path class="forum-dot-2" d="M13.3125 11.8428C13.3125 12.3603 12.8925 12.7803 12.375 12.7803C11.8575 12.7803 11.4375 12.3603 11.4375 11.8428C11.4375 11.3253 11.9819 10.9053 12.375 10.9053C12.8925 10.9053 13.3125 11.3253 13.3125 11.8428Z" fill="#292966"/>
+            <path class="forum-dot-3" d="M17.0527 11.7246C17.0527 12.1771 16.6327 12.8409 16.1152 12.8409C15.5977 12.8409 15.1777 12.1771 15.1777 11.7246C15.1777 11.2721 15.5977 10.9053 16.1152 10.9053C16.6327 10.9053 17.0527 11.2721 17.0527 11.7246Z" fill="#292966"/>
             <g class="forum-bubble-right">
-              <path d="M44.6621 24.7922C44.6097 24.3516 44.2951 23.9902 43.8733 23.8856L39.1094 22.7064C36.681 18.4715 34.5791 16.668 29.2171 17.167C28.8489 16.4721 28.3949 15.8113 27.8527 15.1968C25.7401 12.8043 22.5705 11.4316 19.1579 11.4316C13.268 11.4316 9.89469 16.4538 9.07609 17.8423L2.96813 20.4758C2.54275 20.6595 2.28537 21.1073 2.3378 21.5771C2.39023 22.0468 2.73816 22.424 3.19334 22.5056L7.87856 23.3452C7.94529 24.2859 8.24318 25.7292 9.30844 27.1347C10.9671 29.3227 13.8507 30.6504 17.8794 31.0824C18.7039 31.1712 19.4796 31.2223 20.2136 31.2394C20.4376 31.9281 20.919 33.055 21.8878 34.0955C23.6668 36.0072 26.038 36.5622 28.1899 36.5622C29.0145 36.5622 29.8081 36.4806 30.523 36.3626C33.0801 35.9415 36.507 34.7648 38.3111 31.5521C39.0093 30.3084 39.2453 29.128 39.3239 28.4113L44.1092 25.8655C44.4941 25.661 44.7145 25.2327 44.6621 24.7922ZM10.9862 25.8691C9.76004 24.2823 9.95069 22.6686 9.95784 22.6102C10.0413 22.0395 9.66353 21.504 9.10707 21.4043L7.03851 21.0331L10.2093 19.6653C10.4285 19.5704 10.6108 19.4 10.724 19.1858C10.7538 19.1298 13.7375 13.5612 19.1579 13.5612C21.9807 13.5612 24.5855 14.6772 26.3037 16.623C27.7383 18.2488 28.414 20.2798 28.2054 22.3425C27.9635 24.7337 27.5179 26.5603 26.1321 27.7079C24.6093 28.9698 21.9807 29.3799 18.0974 28.9637C14.6836 28.5974 12.2909 27.5558 10.9862 25.8679V25.8691ZM37.8368 26.8001C37.4806 26.9899 37.2613 27.3647 37.2768 27.776C37.2816 27.9926 37.3102 33.0866 30.1906 34.261C27.2033 34.7538 24.9394 34.2269 23.4642 32.6972C22.9661 32.18 22.6385 31.6263 22.4299 31.1724C24.5688 30.9729 26.2286 30.3729 27.4464 29.3641C29.5042 27.6592 30.0238 25.0879 30.2799 22.564C30.3943 21.4347 30.3038 20.3151 30.025 19.2418C31.9362 19.1262 33.2279 19.3684 34.2621 20.0279C35.4871 20.808 36.4522 22.2451 37.5246 24.163C37.6664 24.4173 37.9059 24.6011 38.1848 24.6705L40.6823 25.2887L37.838 26.8013L37.8368 26.8001Z" fill="#292966"/>
+              <path d="M23.5975 11.3975C26.26 12.5912 28.77 15.5993 28.77 19.1843C28.77 21.4643 27.8337 23.5381 26.3044 25.0837L26.4612 27.9837C26.4987 28.6812 25.8519 29.0468 25.3144 28.6318L23.3206 27.0918C22.1794 27.5712 20.91 27.9531 19.5844 27.8381C15.705 27.5018 12.375 25.3481 11.4375 22.6231" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
             </g>
-            <circle class="forum-dot-1" cx="15.1015" cy="21.4505" r="1.1403" fill="#292966"/>
-            <circle class="forum-dot-2" cx="19.1571" cy="21.5262" r="1.1403" fill="#292966"/>
-            <circle class="forum-dot-3" cx="23.7204" cy="21.5625" r="1.1403" fill="#292966"/>
-            <circle class="forum-dot-4" cx="31.2519" cy="27.2185" r="1.1403" fill="#292966"/>
-            <circle class="forum-dot-5" cx="35.0436" cy="27.1797" r="1.1403" fill="#292966"/>
+            <path class="forum-dot-4" d="M23.6641 21.4067C24.1818 21.4067 24.6016 20.987 24.6016 20.4692C24.6016 19.9515 24.1818 19.5317 23.6641 19.5317C23.1463 19.5317 22.7266 19.9515 22.7266 20.4692C22.7266 20.987 23.1463 21.4067 23.6641 21.4067Z" fill="#292966"/>
+            <path class="forum-dot-5" d="M19.0005 20.625C19.0818 21.1363 19.4105 21.4694 19.928 21.4694C20.4455 21.4694 20.8624 20.9869 20.8624 20.4694C20.8624 19.9519 20.5362 19.3544 20.0499 19.5319C19.6768 19.6682 18.978 20.4807 19.0005 20.625Z" fill="#292966"/>
           </svg>
         </span>
         <span>Forums</span>
@@ -2447,15 +2261,6 @@
 
   <button type="button" class="btn btn-secondary back-to-top" id="back-to-top-btn" aria-label="Back to top" aria-hidden="true" tabindex="-1">
     <span class="btn__label">Back to top &uarr;</span></button>
-
-  <!-- Avatar picker bottom sheet -->
-  <div class="avatar-sheet-backdrop" id="avatar-sheet-backdrop"></div>
-  <div class="avatar-sheet" id="avatar-sheet" aria-modal="true" role="dialog" aria-label="Choose avatar">
-    <div class="avatar-sheet-handle"></div>
-    <div class="avatar-sheet-label">Choose your avatar</div>
-    <div class="avatar-sheet-scroll" id="avatar-sheet-scroll"></div>
-    <button type="button" class="btn btn-primary avatar-sheet-save" id="avatar-sheet-save" disabled><span class="btn__label">Save avatar</span></button>
-  </div>
 
 </div><!-- /.app-container -->
 </div><!-- /.phone-frame -->
@@ -2513,7 +2318,6 @@
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -17,24 +17,24 @@
   .page-donate-items .di-support-intro,
   .page-donate-money .di-support-intro {
     margin-bottom: 14px;
+    padding: 8px 10px 14px;
   }
   .page-donate-items .di-support-title,
   .page-donate-money .di-support-title {
     margin: 0 0 6px;
-    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 1.15;
+    font-family: var(--gaya-title-font);
+    font-size: var(--gaya-title-size);
+    font-weight: var(--gaya-title-weight);
+    line-height: var(--gaya-title-line-height);
     color: var(--navy);
   }
   .page-donate-items .di-support-copy,
   .page-donate-money .di-support-copy {
     margin: 0;
-    font-family: 'Public Sans', system-ui, sans-serif;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.5;
-    color: var(--text-main);
+    color: var(--text-muted);
   }
   .page-donate-items .di-support-copy a,
   .page-donate-money .di-support-copy a {
@@ -338,12 +338,12 @@
     flex-shrink: 0;
   }
   .di-sheet-title {
-    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
-    font-size: 22px;
-    font-weight: 500;
+    font-family: var(--gaya-title-font);
+    font-size: var(--gaya-title-size);
+    font-weight: var(--gaya-title-weight);
     color: var(--text-main);
     margin: 0;
-    line-height: 1;
+    line-height: var(--gaya-title-line-height);
     letter-spacing: -0.4px;
   }
   .di-sheet-title .accent { color: var(--orange); font-weight: 600;}
@@ -610,11 +610,16 @@
     flex-shrink: 0;
     align-self: center;
   }
+  .di-bs-upcoming-drive .di-bs-location-card.is-selected .di-bs-loc-check {
+    position: absolute;
+    right: 11px;
+    bottom: 11px;
+    align-self: auto;
+  }
   .di-bs-upcoming-drive .di-bs-location-card:not(.is-selected) {
     filter: grayscale(1);
   }
   .di-bs-upcoming-drive .di-bs-location-card:not(.is-selected) .di-bs-loc-meta,
-  .di-bs-upcoming-drive .di-bs-location-card:not(.is-selected) .di-bs-distance,
   .di-bs-upcoming-drive .di-bs-location-card:not(.is-selected) .di-bs-loc-check {
     display: none;
   }
@@ -654,9 +659,6 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-  }
-  .di-bs-location-card[data-sheet-location="private"] .di-bs-card-media {
-    background-image: url('../img/private-residence-dropoff.png');
   }
   .di-bs-location-card[data-sheet-location="upcoming-drive"] .di-bs-card-media {
     background-image: url('../img/dropoff-upcoming-drive.png');
@@ -711,6 +713,7 @@
     left: 12px;
     bottom: 12px;
     right: 52px;
+    max-width: 230px;
     color: #fff;
     z-index: 2;
   }
@@ -722,6 +725,7 @@
     margin-bottom: 4px;
   }
   .di-bs-loc-meta {
+    max-width: 230px;
     font-size: 14px;
     line-height: 1.3;
     font-family: 'Public Sans', system-ui, sans-serif;
@@ -745,7 +749,6 @@
   .di-bs-location-card:not(.is-selected) .di-bs-loc-check {
     display: none;
   }
-  .di-bs-location-card:not(.is-selected) .di-bs-distance,
   .di-bs-location-card:not(.is-selected) .di-bs-loc-meta {
     display: none;
   }
@@ -793,9 +796,10 @@
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 0;
   }
-  .di-bs-location-card.is-clothing-blocked.is-selected .di-bs-loc-text::after {
-    content: 'does not accept clothing donations';
+  .di-bs-location-card.is-clothing-blocked .di-bs-loc-text::after {
+    content: 'This location does not accept clothing donations.';
     display: block;
+    max-width: 230px;
     font-family: 'Public Sans', system-ui, sans-serif;
     font-size: 14px;
     font-weight: 400;
@@ -846,6 +850,8 @@
     opacity: 0.62;
     filter: grayscale(0.1);
     cursor: default;
+    pointer-events: none;
+    touch-action: none;
   }
   .di-bs-footer {
     position: relative;
@@ -858,6 +864,82 @@
   }
 
   .di-bs-standards {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: inherit;
     font-weight: 700;
+    color: inherit;
     text-decoration: underline;
+    text-underline-offset: 2px;
+    display: inline;
+    vertical-align: baseline;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .di-bs-standards:focus-visible {
+    outline: 2px solid var(--orange);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .di-bs-standards-panel {
+    display: none;
+  }
+  .di-bs-standards-panel.is-open {
+    display: block;
+    margin-top: 2px;
+  }
+  .di-bs-standards-inner {
+    margin-top: 0;
+    padding: 14px 14px 16px;
+    border-radius: 14px;
+    background: linear-gradient(165deg, rgba(255, 253, 248, 0.98) 0%, rgba(247, 245, 252, 0.99) 55%, rgba(255, 251, 244, 0.97) 100%);
+    border: 1px solid rgba(35, 33, 74, 0.09);
+    box-shadow: 0 6px 24px rgba(35, 33, 74, 0.07);
+  }
+  .di-bs-standards-title {
+    margin: 0 0 12px;
+    font-family: var(--gaya-title-font);
+    font-size: var(--gaya-title-size);
+    font-weight: var(--gaya-title-weight);
+    line-height: var(--gaya-title-line-height);
+    letter-spacing: -0.02em;
+    color: var(--navy);
+  }
+  .di-bs-standards-section {
+    margin-bottom: 12px;
+  }
+  .di-bs-standards-section:last-of-type {
+    margin-bottom: 0;
+  }
+  .di-bs-standards-subhead {
+    margin: 0 0 6px;
+    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+  }
+  .di-bs-standards-p {
+    margin: 0;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #4a4868;
+  }
+  .di-bs-standards-foot {
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid rgba(35, 33, 74, 0.08);
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.45;
+    color: var(--navy);
+    opacity: 0.88;
   }

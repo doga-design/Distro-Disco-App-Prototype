@@ -1,19 +1,23 @@
 /* ── Volunteer Page ── */
   /* Timeline */
-  .page-volunteer .vol-timeline-section { padding: 18px 20px 12px; }
-  .page-volunteer .vol-timeline-month-row {
+  .vol-timeline-section { padding: 18px 20px 12px; }
+  .vol-timeline-month-row {
     display: flex; justify-content: space-between; align-items: baseline;
     margin-bottom: 32px;
   }
-  .page-volunteer .vol-timeline-month {
-    font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px;
-    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
+  .vol-timeline-month {
+    font-family: var(--gaya-title-font);
+    font-size: var(--gaya-title-size);
+    font-weight: var(--gaya-title-weight);
+    line-height: var(--gaya-title-line-height);
+    color: var(--navy);
+    letter-spacing: -0.3px;
   }
-  .page-volunteer .vol-timeline-view-link {
+  .vol-timeline-view-link {
     font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: underline;
   }
-  .page-volunteer .vol-timeline-view-link:hover { text-decoration: underline; }
-  .page-volunteer .vol-tl-static-line {
+  .vol-timeline-view-link:hover { text-decoration: underline; }
+  .vol-tl-static-line {
     height: 2px;
     background: repeating-linear-gradient(
       to right, #C4C2BB 0px, #C4C2BB 5px, transparent 5px, transparent 11px
@@ -23,18 +27,18 @@
     mask-image: none;
     -webkit-mask-image: none;
   }
-  .page-volunteer .vol-timeline-track-wrap {
+  .vol-timeline-track-wrap {
     overflow-x: auto; overflow-y: visible;
     scrollbar-width: none;
     padding: 24px 20px 8px;
     margin: 0 -20px;
   }
-  .page-volunteer .vol-timeline-track-wrap::-webkit-scrollbar { display: none; }
-  .page-volunteer .vol-timeline-track {
+  .vol-timeline-track-wrap::-webkit-scrollbar { display: none; }
+  .vol-timeline-track {
     display: flex; align-items: flex-start; gap: 0;
     width: max-content; position: relative;
   }
-  .page-volunteer .vol-tl-node {
+  .vol-tl-node {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -45,7 +49,7 @@
     width: 80px;
     overflow: visible;
   }
-  .page-volunteer .vol-tl-dot {
+  .vol-tl-dot {
     width: 48px; height: 48px; border-radius: 50%;
     background: #D9D7D0; flex-shrink: 0; position: relative; z-index: 1;
     border: 3px solid transparent;
@@ -54,14 +58,14 @@
                 box-shadow 280ms cubic-bezier(0.16,1,0.3,1),
                 border-color 280ms cubic-bezier(0.16,1,0.3,1);
   }
-  .page-volunteer .vol-tl-dot.active {
+  .vol-tl-dot.active {
     background: var(--navy);
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border: 3px solid white;
   }
   
-  .page-volunteer .vol-tl-dot.active::before,
-  .page-volunteer .vol-tl-dot.active::after {
+  .vol-tl-dot.active::before,
+  .vol-tl-dot.active::after {
     content: '';
     position: absolute; inset: 0; border-radius: 50%;
     background: transparent;
@@ -70,7 +74,7 @@
     pointer-events: none;
   }
 
-  .page-volunteer .vol-tl-dot.active::after {
+  .vol-tl-dot.active::after {
     border-color: rgba(35, 33, 74, 0.18); animation-delay: 0.8s;
   }
 
@@ -79,18 +83,18 @@
     70%  { transform: scale(2.2); opacity: 0; }
     100% { transform: scale(2.2); opacity: 0; }
   }
-  .page-volunteer .vol-tl-label {
+  .vol-tl-label {
     font-size: 12px; font-weight: 600; color: var(--text-muted);
     text-align: center; line-height: 1.35; max-width: 78px; white-space: normal;
     width: 100%;
   }
-  .page-volunteer .vol-tl-node.active .vol-tl-label { color: var(--navy); font-weight: 700; }
-  .page-volunteer .vol-tl-date {
+  .vol-tl-node.active .vol-tl-label { color: var(--navy); font-weight: 700; }
+  .vol-tl-date {
     font-size: 11px; font-weight: 500; color: var(--text-muted);
     text-align: center; white-space: nowrap; margin-top: 0;
     width: 100%;
   }
-  .page-volunteer .vol-tl-node.active .vol-tl-date { color: var(--navy); font-weight: 600; }
+  .vol-tl-node.active .vol-tl-date { color: var(--navy); font-weight: 600; }
 
   /* Sign-up section */
   .page-volunteer .vol-signup-section { padding: 20px 20px 0; }
@@ -103,8 +107,13 @@
     display: none;
   }
   .page-volunteer .vol-section-heading {
-    font-size: 17px; font-weight: 700; color: var(--navy);
-    margin-bottom: 16px; letter-spacing: -0.2px; line-height: 1.25;
+    font-family: var(--gaya-title-font);
+    font-size: var(--gaya-title-size);
+    font-weight: var(--gaya-title-weight);
+    line-height: var(--gaya-title-line-height);
+    color: var(--navy);
+    margin-bottom: 16px;
+    letter-spacing: -0.2px;
   }
 
   /* Role cards */
@@ -117,25 +126,16 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: 6px solid var(--orange);
-    transition: border-color 0.2s, border-left-color 0.2s,
-      border-radius 450ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .page-volunteer .vol-role-card-header {
-    display: flex; align-items: center; gap: 14px;
+    display: flex; align-items: flex-start; gap: 14px;
     padding: 18px;
     border-radius: 0;
     background: var(--card-bg);
-    transition: background 450ms cubic-bezier(0.16, 1, 0.3, 1), border-radius 450ms cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
   }
   .page-volunteer .vol-role-card.active .vol-role-card-header {
     background: var(--navy);
-    border-radius: 0 18px 0 0;
-  }
-  /* Leaf shape: sharp top-left (orange bar); top-right, bottom-right, bottom-left rounded */
-  .page-volunteer .vol-role-card.active {
-    border-left: 6px solid var(--orange);
-    border-radius: 0 20px 20px 20px;
   }
   .page-volunteer .vol-role-card.disabled .vol-role-card-header {
     background: var(--card-bg); opacity: 0.55;
@@ -145,41 +145,67 @@
     background: transparent; border: none;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
-    transition: border-color 450ms cubic-bezier(0.16,1,0.3,1), background 450ms cubic-bezier(0.16,1,0.3,1);
-  }
-  .page-volunteer .vol-role-card.active .vol-role-icon-ph {
-    background: transparent; border-color: transparent;
   }
   .page-volunteer .vol-role-icon-ph img {
     object-fit: contain;
-    transition: filter 200ms ease;
   }
   .page-volunteer .vol-role-card.active .vol-role-icon-ph img {
-    /* make role icons white on active cards */
     filter: brightness(0) invert(1);
   }
   .page-volunteer .vol-role-icon-ph span {
     font-size: 7px; color: var(--text-muted); font-weight: 700;
   }
   .page-volunteer .vol-role-card.active .vol-role-icon-ph span { color: rgba(255,255,255,0.6); }
+  .page-volunteer .vol-role-card-copy {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
   .page-volunteer .vol-role-card-title {
-    flex: 1; font-size: 18px; font-weight: 700; color: var(--navy);
-    letter-spacing: -0.2px; transition: color 0.2s;
+    display: block;
+    font-family: var(--gaya-title-font);
+    font-size: 20px;
+    font-weight: var(--gaya-title-weight);
+    line-height: var(--gaya-title-line-height);
+    color: var(--navy);
+    letter-spacing: -0.2px;
+  }
+  .page-volunteer .vol-role-card-desc,
+  .page-volunteer .vol-role-card-time {
+    display: block;
+    color: var(--text-muted);
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
   }
   .page-volunteer .vol-role-card.active .vol-role-card-title { color: var(--white); }
+  .page-volunteer .vol-role-card.active .vol-role-card-desc,
+  .page-volunteer .vol-role-card.active .vol-role-card-time {
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .page-volunteer .vol-role-card.active .vol-role-card-time {
+    color: rgba(255, 255, 255, 0.8);
+  }
   .page-volunteer .vol-role-card.disabled .vol-role-card-title {
     color: var(--text-muted);
     text-decoration: line-through; text-decoration-thickness: 2px;
+  }
+  .page-volunteer .vol-role-card.disabled .vol-role-card-desc,
+  .page-volunteer .vol-role-card.disabled .vol-role-card-time {
+    color: #9b99aa;
   }
   .page-volunteer .vol-role-check {
     width: 32px; height: 32px; border-radius: 50%;
     border: 2px solid rgba(35,33,74,0.25);
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; background: transparent; transition: all 0.2s;
+    flex-shrink: 0; background: transparent;
+    margin-top: 2px;
   }
   .page-volunteer .vol-role-card.active .vol-role-check {
     background: var(--orange); border-color: var(--orange);
-    box-shadow: 0 3px 10px rgba(239,98,66,0.4);
   }
   .page-volunteer .vol-role-card.disabled .vol-role-check {
     background: #D0CEDB; border-color: #D0CEDB;
@@ -190,111 +216,9 @@
   }
   .page-volunteer .vol-role-card.active .vol-role-check svg,
   .page-volunteer .vol-role-card.disabled .vol-role-check svg { display: block; }
-  .page-volunteer .vol-role-card-body {
-    overflow: hidden; max-height: 0;
-    padding: 0 18px; background: var(--card-bg);
-    transform: translateY(-8px);
-    transition: max-height 450ms cubic-bezier(0.16, 1, 0.3, 1),
-                padding 450ms cubic-bezier(0.16, 1, 0.3, 1),
-                transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  .page-volunteer .vol-role-card-header.touch-active {
+    opacity: 1;
   }
-  .page-volunteer .vol-role-card.active .vol-role-card-body {
-    max-height: 400px; padding: 18px 18px 20px; transform: translateY(0);
-  }
-  .page-volunteer .vol-role-tasks { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-  .page-volunteer .vol-role-task {
-    display: flex; align-items: flex-start; gap: 18px;
-    font-size: 13px; line-height: 1.5; color: var(--navy);
-  }
-  .page-volunteer .vol-task-star { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
-  .page-volunteer .vol-task-star svg {
-    width: 14px;
-    height: 14px;
-    transform-origin: center center;
-  }
-  /* Slight variations per task position and card to give each star a unique feel */
-  .page-volunteer #vol-card-1 .vol-role-task:nth-child(1) .vol-task-star svg {
-    transform: scale(0.9) rotate(-8deg);
-  }
-  .page-volunteer #vol-card-1 .vol-role-task:nth-child(2) .vol-task-star svg {
-    transform: scale(0.84) rotate(9deg);
-  }
-  .page-volunteer #vol-card-1 .vol-role-task:nth-child(3) .vol-task-star svg {
-    transform: scale(0.8) rotate(-14deg);
-  }
-  .page-volunteer #vol-card-1 .vol-role-task:nth-child(4) .vol-task-star svg {
-    transform: scale(0.82) rotate(13deg);
-  }
-
-  .page-volunteer #vol-card-2 .vol-role-task:nth-child(1) .vol-task-star svg {
-    transform: scale(0.86) rotate(6deg);
-  }
-  .page-volunteer #vol-card-2 .vol-role-task:nth-child(2) .vol-task-star svg {
-    transform: scale(0.82) rotate(-10deg);
-  }
-  .page-volunteer #vol-card-2 .vol-role-task:nth-child(3) .vol-task-star svg {
-    transform: scale(0.78) rotate(15deg);
-  }
-
-  .page-volunteer #vol-card-3 .vol-role-task:nth-child(1) .vol-task-star svg {
-    transform: scale(0.88) rotate(-11deg);
-  }
-  .page-volunteer #vol-card-3 .vol-role-task:nth-child(2) .vol-task-star svg {
-    transform: scale(0.83) rotate(12deg);
-  }
-  .page-volunteer #vol-card-3 .vol-role-task:nth-child(3) .vol-task-star svg {
-    transform: scale(0.79) rotate(-16deg);
-  }
-
-  .page-volunteer #vol-card-5 .vol-role-task:nth-child(1) .vol-task-star svg {
-    transform: scale(0.87) rotate(8deg);
-  }
-  .page-volunteer #vol-card-5 .vol-role-task:nth-child(2) .vol-task-star svg {
-    transform: scale(0.81) rotate(-13deg);
-  }
-  .page-volunteer #vol-card-5 .vol-role-task:nth-child(3) .vol-task-star svg {
-    transform: scale(0.77) rotate(17deg);
-  }
-
-  .page-volunteer #vol-card-6 .vol-role-task:nth-child(1) .vol-task-star svg {
-    transform: scale(0.89) rotate(-9deg);
-  }
-  .page-volunteer #vol-card-6 .vol-role-task:nth-child(2) .vol-task-star svg {
-    transform: scale(0.83) rotate(10deg);
-  }
-  .page-volunteer #vol-card-6 .vol-role-task:nth-child(3) .vol-task-star svg {
-    transform: scale(0.78) rotate(-15deg);
-  }
-  .page-volunteer #vol-card-6 .vol-role-task:nth-child(4) .vol-task-star svg {
-    transform: scale(0.8) rotate(18deg);
-  }
-
-  /* Commitment toggle */
-  .page-volunteer .vol-commit-toggle {
-    background: var(--input-bg); border-radius: 50px; padding: 4px;
-    display: grid; grid-template-columns: 1fr 1fr;
-    position: relative; isolation: isolate;
-  }
-  .page-volunteer .vol-commit-toggle::before {
-    content: '';
-    position: absolute; top: 4px; bottom: 4px; left: 4px;
-    width: calc(50% - 4px);
-    background: var(--navy); border-radius: 50px;
-    box-shadow: 0 4px 14px rgba(35,33,74,0.25);
-    transform: translateX(0);
-    transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 0;
-  }
-  .page-volunteer .vol-commit-toggle.right::before { transform: translateX(100%); }
-  .page-volunteer .vol-toggle-opt {
-    position: relative; z-index: 1; text-align: center;
-    padding: 10px 0; border-radius: 50px;
-    font-size: 14px; font-weight: 600; color: var(--text-muted);
-    cursor: pointer; border: none; background: transparent;
-    font-family: 'Public Sans', system-ui, sans-serif;
-    transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .page-volunteer .vol-toggle-opt.active { color: white; }
 
   /* About You */
   .page-volunteer .vol-about-section { padding: 24px 20px 0; }
@@ -441,35 +365,28 @@
   /* Footer consent + CTA */
   .page-volunteer .vol-footer-section { padding: 16px 20px 0; }
   .page-volunteer .vol-consent-row {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 20px;
   }
-  .page-volunteer .vol-consent-check {
-    width: 20px;
-    height: 20px;
-    border-radius: 6px;
-    border: 1.5px solid #d0d0d0;
-    background: #f0f0f0;
-    cursor: pointer;
-    flex-shrink: 0;
-    display: inline-flex;
+  .page-volunteer .vol-consent-label {
+    margin: 0;
     align-items: center;
-    justify-content: center;
   }
-  .page-volunteer .vol-consent-check.checked {
-    background: var(--orange);
-    border-color: var(--orange);
-    color: white;
+  @media (pointer: fine) {
+    .page-volunteer .vol-consent-label,
+    .page-volunteer .vol-consent-label * {
+      cursor: none !important;
+    }
   }
-  .page-volunteer .vol-consent-check svg {
-    width: 13px;
-    height: 13px;
-    stroke: currentColor;
-    stroke-width: 2.5;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  .page-volunteer .vol-oath-panel {
+    width: 100%;
   }
-  .page-volunteer .vol-consent-text { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  .page-volunteer .vol-oath-item + .vol-oath-item {
+    margin-top: 9px;
+  }
   .page-volunteer .vol-cta-btn {
     font-size: 15px;
     letter-spacing: -0.1px;

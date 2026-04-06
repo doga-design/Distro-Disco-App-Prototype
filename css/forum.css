@@ -44,7 +44,7 @@
     box-shadow: 0 1px 3px rgba(35,33,74,0.1);
   }
   .page-forum .sticky-eyebrow { font-family: 'Public Sans', system-ui, sans-serif; font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
-  .page-forum .sticky-title { font-family: 'Gaya', 'Public Sans', serif; font-size: 18px; font-weight: 400; font-style: italic; color: var(--navy); line-height: 1.4; margin-bottom: 8px; }
+  .page-forum .sticky-title { font-family: var(--gaya-title-font); font-size: 20px; font-weight: var(--gaya-title-weight); line-height: var(--gaya-title-line-height); font-style: italic; color: var(--navy); margin-bottom: 8px; }
   .page-forum .sticky-meta { font-size: 10px; font-weight: 600; color: var(--text-muted); }
 
   .page-forum .forum-filter-row {
@@ -136,6 +136,13 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 12px;
+  }
+  .page-forum .bpost-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
   }
   .page-forum .bpost-author {
     font-size: 11px;
@@ -486,14 +493,8 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--navy) 0%, #3B3778 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Gaya', 'Public Sans', serif;
-    font-size: 14px;
-    color: white;
     flex-shrink: 0;
+    overflow: hidden;
   }
   .page-compose .compose-author-name { font-size: 13px; font-weight: 700; color: var(--navy); }
   .page-compose .compose-author-dest { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-top: 1px; }
@@ -544,12 +545,12 @@
     background: transparent;
     outline: none;
     resize: none;
-    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
-    font-size: 22px;
-    font-weight: 400;
+    font-family: var(--gaya-title-font);
+    font-size: var(--gaya-title-size);
+    font-weight: var(--gaya-title-weight);
+    line-height: var(--gaya-title-line-height);
     font-style: italic;
     color: var(--navy);
-    line-height: 1.35;
     letter-spacing: -0.3px;
     overflow: hidden;
   }
@@ -675,8 +676,8 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--navy) 0%, #3B3778 100%);
     flex-shrink: 0;
+    overflow: hidden;
   }
   .forum-detail-post-author {
     font-family: 'Public Sans', system-ui, sans-serif;
@@ -869,8 +870,18 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--navy) 0%, #3B3778 100%);
     flex-shrink: 0;
+    overflow: hidden;
+  }
+  .page-forum .bpost-avatar .forum-avatar-img,
+  .page-forum-detail .forum-detail-post-avatar .forum-avatar-img,
+  .page-forum-detail .forum-comment-avatar .forum-avatar-img,
+  .page-compose .compose-av .forum-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
   }
   .forum-comment-main {
     flex: 1;

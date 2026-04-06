@@ -44,10 +44,11 @@
 
   .page-donate-confirm .dc-thank-you {
     margin: 0;
-    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
+    font-family: var(--gaya-title-font);
     font-style: italic;
-    font-size: 28px;
-    line-height: 1.2;
+    font-size: var(--gaya-title-size);
+    font-weight: var(--gaya-title-weight);
+    line-height: var(--gaya-title-line-height);
     color: var(--navy);
   }
   .page-donate-confirm .dc-thank-you .dc-user {
@@ -368,130 +369,3 @@
     object-fit: contain;
   }
 
-  /* ── Donate Money Confirm Page ── */
-  .page-donate-money-confirm .dc-hero {
-    padding: 8px 20px 0;
-  }
-  .page-donate-money-confirm .dc-hero-img-wrap {
-    width: 100%;
-    padding: 0;
-    margin-bottom: 16px;
-  }
-  .page-donate-money-confirm .dc-hero-img {
-    width: 100%;
-    max-height: 260px;
-    object-fit: contain;
-  }
-  .page-donate-money-confirm .dc-thank-you {
-    font-style: normal;
-    font-size: 26px;
-    letter-spacing: -0.025em;
-  }
-  .page-donate-money-confirm .dc-subline {
-    max-width: 280px;
-    margin-bottom: 18px;
-    font-size: 15px;
-  }
-  .page-donate-money-confirm .dcm-summary-section {
-    padding-top: 10px;
-  }
-  .page-donate-money-confirm .dcm-summary-heading {
-    margin-bottom: 10px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .page-donate-money-confirm .dc-item-list {
-    gap: 0;
-    border: 1px solid rgba(15, 30, 46, 0.08);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: var(--white);
-  }
-  .page-donate-money-confirm .dc-item-card {
-    border-radius: 0;
-    border: 0;
-    border-bottom: 1px solid rgba(15, 30, 46, 0.06);
-    background: var(--white);
-    background-image: none;
-    padding: 14px 16px;
-  }
-  .page-donate-money-confirm .dc-item-card:last-child {
-    border-bottom: 0;
-  }
-  .page-donate-money-confirm .dc-item-card h4 {
-    font-size: 15px;
-  }
-  .page-donate-money-confirm .dc-item-note {
-    font-size: 13px;
-  }
-  .page-donate-money-confirm #dcm-summary-amount {
-    color: var(--navy);
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .page-donate-money-confirm .dcm-recipient-card .dc-item-right {
-    width: auto;
-    height: auto;
-  }
-  .page-donate-money-confirm .dcm-recipient-value {
-    color: var(--navy);
-    font-weight: 600;
-  }
-  .page-donate-money-confirm .dcm-impact-section {
-    padding-top: 14px;
-  }
-  .page-donate-money-confirm .dcm-impact-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-radius: var(--radius-md);
-    border: 0;
-    background: linear-gradient(90deg, #F5FFAB 0%, var(--bg-color) 100%);
-  }
-  .page-donate-money-confirm .dcm-impact-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 0;
-    background: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 0;
-  }
-  .page-donate-money-confirm .dcm-impact-icon img {
-    width: 24px;
-    height: 24px;
-    filter: none;
-  }
-  .page-donate-money-confirm .dcm-impact-title {
-    margin: 0 0 3px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #7c3b10;
-  }
-  .page-donate-money-confirm .dcm-impact-copy {
-    margin: 0;
-    font-size: 13px;
-    line-height: 1.5;
-    color: #9a4a1a;
-  }
-  .page-donate-money-confirm .dc-make-changes-wrap {
-    display: flex;
-    flex-direction: column;
-  gap: 14px;
-    padding-bottom: 4px;
-  }
-  .page-donate-money-confirm .dcm-footer-note {
-    margin: 0;
-    padding: 8px 24px 28px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.6;
-    color: rgba(107, 101, 96, 0.7);
-  }

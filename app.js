@@ -134,7 +134,7 @@
   })();
 
   // ── Page Router + Event Detail Flow ──
-  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', 'donate-items': 'page-donate-items', 'donate-money-confirm': 'page-donate-money-confirm', 'volunteer-confirm': 'page-volunteer-confirm', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail', activities: 'page-activities' };
+  const pageMap = { home: 'page-home', events: 'page-events', detail: 'page-event-detail', volunteer: 'page-volunteer', settings: 'page-settings', profile: 'page-profile', 'donate-money': 'page-donate-money', 'donate-items': 'page-donate-items', 'volunteer-confirm': 'page-volunteer-confirm', forums: 'page-forum', compose: 'page-compose', 'forum-detail': 'page-forum-detail', activities: 'page-activities' };
   const navItems = document.querySelectorAll('.bottom-nav .nav-item:not(.center-item)');
   const settingsButtons = document.querySelectorAll('.top-nav-settings');
   const detailPage = document.querySelector('.page-event-detail');
@@ -168,7 +168,8 @@
   var donationGroups = [];
   var pendingHomeCelebrations = 0;
   var donationCardShownOnce = false;
-  var donationCardCollapsed = false;
+  var donationGroupCollapsedById = {};
+  var donationEditGroupId = null;
   var donationGetItemIconSrc = null;
   var donationLastConfirmedItems = [];
   var donationLastConfirmedSnapshot = null;
@@ -270,6 +271,13 @@
       .filter(function(entry) { return entry && entry.itemName && (entry.qty || 0) > 0; })
       .map(function(entry) { return { itemName: entry.itemName, qty: entry.qty }; });
     if (!incomingItems.length) return false;
+    var replaceGroupId = session.replaceGroupId ? String(session.replaceGroupId) : '';
+
+    if (replaceGroupId) {
+      donationGroups = (donationGroups || []).filter(function(group) {
+        return group && group.id !== replaceGroupId;
+      });
+    }
 
     var existing = donationGroups.find(function(group) {
       return group && group.dropoff && group.dropoff.id === session.dropoff.id;
@@ -470,7 +478,7 @@
     var topNavOnNewPage = target.querySelector('.top-nav');
     if (topNavOnNewPage) topNavOnNewPage.classList.remove('is-scroll-hidden');
     activePageName = name;
-    document.body.classList.toggle('is-fullscreen-confirm', name === 'donate-money-confirm' || name === 'volunteer-confirm');
+    document.body.classList.toggle('is-fullscreen-confirm', name === 'volunteer-confirm');
     if (name === 'donate-money' || name === 'donate-items') {
       var setDonateSegmentState = function(segment, isRight) {
         if (!segment) return;
@@ -506,19 +514,6 @@
       document.body.classList.remove('donate-sheet-open');
       document.body.style.overflow = '';
     }
-    if (name !== 'donate-money') {
-      var apDrawer = document.getElementById('ap-pay-drawer');
-      var apScrim = document.getElementById('ap-pay-scrim');
-      if (apDrawer) {
-        apDrawer.classList.remove('is-open');
-        apDrawer.setAttribute('aria-hidden', 'true');
-      }
-      if (apScrim) {
-        apScrim.classList.remove('is-open');
-        apScrim.setAttribute('aria-hidden', 'true');
-      }
-    }
-
     // Reset impact bar animation when leaving profile so it replays on next open
     if (name !== 'profile') {
       clearTimeout(profileConfettiTimerId);
@@ -1071,17 +1066,29 @@
 
   // ── Donate Money ──
   const donateState = {
-    amount: 25,
-    selectedPreset: 25
+    amount: 20,
+    selectedPreset: 20
   };
 
   let dmIsMonthly = false;
-  let donateMoneyConfirmController = null;
   let volunteerConfirmController = null;
+
+  const DONATE_AMOUNT_MAX_DIGITS = 7;
+  const DONATE_AMOUNT_MAX = 9999999;
 
   function formatDonateAmount(value) {
     const num = Number(value) || 0;
     return Math.max(0, Math.round(num)).toString();
+  }
+
+  function donateAmountDigitsClamped(raw) {
+    return (String(raw || '').replace(/\D+/g, '').slice(0, DONATE_AMOUNT_MAX_DIGITS));
+  }
+
+  function donateAmountFieldDisplay(value, isFocused) {
+    const str = formatDonateAmount(value);
+    if (isFocused) return str;
+    return str.length > DONATE_AMOUNT_MAX_DIGITS ? str.slice(0, DONATE_AMOUNT_MAX_DIGITS) + '...' : str;
   }
 
   function donateImpactCopy(amount, monthly) {
@@ -1097,7 +1104,10 @@
   }
 
   function updateDonateUI() {
-    if (donateAmountValue) donateAmountValue.textContent = formatDonateAmount(donateState.amount);
+    if (donateAmountValue) {
+      const focused = document.activeElement === donateAmountValue;
+      donateAmountValue.textContent = donateAmountFieldDisplay(donateState.amount, focused);
+    }
 
     donatePresetButtons.forEach(btn => {
       const amount = Number(btn.dataset.amount);
@@ -1125,7 +1135,7 @@
   function setDonateAmount(nextAmount, source) {
     const parsed = Number(nextAmount);
     if (!Number.isFinite(parsed) || parsed <= 0) return;
-    donateState.amount = Math.round(parsed);
+    donateState.amount = Math.min(DONATE_AMOUNT_MAX, Math.round(parsed));
 
     if (source === 'preset') {
       donateState.selectedPreset = donateState.amount;
@@ -1144,144 +1154,11 @@
     showPage('donate-items');
   }
 
-  const APPLE_PAY_MERCHANT = 'Distro Disco';
-  const APPLE_PAY_CARD_LAST4 = '4242';
-  const apPayScrim = document.getElementById('ap-pay-scrim');
-  const apPayDrawer = document.getElementById('ap-pay-drawer');
-  const apPayGrabber = document.getElementById('ap-pay-grabber');
-  const apPayDefault = document.getElementById('ap-pay-state-default');
-  const apPayProcessing = document.getElementById('ap-pay-state-processing');
-  const apPaySuccess = document.getElementById('ap-pay-state-success');
-  const apPayAmountLine = document.getElementById('ap-pay-amount-line');
-  const apPayAmountLabel = document.getElementById('ap-pay-amount-label');
-  const apPaySecondaryLabel = document.getElementById('ap-pay-secondary-label');
-  const apPaySecondaryLine = document.getElementById('ap-pay-secondary-line');
-  const apPayTotalLabel = document.getElementById('ap-pay-total-label');
-  const apPayTotalLine = document.getElementById('ap-pay-total-line');
-  const apPayBtnLabel = document.getElementById('ap-pay-btn-label');
-  const apPayCardLine = document.getElementById('ap-pay-card-line');
-  const apPaySuccessSub = document.getElementById('ap-pay-success-sub');
-  const apPayMerchantName = document.getElementById('ap-pay-merchant-name');
-  const apPayPayBtn = document.getElementById('ap-pay-btn');
-  const apPayDoneBtn = document.getElementById('ap-pay-done-btn');
-  let apPayOpen = false;
-  let apPayCurrentAmount = 25;
-  let apPayProcessTimer = null;
-
-  function formatAppleAmount(amount) {
-    return '$' + Number(amount).toFixed(2);
-  }
-
-  function setApplePayState(state) {
-    if (apPayDefault) apPayDefault.classList.toggle('is-visible', state === 'default');
-    if (apPayProcessing) apPayProcessing.classList.toggle('is-visible', state === 'processing');
-    if (apPaySuccess) apPaySuccess.classList.toggle('is-visible', state === 'success');
-    if (state !== 'success' && apPaySuccess) apPaySuccess.classList.remove('is-animating');
-  }
-
-  function setApplePayContent(amount) {
-    apPayCurrentAmount = Number(amount) || 25;
-    var amountText = formatAppleAmount(apPayCurrentAmount);
-    var monthlySuffix = dmIsMonthly ? ' / month' : '';
-    if (apPayMerchantName) apPayMerchantName.textContent = APPLE_PAY_MERCHANT;
-    if (apPayAmountLabel) apPayAmountLabel.textContent = dmIsMonthly ? 'Monthly contribution' : 'Contribution amount';
-    if (apPayAmountLine) apPayAmountLine.textContent = amountText + ' CAD';
-    if (apPaySecondaryLabel) apPaySecondaryLabel.textContent = dmIsMonthly ? 'Billing' : 'Processing fee';
-    if (apPaySecondaryLine) apPaySecondaryLine.textContent = dmIsMonthly ? 'Renews monthly' : '$0.00';
-    if (apPayTotalLabel) apPayTotalLabel.textContent = dmIsMonthly ? 'Monthly total' : 'Total';
-    if (apPayTotalLine) apPayTotalLine.textContent = amountText + ' CAD';
-    if (apPayBtnLabel) apPayBtnLabel.textContent = 'Pay ' + amountText + monthlySuffix;
-    if (apPayCardLine) apPayCardLine.textContent = 'Visa ···· ' + APPLE_PAY_CARD_LAST4;
-    if (apPaySuccessSub) apPaySuccessSub.textContent = dmIsMonthly
-      ? amountText + '/month to ' + APPLE_PAY_MERCHANT
-      : amountText + ' to ' + APPLE_PAY_MERCHANT;
-  }
-
-  function clearApplePayTimer() {
-    if (!apPayProcessTimer) return;
-    clearTimeout(apPayProcessTimer);
-    apPayProcessTimer = null;
-  }
-
-  function closeApplePayDrawer() {
-    if (!apPayDrawer || !apPayScrim) return;
-    clearApplePayTimer();
-    apPayOpen = false;
-    apPayDrawer.classList.remove('is-open');
-    apPayScrim.classList.remove('is-open');
-    apPayDrawer.setAttribute('aria-hidden', 'true');
-    apPayScrim.setAttribute('aria-hidden', 'true');
-    setTimeout(function() {
-      if (!apPayOpen) setApplePayState('default');
-    }, 380);
-  }
-
-  function openApplePayDrawer(amountOverride) {
-    if (!apPayDrawer || !apPayScrim) return;
-    setApplePayContent(amountOverride != null ? amountOverride : donateState.amount);
-    clearApplePayTimer();
-    setApplePayState('default');
-    apPayOpen = true;
-    apPayDrawer.classList.add('is-open');
-    apPayScrim.classList.add('is-open');
-    apPayDrawer.setAttribute('aria-hidden', 'false');
-    apPayScrim.setAttribute('aria-hidden', 'false');
-  }
-
-  function triggerApplePaySuccess() {
-    setApplePayState('success');
-    requestAnimationFrame(function() {
-      if (apPaySuccess) apPaySuccess.classList.add('is-animating');
-    });
-  }
-
-  function triggerApplePayProcessing() {
-    clearApplePayTimer();
-    setApplePayState('processing');
-    apPayProcessTimer = setTimeout(function() {
-      apPayProcessTimer = null;
-      closeApplePayDrawer();
-      if (donateMoneyConfirmController && typeof donateMoneyConfirmController.open === 'function') {
-        donateMoneyConfirmController.open({
-          amount: apPayCurrentAmount,
-          isMonthly: dmIsMonthly
-        });
-      }
-    }, 1800);
-  }
-
-  function startApplePayDrag(ev) {
-    if (!apPayDrawer || !apPayOpen) return;
-    var startY = ev.clientY;
-    var moved = false;
-    function onMove(moveEv) {
-      var delta = moveEv.clientY - startY;
-      if (delta > 10) moved = true;
-    }
-    function onUp() {
-      document.removeEventListener('pointermove', onMove);
-      document.removeEventListener('pointerup', onUp);
-      document.removeEventListener('pointercancel', onUp);
-      if (moved) closeApplePayDrawer();
-    }
-    document.addEventListener('pointermove', onMove);
-    document.addEventListener('pointerup', onUp);
-    document.addEventListener('pointercancel', onUp);
-  }
-
-  window.openDrawer = openApplePayDrawer;
-  window.triggerProcessing = triggerApplePayProcessing;
-  window.triggerSuccess = triggerApplePaySuccess;
-
   if (donateMoneyCta) {
     donateMoneyCta.addEventListener('click', function() {
-      openApplePayDrawer(donateState.amount);
+      window.open('https://ko-fi.com/distro_disco', '_blank', 'noopener,noreferrer');
     });
   }
-  if (apPayScrim) apPayScrim.addEventListener('click', closeApplePayDrawer);
-  if (apPayGrabber) apPayGrabber.addEventListener('pointerdown', startApplePayDrag);
-  if (apPayPayBtn) apPayPayBtn.addEventListener('click', triggerApplePayProcessing);
-  if (apPayDoneBtn) apPayDoneBtn.addEventListener('click', closeApplePayDrawer);
 
   if (dmSwitchToItems) dmSwitchToItems.addEventListener('click', function() {
     window.__swapIconAnimTarget = 'donate-items';
@@ -1294,9 +1171,10 @@
 
   if (donateCustomInput) {
     donateCustomInput.addEventListener('input', () => {
-      const raw = donateCustomInput.value.trim();
-      if (!raw) { donateState.selectedPreset = null; updateDonateUI(); return; }
-      setDonateAmount(raw, 'custom');
+      const digits = donateAmountDigitsClamped(donateCustomInput.value);
+      donateCustomInput.value = digits;
+      if (!digits) { donateState.selectedPreset = null; updateDonateUI(); return; }
+      setDonateAmount(digits, 'custom');
     });
   }
 
@@ -1308,6 +1186,7 @@
       }
     });
     donateAmountValue.addEventListener('focus', function() {
+      donateAmountValue.textContent = formatDonateAmount(donateState.amount);
       var range = document.createRange();
       range.selectNodeContents(donateAmountValue);
       var sel = window.getSelection();
@@ -1317,7 +1196,7 @@
       }
     });
     donateAmountValue.addEventListener('input', function() {
-      var raw = (donateAmountValue.textContent || '').replace(/\D+/g, '');
+      var raw = donateAmountDigitsClamped(donateAmountValue.textContent || '');
       if (!raw) {
         donateState.selectedPreset = null;
         return;
@@ -1326,9 +1205,7 @@
       setDonateAmount(raw, 'custom');
     });
     donateAmountValue.addEventListener('blur', function() {
-      if (!donateAmountValue.textContent || !donateAmountValue.textContent.trim()) {
-        donateAmountValue.textContent = formatDonateAmount(donateState.amount);
-      }
+      donateAmountValue.textContent = donateAmountFieldDisplay(donateState.amount, false);
     });
   }
 
@@ -1348,7 +1225,7 @@
   const dmCopyConfirm = document.getElementById('dm-copy-confirm');
   if (dmCopyEmailBtn) {
     dmCopyEmailBtn.addEventListener('click', () => {
-      const email = 'distrodisco@gmail.com';
+      const email = 'distrodisco1312@gmail.com';
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(email).catch(() => {});
       } else {
@@ -1432,7 +1309,6 @@
     ];
     var CURRENT_AVATAR_IDX = 0;
 
-    var backdrop = document.getElementById('avatar-sheet-backdrop');
     var sheet = document.getElementById('avatar-sheet');
     var scroll = document.getElementById('avatar-sheet-scroll');
     var saveBtn = document.getElementById('avatar-sheet-save');
@@ -1475,7 +1351,7 @@
     }
 
     function openSheet() {
-      if (!backdrop || !sheet) return;
+      if (!sheet) return;
       // Hard stop confetti when avatar popup opens
       clearTimeout(profileConfettiTimerId);
       profileConfettiTimerId = null;
@@ -1491,29 +1367,32 @@
           o.classList.toggle('is-selected', i === CURRENT_AVATAR_IDX && CURRENT_AVATAR_IDX >= 0);
         });
       }
-      backdrop.classList.add('is-open');
-      sheet.classList.remove('is-closing');
       requestAnimationFrame(function() { sheet.classList.add('is-open'); });
     }
 
     function closeSheet(onDone) {
-      if (!backdrop || !sheet) return;
-      sheet.classList.add('is-closing');
+      if (!sheet) return;
       sheet.classList.remove('is-open');
-      backdrop.classList.remove('is-open');
-      setTimeout(function() {
-        sheet.classList.remove('is-closing');
-        if (onDone) onDone();
-      }, 320);
+      if (onDone) setTimeout(onDone, 220);
     }
 
     if (avatarWrap) {
-      avatarWrap.addEventListener('click', openSheet);
+      avatarWrap.addEventListener('click', function() {
+        if (!sheet) return;
+        if (sheet.classList.contains('is-open')) {
+          closeSheet();
+          return;
+        }
+        openSheet();
+      });
     }
 
-    if (backdrop) {
-      backdrop.addEventListener('click', function() { closeSheet(); });
-    }
+    document.addEventListener('click', function(e) {
+      if (!sheet || !sheet.classList.contains('is-open')) return;
+      var clickedWrap = avatarWrap && avatarWrap.contains(e.target);
+      var clickedSheet = sheet.contains(e.target);
+      if (!clickedWrap && !clickedSheet) closeSheet();
+    });
 
     if (saveBtn) {
       saveBtn.addEventListener('click', function() {
@@ -1809,35 +1688,23 @@
         var eid = origBtn.getAttribute('data-event-id');
         var ctaWrap = document.createElement('div');
         ctaWrap.className = 'cal-placeholder-card-ctas';
-        var primaryBtn = document.createElement('button');
-        primaryBtn.type = 'button';
-        primaryBtn.className = 'btn btn-primary';
-        primaryBtn.setAttribute('data-event-id', eid);
-        primaryBtn.innerHTML = '<span class="btn__label">View details</span>';
         var volBtnEl = document.createElement('button');
         volBtnEl.type = 'button';
         volBtnEl.className = 'btn btn-secondary cal-placeholder-volunteer-btn';
         volBtnEl.setAttribute('data-event-id', eid);
         volBtnEl.innerHTML = '<span class="btn__label">Volunteer for this event</span>';
-        ctaWrap.appendChild(primaryBtn);
         ctaWrap.appendChild(volBtnEl);
         origBtn.replaceWith(ctaWrap);
       }
       if (isAprilCalendarPastDay(cell)) {
         wrap.classList.add('cal-day-placeholder-event-wrap--past');
-        var primaryPast = clone.querySelector('.cal-placeholder-card-ctas .btn.btn-primary');
         var volPast = clone.querySelector('.cal-placeholder-volunteer-btn');
-        if (primaryPast) {
-          primaryPast.removeAttribute('data-event-id');
-          primaryPast.disabled = true;
-          primaryPast.setAttribute('aria-disabled', 'true');
-          var pLabel = primaryPast.querySelector('.btn__label');
-          if (pLabel) pLabel.textContent = 'This event is over :(';
-        }
         if (volPast) {
           volPast.removeAttribute('data-event-id');
           volPast.disabled = true;
           volPast.setAttribute('aria-disabled', 'true');
+          var vLabel = volPast.querySelector('.btn__label');
+          if (vLabel) vLabel.textContent = 'This event is over :(';
         }
       }
       wrap.appendChild(clone);
@@ -1935,6 +1802,39 @@
   })();
 
   // ── Forum & Compose Pages ──
+  var FORUM_AVATAR_BASE = 'img/avatars/';
+  var FORUM_USER_AVATAR_FILE = {
+    Rgdfriend: 'avatar-cool-disco.png',
+    You: 'avatar-cool-disco.png',
+    GracelleM: 'avatar-flowers.png',
+    JiWoo_DD: 'avatar-ribbon.png',
+    DogaCM: 'avatar-cowboy.png',
+    CaitlinV: 'avatar-toque.png',
+    Sam_M: 'avatar-toque.png',
+    AlexK: 'avatar-cool-disco.png',
+    JordanT: 'avatar-cowboy.png',
+    MorganP: 'avatar-ribbon.png',
+    CaseyL: 'avatar-flowers.png',
+    QuinnR: 'avatar-cool-disco.png',
+    RileyJ: 'avatar-cowboy.png',
+    AveryW: 'avatar-ribbon.png'
+  };
+  function getForumUserAvatarSrc(username) {
+    var u = (username || '').trim();
+    var file = FORUM_USER_AVATAR_FILE[u];
+    if (!file) {
+      var h = 0;
+      for (var i = 0; i < u.length; i++) h = ((h << 5) - h) + u.charCodeAt(i) | 0;
+      var pool = ['avatar-cool-disco.png', 'avatar-cowboy.png', 'avatar-flowers.png', 'avatar-ribbon.png', 'avatar-toque.png'];
+      file = pool[Math.abs(h) % 5];
+    }
+    return FORUM_AVATAR_BASE + file;
+  }
+  function forumAvatarImgHtml(username) {
+    var src = getForumUserAvatarSrc(username);
+    return '<img class="forum-avatar-img" src="' + src + '" alt="" width="32" height="32" decoding="async">';
+  }
+
   const forumPostDetails = {
     'post-1': { title: "This Saturday's set-up crew, let's talk about it!", body: "Looking for a few folks to help with tables and signage from 9am. Comment if you can make it and I'll add you to the group chat.", author: 'Rgdfriend', time: '1 day ago', category: 'General' },
     'post-2': { title: "What's volunteering actually like at DD?", body: "I've been wanting to volunteer more but I'm not sure where to start. If you were new once, what actually made you come back?", author: 'GracelleM', time: '2 days ago', category: 'Question' },
@@ -2175,6 +2075,8 @@
     }
     if (titleEl) titleEl.textContent = details.title.length > 40 ? details.title.slice(0, 40) + '…' : details.title;
     if (authorEl) authorEl.textContent = details.author;
+    var postAvEl = document.getElementById('forum-detail-post-avatar');
+    if (postAvEl) postAvEl.innerHTML = forumAvatarImgHtml(details.author);
     if (timeEl) timeEl.textContent = details.time;
     if (postTitleEl) postTitleEl.textContent = details.title;
     if (bodyEl) bodyEl.textContent = details.body;
@@ -2239,7 +2141,7 @@
       var isOwnComment = c.author === 'Rgdfriend' || c.author === 'You';
       var deleteHtml = isOwnComment ? '<button type="button" class="forum-comment-delete-btn" aria-label="Delete comment"><span class="btn__label">Delete</span></button>' : '';
       var actionsHtml = '<div class="forum-comment-actions"><button type="button" class="forum-comment-like-btn' + likedClass + '" data-comment-like-key="' + commentKey + '" aria-pressed="' + (st.liked ? 'true' : 'false') + '" aria-label="' + (st.liked ? 'Unlike' : 'Like') + '">' + likeIconHtml + '<span class="forum-comment-like-count">' + st.count + '</span></button><button type="button" class="forum-comment-reply-btn"><span class="btn__label">Reply</span></button>' + deleteHtml + '</div>';
-      return '<div class="' + nodeClass + '"><div class="forum-comment-content"><div class="forum-comment-avatar"></div><div class="forum-comment-main"><div class="' + bylineClass + '"' + bylineAttrs + '><span class="username">' + c.author + '</span><span class="dot">·</span><span class="timestamp">' + c.time + '</span></div><div class="forum-comment-body">' + c.body + '</div>' + actionsHtml + '</div></div>' + repliesHtml + '</div>';
+      return '<div class="' + nodeClass + '"><div class="forum-comment-content"><div class="forum-comment-avatar">' + forumAvatarImgHtml(c.author) + '</div><div class="forum-comment-main"><div class="' + bylineClass + '"' + bylineAttrs + '><span class="username">' + c.author + '</span><span class="dot">·</span><span class="timestamp">' + c.time + '</span></div><div class="forum-comment-body">' + c.body + '</div>' + actionsHtml + '</div></div>' + repliesHtml + '</div>';
     }
     tree.forEach(function(node) { container.insertAdjacentHTML('beforeend', renderComment(node, 0)); });
     container.querySelectorAll('.forum-comment-node.has-replies').forEach(function(node) {
@@ -2447,7 +2349,7 @@
         postEl.setAttribute('data-reply-count', '0');
         postEl.setAttribute('data-cat', cat);
         postEl.setAttribute('style', 'transform:rotate(-0.2deg);');
-        postEl.innerHTML = '<div class="bpost-tack"></div><div class="bpost-byline"><span class="bpost-author bpost-author-own">Rgdfriend</span><div class="bpost-sep"></div><span class="bpost-time">Just now</span></div><div class="bpost-title">' + esc(title) + '</div><div class="bpost-body">' + esc(body) + '</div><div class="bpost-rule"></div><div class="bpost-actions"><button type="button" class="bpost-like-btn" data-post-id="post-new" aria-pressed="false" aria-label="Like"><span class="bpost-like-icon like-icon" aria-hidden="true"><img class="bpost-like-img bpost-like-img--off" src="img/icons/icon-heart-outline-sm.svg" alt="" width="22" height="22" decoding="async"><img class="bpost-like-img bpost-like-img--on" src="img/icons/icon-heart.svg" alt="" width="22" height="22" decoding="async"></span><span class="bpost-like-count">0</span></button><div class="bpost-reply-stat"><span class="bpost-reply-num">0</span> replies</div><span class="bpost-reply-hint">Reply</span></div><div class="bpost-reply-area"><div class="bpost-reply-inner"><input class="bpost-reply-input" type="text" placeholder="Write a reply..."><button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div></div>';
+        postEl.innerHTML = '<div class="bpost-tack"></div><div class="bpost-byline"><div class="bpost-avatar" aria-hidden="true">' + forumAvatarImgHtml('Rgdfriend') + '</div><span class="bpost-author bpost-author-own">Rgdfriend</span><div class="bpost-sep"></div><span class="bpost-time">Just now</span></div><div class="bpost-title">' + esc(title) + '</div><div class="bpost-body">' + esc(body) + '</div><div class="bpost-rule"></div><div class="bpost-actions"><button type="button" class="bpost-like-btn" data-post-id="post-new" aria-pressed="false" aria-label="Like"><span class="bpost-like-icon like-icon" aria-hidden="true"><img class="bpost-like-img bpost-like-img--off" src="img/icons/icon-heart-outline-sm.svg" alt="" width="22" height="22" decoding="async"><img class="bpost-like-img bpost-like-img--on" src="img/icons/icon-heart.svg" alt="" width="22" height="22" decoding="async"></span><span class="bpost-like-count">0</span></button><div class="bpost-reply-stat"><span class="bpost-reply-num">0</span> replies</div><span class="bpost-reply-hint">Reply</span></div><div class="bpost-reply-area"><div class="bpost-reply-inner"><input class="bpost-reply-input" type="text" placeholder="Write a reply..."><button type="button" class="bpost-reply-send" aria-label="Send reply"><span class="bpost-reply-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div></div>';
         forumBoard.insertBefore(postEl, forumBoard.firstChild);
         forumPostLikeState['post-new'] = { count: 0, liked: false };
         if (typeof forumPostDetails !== 'undefined') forumPostDetails['post-new'] = { title: title, body: body, author: 'Rgdfriend', time: 'Just now', category: catLabel };
@@ -2500,7 +2402,7 @@
         var actionsHtml = '<div class="forum-comment-actions"><button type="button" class="forum-comment-like-btn" data-comment-like-key="' + localKey + '" aria-pressed="false" aria-label="Like">' + likeIconHtml + '<span class="forum-comment-like-count">0</span></button><button type="button" class="forum-comment-reply-btn"><span class="btn__label">Reply</span></button>' + deleteHtml + '</div>';
         var wrap = document.createElement('div');
         wrap.className = 'forum-comment-node forum-comment-node--local';
-        wrap.innerHTML = '<div class="forum-comment-content"><div class="forum-comment-avatar"></div><div class="forum-comment-main"><div class="forum-comment-byline"><span class="username">You</span><span class="dot">·</span><span class="timestamp">Just now</span></div><div class="forum-comment-body"></div>' + actionsHtml + '</div></div>';
+        wrap.innerHTML = '<div class="forum-comment-content"><div class="forum-comment-avatar">' + forumAvatarImgHtml('You') + '</div><div class="forum-comment-main"><div class="forum-comment-byline"><span class="username">You</span><span class="dot">·</span><span class="timestamp">Just now</span></div><div class="forum-comment-body"></div>' + actionsHtml + '</div></div>';
         wrap.querySelector('.forum-comment-body').textContent = text;
         if (nestedParent) {
           nestedParent.insertBefore(wrap, composer.nextSibling);
@@ -2520,31 +2422,11 @@
 
   // ── Volunteer Page ──
   (function initVolunteerPage() {
-    // Role card toggle (one active at a time, accordion)
-    let volSelectedRole = 'vol-card-1'; // card 1 pre-selected
+    // Role card toggle (multi-select)
     document.querySelectorAll('.page-volunteer .vol-role-card:not(.disabled)').forEach(card => {
       card.querySelector('.vol-role-card-header').addEventListener('click', function() {
-        const isActive = card.classList.contains('active');
-        document.querySelectorAll('.page-volunteer .vol-role-card:not(.disabled)').forEach(c => c.classList.remove('active'));
-        if (!isActive) {
-          card.classList.add('active');
-          volSelectedRole = card.id;
-        } else {
-          volSelectedRole = null;
-        }
+        card.classList.toggle('active');
         updateVolCTA();
-      });
-    });
-
-    // Commitment toggle (one-time / repeating)
-    document.querySelectorAll('.page-volunteer .vol-commit-toggle').forEach(wrap => {
-      wrap.querySelectorAll('.vol-toggle-opt').forEach(btn => {
-        btn.addEventListener('click', () => {
-          wrap.querySelectorAll('.vol-toggle-opt').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          const opts = Array.from(wrap.querySelectorAll('.vol-toggle-opt'));
-          wrap.classList.toggle('right', opts.indexOf(btn) === 1);
-        });
       });
     });
 
@@ -2561,6 +2443,7 @@
         document.querySelectorAll('#vol-contact-row .vol-contact-opt').forEach(o => o.classList.remove('active'));
         opt.classList.add('active');
         showVolContactInput(opt.dataset.volContact);
+        updateVolOathChannelLabel(opt);
       });
     });
     document.querySelectorAll('.page-volunteer .vol-contact-input[data-mock-prefill="true"]').forEach(function(input) {
@@ -2576,8 +2459,24 @@
     // Consent + CTA
     const volConsentCheck = document.getElementById('vol-consent-check');
     const volConsentText = document.querySelector('.page-volunteer .vol-consent-text');
+    const volOathToggle = document.getElementById('vol-oath-toggle');
+    const volOathPanel = document.getElementById('vol-oath-panel');
+    const volOathChannel = document.getElementById('vol-oath-channel');
     const volCtaBtn = document.getElementById('vol-cta-btn');
     let volConsented = false;
+    function setVolOathOpen(open) {
+      if (!volOathToggle || !volOathPanel) return;
+      volOathPanel.classList.toggle('is-open', open);
+      volOathToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      volOathPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    function updateVolOathChannelLabel(opt) {
+      if (!volOathChannel || !opt) return;
+      var label = opt.querySelector('.vol-contact-label');
+      var next = label ? label.textContent.trim() : '';
+      if (!next) return;
+      volOathChannel.textContent = next.toLowerCase();
+    }
 
     volConsentCheck.addEventListener('click', () => {
       volConsented = !volConsented;
@@ -2590,24 +2489,36 @@
       updateVolCTA();
     });
     if (volConsentText) {
-      volConsentText.addEventListener('click', () => {
+      volConsentText.addEventListener('click', (e) => {
+        if (e.target && e.target.closest && e.target.closest('#vol-oath-toggle')) return;
         volConsentCheck.click();
+      });
+    }
+    if (volOathToggle && volOathPanel) {
+      volOathToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        setVolOathOpen(!volOathPanel.classList.contains('is-open'));
       });
     }
 
     function updateVolCTA() {
-      const anyActive = document.querySelector('.page-volunteer .vol-role-card.active');
-      volCtaBtn.classList.toggle('enabled', !!anyActive && volConsented);
+      const selectedCount = document.querySelectorAll('.page-volunteer .vol-role-card.active').length;
+      volCtaBtn.classList.toggle('enabled', selectedCount > 0 && volConsented);
     }
 
     volCtaBtn.addEventListener('click', function() {
       if (!volCtaBtn.classList.contains('enabled')) return;
-      var activeCard = document.querySelector('.page-volunteer .vol-role-card.active');
-      var roleTitle = activeCard && activeCard.querySelector('.vol-role-card-title');
-      var role = roleTitle ? roleTitle.textContent.trim() : '';
+      var roles = Array.from(document.querySelectorAll('.page-volunteer .vol-role-card.active .vol-role-card-title'))
+        .map(function(el) { return el.textContent.trim(); })
+        .filter(Boolean);
+      var role = roles.length ? roles.join(', ') : '';
       var payload = Object.assign({}, VOLUNTEER_CONFIRM_DEFAULTS, { role: role || VOLUNTEER_CONFIRM_DEFAULTS.role });
       if (window.__openVolunteerConfirm) window.__openVolunteerConfirm(payload, 'volunteer');
     });
+
+    var activeVolContact = document.querySelector('#vol-contact-row .vol-contact-opt.active');
+    if (activeVolContact) updateVolOathChannelLabel(activeVolContact);
 
     updateVolCTA();
   })();
@@ -2807,29 +2718,20 @@
       var name = entry.itemName;
       for (var i = 0; i < n; i++) flat.push(name);
     });
-    if (flat.length > 24) {
-      var step = flat.length / 24;
-      var sampled = [];
-      for (var i = 0; i < 24; i++) sampled.push(flat[Math.min(Math.floor(i * step), flat.length - 1)]);
-      flat = sampled;
+    if (!flat.length) return;
+    var MIN_RAIN_COUNT = 5;
+    if (flat.length < MIN_RAIN_COUNT) {
+      var repeated = [];
+      for (var j = 0; j < MIN_RAIN_COUNT; j++) {
+        repeated.push(flat[j % flat.length]);
+      }
+      flat = repeated;
     }
-    if (flat.length === 0) return;
     var count = flat.length;
-    // Rain particle sizing (edit these only)
-    var CIRCLE_MAX = 128;
-    var CIRCLE_MIN = 44;
-    var COUNT_AT_MIN = 5;
+    var CIRCLE_SIZE = 120;
     var ICON_TO_CIRCLE_RATIO = 0.74;
-    var circleSize = Math.round(CIRCLE_MAX - ((count - 1) / (COUNT_AT_MIN - 1)) * (CIRCLE_MAX - CIRCLE_MIN));
-    if (circleSize < CIRCLE_MIN) circleSize = CIRCLE_MIN;
-    if (circleSize > CIRCLE_MAX) circleSize = CIRCLE_MAX;
+    var circleSize = CIRCLE_SIZE;
     var iconSize = Math.round(circleSize * ICON_TO_CIRCLE_RATIO);
-
-    // Home page: crank particle size up aggressively (confirmation page stays unchanged)
-    if (pageEl && pageEl.classList && pageEl.classList.contains('page-home')) {
-      circleSize = 150;
-      iconSize = Math.round(circleSize * ICON_TO_CIRCLE_RATIO);
-    }
     var rect = pageEl.getBoundingClientRect();
     var vw = rect.width;
     var vh = rect.height;
@@ -2909,16 +2811,6 @@
       }
     }
     rafId = requestAnimationFrame(tick);
-  }
-
-  function startHomeIconRainHeavy(names, getItemIconSrc, pageEl) {
-    if (!pageEl || !Array.isArray(names) || !names.length || typeof getItemIconSrc !== 'function') return;
-    var items = [];
-    var target = 7;
-    for (var i = 0; i < target; i++) {
-      items.push({ itemName: names[i % names.length], qty: 1 });
-    }
-    startIconRain(items, getItemIconSrc, pageEl);
   }
 
   // ── Single icon raindrop (hero card tap) ──
@@ -3060,11 +2952,11 @@
     }
 
     function getDropoffPresentation(dropoffObj) {
-      if (!dropoffObj) return { name: 'Drop-off location', meta: 'Next: Monthly drive' };
+      if (!dropoffObj) return { name: 'Drop-off location', meta: '' };
       var raw = dropoffObj.mapQuery || '';
       var baseName = raw.split(',')[0] || 'Drop-off location';
       var id = dropoffObj.id || '';
-      var meta = 'Next: Monthly drive';
+      var meta = '';
       if (id === 'cross') meta = 'Wed-Sun · 11am-6pm';
       else if (id === 'wildfires') meta = 'Daily · 12pm-7pm';
       return { name: baseName, meta: meta };
@@ -3086,14 +2978,22 @@
       return total;
     }
 
-    function collectRainNames() {
-      var names = (donationLastConfirmedItems || []).map(function(entry) { return entry.itemName; });
-      if (names.length) return names;
-      normalizeDonationGroups();
-      donationGroups.forEach(function(group) {
-        group.items.forEach(function(entry) { names.push(entry.itemName); });
+    function collectRainItems() {
+      var entries = (donationLastConfirmedItems || []).map(function(entry) {
+        return { itemName: entry.itemName, qty: entry.qty || 0 };
+      }).filter(function(entry) {
+        return entry.itemName && entry.qty > 0;
       });
-      return names;
+      if (entries.length) return entries;
+      normalizeDonationGroups();
+      entries = [];
+      donationGroups.forEach(function(group) {
+        group.items.forEach(function(entry) {
+          if (!entry || !entry.itemName || (entry.qty || 0) <= 0) return;
+          entries.push({ itemName: entry.itemName, qty: entry.qty });
+        });
+      });
+      return entries;
     }
 
     function removeModalImmediately() {
@@ -3105,29 +3005,41 @@
     }
 
     function triggerHeaderCountPop() {
-      if (!cardEl || !donationCardCollapsed) return;
-      var headerText = cardEl.querySelector('.donation-card-header-text');
-      if (!headerText) return;
-      headerText.classList.remove('di-badge-jump');
-      void headerText.offsetWidth;
-      headerText.classList.add('di-badge-jump');
-      headerText.addEventListener('animationend', function done() {
-        headerText.classList.remove('di-badge-jump');
-        headerText.removeEventListener('animationend', done);
-      });
+      return;
     }
 
-    function setCardCollapsed(nextCollapsed) {
-      donationCardCollapsed = !!nextCollapsed;
-      if (!cardEl) return;
-      cardEl.classList.toggle('is-collapsed', donationCardCollapsed);
-      var headerText = cardEl.querySelector('.donation-card-header-text');
-      if (!headerText) return;
-      if (donationCardCollapsed) {
-        headerText.textContent = getTotalPendingItems() + ' items pending drop-off';
-      } else {
-        headerText.textContent = 'Currently contributing';
+    function getGroupItemCount(group) {
+      if (!group || !Array.isArray(group.items)) return 0;
+      var total = 0;
+      group.items.forEach(function(entry) { total += (entry && entry.qty) ? entry.qty : 0; });
+      return total;
+    }
+
+    function applyGroupHeaderLabels(section, group) {
+      var total = getGroupItemCount(group);
+      var dropoff = getDropoffPresentation(group && group.dropoff);
+      var line1 = section.querySelector('.donation-card-group-header-line1');
+      var line2 = section.querySelector('.donation-card-group-header-line2');
+      if (line1) line1.textContent = 'Drop-off · ' + total + ' item' + (total === 1 ? '' : 's');
+      if (line2) line2.textContent = dropoff.name;
+    }
+
+    function isGroupCollapsed(groupId) {
+      if (!groupId) return true;
+      if (Object.prototype.hasOwnProperty.call(donationGroupCollapsedById, groupId)) {
+        return !!donationGroupCollapsedById[groupId];
       }
+      donationGroupCollapsedById[groupId] = true;
+      return true;
+    }
+
+    function applyGroupCollapsedState(section, group, groupId, collapsed) {
+      if (!section || !groupId) return;
+      donationGroupCollapsedById[groupId] = !!collapsed;
+      section.classList.toggle('is-collapsed', !!collapsed);
+      var toggleBtn = section.querySelector('.donation-card-group-toggle');
+      if (toggleBtn) toggleBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      applyGroupHeaderLabels(section, group);
     }
 
     function createGroupRow(itemName, qty, iconResolver, animateEnter) {
@@ -3186,25 +3098,41 @@
       var mapUrl = getDropoffMapUrl(group.dropoff);
       var sliderRootId = getGroupSliderRootId(group.id);
       wrap.innerHTML = '' +
-        '<div class="donation-card-items"></div>' +
-        '<div class="donation-card-dropoff">' +
-          '<div class="donation-card-dropoff-main">' +
-            '<img src="img/icons/icon-location.svg" alt="" aria-hidden="true">' +
-            '<div>' +
-              '<div class="donation-card-dropoff-name">' + dropoff.name + '</div>' +
-              '<div class="donation-card-dropoff-meta">' + dropoff.meta + '</div>' +
+        '<button type="button" class="donation-card-group-toggle" aria-expanded="false">' +
+          '<span class="donation-card-group-left">' +
+            '<span class="donation-card-dot" aria-hidden="true"></span>' +
+            '<span class="donation-card-group-header-text">' +
+              '<span class="donation-card-group-header-line1"></span>' +
+              '<span class="donation-card-group-header-line2"></span>' +
+            '</span>' +
+          '</span>' +
+          '<span class="donation-card-group-actions">' +
+            '<span class="donation-card-group-edit" role="button" tabindex="0">Edit</span>' +
+            '<span class="donation-card-group-chevron" aria-hidden="true">⌃</span>' +
+          '</span>' +
+        '</button>' +
+        '<div class="donation-card-group-body">' +
+          '<div class="donation-card-items"></div>' +
+          '<div class="donation-card-dropoff">' +
+            '<div class="donation-card-dropoff-main">' +
+              '<img src="img/icons/icon-location.svg" alt="" aria-hidden="true">' +
+              '<div>' +
+                '<div class="donation-card-dropoff-name">' + dropoff.name + '</div>' +
+                '<div class="donation-card-dropoff-meta">' + dropoff.meta + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="donation-card-dropoff-map">' +
+              '<iframe class="donation-card-dropoff-frame" title="Drop-off location map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>' +
             '</div>' +
           '</div>' +
-          '<div class="donation-card-dropoff-map">' +
-            '<iframe class="donation-card-dropoff-frame" title="Drop-off location map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>' +
-          '</div>' +
-        '</div>' +
-        '<div class="donation-card-group-slider">' +
-          '<div class="di-bs-slide-cta" id="' + sliderRootId + '" aria-label="Slide to confirm drop-off">' +
-            '<div class="di-bs-slide-track">' +
-              '<div class="di-bs-slide-fill"></div>' +
-              '<div class="di-bs-slide-thumb" aria-hidden="true">' +
-                '<img class="di-bs-slide-icon" src="img/icons/double-chevron.svg" alt="">' +
+          '<div class="donation-card-group-slider">' +
+            '<div class="di-bs-slide-cta" id="' + sliderRootId + '" aria-label="slide when u complete dropoff">' +
+              '<div class="di-bs-slide-track">' +
+                '<div class="di-bs-slide-fill"></div>' +
+                '<div class="di-bs-slide-copy">slide when u complete dropoff</div>' +
+                '<div class="di-bs-slide-thumb" aria-hidden="true">' +
+                  '<img class="di-bs-slide-icon" src="img/icons/double-chevron.svg" alt="">' +
+                '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -3214,16 +3142,41 @@
       if (mapFrameEl && mapUrl) mapFrameEl.src = mapUrl;
 
       var itemsWrap = wrap.querySelector('.donation-card-items');
-      var visibleItems = group.items.slice(0, 4);
-      visibleItems.forEach(function(entry) {
+      group.items.forEach(function(entry) {
         itemsWrap.appendChild(createGroupRow(entry.itemName, entry.qty, iconResolver, false));
       });
-      if (group.items.length > 4) {
-        var moreRow = document.createElement('div');
-        moreRow.className = 'donation-card-item-row donation-card-item-row-more';
-        moreRow.innerHTML = '<div class="donation-card-more">+' + (group.items.length - 4) + ' more items</div>';
-        itemsWrap.appendChild(moreRow);
+
+      var toggleBtn = wrap.querySelector('.donation-card-group-toggle');
+      var editBtn = wrap.querySelector('.donation-card-group-edit');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(e) {
+          var editClicked = e.target && e.target.closest && e.target.closest('.donation-card-group-edit');
+          if (editClicked) return;
+          applyGroupCollapsedState(wrap, group, group.id, !isGroupCollapsed(group.id));
+        });
       }
+      if (editBtn) {
+        function openGroupEdit(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var latest = donationGroups.find(function(entry) { return entry && entry.id === group.id; });
+          if (!latest || typeof restoreDonateItemsFromSnapshot !== 'function') return;
+          donationEditGroupId = latest.id;
+          restoreDonateItemsFromSnapshot({
+            username: getDisplayUsername(),
+            selectedDropoff: latest.dropoff,
+            items: (latest.items || []).map(function(entry) {
+              return { itemName: entry.itemName, qty: entry.qty };
+            })
+          });
+        }
+        editBtn.addEventListener('click', openGroupEdit);
+        editBtn.addEventListener('keydown', function(e) {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          openGroupEdit(e);
+        });
+      }
+      applyGroupCollapsedState(wrap, group, group.id, isGroupCollapsed(group.id));
 
       return wrap;
     }
@@ -3233,16 +3186,17 @@
       var itemsWrap = section.querySelector('.donation-card-items');
       if (!itemsWrap) return;
 
-      var nextVisible = group.items.slice(0, 4);
-      var desiredNames = nextVisible.map(function(entry) { return entry.itemName; });
+      var desiredNames = group.items.map(function(entry) { return entry.itemName; });
       var existingRows = Array.from(itemsWrap.querySelectorAll('.donation-card-item-row[data-item-name]'));
+      var moreRowLegacy = itemsWrap.querySelector('.donation-card-item-row-more');
+      if (moreRowLegacy && moreRowLegacy.parentNode) moreRowLegacy.parentNode.removeChild(moreRowLegacy);
       existingRows.forEach(function(row) {
         if (desiredNames.indexOf(row.dataset.itemName) === -1 && row.parentNode) {
           row.parentNode.removeChild(row);
         }
       });
 
-      nextVisible.forEach(function(entry, idx) {
+      group.items.forEach(function(entry, idx) {
         var selectorName = entry.itemName.replace(/"/g, '\\"');
         var row = itemsWrap.querySelector('.donation-card-item-row[data-item-name="' + selectorName + '"]');
         if (!row) {
@@ -3259,27 +3213,15 @@
           }
         }
       });
-
-      var moreRow = itemsWrap.querySelector('.donation-card-item-row-more');
-      var overflow = group.items.length - 4;
-      if (overflow > 0) {
-        if (!moreRow) {
-          moreRow = document.createElement('div');
-          moreRow.className = 'donation-card-item-row donation-card-item-row-more';
-          moreRow.innerHTML = '<div class="donation-card-more"></div>';
-          itemsWrap.appendChild(moreRow);
-        }
-        var moreLabel = moreRow.querySelector('.donation-card-more');
-        if (moreLabel) moreLabel.textContent = '+' + overflow + ' more items';
-      } else if (moreRow && moreRow.parentNode) {
-        moreRow.parentNode.removeChild(moreRow);
-      }
+      applyGroupCollapsedState(section, group, group.id, isGroupCollapsed(group.id));
     }
 
     function syncCardGroups(animateDelta) {
       if (!cardGroupsEl) return;
       normalizeDonationGroups();
       var iconResolver = donationGetItemIconSrc || function() { return 'img/icons/icon-stars.svg'; };
+      var stackLabel = cardEl ? cardEl.querySelector('.donation-card-stack-label') : null;
+      if (stackLabel) stackLabel.style.display = donationGroups.length >= 2 ? '' : 'none';
 
       if (!animateDelta || !donationCardShownOnce) {
         cardGroupsEl.innerHTML = '';
@@ -3310,6 +3252,7 @@
         var keep = donationGroups.some(function(group) { return group.id === section.dataset.groupId; });
         if (!keep) {
           groupSliderControllers.delete(section.dataset.groupId);
+          delete donationGroupCollapsedById[section.dataset.groupId];
           if (section.parentNode) section.parentNode.removeChild(section);
         }
       });
@@ -3321,11 +3264,12 @@
       cardGroupsEl = null;
       groupSliderControllers.clear();
       groupsCompleting.clear();
+      donationGroupCollapsedById = {};
       donationGroups = [];
       donationLastConfirmedItems = [];
       pendingHomeCelebrations = 0;
       donationCardShownOnce = false;
-      donationCardCollapsed = false;
+      donationEditGroupId = null;
     }
 
     function startGroupCompletionSequence(groupId) {
@@ -3387,7 +3331,6 @@
             return;
           }
 
-          setCardCollapsed(donationCardCollapsed);
           triggerHeaderCountPop();
         }, reduced ? 0 : 280);
       }, settle);
@@ -3404,32 +3347,15 @@
           cardEl.classList.add('is-entering');
         }
         cardEl.innerHTML = '' +
-          '<button type="button" class="donation-card-header" aria-expanded="true">' +
-            '<div class="donation-card-left">' +
-              '<span class="donation-card-dot" aria-hidden="true"></span>' +
-              '<span class="donation-card-header-text">Currently contributing</span>' +
-            '</div>' +
-            '<span class="donation-card-chevron" aria-hidden="true">⌃</span>' +
-          '</button>' +
-          '<div class="donation-card-body">' +
-            '<div class="donation-card-groups"></div>' +
-          '</div>';
+          '<div class="donation-card-stack-label">Currently contributing</div>' +
+          '<div class="donation-card-groups"></div>';
 
         heroSection.parentNode.insertBefore(cardEl, heroSection);
         donationCardShownOnce = true;
         cardGroupsEl = cardEl.querySelector('.donation-card-groups');
-
-        var headerBtn = cardEl.querySelector('.donation-card-header');
-        if (headerBtn) {
-          headerBtn.addEventListener('click', function() {
-            setCardCollapsed(!donationCardCollapsed);
-            headerBtn.setAttribute('aria-expanded', String(!donationCardCollapsed));
-          });
-        }
       }
 
       syncCardGroups(!!(donationCardShownOnce && withEntryAnimation));
-      setCardCollapsed(donationCardCollapsed);
 
       if (cardEl.classList.contains('is-entering')) {
         requestAnimationFrame(function() {
@@ -3467,7 +3393,7 @@
       function getDropoffLabel(dropoff) {
         var id = dropoff && dropoff.id ? dropoff.id : '';
         if (id === 'upcoming-drive') return 'Upcoming drive - Trout Lake Community Centre';
-        if (id === 'private') return 'Private residence drop-off';
+        if (id === 'private') return 'Spartacus Books';
         if (id === 'cross') return 'Cross & Crows Books';
         if (id === 'wildfires') return 'Wildfires Bookshop';
         if (dropoff && dropoff.mapQuery) return dropoff.mapQuery;
@@ -3608,9 +3534,15 @@
     function startCelebrationFlow() {
       if (!hasActiveDonation()) return;
       if (typeof donationGetItemIconSrc === 'function') {
-        var names = collectRainNames();
-        if (!names.length) names = ['Tents', 'Sleeping bags', 'Tarps'];
-        startHomeIconRainHeavy(names, donationGetItemIconSrc, homePage);
+        var entries = collectRainItems();
+        if (!entries.length) {
+          entries = [
+            { itemName: 'Tents', qty: 1 },
+            { itemName: 'Sleeping bags', qty: 1 },
+            { itemName: 'Tarps', qty: 1 }
+          ];
+        }
+        startIconRain(entries, donationGetItemIconSrc, homePage);
       }
       modalDelayTimer = setTimeout(function() {
         modalDelayTimer = null;
@@ -3638,7 +3570,6 @@
           renderDonationCard(!donationCardShownOnce);
         } else if (cardEl) {
           syncCardGroups(false);
-          setCardCollapsed(donationCardCollapsed);
         }
       },
       onHomeHidden: function() {
@@ -3653,55 +3584,6 @@
       }
     };
   })();
-
-  function initDonateMoneyConfirmPage() {
-    const page = document.querySelector('.page-donate-money-confirm');
-    const doneBtn = document.getElementById('dcm-done-btn');
-    const againBtn = document.getElementById('dcm-donate-again-btn');
-    const thankYou = document.getElementById('dcm-thank-you');
-    const subline = document.getElementById('dcm-subline');
-    const summaryTitle = document.getElementById('dcm-summary-title');
-    const summaryAmount = document.getElementById('dcm-summary-amount');
-    if (!page || !doneBtn || !againBtn || !thankYou || !subline || !summaryTitle || !summaryAmount) return null;
-
-    function animateEntrance() {
-      page.classList.remove('is-open', 'is-content-visible');
-      requestAnimationFrame(function() {
-        requestAnimationFrame(function() {
-          page.classList.add('is-open');
-          setTimeout(function() { page.classList.add('is-content-visible'); }, 320);
-        });
-      });
-    }
-
-    function formatAmount(value) {
-      return '$' + Number(value || 0).toFixed(2);
-    }
-
-    function toDonateItemsPage() {
-      showPage('donate-items');
-    }
-
-    function toHomePage() {
-      showPage('home');
-    }
-
-    againBtn.addEventListener('click', toDonateItemsPage);
-    doneBtn.addEventListener('click', toHomePage);
-
-    return {
-      open: function(snapshot) {
-        var amount = snapshot && snapshot.amount != null ? snapshot.amount : donateState.amount;
-        var isMonthly = !!(snapshot && snapshot.isMonthly);
-        thankYou.textContent = isMonthly ? 'Your monthly contribution is active.' : 'Your contribution was sent.';
-        subline.textContent = isMonthly ? 'Your subscription is now set. You can update it anytime in Contribute Money.' : 'Thank you for supporting mutual aid.';
-        summaryTitle.textContent = isMonthly ? 'Monthly contribution' : 'One-time contribution';
-        summaryAmount.textContent = formatAmount(amount);
-        showPage('donate-money-confirm');
-        animateEntrance();
-      }
-    };
-  }
 
   function initVolunteerConfirmPage() {
     var page = document.querySelector('.page-volunteer-confirm');
@@ -3808,7 +3690,7 @@
     const BOOKSTORE_DROPOFF_IDS = new Set(['cross', 'wildfires']);
     const DROP_OFF_LOCATIONS = [
       { id: 'upcoming-drive', mapQuery: 'Trout Lake Community Centre, Vancouver, BC' },
-      { id: 'private', mapQuery: 'Private Residence, 436 12th Ave East, Vancouver, BC' },
+      { id: 'private', mapQuery: 'Spartacus Books, 3378 Findlay St, Vancouver, BC' },
       { id: 'cross', mapQuery: 'Cross & Crows Books, 2836 Commercial Dr, Vancouver, BC' },
       { id: 'wildfires', mapQuery: 'Wildfires Bookshop, 712B 12th St, New Westminster, BC' }
     ];
@@ -3820,6 +3702,8 @@
     const diSheet = document.getElementById('di-sheet');
     const diSheetClose = document.getElementById('di-sheet-close');
     const diSheetConsent = document.getElementById('di-bs-consent-box');
+    const diBsStandardsToggle = document.getElementById('di-bs-standards-toggle');
+    const diBsStandardsPanel = document.getElementById('di-bs-standards-panel');
     const diSheetItems = document.getElementById('di-sheet-items');
     const diSheetResetItemsBtn = document.getElementById('di-sheet-reset-items-btn');
     const diSheetAddMoreLink = document.getElementById('di-sheet-add-more-link');
@@ -3841,6 +3725,17 @@
 
     function getDropoffById(id) {
       return DROP_OFF_LOCATIONS.find(function(loc) { return loc.id === id; }) || DROP_OFF_LOCATIONS[0];
+    }
+
+    function setDiBsStandardsOpen(open) {
+      if (!diBsStandardsPanel || !diBsStandardsToggle) return;
+      diBsStandardsPanel.classList.toggle('is-open', open);
+      diBsStandardsToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      diBsStandardsPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+
+    function collapseDiBsStandardsPanel() {
+      setDiBsStandardsOpen(false);
     }
 
     function getDonateConfirmSnapshot() {
@@ -3865,10 +3760,10 @@
       diSheetOpen = false;
       document.body.classList.remove('donate-sheet-open');
       document.body.style.overflow = '';
+      collapseDiBsStandardsPanel();
       updateSheetDonateState();
     }
 
-    donateMoneyConfirmController = initDonateMoneyConfirmPage();
     volunteerConfirmController = initVolunteerConfirmPage();
 
     function commitDonationSnapshot(snapshot) {
@@ -3876,12 +3771,14 @@
       var session = {
         id: String(Date.now()) + '-' + Math.random().toString(36).slice(2),
         confirmedAt: Date.now(),
+        replaceGroupId: donationEditGroupId || '',
         dropoff: snapshot.selectedDropoff || getDropoffById(selectedDropoff),
         items: snapshot.items.map(function(entry) {
           return { itemName: entry.itemName, qty: entry.qty };
         })
       };
       if (!mergeDonationGroupSession(session)) return false;
+      donationEditGroupId = null;
       donationGetItemIconSrc = getItemIconSrc;
       donationLastConfirmedItems = session.items.map(function(entry) {
         return { itemName: entry.itemName, qty: entry.qty };
@@ -3911,6 +3808,7 @@
     function resetDrawerStateCompletely() {
       itemQuantities.clear();
       selectedDropoff = 'upcoming-drive';
+      donationEditGroupId = null;
       if (diSheetConsent) {
         diSheetConsent.classList.remove('checked');
         diSheetConsent.innerHTML = '';
@@ -4142,6 +4040,7 @@
     function openDiSheet() {
       if (!diSheet || !diSheetBackdrop) return;
       if (getTotalItemCount() === 0) return;
+      collapseDiBsStandardsPanel();
       diSheetOpen = true;
       diSheetBackdrop.classList.add('is-open');
       diSheet.classList.add('is-open');
@@ -4159,6 +4058,7 @@
       diSheet.classList.remove('is-open');
       document.body.style.overflow = '';
       document.body.classList.remove('donate-sheet-open');
+      collapseDiBsStandardsPanel();
     }
 
     function updateDiUI() {
@@ -4351,6 +4251,13 @@
           ? '<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;"><polyline points="20 6 9 17 4 12"/></svg>'
           : '';
         updateSheetDonateState();
+      });
+    }
+    if (diBsStandardsToggle && diBsStandardsPanel) {
+      diBsStandardsToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        setDiBsStandardsOpen(!diBsStandardsPanel.classList.contains('is-open'));
       });
     }
 
@@ -4635,9 +4542,9 @@
       '.vol-role-card-header, .vol-check-box, .vol-toggle-switch, .vol-contact-opt, .vol-consent-check, ' +
       '.settings-row--link, .settings-toggle, ' +
       '.prof-forum-post, .prof-settings-link, ' +
-      '.btn, .icon-btn, .logo-home-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-toggle-opt, .vol-cta-btn, .event-detail-share, ' +
+      '.btn, .icon-btn, .logo-home-btn, .seg-btn, .donate-icon-btn, .comment-btn, .vol-cta-btn, .event-detail-share, ' +
       '.forum-filter-btn, .bpost, .forum-new-post-btn, .bpost-like-btn, .bpost-reply-hint, .bpost-reply-send, .compose-submit, .compose-cat-btn, .compose-attach, .forum-detail-comment-post, .forum-comment-like-btn, .forum-comment-reply-btn, .forum-comment-byline--thread, .top-nav-activities, .activities-filter-btn, .activities-item, .add-btn, .back-to-top, ' +
-      '.dm-cta-btn, .dm-switch-to-items, .dm-toggle-switch, .dm-copy-btn, .di-item-btn, .di-switch-to-money, .di-fab, .di-sheet-close, .di-bs-consent-box, .ap-pay-btn, .ap-pay-done-btn, .ap-pay-grabber';
+      '.dm-cta-btn, .dm-switch-to-items, .dm-toggle-switch, .dm-copy-btn, .di-item-btn, .di-switch-to-money, .di-fab, .di-sheet-close, .di-bs-consent-box';
     function clearTouchActive() {
       document.querySelectorAll('.touch-active').forEach(function(el) { el.classList.remove('touch-active'); });
     }
@@ -4726,12 +4633,14 @@
       openSnapEnd = null;
     }
 
-    // App container is 390px fixed; left: 50% puts card left edge at 195px.
-    // REST_TX shifts it so card left edge sits at the right screen edge (card off-screen, tab visible).
+    // App container is 390px fixed; left: 50% puts card left edge at pw/2.
+    // REST_TX shifts the card right so mostly off-screen, tab peeks in — stay shy of the right edge
+    // so .page { overflow-x: hidden } and the phone shell do not clip the tab on mobile.
     // OPEN_TX centres the card: translateX(-50%) = -(cardWidth/2).
+    var REST_TX_EDGE_INSET = 12;
     function getRestTX() {
       var pw = card.closest('.page') ? card.closest('.page').offsetWidth : 390;
-      return pw / 2;
+      return Math.max(0, pw / 2 - REST_TX_EDGE_INSET);
     }
     function getOpenTX() {
       return -(card.offsetWidth / 2); // negative half-width centres it
@@ -4908,4 +4817,56 @@
     tab.addEventListener('pointerdown', onPointerDown);
     if (closeBtn) closeBtn.addEventListener('click', close);
     overlay.addEventListener('click', close);
+  })();
+
+  // ── Lock screen (desktop only) ──
+  (function initLockScreen() {
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
+    var lockBtn    = document.getElementById('phone-lock-btn');
+    var lockScreen = document.getElementById('lock-screen');
+    if (!lockBtn || !lockScreen) return;
+
+    var lockSfx = new Audio('audio/iphone-lock-sfx.mp3');
+    lockSfx.volume = 0.7;
+    var unlockSfx = new Audio('audio/iphone-unlock.mp3');
+    unlockSfx.volume = 0.7;
+
+    var locked = false;
+    var lockingTimer = null;
+
+    function lock() {
+      if (locked) return;
+      locked = true;
+      lockSfx.currentTime = 0;
+      lockSfx.play().catch(function() {});
+      lockScreen.classList.remove('is-unlocking');
+      lockScreen.classList.add('is-locking');
+      clearTimeout(lockingTimer);
+      lockingTimer = setTimeout(function() {
+        lockScreen.classList.add('is-locked');
+      }, 100);
+    }
+
+    function unlock() {
+      if (!locked) return;
+      locked = false;
+      unlockSfx.currentTime = 0;
+      unlockSfx.play().catch(function() {});
+      lockScreen.classList.remove('is-locking', 'is-locked');
+      lockScreen.classList.add('is-unlocking');
+      clearTimeout(lockingTimer);
+      lockingTimer = setTimeout(function() {
+        lockScreen.classList.remove('is-unlocking');
+      }, 360);
+    }
+
+    lockBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (locked) { unlock(); } else { lock(); }
+    });
+
+    lockScreen.addEventListener('click', function() {
+      if (locked) unlock();
+    });
   })();

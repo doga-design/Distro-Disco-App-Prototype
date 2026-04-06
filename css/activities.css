@@ -549,21 +549,19 @@
   }
   @keyframes cal-squeeze {
     0%   { transform: scaleY(1)    scaleX(1); }
-    30%  { transform: scaleY(0.88) scaleX(1.06); }
-    60%  { transform: scaleY(1.07) scaleX(0.97); }
-    80%  { transform: scaleY(0.97) scaleX(1.02); }
-    90%  { transform: scaleY(1.04) scaleX(1.04); }
-    95%  { transform: scaleY(1.04) scaleX(1.08); }
-    100% { transform: scaleY(1.1)  scaleX(1.1); }
+    30%  { transform: scaleY(0.9)  scaleX(1.05); }
+    60%  { transform: scaleY(1.06) scaleX(0.98); }
+    80%  { transform: scaleY(0.98) scaleX(1.02); }
+    100% { transform: scaleY(1)    scaleX(1); }
   }
   .bottom-nav .icon-calendar.active .cal-header {
     animation: cal-header-slide 480ms var(--ease-spring) forwards;
-    transform-origin: left center;
+    transform-origin: 25% 50%;
   }
   @keyframes cal-header-slide {
-    0%   { transform: scaleX(0.4) translateX(-8px); opacity: 0.5; }
-    60%  { transform: scaleX(1.05) translateX(1px);  opacity: 1; }
-    80%  { transform: scaleX(0.98) translateX(0);    opacity: 1; }
+    0%   { transform: scaleX(0.5) translateX(-3px); opacity: 0.55; }
+    60%  { transform: scaleX(1.04) translateX(0);   opacity: 1; }
+    80%  { transform: scaleX(0.98) translateX(0);   opacity: 1; }
     100% { transform: scaleX(1)   translateX(0);    opacity: 1; }
   }
   .bottom-nav .nav-item:nth-child(2) .icon-wrap {
@@ -580,7 +578,7 @@
   }
   .bottom-nav .icon-forum.active .forum-bubble-left {
     animation: bubble-left 500ms var(--ease-spring) forwards;
-    transform-origin: 30% 55%;
+    transform-origin: 38% 45%;
   }
   @keyframes bubble-left {
     0%   { transform: scale(0.6) translate(-4px, 2px); opacity: 0.4; }
@@ -590,7 +588,7 @@
   }
   .bottom-nav .icon-forum.active .forum-bubble-right {
     animation: bubble-right 520ms var(--ease-spring) 80ms forwards;
-    transform-origin: 70% 40%;
+    transform-origin: 74% 62%;
   }
   @keyframes bubble-right {
     0%   { transform: scale(1) translate(0, 0); opacity: 1; }
@@ -623,7 +621,7 @@
   }
   .bottom-nav .icon-items.active .items-bag-main {
     animation: bag-toss 550ms var(--ease-spring) forwards;
-    transform-origin: 68% 45%;
+    transform-origin: 63% 42%;
   }
   @keyframes bag-toss {
     0%   { transform: translateY(0)    rotate(0deg)   scale(1); }
@@ -634,17 +632,18 @@
   }
   .bottom-nav .icon-items.active .items-bag-secondary {
     animation: bag-settle 500ms var(--ease-spring) 90ms forwards;
-    transform-origin: 35% 65%;
+    transform-origin: 22% 72%;
   }
   @keyframes bag-settle {
     0%   { transform: translateY(0)    scale(1); }
-    35%  { transform: translateY(-3px) scale(1.05); }
+    35%  { transform: translateY(-2px) scale(1.06); }
     60%  { transform: translateY(1px)  scale(0.97); }
     80%  { transform: translateY(0)    scale(1.02); }
     100% { transform: translateY(0)    scale(1); }
   }
   .bottom-nav .icon-items.active .items-accent {
     animation: items-ripple 400ms var(--ease-out) 200ms forwards;
+    transform-origin: 50% 78%;
   }
   @keyframes items-ripple {
     0%   { opacity: 1; transform: scale(1); }
@@ -1077,10 +1076,10 @@
     margin-bottom: 0;
   }
   .corner-team-chat-title {
-    font-family: 'Gaya', 'Public Sans', system-ui, sans-serif;
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 1.1;
+    font-family: var(--gaya-title-font);
+    font-size: var(--gaya-title-size);
+    font-weight: var(--gaya-title-weight);
+    line-height: var(--gaya-title-line-height);
     color: var(--navy);
   }
   .corner-team-chat-pronouns {
