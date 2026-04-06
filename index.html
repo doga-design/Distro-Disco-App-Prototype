@@ -1315,37 +1315,6 @@
       </div>
     </div>
 
-    <!-- Info badges -->
-    <div class="vol-info-badges">
-      <div class="vol-info-badge">
-        <div class="vol-badge-icon">
-          <img src="img/icons/icon-heart.svg" alt="Community-run badge">
-        </div>
-        <div>
-          <div class="vol-badge-title">Community-run</div>
-          <div class="vol-badge-desc">Community-run, by volunteers for everyone</div>
-        </div>
-      </div>
-      <div class="vol-info-badge">
-        <div class="vol-badge-icon">
-          <img src="img/icons/icon-car.svg" alt="Physically active badge">
-        </div>
-        <div>
-          <div class="vol-badge-title">Physically Active</div>
-          <div class="vol-badge-desc">Our tasks can sometime be physically active, be ready to move</div>
-        </div>
-      </div>
-      <div class="vol-info-badge">
-        <div class="vol-badge-icon">
-          <img src="img/icons/icon-chat-bubble-colored.svg" alt="Async communication badge">
-        </div>
-        <div>
-          <div class="vol-badge-title">Async Communication</div>
-          <div class="vol-badge-desc">Coordinated through multiple mediums including this app</div>
-        </div>
-      </div>
-    </div>
-
     <!-- About You -->
     <div class="vol-about-section">
       <div class="vol-section-eyebrow"></div>
@@ -1357,22 +1326,13 @@
       <div class="vol-section-eyebrow"></div>
         <div class="vol-contact-row" id="vol-contact-row">
           <div class="vol-contact-opt active" data-vol-contact="phone">
-            <div class="vol-contact-check">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <span class="vol-contact-label">Phone</span>
+            <span class="vol-contact-label">Phone</span>
           </div>
           <div class="vol-contact-opt" data-vol-contact="email">
-            <div class="vol-contact-check">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <span class="vol-contact-label">Email</span>
+            <span class="vol-contact-label">Email</span>
           </div>
           <div class="vol-contact-opt" data-vol-contact="push">
-            <div class="vol-contact-check">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <span class="vol-contact-label">Push notifications</span>
+            <span class="vol-contact-label">Push notifications</span>
           </div>
         </div>
       <div class="vol-contact-input-wrap visible" id="vol-input-phone">
@@ -1389,7 +1349,7 @@
     <!-- Optional textarea -->
     <div class="vol-optional-section">
       <div class="vol-section-eyebrow"></div>
-      <h2 class="vol-section-heading" style="margin-bottom:0;">Anything else you'd like us to know?</h2>
+      <h2 class="vol-section-heading">Anything else you'd like us to know?</h2>
       <textarea class="vol-textarea-field" placeholder="Skills, vehicle access, lifting limits, questions…" rows="4"></textarea>
     </div>
 
@@ -1403,11 +1363,13 @@
         <div class="di-bs-standards-panel vol-oath-panel" id="vol-oath-panel" role="region" aria-labelledby="vol-oath-toggle" aria-hidden="true">
           <div class="di-bs-standards-inner">
             <h4 class="di-bs-standards-title">Volunteer Oath</h4>
-            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that volunteering with Distro Disco may involve physical activity including lifting, carrying, and standing for extended periods.</p>
-            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that my commitment requires responding to callouts in a timely manner and showing up to events I have confirmed.</p>
-            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that DD will contact me via <span id="vol-oath-channel">phone</span> for scheduling, updates, and event information.</p>
-            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that donations I handle must be treated with care and distributed with respect for the people receiving them.</p>
-            <p class="di-bs-standards-p vol-oath-item">&#9744; I understand that I represent Distro Disco's values in the community and will conduct myself accordingly.</p>
+            <ul class="vol-oath-list">
+              <li class="vol-oath-item">I understand that volunteering with Distro Disco may involve physical activity including lifting, carrying, and standing for extended periods.</li>
+              <li class="vol-oath-item">I understand that my commitment requires responding to callouts in a timely manner and showing up to events I have confirmed.</li>
+              <li class="vol-oath-item">I understand that DD will contact me via <span id="vol-oath-channel">phone</span> for scheduling, updates, and event information.</li>
+              <li class="vol-oath-item">I understand that donations I handle must be treated with care and distributed with respect for the people receiving them.</li>
+              <li class="vol-oath-item">I understand that I represent Distro Disco's values in the community and will conduct myself accordingly.</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -1679,11 +1641,11 @@
         </div>
       </div>
       <span class="btn btn-secondary prof-edit"><span class="btn__label">Edit profile</span></span>
-    </div>
-    <div class="avatar-sheet" id="avatar-sheet" role="group" aria-label="Choose avatar">
-      <div class="avatar-sheet-label">Choose your avatar</div>
-      <div class="avatar-sheet-scroll" id="avatar-sheet-scroll"></div>
-      <button type="button" class="btn btn-primary avatar-sheet-save" id="avatar-sheet-save" disabled><span class="btn__label">Save avatar</span></button>
+      <div class="avatar-sheet" id="avatar-sheet" role="group" aria-label="Choose avatar">
+        <div class="avatar-sheet-label">Choose your avatar</div>
+        <div class="avatar-sheet-scroll" id="avatar-sheet-scroll"></div>
+        <button type="button" class="btn btn-primary avatar-sheet-save" id="avatar-sheet-save" disabled><span class="btn__label">Save avatar</span></button>
+      </div>
     </div>
 
     <!-- impact bar -->

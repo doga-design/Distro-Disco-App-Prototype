@@ -60,20 +60,22 @@
     margin-top: 12px;
   }
 
-  /* avatar picker drawer */
-  .page-profile .avatar-sheet {
-    margin: 0 20px 24px;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-soft);
+  /* avatar picker — expands inside prof-hero (same card as identity) */
+  .page-profile .prof-hero .avatar-sheet {
+    margin: 14px 0 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(35, 33, 74, 0.1);
+    border-radius: var(--radius-lg);
+    box-shadow: none;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     transition: max-height 280ms ease, opacity 180ms ease, transform 280ms ease;
   }
-  .page-profile .avatar-sheet.is-open {
+  .page-profile .prof-hero .avatar-sheet.is-open {
     max-height: 220px;
     opacity: 1;
     transform: translateY(0);
@@ -109,12 +111,12 @@
   .avatar-option.is-selected {
     outline-color: var(--orange);
   }
-  .avatar-sheet-save {
+  .page-profile .prof-hero .avatar-sheet-save {
     display: block;
     width: calc(100% - 40px);
     margin: 4px 20px 16px;
   }
-  .avatar-sheet-save:disabled {
+  .page-profile .prof-hero .avatar-sheet-save:disabled {
     opacity: 1;
   }
 

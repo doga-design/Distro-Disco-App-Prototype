@@ -2458,7 +2458,7 @@
 
     // Consent + CTA
     const volConsentCheck = document.getElementById('vol-consent-check');
-    const volConsentText = document.querySelector('.page-volunteer .vol-consent-text');
+    const volConsentLabel = document.querySelector('.page-volunteer .vol-consent-label');
     const volOathToggle = document.getElementById('vol-oath-toggle');
     const volOathPanel = document.getElementById('vol-oath-panel');
     const volOathChannel = document.getElementById('vol-oath-channel');
@@ -2478,8 +2478,8 @@
       volOathChannel.textContent = next.toLowerCase();
     }
 
-    volConsentCheck.addEventListener('click', () => {
-      volConsented = !volConsented;
+    function syncVolConsentUI() {
+      if (!volConsentCheck) return;
       volConsentCheck.classList.toggle('checked', volConsented);
       if (volConsented) {
         volConsentCheck.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
@@ -2487,11 +2487,32 @@
         volConsentCheck.innerHTML = '';
       }
       updateVolCTA();
-    });
-    if (volConsentText) {
-      volConsentText.addEventListener('click', (e) => {
+    }
+    function toggleVolConsent() {
+      volConsented = !volConsented;
+      syncVolConsentUI();
+    }
+
+    if (volConsentCheck) {
+      volConsentCheck.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleVolConsent();
+      });
+    }
+    /* Label wraps checkbox + copy; avoid volConsentText.click() — that doubled native label→button and toggled twice (net: no change). */
+    if (volConsentLabel) {
+      volConsentLabel.addEventListener('click', function(e) {
         if (e.target && e.target.closest && e.target.closest('#vol-oath-toggle')) return;
-        volConsentCheck.click();
+        if (e.target && e.target.closest && e.target.closest('#vol-consent-check')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        toggleVolConsent();
+      }, true);
+    }
+    if (volOathPanel) {
+      volOathPanel.addEventListener('click', function(e) {
+        if (e.target && e.target.closest && e.target.closest('button, a, [href]')) return;
+        toggleVolConsent();
       });
     }
     if (volOathToggle && volOathPanel) {
@@ -3108,7 +3129,7 @@
           '</span>' +
           '<span class="donation-card-group-actions">' +
             '<span class="donation-card-group-edit" role="button" tabindex="0">Edit</span>' +
-            '<span class="donation-card-group-chevron" aria-hidden="true">⌃</span>' +
+            '<span class="donation-card-group-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><polyline points="6 15 12 9 18 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></span>' +
           '</span>' +
         '</button>' +
         '<div class="donation-card-group-body">' +

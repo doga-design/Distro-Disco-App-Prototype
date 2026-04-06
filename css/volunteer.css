@@ -108,11 +108,11 @@
   }
   .page-volunteer .vol-section-heading {
     font-family: var(--gaya-title-font);
-    font-size: var(--gaya-title-size);
+    font-size: 18px;
     font-weight: var(--gaya-title-weight);
     line-height: var(--gaya-title-line-height);
     color: var(--navy);
-    margin-bottom: 16px;
+    margin-bottom: 4px;
     letter-spacing: -0.2px;
   }
 
@@ -126,6 +126,9 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: 6px solid var(--orange);
+  }
+  .page-volunteer .vol-role-card.disabled {
+    border-left-color: rgba(35, 33, 74, 0.22);
   }
   .page-volunteer .vol-role-card-header {
     display: flex; align-items: flex-start; gap: 14px;
@@ -221,12 +224,12 @@
   }
 
   /* About You */
-  .page-volunteer .vol-about-section { padding: 24px 20px 0; }
-  .page-volunteer .vol-about-section .vol-section-heading {
-    margin-bottom: 0;
-  }
+  .page-volunteer .vol-about-section { padding: 24px 20px 4px; }
   .page-volunteer .vol-about-section + .vol-contact-section {
-    padding-top: 10px;
+    padding-top: 0;
+  }
+  .page-volunteer .vol-about-section + .vol-contact-section .vol-contact-row {
+    margin-top: 6px;
   }
   .page-volunteer .vol-checkbox-row {
     display: flex; align-items: center; gap: 12px;
@@ -275,25 +278,12 @@
   }
   .page-volunteer .vol-contact-opt {
     display: inline-flex; align-items: center;
-    gap: 8px; cursor: pointer; flex-shrink: 0;
+    cursor: pointer; flex-shrink: 0;
     border: 1.5px solid var(--border-color);
     border-radius: 999px;
-    padding: 8px 12px;
+    padding: 8px 14px;
     background: var(--white);
     transition: background 150ms ease, border-color 150ms ease;
-  }
-  .page-volunteer .vol-contact-check {
-    width: 16px; height: 16px;
-    border: 1.5px solid var(--border-color);
-    border-radius: 50%;
-    background: transparent;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .page-volunteer .vol-contact-check svg {
-    width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.8;
-    fill: none; stroke-linecap: round; stroke-linejoin: round;
-    opacity: 0; transition: opacity 150ms ease, color 150ms ease;
   }
   .page-volunteer .vol-contact-label {
     font-size: 12px; font-weight: 600; color: var(--navy);
@@ -303,14 +293,7 @@
     background: var(--navy);
     border-color: var(--navy);
   }
-  .page-volunteer .vol-contact-opt.active .vol-contact-check svg { opacity: 1; color: var(--white); }
-  .page-volunteer .vol-contact-opt.active .vol-contact-check {
-    border-color: transparent;
-  }
   .page-volunteer .vol-contact-opt.active .vol-contact-label { color: var(--white); font-weight: 700; }
-  .page-volunteer .vol-contact-opt:not(.active) .vol-contact-check svg {
-    color: var(--text-muted);
-  }
   .page-volunteer .vol-contact-input-wrap {
     margin-top: 0; overflow: hidden; max-height: 0; opacity: 0;
     transition: max-height 400ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -341,27 +324,6 @@
   .page-volunteer .vol-textarea-field::placeholder { color: #b0aec0; }
   .page-volunteer .vol-textarea-field:focus { border-color: rgba(35,33,74,0.3); }
 
-  /* Info badges */
-  .page-volunteer .vol-info-badges { padding: 24px 20px 0; display: flex; flex-direction: column; gap: 16px; }
-  .page-volunteer .vol-info-badge { display: flex; align-items: flex-start; gap: 14px; }
-  .page-volunteer .vol-badge-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .page-volunteer .vol-badge-icon img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    display: block;
-  }
-  .page-volunteer .vol-badge-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
-  .page-volunteer .vol-badge-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
-
   /* Footer consent + CTA */
   .page-volunteer .vol-footer-section { padding: 16px 20px 0; }
   .page-volunteer .vol-consent-row {
@@ -384,8 +346,40 @@
   .page-volunteer .vol-oath-panel {
     width: 100%;
   }
+  .page-volunteer .vol-oath-panel .di-bs-standards-inner {
+    padding: 18px 17px 20px;
+  }
+  .page-volunteer .vol-oath-panel .di-bs-standards-title {
+    margin-bottom: 4px;
+  }
+  .page-volunteer .vol-oath-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .page-volunteer .vol-oath-item {
+    margin: 0;
+    padding: 0 0 0 22px;
+    position: relative;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.55;
+    color: #4a4868;
+  }
+  .page-volunteer .vol-oath-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.42em;
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    border: 1.5px solid rgba(35, 33, 74, 0.42);
+    box-sizing: border-box;
+  }
   .page-volunteer .vol-oath-item + .vol-oath-item {
-    margin-top: 9px;
+    margin-top: 12px;
   }
   .page-volunteer .vol-cta-btn {
     font-size: 15px;

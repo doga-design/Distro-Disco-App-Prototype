@@ -582,43 +582,12 @@
   .di-bs-upcoming-drive {
     margin-top: 0;
     padding-top: 0;
-    margin-bottom: 16px;
-    padding-bottom: 0;
-    border-bottom: 0;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
   }
   .di-bs-upcoming-drive .di-bs-location-card {
     margin-bottom: 0;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 14px 12px 14px 14px;
-  }
-  .di-bs-upcoming-drive .di-bs-card-media {
-    display: block;
-    z-index: 0;
-  }
-  .di-bs-upcoming-drive .di-bs-loc-text {
-    position: relative;
-    z-index: 3;
-    flex: 1;
-    min-width: 0;
-    margin: 0;
-    color: #fff;
-  }
-  .di-bs-upcoming-drive .di-bs-loc-check {
-    position: relative;
-    z-index: 3;
-    flex-shrink: 0;
-    align-self: center;
-  }
-  .di-bs-upcoming-drive .di-bs-location-card.is-selected .di-bs-loc-check {
-    position: absolute;
-    right: 11px;
-    bottom: 11px;
-    align-self: auto;
   }
   .di-bs-upcoming-drive .di-bs-location-card:not(.is-selected) .di-bs-loc-meta,
   .di-bs-upcoming-drive .di-bs-location-card:not(.is-selected) .di-bs-loc-check {

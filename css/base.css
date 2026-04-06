@@ -1119,8 +1119,10 @@
     flex: 1;
   }
   .page-home .donation-card-group-left .donation-card-dot {
-    align-self: center;
+    align-self: flex-start;
     flex-shrink: 0;
+    margin-right: 4px;
+    margin-top: 4px;
   }
   .page-home .donation-card-group-header-text {
     display: flex;
@@ -1175,13 +1177,22 @@
     }
   }
   .page-home .donation-card-group-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     color: var(--text-muted);
-    font-size: 16px;
-    line-height: 1;
+    line-height: 0;
     transition: transform 220ms ease;
+    transform-origin: 50% 50%;
+  }
+  .page-home .donation-card-group-chevron svg {
+    display: block;
+    width: 16px;
+    height: 16px;
   }
   .page-home .donation-card-group.is-collapsed .donation-card-group-chevron {
-    transform: rotate(180deg);
+    transform: scaleY(-1);
   }
   .page-home .donation-card-group.is-collapsed .donation-card-group-edit {
     display: none;
@@ -1344,7 +1355,7 @@
   .page-home .di-bs-slide-track {
     position: relative;
     width: 100%;
-    height: 52px;
+    height: 58px;
     border-radius: 999px;
     background: var(--input-bg);
     padding: 5px;
@@ -1365,17 +1376,18 @@
   }
   .page-home .di-bs-slide-copy {
     position: absolute;
-    right: 16px;
+    left: 92px;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 0;
+    box-sizing: border-box;
     color: var(--text-muted);
     font-family: 'Public Sans', system-ui, sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.3;
-    max-width: calc(100% - 106px);
-    text-align: right;
+    text-align: center;
     white-space: normal;
     pointer-events: none;
   }
@@ -1383,7 +1395,7 @@
     position: absolute;
     top: 5px;
     left: 5px;
-    width: 70px;
+    width: 78px;
     height: calc(100% - 10px);
     border-radius: 999px;
     background: #1D1D4D;
@@ -1395,8 +1407,8 @@
     z-index: 2;
   }
   .page-home .di-bs-slide-icon {
-    width: 16px;
-    height: 16px;
+    width: 13px;
+    height: 13px;
     display: block;
     object-fit: contain;
   }
