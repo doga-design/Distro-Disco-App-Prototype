@@ -1142,6 +1142,9 @@
     .corner-team-avatar { width: 96px; }
     .corner-team-chat { bottom: 118px; }
   }
+  @media (min-width: 501px) and (max-width: 1024px) {
+    .corner-logo-wrap { display: none !important; }
+  }
 
   /* ── Mobile: strip iPhone frame, fill real screen ── */
   @media (max-width: 500px) {

@@ -14,7 +14,7 @@
     var bodyEl = document.body;
 
     function updateShellScale() {
-      var isDesktopLike = window.matchMedia('(pointer: fine)').matches && window.innerWidth > 500;
+      var isDesktopLike = window.innerWidth > 500;
       if (!isDesktopLike) {
         root.style.setProperty('--shell-scale', '1');
         bodyEl.classList.remove('shell-scaled');
