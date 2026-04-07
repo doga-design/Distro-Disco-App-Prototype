@@ -1376,8 +1376,8 @@
   }
   .page-home .di-bs-slide-copy {
     position: absolute;
-    left: 92px;
-    right: 14px;
+    left: 88px;
+    right: 18px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 0;

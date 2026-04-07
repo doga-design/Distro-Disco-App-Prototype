@@ -3187,10 +3187,10 @@
             '</div>' +
           '</div>' +
           '<div class="donation-card-group-slider">' +
-            '<div class="di-bs-slide-cta" id="' + sliderRootId + '" aria-label="slide when u complete dropoff">' +
+            '<div class="di-bs-slide-cta" id="' + sliderRootId + '" aria-label="Slide when you complete drop-off">' +
               '<div class="di-bs-slide-track">' +
                 '<div class="di-bs-slide-fill"></div>' +
-                '<div class="di-bs-slide-copy">slide when u complete dropoff</div>' +
+                '<div class="di-bs-slide-copy">Slide when you complete drop-off</div>' +
                 '<div class="di-bs-slide-thumb" aria-hidden="true">' +
                   '<img class="di-bs-slide-icon" src="img/icons/double-chevron.svg" alt="">' +
                 '</div>' +
