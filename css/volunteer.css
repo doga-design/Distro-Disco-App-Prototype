@@ -115,13 +115,16 @@
     margin-bottom: 4px;
     letter-spacing: -0.2px;
   }
+  .page-volunteer .vol-signup-section .vol-section-heading {
+    margin-bottom: 12px;
+  }
 
   /* Role cards */
   .page-volunteer .vol-role-card {
     background: var(--card-bg);
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(35,33,74,0.08);
-    margin-bottom: 14px;
+    margin: 4px 0 14px;
     overflow: hidden;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
